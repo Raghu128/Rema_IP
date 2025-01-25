@@ -8,6 +8,9 @@ import { Notification } from "../models/notificationSchema.js";
 import { Equipment } from "../models/equipmentSchema.js";
 import { FinanceBudget } from "../models/financeBudgetSchema.js";
 import { Expense } from "../models/expenseSchema.js";
+import jwt from "jsonwebtoken";
+import bcrypt from "bcrypt";
+
 
 
 // Utility function for handling errors
@@ -15,17 +18,152 @@ const handleError = (res, error) => {
   res.status(500).json({ message: error.message });
 };
 
-// User Controller
-export const createUser = async (req, res) => {
+const checkIfFaculty = async (req, res, next) => {
+  const userId = req.user.id; // Assuming the user ID is stored in the session or token
+
+  // Get the user from the database
+  const user = await User.findById(userId);
+
+  if (!user || user.role !== 'faculty') {
+    return res.status(403).json({ message: 'Access denied: You must be a faculty member to view projects.' });
+  }
+
+  next(); // If the user is faculty, proceed to the next middleware/route handler
+};
+
+// Number of salt rounds for bcrypt
+const SALT_ROUNDS = 10;
+
+export async function handleUserSignup(req, res) {
+  const { name, email, password, role } = req.body;
+  const currentUser = req.user;
+  
   try {
-    const user = await User.create(req.body);
-    res.status(201).json(user);
+    // Check the current user's role
+    if (currentUser.role === "faculty" && (role === "faculty" || role === "admin")) {
+      return res.status(403).send("Faculty can only add students.");
+    }
+    console.log(currentUser);
+    if (currentUser.role !== "faculty" && currentUser.role !== "admin") {
+      return res.status(403).send("Student can not add any one");
+    }
+
+    // Hash the password before storing it in the database
+    const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
+    // Save the user with the hashed password and role
+    await User.create({
+      name,
+      email,
+      password: hashedPassword,
+      role,
+    });
+
+    return res.status(201).send("User successfully created");
   } catch (error) {
-    handleError(res, error);
+    console.error("Error during signup:", error);
+    return res.status(500).send("Error during signup");
+  }
+}
+
+
+
+
+export async function handleUserLogin(req, res) {
+  const { email, password } = req.body;
+
+  try {
+    // Find the user by email
+    const user = await User.findOne({ email });
+    
+
+    if (!user) {
+      return res.status(401).json({ error: "Invalid Username or Password" });
+    }
+
+    let isPasswordValid;
+
+    if (user.role === "admin") {
+      // Validate admin password directly with an environment variable
+      isPasswordValid = password === process.env.ADMIN_PASSWORD;
+    } else {
+      // Compare the entered password with the hashed password in the database for general users
+      isPasswordValid = await bcrypt.compare(password, user.password);
+    }
+
+    if (!isPasswordValid) {
+      return res.status(401).json({ error: "Invalid Username or Password" });
+    }
+
+    // Generate a JWT token
+    const token = jwt.sign(
+      { id: user._id, email: user.email, role: user.role }, // Payload
+      process.env.JWT_SECRET, // Secret key
+      { expiresIn: "1h" } // Token expiration
+    );
+
+    res.cookie("token", token, {
+      httpOnly: true,       // Prevents access by JavaScript (protects against XSS attacks)
+      secure: process.env.NODE_ENV === "production", // Send only over HTTPS in production
+      sameSite: "strict",   // Prevents CSRF attacks
+      maxAge: 3600000,      // Cookie expiration: 1 hour
+    });
+
+    
+
+    // Send token as part of the response
+    res.status(200).json({
+      message: "Login successful",
+      token,
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+      },
+    });
+  } catch (error) {
+    console.error("Error during login:", error);
+    return res.status(500).json({ error: "Error during login" });
+  }
+}
+
+
+export const checkSession = (req, res) => {
+  // Retrieve token from cookies or authorization header
+  const token = req.cookies?.token || req.headers.authorization?.split(" ")[1];
+
+  // If no token is provided, respond with 401 Unauthorized
+  if (!token) {
+    return res.status(401).json({ message: "No token provided" });
+  }
+
+  try {
+    // Verify the JWT using the secret key
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      
+    // Respond with the decoded user details
+    return res.status(200).json({ user: decoded });
+  } catch (error) {
+    // Log the error for debugging
+    console.error("Error validating token:", error);
+
+    // Handle different JWT verification errors
+    if (error.name === "TokenExpiredError") {
+      return res.status(401).json({ message: "Token has expired" });
+    } else if (error.name === "JsonWebTokenError") {
+      return res.status(401).json({ message: "Invalid token" });
+    } else {
+      // Generic error response for unexpected issues
+      return res.status(500).json({ message: "Failed to validate session" });
+    }
   }
 };
 
-export const getUsers = async (req, res) => {
+
+
+
+
+export const getUsers = async (req, res) => {  
   try {
     const users = await User.find();
     res.status(200).json(users);
@@ -53,6 +191,31 @@ export const deleteUser = async (req, res) => {
     handleError(res, error);
   }
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // SponsorProject Controller
 export const createSponsorProject = async (req, res) => {
@@ -239,6 +402,7 @@ export const deleteProject = async (req, res) => {
 
 export const createMinutesOfMeeting = async (req, res) => {
   try {
+    
     const minutes = await MinutesOfMeeting.create(req.body);
     res.status(201).json(minutes);
   } catch (error) {
@@ -366,6 +530,7 @@ export const deleteVenueList = async (req, res) => {
 
 export const createNotification = async (req, res) => {
   try {
+    
     const notification = await Notification.create(req.body);
     res.status(201).json(notification);
   } catch (error) {

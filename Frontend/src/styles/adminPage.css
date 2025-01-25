@@ -1,0 +1,188 @@
+/* Admin Page Layout */
+.admin-page {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    padding: 30px;
+    max-width: 1300px;
+    margin: 0 auto;
+    background-color: #f7f7f9;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Title Styling */
+.admin-dashboard-title {
+    text-align: center;
+    font-size: 28px; /* Reduced from 36px */
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 40px;
+    letter-spacing: 1px;
+}
+
+/* Add User Section */
+.add-user-section,
+.update-user-section {
+    margin: 20px 0;
+    padding: 25px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 15px; /* Reduced gap */
+}
+
+.add-user-section {
+    border: 1px solid #e3e4e8;
+}
+
+/* Input Fields and Select Dropdown */
+.admin-input-filed {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 15px; /* Reduced gap */
+}
+
+.input-field {
+    padding: 10px 16px; /* Reduced padding */
+    font-size: 14px; /* Reduced from 16px */
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    width: 48%;
+    margin-bottom: 15px;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.input-field:focus {
+    outline: none;
+    border-color: #4e73df;
+    box-shadow: 0 0 5px rgba(78, 115, 223, 0.4);
+}
+
+/* Select Dropdown Styling */
+.select-dropdown {
+    padding: 10px 16px; /* Reduced padding */
+    font-size: 14px; /* Reduced from 16px */
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    width: 48%;
+    background-color: #ffffff;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.select-dropdown:focus {
+    outline: none;
+    border-color: #4e73df;
+    box-shadow: 0 0 5px rgba(78, 115, 223, 0.4);
+}
+
+/* Add Button */
+.button {
+    padding: 10px 16px; /* Reduced padding */
+    background-color: #4e73df;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px; /* Reduced from 16px */
+    cursor: pointer;
+    width: 100%;
+    max-width: 400px;
+    margin: 20px auto;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.button:hover {
+    background-color: #2e59d9;
+    transform: translateY(-2px);
+}
+
+.button:active {
+    transform: translateY(2px);
+}
+
+/* Section Titles */
+.section-title {
+    font-size: 20px; /* Reduced from 26px */
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 10px; /* Reduced margin */
+}
+
+/* User List Section */
+.user-list-section-delete {
+    margin-top: 40px;
+    padding: 25px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.user-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px; /* Reduced padding */
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    margin-bottom: 12px; /* Reduced margin */
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.user-item:hover {
+    background-color: #e9ecef;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+}
+
+.user-item p {
+    margin: 0;
+    font-size: 14px; /* Reduced from 16px */
+    color: #555;
+}
+
+/* Delete Button */
+.delete-button {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 6px 12px; /* Reduced padding */
+    font-size: 12px; /* Reduced from 14px */
+    cursor: pointer;
+    border-radius: 8px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.delete-button:hover {
+    background-color: #c82333;
+    transform: translateY(-2px);
+}
+
+.delete-button:active {
+    transform: translateY(2px);
+}
+
+/* Unauthorized User Message */
+.unauthorized-message {
+    text-align: center;
+    font-size: 16px; /* Reduced from 20px */
+    font-weight: bold;
+    color: #ff4d4f;
+    margin-top: 40px;
+}
+
+/* Responsive Design for Mobile */
+@media (max-width: 768px) {
+    .admin-input-filed {
+        flex-direction: column;
+    }
+
+    .input-field,
+    .select-dropdown {
+        width: 100%;
+    }
+
+    .button {
+        width: 100%;
+    }
+}
