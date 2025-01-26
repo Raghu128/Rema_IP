@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import "../styles/VenueAddForm.css";
+import { useSelector } from "react-redux";
 
 const VenueAddForm = () => {
   const [formData, setFormData] = useState({
@@ -18,31 +20,35 @@ const VenueAddForm = () => {
     main_conference_end: "",
     location: "",
     time_zone: "",
-    view:[]
+    view: [],
   });
 
+  const { user } = useSelector((state) => state.user);
   const [users, setUsers] = useState([]);
   const [message, setMessage] = useState("");
 
-  // Fetch all users for the 'added_by' field
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await axios.get("/api/v1/users"); // Fetch users from API
+        const response = await axios.get("/api/v1/user");
         setUsers(response.data);
-
-        
-        
       } catch (error) {
         console.error("Error fetching users:", error);
         setMessage("Failed to fetch users.");
       }
     };
-
     fetchUsers();
   }, []);
 
-  // Handle input changes
+  useEffect(() => {
+    if (user?.id) {
+      setFormData((prevData) => ({
+        ...prevData,
+        added_by: user.id, // Automatically set the faculty_id
+      }));
+    }
+  }, [user]);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({
@@ -51,26 +57,22 @@ const VenueAddForm = () => {
     });
   };
 
-
   const handleCheckboxChange = (e) => {
     const { value, checked } = e.target;
     setFormData((prevState) => {
       const updatedView = checked
-        ? [...prevState.view, value] // Add user ID if checked
-        : prevState.view.filter((id) => id !== value); // Remove user ID if unchecked
+        ? [...prevState.view, value]
+        : prevState.view.filter((id) => id !== value);
       return { ...prevState, view: updatedView };
     });
   };
 
-
-
-  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
     try {
       const response = await axios.post("/api/v1/venues", formData);
       setMessage(`Venue added successfully: ${response.data.venue}`);
-      // Reset form
       setFormData({
         venue: "",
         year: "",
@@ -87,6 +89,7 @@ const VenueAddForm = () => {
         main_conference_end: "",
         location: "",
         time_zone: "",
+        view: [],
       });
     } catch (error) {
       console.error("Error adding venue:", error);
@@ -94,19 +97,12 @@ const VenueAddForm = () => {
     }
   };
 
-  
-
-
-
-
-
   return (
-    <div>
-      <h2>Add Venue</h2>
-      {message && <p>{message}</p>}
-      <form onSubmit={handleSubmit}>
-        {/* Venue Name */}
-        <div>
+    <div className="venue-add-form">
+      <h2 className="form-title">Add Venue</h2>
+      {message && <p className="form-message">{message}</p>}
+      <form onSubmit={handleSubmit} className="venue-form">
+        <div className="form-group">
           <label htmlFor="venue">Venue Name:</label>
           <input
             type="text"
@@ -115,11 +111,11 @@ const VenueAddForm = () => {
             value={formData.venue}
             onChange={handleChange}
             required
+            className="form-input"
           />
         </div>
 
-        {/* Year */}
-        <div>
+        <div className="form-group">
           <label htmlFor="year">Year:</label>
           <input
             type="number"
@@ -129,11 +125,11 @@ const VenueAddForm = () => {
             onChange={handleChange}
             required
             min="1900"
+            className="form-input"
           />
         </div>
 
-        {/* URL */}
-        <div>
+        <div className="form-group">
           <label htmlFor="url">URL:</label>
           <input
             type="url"
@@ -141,30 +137,11 @@ const VenueAddForm = () => {
             name="url"
             value={formData.url}
             onChange={handleChange}
+            className="form-input"
           />
         </div>
 
-        {/* Added By */}
-        <div>
-          <label htmlFor="added_by">Added By:</label>
-          <select
-            id="added_by"
-            name="added_by"
-            value={formData.added_by}
-            onChange={handleChange}
-            required
-          >
-            <option value="">Select User</option>
-            {users.map((user) => (
-              <option key={user._id} value={user._id}>
-                {user.name} ({user.email})
-              </option>
-            ))}
-          </select>
-        </div>
-
-        {/* Date */}
-        <div>
+        <div className="form-group">
           <label htmlFor="date">Date:</label>
           <input
             type="date"
@@ -172,11 +149,11 @@ const VenueAddForm = () => {
             name="date"
             value={formData.date}
             onChange={handleChange}
+            className="form-input"
           />
         </div>
 
-        {/* Abstract Submission */}
-        <div>
+        <div className="form-group">
           <label htmlFor="abstract_submission">Abstract Submission:</label>
           <input
             type="date"
@@ -184,11 +161,11 @@ const VenueAddForm = () => {
             name="abstract_submission"
             value={formData.abstract_submission}
             onChange={handleChange}
+            className="form-input"
           />
         </div>
 
-        {/* Paper Submission */}
-        <div>
+        <div className="form-group">
           <label htmlFor="paper_submission">Paper Submission:</label>
           <input
             type="date"
@@ -196,11 +173,11 @@ const VenueAddForm = () => {
             name="paper_submission"
             value={formData.paper_submission}
             onChange={handleChange}
+            className="form-input"
           />
         </div>
 
-        {/* Author Response */}
-        <div>
+        <div className="form-group">
           <label htmlFor="author_response">Author Response:</label>
           <input
             type="date"
@@ -208,11 +185,11 @@ const VenueAddForm = () => {
             name="author_response"
             value={formData.author_response}
             onChange={handleChange}
+            className="form-input"
           />
         </div>
 
-        {/* Meta Review */}
-        <div>
+        <div className="form-group">
           <label htmlFor="meta_review">Meta Review:</label>
           <input
             type="date"
@@ -220,11 +197,11 @@ const VenueAddForm = () => {
             name="meta_review"
             value={formData.meta_review}
             onChange={handleChange}
+            className="form-input"
           />
         </div>
 
-        {/* Notification */}
-        <div>
+        <div className="form-group">
           <label htmlFor="notification">Notification:</label>
           <input
             type="date"
@@ -232,11 +209,11 @@ const VenueAddForm = () => {
             name="notification"
             value={formData.notification}
             onChange={handleChange}
+            className="form-input"
           />
         </div>
 
-        {/* Commitment */}
-        <div>
+        <div className="form-group">
           <label htmlFor="commitment">Commitment:</label>
           <input
             type="date"
@@ -244,11 +221,11 @@ const VenueAddForm = () => {
             name="commitment"
             value={formData.commitment}
             onChange={handleChange}
+            className="form-input"
           />
         </div>
 
-        {/* Main Conference Start */}
-        <div>
+        <div className="form-group">
           <label htmlFor="main_conference_start">Main Conference Start:</label>
           <input
             type="date"
@@ -256,11 +233,11 @@ const VenueAddForm = () => {
             name="main_conference_start"
             value={formData.main_conference_start}
             onChange={handleChange}
+            className="form-input"
           />
         </div>
 
-        {/* Main Conference End */}
-        <div>
+        <div className="form-group">
           <label htmlFor="main_conference_end">Main Conference End:</label>
           <input
             type="date"
@@ -268,20 +245,46 @@ const VenueAddForm = () => {
             name="main_conference_end"
             value={formData.main_conference_end}
             onChange={handleChange}
+            className="form-input"
           />
         </div>
 
-        <div>
+        <div className="form-group">
+          <label htmlFor="location">Location:</label>
+          <input
+            type="text"
+            id="location"
+            name="location"
+            value={formData.location}
+            onChange={handleChange}
+            className="form-input"
+          />
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="time_zone">Time Zone:</label>
+          <input
+            type="text"
+            id="time_zone"
+            name="time_zone"
+            value={formData.time_zone}
+            onChange={handleChange}
+            className="form-input"
+          />
+        </div>
+
+        <div className="form-group">
           <label>View Access:</label>
-          <div>
+          <div className="checkbox-group">
             {users.map((user) => (
-              <div key={user._id}>
+              <div key={user._id} className="checkbox-item">
                 <label>
                   <input
                     type="checkbox"
                     value={user._id}
                     checked={formData.view.includes(user._id)}
                     onChange={handleCheckboxChange}
+                    className="checkbox-input"
                   />
                   {user.name} ({user.email})
                 </label>
@@ -290,38 +293,10 @@ const VenueAddForm = () => {
           </div>
         </div>
 
-        {/* Location */}
-        <div>
-          <label htmlFor="location">Location:</label>
-          <input
-            type="text"
-            id="location"
-            name="location"
-            value={formData.location}
-            onChange={handleChange}
-          />
-        </div>
-
-        {/* Time Zone */}
-        <div>
-          <label htmlFor="time_zone">Time Zone:</label>
-          <input
-            type="text"
-            id="time_zone"
-            name="time_zone"
-            value={formData.time_zone}
-            onChange={handleChange}
-          />
-        </div>
-
-        {/* Submit Button */}
-        <button type="submit">Add Venue</button>
+        <button type="submit" className="submit-button">Add Venue</button>
       </form>
     </div>
   );
 };
 
 export default VenueAddForm;
-
-
-

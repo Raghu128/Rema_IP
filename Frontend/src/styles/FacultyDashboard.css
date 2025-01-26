@@ -1,0 +1,64 @@
+/* Basic styles for the dashboard */
+.dashboard-container {
+    display: flex;
+    min-height: 100vh;
+    transition: all 0.3s ease-in-out;
+  }
+  
+  /* Sidebar styling */
+  .sidebar {
+    background-color: #2f3b52;
+    color: white;
+    width: 250px;
+    padding: 20px;
+    transition: all 0.3s ease-in-out;
+  }
+  
+  .sidebar-closed {
+    width: 60px;
+  }
+  
+  .sidebar-toggle {
+    background-color: #2f3b52;
+    color: white;
+    font-size: 20px;
+    border: none;
+    cursor: pointer;
+    position: absolute;
+    top: 20px;
+    right: -40px;
+    padding: 10px;
+    border-radius: 5px;
+  }
+  
+  .sidebar-list {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .sidebar-list li {
+    margin: 15px 0;
+  }
+  
+  .sidebar-list li a {
+    text-decoration: none;
+    color: white;
+    font-size: 18px;
+  }
+  
+  .sidebar-list li a:hover {
+    color: #3498db;
+  }
+  
+  /* Main content area */
+  .main-content {
+    flex-grow: 1;
+    padding: 20px;
+    background-color: #f1f3f7;
+  }
+  
+  h1 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+  }
+  

@@ -172,6 +172,18 @@ export const getUsers = async (req, res) => {
   }
 };
 
+export const getUsersByid = async (req, res) => {
+  const id = req.params.id;
+    
+  try {
+    const user = await User.find({_id:id});
+    
+    res.status(200).json(user);
+  } catch (error) {
+    handleError(res, error);
+  }
+};
+
 export const updateUser = async (req, res) => {
   try {
     const user = await User.findByIdAndUpdate(req.params.id, req.body, {
@@ -359,9 +371,11 @@ export const getProjects = async (req, res) => {
 };
 
 export const getProjectById = async (req, res) => {
-    try {
-      const project = await Project.findById(req.params.id);
+  const id = req.params.id;
   
+    try {
+      const project = await Project.find({ faculty_id: id });
+      
       if (!project) {
         return res.status(404).json({ message: 'Project not found' });
       }
@@ -593,12 +607,31 @@ export const deleteNotification = async (req, res) => {
 
 export const createEquipment = async (req, res) => {
   try {
+    // Create the equipment
     const equipment = await Equipment.create(req.body);
+
+    // Extract relevant data for the expense
+    const { funding_by_srp_id, amount, name, date_of_purchase } = req.body;
+
+    if (!funding_by_srp_id || !amount || !name) {
+      throw new Error("Required fields missing for expense creation.");
+    }
+
+    // Create the corresponding expense
+    const expense = await Expense.create({
+      srp_id: funding_by_srp_id,
+      item: name,
+      amount: amount,
+      head: "Equipment Purchase",
+      payment_date: date_of_purchase,
+    });
+
     res.status(201).json(equipment);
   } catch (error) {
     handleError(res, error);
   }
 };
+
 
 export const getEquipments = async (req, res) => {
   try {

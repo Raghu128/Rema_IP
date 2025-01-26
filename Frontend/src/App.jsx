@@ -5,8 +5,8 @@ import { checkSession } from "./utils/api";
 import { BrowserRouter as Router, Routes, Route, Link, Navigate } from "react-router-dom"; // Import Router components
 import LoginPage from "./pages/LoginPage";
 import AdminPage from "./pages/AdminPage";
-import HomePage from "./pages/HomePage";
 import FacultyPage from "./pages/FacultyEditPage";
+import FacultyDashboard from "./pages/Faculty_dashboard";
 import './App.css';
 
 function App() {
@@ -99,7 +99,7 @@ function App() {
         <Route path="/admin-dashboard" element={<AdminPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/faculty" element={<FacultyPage />} />
-        <Route path="/home" element={<HomePage />} /> {/* HomePage for logged-in users */}
+        <Route path="/faculty_dashboard" element={<FacultyDashboard />} />
       </Routes>
     </Router>
   );

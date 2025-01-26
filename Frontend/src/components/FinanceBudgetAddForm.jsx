@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { useSelector } from "react-redux";
+import '../styles/financebudget.css';
 
 const FinanceBudgetAddForm = () => {
   const [formData, setFormData] = useState({
     srp_id: "",
     year: "",
     manpower: "",
-    pi_compenstion: "",
+    pi_compensation: "",
     equipment: "",
     travel: "",
     expenses: "",
@@ -16,17 +18,19 @@ const FinanceBudgetAddForm = () => {
     others: "",
     overhead: "",
     gst: "",
-    status: "pending", // Default status
+    status: "pending",
   });
 
+  const { user } = useSelector((state) => state.user);
   const [sponsorProjects, setSponsorProjects] = useState([]);
   const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  // Fetch sponsor projects
   useEffect(() => {
     const fetchSponsorProjects = async () => {
+      if (!user?.id) return;
       try {
-        const response = await axios.get("/api/v1/sponsor-projects"); // Replace with your sponsor project API endpoint
+        const response = await axios.get(`/api/v1/sponsor-projects/${user.id}`);
         setSponsorProjects(response.data);
       } catch (error) {
         console.error("Error fetching sponsor projects:", error);
@@ -35,9 +39,8 @@ const FinanceBudgetAddForm = () => {
     };
 
     fetchSponsorProjects();
-  }, []);
+  }, [user]);
 
-  // Handle input changes
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({
@@ -46,18 +49,17 @@ const FinanceBudgetAddForm = () => {
     });
   };
 
-  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     try {
-      const response = await axios.post("/api/v1/finance-budgets", formData); // Replace with your finance budget add API endpoint
+      const response = await axios.post("/api/v1/finance-budgets", formData);
       setMessage(`Finance Budget added successfully for ${response.data.year}`);
-      // Reset form
       setFormData({
         srp_id: "",
         year: "",
         manpower: "",
-        pi_compenstion: "",
+        pi_compensation: "",
         equipment: "",
         travel: "",
         expenses: "",
@@ -67,203 +69,91 @@ const FinanceBudgetAddForm = () => {
         others: "",
         overhead: "",
         gst: "",
-        status: "pending", // Default status
+        status: "pending",
       });
     } catch (error) {
       console.error("Error adding finance budget:", error);
       setMessage(error.response?.data?.message || "Failed to add finance budget.");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div>
-      <h2>Add Finance Budget</h2>
-      {message && <p>{message}</p>}
-      <form onSubmit={handleSubmit}>
-        {/* Sponsor Project */}
-        <div>
+    <div className="financebudget-container">
+      <h2 className="financebudget-header">Add Finance Budget</h2>
+      {message && <p className="financebudget-message">{message}</p>}
+      <form className="financebudget-form" onSubmit={handleSubmit}>
+        <div className="financebudget-field">
           <label htmlFor="srp_id">Sponsor Project:</label>
           <select
             id="srp_id"
             name="srp_id"
+            className="financebudget-input"
             value={formData.srp_id}
             onChange={handleChange}
             required
           >
             <option value="">Select Sponsor Project</option>
-            {sponsorProjects.map((project) => (
-              <option key={project._id} value={project._id}>
-                {project.name} (ID: {project._id})
-              </option>
-            ))}
+            {sponsorProjects.length > 0 ? (
+              sponsorProjects.map((project) => (
+                <option key={project._id} value={project._id}>
+                  {project.name} (agency: {project.agency})
+                </option>
+              ))
+            ) : (
+              <option disabled>No projects available</option>
+            )}
           </select>
         </div>
 
-        {/* Year */}
-        <div>
+        <div className="financebudget-field">
           <label htmlFor="year">Year:</label>
           <input
             type="number"
             id="year"
             name="year"
+            className="financebudget-input"
             value={formData.year}
             onChange={handleChange}
-            min="2000"
-            max="2099"
             required
           />
         </div>
 
-        {/* Budget Fields */}
-        <div>
-          <label htmlFor="manpower">Manpower:</label>
-          <input
-            type="number"
-            id="manpower"
-            name="manpower"
-            value={formData.manpower}
-            onChange={handleChange}
-            min="0"
-            step="any"
-          />
-        </div>
+        {[
+          "manpower",
+          "pi_compensation",
+          "equipment",
+          "travel",
+          "expenses",
+          "outsourcing",
+          "contingency",
+          "consumable",
+          "others",
+          "overhead",
+          "gst",
+        ].map((field) => (
+          <div key={field} className="financebudget-field">
+            <label htmlFor={field}>{field.replace(/_/g, " ").toUpperCase()}:</label>
+            <input
+              type="number"
+              id={field}
+              name={field}
+              className="financebudget-input"
+              value={formData[field]}
+              onChange={handleChange}
+              min="0"
+              step="any"
+            />
+          </div>
+        ))}
 
-        <div>
-          <label htmlFor="pi_compenstion">PI Compensation:</label>
-          <input
-            type="number"
-            id="pi_compenstion"
-            name="pi_compenstion"
-            value={formData.pi_compenstion}
-            onChange={handleChange}
-            min="0"
-            step="any"
-          />
-        </div>
-
-        <div>
-          <label htmlFor="equipment">Equipment:</label>
-          <input
-            type="number"
-            id="equipment"
-            name="equipment"
-            value={formData.equipment}
-            onChange={handleChange}
-            min="0"
-            step="any"
-          />
-        </div>
-
-        <div>
-          <label htmlFor="travel">Travel:</label>
-          <input
-            type="number"
-            id="travel"
-            name="travel"
-            value={formData.travel}
-            onChange={handleChange}
-            min="0"
-            step="any"
-          />
-        </div>
-
-        <div>
-          <label htmlFor="expenses">Expenses:</label>
-          <input
-            type="number"
-            id="expenses"
-            name="expenses"
-            value={formData.expenses}
-            onChange={handleChange}
-            min="0"
-            step="any"
-          />
-        </div>
-
-        <div>
-          <label htmlFor="outsourcing">Outsourcing:</label>
-          <input
-            type="number"
-            id="outsourcing"
-            name="outsourcing"
-            value={formData.outsourcing}
-            onChange={handleChange}
-            min="0"
-            step="any"
-          />
-        </div>
-
-        <div>
-          <label htmlFor="contingency">Contingency:</label>
-          <input
-            type="number"
-            id="contingency"
-            name="contingency"
-            value={formData.contingency}
-            onChange={handleChange}
-            min="0"
-            step="any"
-          />
-        </div>
-
-        <div>
-          <label htmlFor="consumable">Consumable:</label>
-          <input
-            type="number"
-            id="consumable"
-            name="consumable"
-            value={formData.consumable}
-            onChange={handleChange}
-            min="0"
-            step="any"
-          />
-        </div>
-
-        <div>
-          <label htmlFor="others">Others:</label>
-          <input
-            type="number"
-            id="others"
-            name="others"
-            value={formData.others}
-            onChange={handleChange}
-            min="0"
-            step="any"
-          />
-        </div>
-
-        <div>
-          <label htmlFor="overhead">Overhead:</label>
-          <input
-            type="number"
-            id="overhead"
-            name="overhead"
-            value={formData.overhead}
-            onChange={handleChange}
-            min="0"
-            step="any"
-          />
-        </div>
-
-        <div>
-          <label htmlFor="gst">GST:</label>
-          <input
-            type="number"
-            id="gst"
-            name="gst"
-            value={formData.gst}
-            onChange={handleChange}
-            min="0"
-            step="any"
-          />
-        </div>
-
-        {/* Status */}
-        <div>
+        <div className="financebudget-field">
           <label htmlFor="status">Status:</label>
           <select
             id="status"
             name="status"
+            className="financebudget-input"
             value={formData.status}
             onChange={handleChange}
           >
@@ -273,8 +163,13 @@ const FinanceBudgetAddForm = () => {
           </select>
         </div>
 
-        {/* Submit Button */}
-        <button type="submit">Add Finance Budget</button>
+        <button
+          type="submit"
+          className="financebudget-submit"
+          disabled={loading}
+        >
+          {loading ? "Submitting..." : "Add Finance Budget"}
+        </button>
       </form>
     </div>
   );

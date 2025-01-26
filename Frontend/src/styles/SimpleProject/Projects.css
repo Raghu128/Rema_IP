@@ -1,0 +1,166 @@
+/* Styling for the Project details container */
+.project-details-container {
+  width: 100%;
+  max-height: 80vh;
+  padding: 30px;
+  background-color: #f0f4f8; /* Soft background color for better contrast */
+  border-radius: 10px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); /* Slightly stronger shadow for depth */
+  margin-top: 30px;
+  display: flex;
+  flex-direction: row;
+  gap: 5rem;
+}
+
+.project-item {
+  height: 18rem;
+  background-color: #ffffff;
+  padding: 25px;
+  margin-bottom: 25px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  transition: all 0.3s ease; /* Smooth transition effect */
+}
+
+.project-item:hover {
+  transform: translateY(-5px); /* Hover effect to lift the card */
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15); /* Stronger shadow on hover */
+}
+
+.project-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: #2c3e50;
+}
+
+.project-domain {
+  font-size: 18px;
+  color: #7f8c8d;
+  margin-bottom: 15px;
+  line-height: 1.6; /* Make the text more readable */
+}
+
+.project-lead {
+  font-size: 20px;
+  color: #2980b9;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+.team-members-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: #34495e;
+  margin-bottom: 15px;
+}
+
+.team-members-list {
+  list-style-type: none;
+  padding-left: 0;
+  margin: 0;
+}
+
+.team-member {
+  font-size: 18px;
+  color: #7f8c8d;
+  margin: 10px 0;
+  padding-left: 15px;
+  transition: color 0.3s ease; /* Smooth transition for color change */
+}
+
+.team-member:hover {
+  color: #2980b9; /* Change text color on hover */
+  cursor: pointer;
+}
+
+ul {
+  padding-left: 0;
+}
+
+p {
+  font-size: 16px;
+  color: #bdc3c7;
+}
+
+/* Additional Enhancement for Responsiveness */
+@media (max-width: 768px) {
+  .project-details-container {
+    padding: 15px;
+  }
+
+  .project-item {
+    padding: 20px;
+  }
+
+  .project-title {
+    font-size: 22px;
+  }
+
+  .project-description,
+  .project-lead {
+    font-size: 16px;
+  }
+
+  .team-members-title {
+    font-size: 18px;
+  }
+
+  .team-member {
+    font-size: 16px;
+  }
+}
+
+
+
+/* Ellipsis menu button */
+.ellipsis-menu {
+  cursor: pointer;
+  font-size: 20px;
+  color: #7f8c8d;
+  padding: 5px;
+  transition: color 0.3s ease;
+  position: absolute;
+  top: -10px;
+  right: 0;
+}
+
+.ellipsis-menu:hover {
+  color: #2980b9; /* Change color on hover */
+}
+
+/* Dropdown menu styling */
+.dropdown-options {
+  position: absolute;
+  background-color: #ffffff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+  padding: 10px;
+  top: 30px;
+  right: 40px;
+  z-index: 1;
+  width: 150px;
+}
+
+.dropdown-options button {
+  width: 100%;
+  padding: 8px 0;
+  text-align: left;
+  font-size: 16px;
+  border: none;
+  background-color: #ffffff;
+  color: #2980b9;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.dropdown-options button:hover {
+  background-color: #f0f4f8;
+}
+
+/* Positioning the project header */
+.project-header {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
