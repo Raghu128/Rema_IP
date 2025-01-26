@@ -1,6 +1,32 @@
 import axios from "axios";
 
-// Example login function
+// Generic API request function
+export const apiRequest = async ({ endpoint, method = "GET", headers = {}, body = null, withCredentials = false }) => {
+  try {
+    const config = {
+      url: endpoint,
+      method,
+      headers: {
+        "Content-Type": "application/json",
+        ...headers,
+      },
+      withCredentials, // Include cookies if needed
+    };
+
+    if (body) {
+      config.data = body; // Add request body for POST, PUT, etc.
+    }
+
+    const response = await axios(config);
+
+    return response.data; // Return the response data
+  } catch (error) {
+    // Throw a detailed error
+    throw new Error(error.response?.data?.message || "An error occurred");
+  }
+};
+
+
 
 export const loginUser = async ({ email, password }) => {
   

@@ -6,6 +6,7 @@ import { BrowserRouter as Router, Routes, Route, Link, Navigate } from "react-ro
 import LoginPage from "./pages/LoginPage";
 import AdminPage from "./pages/AdminPage";
 import HomePage from "./pages/HomePage";
+import FacultyPage from "./pages/FacultyEditPage";
 import './App.css';
 
 function App() {
@@ -97,6 +98,7 @@ function App() {
       <Routes>
         <Route path="/admin-dashboard" element={<AdminPage />} />
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/faculty" element={<FacultyPage />} />
         <Route path="/home" element={<HomePage />} /> {/* HomePage for logged-in users */}
       </Routes>
     </Router>

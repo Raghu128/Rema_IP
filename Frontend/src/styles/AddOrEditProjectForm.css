@@ -1,0 +1,218 @@
+/* General Reset and Layout */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #f0f4f8;
+    color: #444;
+    line-height: 1.6;
+  }
+  
+  /* Add/Edit Project Form Container */
+  .addprojectform {
+    width: 80%;
+    max-width: 900px;
+    margin: 40px auto;
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+  }
+  
+  /* Form Heading */
+  .addprojectform__heading {
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    color: #333;
+    text-align: center;
+    letter-spacing: 0.5px;
+  }
+  
+  /* Success and Error Message */
+  .addprojectform__message {
+    margin-bottom: 20px;
+    padding: 15px;
+    border-radius: 8px;
+    font-size: 15px;
+    text-align: center;
+    transition: all 0.3s ease;
+  }
+  
+  .addprojectform__message.success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+  }
+  
+  .addprojectform__message.error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+  }
+  
+  /* Form Groups */
+  .addprojectform__form-group {
+    margin-bottom: 20px;
+  }
+  
+  .addprojectform__label {
+    display: block;
+    font-size: 16px;
+    font-weight: 500;
+    margin-bottom: 8px;
+    color: #555;
+  }
+  
+  /* Form Inputs and Select */
+  .addprojectform__input,
+  .addprojectform__select {
+    width: 100%;
+    padding: 12px 20px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    font-size: 15px;
+    color: #333;
+    transition: all 0.3s ease;
+  }
+  
+  .addprojectform__input:focus,
+  .addprojectform__select:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 8px rgba(0, 123, 255, 0.3);
+    outline: none;
+  }
+  
+  /* Checkbox Group (Team Selection) */
+  .addprojectform__checkbox-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+  
+  .addprojectform__checkbox-item {
+    width: calc(33.33% - 10px);
+    display: flex;
+    align-items: center;
+  }
+  
+  .addprojectform__checkbox {
+    margin-right: 8px;
+  }
+  
+  .addprojectform__checkbox-label {
+    font-size: 15px;
+    color: #333;
+    cursor: pointer;
+    transition: color 0.3s ease;
+  }
+  
+  .addprojectform__checkbox-item input[type="checkbox"]:checked + label {
+    color: #007bff;
+  }
+  
+  /* Lead Author Dropdown */
+  .addprojectform__select {
+    font-size: 15px;
+    color: #333;
+    background-color: #fff;
+  }
+  
+  .addprojectform__select:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 8px rgba(0, 123, 255, 0.3);
+  }
+  
+  /* Action Buttons */
+  .addprojectform__form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 20px;
+    margin-top: 20px;
+  }
+  
+  .addprojectform__submit,
+  .addprojectform__cancel {
+    padding: 12px 30px;
+    font-size: 16px;
+    font-weight: 600;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+  }
+  
+  .addprojectform__submit {
+    background-color: #007bff;
+    color: #fff;
+  }
+  
+  .addprojectform__submit:hover {
+    background-color: #0056b3;
+    transform: scale(1.05);
+  }
+  
+  .addprojectform__cancel {
+    background-color: #f2f2f2;
+    color: #333;
+  }
+  
+  .addprojectform__cancel:hover {
+    background-color: #e1e1e1;
+    transform: scale(1.05);
+  }
+  
+  /* Form Inputs Focus */
+  .addprojectform__input:focus,
+  .addprojectform__select:focus,
+  .addprojectform__checkbox:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 8px rgba(0, 123, 255, 0.3);
+  }
+  
+  /* Subtle Hover Effects for Inputs */
+  .addprojectform__input:hover,
+  .addprojectform__select:hover {
+    border-color: #bbb;
+  }
+  
+  .addprojectform__checkbox-item input[type="checkbox"]:hover + label {
+    color: #007bff;
+  }
+  
+  /* Card Hover Effect for Form */
+  .addprojectform:hover {
+    box-shadow: 0 15px 45px rgba(0, 0, 0, 0.15);
+    transform: translateY(-5px);
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .addprojectform {
+      width: 90%;
+      padding: 20px;
+    }
+  
+    .addprojectform__heading {
+      font-size: 24px;
+    }
+  
+    .addprojectform__form-actions {
+      flex-direction: column;
+      align-items: center;
+    }
+  
+    .addprojectform__submit,
+    .addprojectform__cancel {
+      width: 100%;
+      margin-top: 10px;
+    }
+  }
+  

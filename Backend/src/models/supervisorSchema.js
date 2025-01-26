@@ -8,7 +8,7 @@ const supervisorSchema = new Schema({
   committee: { type: [Schema.Types.ObjectId], ref: "User" }, // Array of faculty IDs
   stipend: { type: Schema.Types.Decimal128, min: 0 },
   funding_source: { type: String },
-  srpId: { type: Schema.Types.ObjectId, ref: "SponsorProject" }
+  srpId: { type: Schema.Types.ObjectId, ref: "SponsorProject", default: null }
 }, { timestamps: true });
 
 export const Supervisor = mongoose.model("Supervisor", supervisorSchema);

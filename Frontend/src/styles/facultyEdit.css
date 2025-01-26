@@ -1,0 +1,104 @@
+/* General styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f9;
+    color: #333;
+  }
+  
+  .faculty-page {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  .faculty-dashboard-title {
+    font-size: 2.5rem;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 30px;
+    color: #4a90e2;
+  }
+  
+  /* Section Titles */
+  .section-title {
+    font-size: 1.8rem;
+    font-weight: bold;
+    margin-bottom: 15px;
+    color: #333;
+    text-decoration: underline;
+  }
+  
+  /* Input Fields */
+  .faculty-input-field {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 20px;
+  }
+  
+  .input-field {
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .input-field:focus {
+    outline: none;
+    border-color: #4a90e2;
+  }
+  
+  /* Buttons */
+  .button {
+    padding: 10px 20px;
+    font-size: 1rem;
+    font-weight: bold;
+    color: #fff;
+    background-color: #4a90e2;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .button:hover {
+    background-color: #357abf;
+  }
+  
+  .delete-button {
+    background-color: #e94e4e;
+  }
+  
+  .delete-button:hover {
+    background-color: #d73b3b;
+  }
+  
+  /* Error Message */
+  .error-message {
+    color: #e94e4e;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+  
+  /* User List */
+  .user-list-section {
+    margin-top: 30px;
+  }
+  
+  .user-item {
+    padding: 15px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #fff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .user-item p {
+    margin: 0;
+    font-size: 1rem;
+    color: #555;
+  }
+  

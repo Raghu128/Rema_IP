@@ -1,8 +1,14 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import axios from "axios";
+import { useSelector } from "react-redux";
+import "../styles/AddSponsorProjectForm.css";
 
 const AddSponsorProjectForm = () => {
+  const { user } = useSelector((state) => state.user);
+  
+
   const [formData, setFormData] = useState({
+    faculty_id: user ? user.id : "",  // Ensure faculty_id is set correctly
     agency: "",
     title: "",
     cfp_url: "",
@@ -12,6 +18,14 @@ const AddSponsorProjectForm = () => {
     budget: "",
     remarks: "",
   });
+  useEffect(() => {
+    if (user?.id) {
+      setFormData((prevState) => ({
+        ...prevState,
+        faculty_id: user.id,
+      }));
+    }
+  }, [user?.id]);
 
   const [message, setMessage] = useState("");
 
@@ -27,11 +41,21 @@ const AddSponsorProjectForm = () => {
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    // Check if faculty_id is missing
+    if (!formData.faculty_id) {
+      setMessage("Faculty ID is required.");
+      return;
+    }
+
+    console.log(formData);
+
     try {
       const response = await axios.post("/api/v1/sponsor-projects", formData); // Ensure the correct API endpoint
       setMessage(`Sponsorship Project created successfully: ${response.data.title}`);
       // Reset form
       setFormData({
+        faculty_id: user ? user.id : "",  // Resetting faculty_id correctly
         agency: "",
         title: "",
         cfp_url: "",
@@ -48,12 +72,11 @@ const AddSponsorProjectForm = () => {
   };
 
   return (
-    <div>
-      <h2>Add Sponsorship Project</h2>
-      {message && <p>{message}</p>}
-      <form onSubmit={handleSubmit}>
-        {/* Agency */}
-        <div>
+    <div className="form-container">
+      <h2 className="form-heading">Add Sponsorship Project</h2>
+      {message && <p className="form-message">{message}</p>}
+      <form onSubmit={handleSubmit} className="sponsor-form">
+        <div className="form-group">
           <label htmlFor="agency">Agency:</label>
           <input
             type="text"
@@ -62,11 +85,11 @@ const AddSponsorProjectForm = () => {
             value={formData.agency}
             onChange={handleChange}
             required
+            className="form-input"
           />
         </div>
 
-        {/* Project Title */}
-        <div>
+        <div className="form-group">
           <label htmlFor="title">Project Title:</label>
           <input
             type="text"
@@ -75,11 +98,11 @@ const AddSponsorProjectForm = () => {
             value={formData.title}
             onChange={handleChange}
             required
+            className="form-input"
           />
         </div>
 
-        {/* Call for Proposals URL */}
-        <div>
+        <div className="form-group">
           <label htmlFor="cfp_url">CFP URL:</label>
           <input
             type="url"
@@ -87,11 +110,11 @@ const AddSponsorProjectForm = () => {
             name="cfp_url"
             value={formData.cfp_url}
             onChange={handleChange}
+            className="form-input"
           />
         </div>
 
-        {/* Status */}
-        <div>
+        <div className="form-group">
           <label htmlFor="status">Status:</label>
           <select
             id="status"
@@ -99,14 +122,14 @@ const AddSponsorProjectForm = () => {
             value={formData.status}
             onChange={handleChange}
             required
+            className="form-select"
           >
             <option value="active">Active</option>
             <option value="inactive">Inactive</option>
           </select>
         </div>
 
-        {/* Start Date */}
-        <div>
+        <div className="form-group">
           <label htmlFor="start_date">Start Date:</label>
           <input
             type="date"
@@ -115,11 +138,11 @@ const AddSponsorProjectForm = () => {
             value={formData.start_date}
             onChange={handleChange}
             required
+            className="form-input"
           />
         </div>
 
-        {/* Duration (in months) */}
-        <div>
+        <div className="form-group">
           <label htmlFor="duration">Duration (months):</label>
           <input
             type="number"
@@ -129,11 +152,11 @@ const AddSponsorProjectForm = () => {
             onChange={handleChange}
             required
             min="1"
+            className="form-input"
           />
         </div>
 
-        {/* Budget */}
-        <div>
+        <div className="form-group">
           <label htmlFor="budget">Budget:</label>
           <input
             type="number"
@@ -143,22 +166,24 @@ const AddSponsorProjectForm = () => {
             onChange={handleChange}
             required
             min="0"
+            className="form-input"
           />
         </div>
 
-        {/* Remarks */}
-        <div>
+        <div className="form-group">
           <label htmlFor="remarks">Remarks:</label>
           <textarea
             id="remarks"
             name="remarks"
             value={formData.remarks}
             onChange={handleChange}
+            className="form-textarea"
           />
         </div>
 
-        {/* Submit Button */}
-        <button type="submit">Add Sponsorship Project</button>
+        <div className="form-actions">
+          <button type="submit" className="form-submit-btn">Add Sponsorship Project</button>
+        </div>
       </form>
     </div>
   );

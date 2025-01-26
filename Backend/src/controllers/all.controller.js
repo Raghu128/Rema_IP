@@ -98,7 +98,7 @@ export async function handleUserLogin(req, res) {
     const token = jwt.sign(
       { id: user._id, email: user.email, role: user.role }, // Payload
       process.env.JWT_SECRET, // Secret key
-      { expiresIn: "1h" } // Token expiration
+      { expiresIn: "1D" } // Token expiration
     );
 
     res.cookie("token", token, {
@@ -219,7 +219,7 @@ export const deleteUser = async (req, res) => {
 
 // SponsorProject Controller
 export const createSponsorProject = async (req, res) => {
-  try {
+  try {    
     const project = await SponsorProject.create(req.body);
     res.status(201).json(project);
   } catch (error) {
@@ -241,23 +241,19 @@ export const getSponsorProjectById = async (req, res) => {
   try {
     const { id } = req.params;
 
-    // Find the SponsorProject by ID and populate related fields
-    const sponsorProject = await SponsorProject.findById(id).populate([
-      "added_by",       // Assuming `added_by` is a reference to a user
-      "related_field1", // Add other referenced fields if needed
-      "related_field2",
-    ]);
-
-    if (!sponsorProject) {
+    const sponsorProjects = await SponsorProject.find({ faculty_id: id });
+    
+    if (!sponsorProjects) {
       return res.status(404).json({ message: "Sponsor Project not found" });
     }
 
-    res.status(200).json(sponsorProject);
+    res.status(200).json(sponsorProjects);
   } catch (error) {
     console.error("Error fetching sponsor project:", error);
-    res.status(500).json({ message: "Internal server error", error: error.message });
+    res.status(500).json({ message: "Internal server error" });
   }
 };
+
 
 
 export const updateSponsorProject = async (req, res) => {
@@ -282,8 +278,7 @@ export const deleteSponsorProject = async (req, res) => {
 
 // Supervisor Controller
 export const createSupervisor = async (req, res) => {
-  try {
-    
+  try {    
     const supervisor = await Supervisor.create(req.body);
     
     res.status(201).json(supervisor);
@@ -347,7 +342,7 @@ export const deleteSupervisor = async (req, res) => {
 // Example for Projects
 export const createProject = async (req, res) => {
   try {
-    const project = await Project.create(req.body);
+    const project = await Project.create(req.body);    
     res.status(201).json(project);
   } catch (error) {
     handleError(res, error);

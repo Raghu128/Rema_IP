@@ -29,15 +29,15 @@ import expenseRouter from './routes/expense.routes.js';
 
 // Routes declaration
 app.use("/api/v1/user", userRouter);
-// app.use("/api/v1/sponsor-projects", sponsorProjectRouter);
-// app.use("/api/v1/supervisors", supervisorRouter);
-// app.use("/api/v1/projects", projectRouter); 
-// app.use("/api/v1/minutes-of-meeting", minutesOfMeetingRouter);
-// app.use("/api/v1/venues", venueListRouter);
-// app.use("/api/v1/notifications", notificationRouter);
-// app.use("/api/v1/equipment", equipmentRouter);
-// app.use("/api/v1/finance-budgets", financeBudgetRouter);
-// app.use("/api/v1/expenses", expenseRouter);
+app.use("/api/v1/sponsor-projects", sponsorProjectRouter);
+app.use("/api/v1/supervisors", supervisorRouter);
+app.use("/api/v1/projects", projectRouter);  
+app.use("/api/v1/minutes-of-meeting", minutesOfMeetingRouter);
+app.use("/api/v1/venues", venueListRouter);
+app.use("/api/v1/notifications", notificationRouter);
+app.use("/api/v1/equipment", equipmentRouter);
+app.use("/api/v1/finance-budgets", financeBudgetRouter);
+app.use("/api/v1/expenses", expenseRouter);
  
 
 

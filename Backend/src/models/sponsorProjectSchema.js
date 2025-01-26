@@ -1,6 +1,7 @@
 import mongoose, { Schema } from "mongoose";
 
 const sponsorProjectSchema = new Schema({
+  faculty_id: { type: Schema.Types.ObjectId, ref: "User", required: true },
   agency: { type: String, required: true },
   title: { type: String, required: true },
   cfp_url: { type: String },

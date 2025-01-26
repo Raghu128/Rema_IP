@@ -1,0 +1,126 @@
+/* AddSupervisorForm.css */
+
+body {
+    background-color: #f4f5f7;
+    font-family: "Inter", sans-serif;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .supervisor-form-container {
+    max-width: 800px;
+    margin: 50px auto;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+  }
+  
+  .supervisor-title {
+    text-align: center;
+    font-size: 24px;
+    font-weight: 600;
+    color: #333333;
+    margin-bottom: 20px;
+  }
+  
+  .supervisor-message {
+    text-align: center;
+    color: #007bff;
+    font-weight: 500;
+    margin-bottom: 20px;
+  }
+  
+  .supervisor-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .supervisor-field {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .supervisor-label {
+    font-size: 16px;
+    font-weight: 500;
+    color: #555555;
+    margin-bottom: 8px;
+  }
+  
+  .supervisor-input,
+  .supervisor-select {
+    font-size: 14px;
+    padding: 10px 12px;
+    border: 1px solid #dddddd;
+    border-radius: 8px;
+    outline: none;
+    transition: border-color 0.3s;
+  }
+  
+  .supervisor-input:focus,
+  .supervisor-select:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 4px rgba(0, 123, 255, 0.3);
+  }
+  
+  .supervisor-checkbox-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  
+  .supervisor-checkbox {
+    accent-color: #007bff;
+    width: 16px;
+    height: 16px;
+  }
+  
+  .supervisor-checkbox-label {
+    font-size: 14px;
+    color: #555555;
+  }
+  
+  .supervisor-button {
+    background-color: #007bff;
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: 600;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s, box-shadow 0.3s;
+  }
+  
+  .supervisor-button:hover {
+    background-color: #0056b3;
+    box-shadow: 0 4px 8px rgba(0, 123, 255, 0.2);
+  }
+  
+  .supervisor-button:active {
+    background-color: #004494;
+    box-shadow: none;
+  }
+  
+  .supervisor-button:focus {
+    outline: none;
+    box-shadow: 0 0 4px rgba(0, 123, 255, 0.5);
+  }
+  
+  @media (max-width: 600px) {
+    .supervisor-form-container {
+      padding: 20px;
+    }
+  
+    .supervisor-title {
+      font-size: 20px;
+    }
+  
+    .supervisor-field {
+      gap: 15px;
+    }
+  }
+  

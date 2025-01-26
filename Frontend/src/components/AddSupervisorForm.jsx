@@ -1,126 +1,142 @@
 import React, { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import axios from "axios";
+import '../styles/AddSupervisorForm.css';
 
 const AddSupervisorForm = () => {
+  const { user } = useSelector((state) => state.user);
+
   const [formData, setFormData] = useState({
     faculty_id: "",
     student_id: "",
     joining: "",
     thesis_title: "",
-    committee: "",
+    committee: [], // Store committee as an array
     stipend: "",
     funding_source: "",
-    srpId: "",
+    srpId: null, // Store SRP ID as string
   });
 
   const [students, setStudents] = useState([]);
+  const [supervisors, setsupervisors] = useState([]); // State to store all sponsor projects
   const [message, setMessage] = useState("");
 
   // Fetch users who are not faculty or admin
   useEffect(() => {
-    const fetchStudents = async () => {
+    const fetchUsers = async () => {
       try {
-        const response = await axios.get("/api/v1/users");
-        setStudents(response.data); // Assuming the response contains an array of students
+        const response = await axios.get("/api/v1/user");
+        setStudents(response.data);
       } catch (error) {
-        console.error("Error fetching students:", error);
-        setMessage("Failed to fetch students");
+        console.error("Error fetching users:", error);
+        setMessage("Failed to fetch users");
       }
     };
 
-    fetchStudents();
+    fetchUsers();
   }, []);
+
+  useEffect(() => {
+    if (user?.id) {
+      setFormData((prevData) => ({
+        ...prevData,
+        faculty_id: user.id, // Automatically set the faculty_id
+      }));
+    }
+  }, [user]);
+
+  // Fetch all sponsor projects when component mounts
+  useEffect(() => {
+    const fetchsupervisors = async () => {
+      if (!user?.id) return; // Check if user.id is defined before running the code
+      try {
+        const response = await axios.get(`/api/v1/sponsor-projects/${user.id}`);
+        setsupervisors(response.data);
+      } catch (error) {
+        console.error("Error fetching sponsor projects:", error);
+        setMessage("Failed to fetch sponsor projects");
+      }
+    };
+
+    fetchsupervisors();
+  }, [user]); // Add `user` as a dependency to re-run when it changes
 
   // Handle input changes
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
+    const { name, value, type, checked } = e.target;
+
+    if (type === "checkbox") {
+      if (name === "committee") {
+        // Toggle faculty checkbox for committee
+        setFormData({
+          ...formData,
+          committee: checked
+            ? [...formData.committee, value]
+            : formData.committee.filter((id) => id !== value),
+        });
+      } else {
+        // Toggle spid checkbox
+        setFormData({
+          ...formData,
+          [name]: checked ? value : "",
+        });
+      }
+    } else {
+      setFormData({
+        ...formData,
+        [name]: value,
+      });
+    }
   };
 
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
-    // Format committee as an array of ObjectIds (valid or empty array)
-    const committeeArray = formData.committee.split(',').map(id => id.trim()).filter(id => id);
-    
-    // Ensure stipend is a number (or null if empty)
-    const stipendValue = formData.stipend ? parseFloat(formData.stipend) : null;
-    
-    // Ensure srpId is either a valid ObjectId or null
-    const srpIdValue = formData.srpId.trim() === "" ? null : formData.srpId;
-  
-    // Create new form data with corrected fields
-    const updatedFormData = {
-      ...formData,
-      committee: committeeArray,
-      stipend: stipendValue,
-      srpId: srpIdValue,
-    };
-  
+
+    const stipendValue = formData.stipend ? parseFloat(formData.stipend) : 0;
+
     try {
+      const updatedFormData = {
+        ...formData,
+        stipend: stipendValue,
+      };
+
       const response = await axios.post("/api/v1/supervisors", updatedFormData);
       setMessage(`Supervisor added successfully: ${response.data.student_id}`);
-      // Reset form
       setFormData({
         faculty_id: "",
         student_id: "",
         joining: "",
         thesis_title: "",
-        committee: "",
+        committee: [],
         stipend: "",
         funding_source: "",
-        srpId: "",
+        srpId: null,
       });
     } catch (error) {
       console.error(error);
       setMessage(error.response?.data?.message || "Failed to add supervisor");
     }
   };
-  
 
   return (
-    <div>
-      <h2>Add Supervisor</h2>
-      {message && <p>{message}</p>}
-      <form onSubmit={handleSubmit}>
-        {/* Faculty ID */}
-        <div>
-          <label htmlFor="faculty_id">Faculty ID:</label>
-          <select
-            id="faculty_id"
-            name="faculty_id"
-            value={formData.faculty_id}  // Use faculty_id for this select
-            onChange={handleChange}
-            required
-          >
-            <option value="">Select a Faculty</option>
-            {students
-              .filter((student) => student.role === "faculty") // Filter students for faculty
-              .map((student) => (
-                <option key={student._id} value={student._id}>
-                  {student.name} ({student.email})
-                </option>
-              ))}
-          </select>
-        </div>
-
-        {/* Student ID (Dropdown to select student) */}
-        <div>
-          <label htmlFor="student_id">Student:</label>
+    <div className="supervisor-form-container">
+      <h2 className="supervisor-title">Add Supervisor</h2>
+      {message && <p className="supervisor-message">{message}</p>}
+      <form className="supervisor-form" onSubmit={handleSubmit}>
+        <div className="supervisor-field">
+          <label htmlFor="student_id" className="supervisor-label">Student:</label>
           <select
             id="student_id"
             name="student_id"
-            value={formData.student_id}
+            value={formData.student_id || ""} // Prevent null value
             onChange={handleChange}
             required
+            className="supervisor-select"
           >
             <option value="">Select a student</option>
             {students
-              .filter((student) => student.role !== "faculty" && student.role !== "admin") // Filter out faculty and admin
+              .filter((student) => student.role !== "faculty" && student.role !== "admin")
               .map((student) => (
                 <option key={student._id} value={student._id}>
                   {student.name} ({student.email})
@@ -129,9 +145,8 @@ const AddSupervisorForm = () => {
           </select>
         </div>
 
-        {/* Joining Date */}
-        <div>
-          <label htmlFor="joining">Joining Date:</label>
+        <div className="supervisor-field">
+          <label htmlFor="joining" className="supervisor-label">Joining Date:</label>
           <input
             type="date"
             id="joining"
@@ -139,12 +154,12 @@ const AddSupervisorForm = () => {
             value={formData.joining}
             onChange={handleChange}
             required
+            className="supervisor-input"
           />
         </div>
 
-        {/* Thesis Title */}
-        <div>
-          <label htmlFor="thesis_title">Thesis Title:</label>
+        <div className="supervisor-field">
+          <label htmlFor="thesis_title" className="supervisor-label">Thesis Title:</label>
           <input
             type="text"
             id="thesis_title"
@@ -152,25 +167,34 @@ const AddSupervisorForm = () => {
             value={formData.thesis_title}
             onChange={handleChange}
             required
+            className="supervisor-input"
           />
         </div>
 
-        {/* Committee */}
-        <div>
-          <label htmlFor="committee">Committee (Faculty IDs):</label>
-          <input
-            type="text"
-            id="committee"
-            name="committee"
-            value={formData.committee}
-            onChange={handleChange}
-            placeholder="Enter faculty IDs separated by commas"
-          />
+        <div className="supervisor-field">
+          <label className="supervisor-label">Committee (Faculty):</label>
+          {students
+            .filter((student) => student.role === "faculty" && student._id === user.id)
+            .map((faculty) => (
+              <div key={faculty._id} className="supervisor-checkbox-item">
+                <input
+                  type="checkbox"
+                  id={`committee-${faculty._id}`}
+                  name="committee"
+                  value={faculty._id}
+                  checked={formData.committee.includes(faculty._id)}
+                  onChange={handleChange}
+                  className="supervisor-checkbox"
+                />
+                <label htmlFor={`committee-${faculty._id}`} className="supervisor-checkbox-label">
+                  {faculty.name} ({faculty.email})
+                </label>
+              </div>
+            ))}
         </div>
 
-        {/* Stipend */}
-        <div>
-          <label htmlFor="stipend">Stipend:</label>
+        <div className="supervisor-field">
+          <label htmlFor="stipend" className="supervisor-label">Stipend:</label>
           <input
             type="number"
             id="stipend"
@@ -178,35 +202,41 @@ const AddSupervisorForm = () => {
             value={formData.stipend}
             onChange={handleChange}
             min="0"
+            className="supervisor-input"
           />
         </div>
 
-        {/* Funding Source */}
-        <div>
-          <label htmlFor="funding_source">Funding Source:</label>
+        <div className="supervisor-field">
+          <label htmlFor="funding_source" className="supervisor-label">Funding Source:</label>
           <input
             type="text"
             id="funding_source"
             name="funding_source"
             value={formData.funding_source}
             onChange={handleChange}
+            className="supervisor-input"
           />
         </div>
 
-        {/* SRP ID */}
-        <div>
-          <label htmlFor="srpId">SRP ID:</label>
-          <input
-            type="text"
+        <div className="supervisor-field">
+          <label htmlFor="srpId" className="supervisor-label">Select SRP ID:</label>
+          <select
             id="srpId"
             name="srpId"
-            value={formData.srpId}
+            value={formData.srpId || ""} // Prevent null value
             onChange={handleChange}
-          />
+            className="supervisor-select"
+          >
+            <option value="">Select a Sponsor Project</option>
+            {supervisors.map((project) => (
+              <option key={project._id} value={project._id}>
+                {project.title} ({project.agency})
+              </option>
+            ))}
+          </select>
         </div>
 
-        {/* Submit Button */}
-        <button type="submit">Add Supervisor</button>
+        <button type="submit" className="supervisor-button">Add Supervisor</button>
       </form>
     </div>
   );
