@@ -43,7 +43,6 @@ export async function handleUserSignup(req, res) {
     if (currentUser.role === "faculty" && (role === "faculty" || role === "admin")) {
       return res.status(403).send("Faculty can only add students.");
     }
-    console.log(currentUser);
     if (currentUser.role !== "faculty" && currentUser.role !== "admin") {
       return res.status(403).send("Student can not add any one");
     }
@@ -353,6 +352,7 @@ export const deleteSupervisor = async (req, res) => {
 // Similarly, implement controllers for other schemas...
 // Example for Projects
 export const createProject = async (req, res) => {
+    
   try {
     const project = await Project.create(req.body);    
     res.status(201).json(project);
@@ -398,7 +398,7 @@ export const updateProject = async (req, res) => {
   }
 };
 
-export const deleteProject = async (req, res) => {
+export const deleteProject = async (req, res) => {  
   try {
     await Project.findByIdAndDelete(req.params.id);
     res.status(204).send();

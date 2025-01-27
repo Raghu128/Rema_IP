@@ -1,0 +1,17 @@
+.navbar {
+    background-color: #2f3b52; /* Tailwind's blue-600 */
+    color: white;
+    border-bottom: 1px solid rgb(255, 255, 255);
+    height: 5rem;
+    width: 100vw;
+  }
+
+  .navbar-website-name {
+    width: 10%;
+    height: 100%;
+    /* border: 3px solid red; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+  }

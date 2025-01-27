@@ -8,6 +8,8 @@
 }
 
 body {
+  width: 100vw;
+  overflow: hidden;
   font-family: 'Roboto', sans-serif;
   background-color: #f7f9fc;
   color: #333;

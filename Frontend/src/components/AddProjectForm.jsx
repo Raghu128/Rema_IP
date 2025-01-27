@@ -330,7 +330,7 @@ const AddOrEditProjectForm = ({ selectedProject, onProjectSaved, onCancel }) => 
 
         <div className="addprojectform__form-actions">
           <button className="addprojectform__submit" type="submit">
-            {selectedProject ? "Update Project" : "Add Project"}
+             {"Add Project"}
           </button>
           <button className="addprojectform__cancel" type="button" onClick={onCancel}>
             Cancel

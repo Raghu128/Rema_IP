@@ -10,10 +10,37 @@
   display: flex;
   flex-direction: row;
   gap: 5rem;
+  flex-wrap: wrap;
+  overflow: scroll;
 }
 
 .project-item {
+  border: 3px solid rgb(64, 188, 255);
+  width: 25rem;
   height: 18rem;
+  background-color: #ffffff;
+  padding: 25px;
+  margin-bottom: 25px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  transition: all 0.3s ease; /* Smooth transition effect */
+  overflow: scroll;
+}
+
+
+.project-edit-button{
+  width: 25rem;
+  height: 18rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.project-edit-button button{
+  border: 3px solid rgb(64, 188, 255);
+  width: 10rem;
+  height: 8rem;
+  font-size: 2rem;
   background-color: #ffffff;
   padding: 25px;
   margin-bottom: 25px;
@@ -25,6 +52,12 @@
 .project-item:hover {
   transform: translateY(-5px); /* Hover effect to lift the card */
   box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15); /* Stronger shadow on hover */
+}
+
+.project-edit-button :hover {
+  border: 3px solid rgb(255, 0, 0);
+  transform: translateY(-5px); /* Hover effect to lift the card */
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15);
 }
 
 .project-title {

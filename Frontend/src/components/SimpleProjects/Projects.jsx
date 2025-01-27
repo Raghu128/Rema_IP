@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import "../../styles/SimpleProject/Projects.css";
 
 const Projects = ({ id }) => {
   const [projectData, setProjectData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [teamMembers, setTeamMembers] = useState({});
+  // const [teamMembers, setTeamMembers] = useState({});
+  const navigate = useNavigate();
   const [dropdownVisible, setDropdownVisible] = useState(null); // State to manage visibility of the dropdown menu
 
   const getUserName = async (userId) => {
@@ -65,14 +67,9 @@ const Projects = ({ id }) => {
   };
 
   const handleEdit = (projectId) => {
-    console.log("Edit project", projectId);
-    // Implement your edit logic here
+    navigate("/update-project")
   };
 
-  const handleAdd = (projectId) => {
-    console.log("Add new member to project", projectId);
-    // Implement your add logic here
-  };
 
   if (loading) {
     return <div>Loading...</div>;
@@ -81,6 +78,7 @@ const Projects = ({ id }) => {
   if (error) {
     return <div>{error}</div>;
   }
+
 
   return (
     <>
@@ -91,15 +89,7 @@ const Projects = ({ id }) => {
             <div key={index} className="project-item">
               <div className="project-header">
                 <h2 className="project-title">Name: {project.name}</h2>
-                <div className="ellipsis-menu" onClick={() => toggleDropdown(index)}>
-                  &#8230; 
-                </div>
-                {dropdownVisible === index && (
-                  <div className="dropdown-options">
-                    <button onClick={() => handleEdit(project.id)}>Edit</button>
-                    <button onClick={() => handleAdd(project.id)}>Add</button>
-                  </div>
-                )}
+                
               </div>
               <p className="project-domain">{project.domain}</p>
               <h4 className="project-lead">Project Lead: {project.teamMembersMap[project.lead_author]}</h4>
@@ -108,18 +98,22 @@ const Projects = ({ id }) => {
                 {project.team && project.team.length > 0 ? (
                   project.team.map((teamMemberId, index) => (
                     <li key={index} className="team-member">
-                      {index}. {project.teamMembersMap[teamMemberId]}
+                      {index+1}. {project.teamMembersMap[teamMemberId]}
                     </li>
                   ))
                 ) : (
                   <p>No team members found</p>
                 )}
               </ul>
+
             </div>
           ))
         ) : (
           <p>No project data found</p>
         )}
+        <ul className="project-edit-button">
+          <button onClick={() => navigate('/update-project')}>Edit</button>
+        </ul>
       </div>
     </>
   );

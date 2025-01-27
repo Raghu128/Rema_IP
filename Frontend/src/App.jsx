@@ -7,6 +7,9 @@ import LoginPage from "./pages/LoginPage";
 import AdminPage from "./pages/AdminPage";
 import FacultyPage from "./pages/FacultyEditPage";
 import FacultyDashboard from "./pages/Faculty_dashboard";
+import AddProjectForm from "./components/AddProjectForm";
+import UpdateProjectFormPage from "./components/SimpleProjects/UpdateProject";
+import Navbar from "./components/NavBar";
 import './App.css';
 
 function App() {
@@ -68,28 +71,11 @@ function App() {
                     Login
                   </Link>
                 </li>
-                {/* Uncomment for Sign Up */}
-                {/* <li>
-                  <Link
-                    to="/signup"
-                    style={buttonStyle}
-                    onMouseEnter={(e) => Object.assign(e.target.style, hoverEffect)}
-                    onMouseLeave={(e) => Object.assign(e.target.style, buttonStyle)}
-                  >
-                    Sign Up
-                  </Link>
-                </li> */}
+      
               </>
             ) : (
               <li>
-                <Link
-                  to="/home"
-                  style={buttonStyle}
-                  onMouseEnter={(e) => Object.assign(e.target.style, hoverEffect)}
-                  onMouseLeave={(e) => Object.assign(e.target.style, buttonStyle)}
-                >
-                  Home
-                </Link>
+                  <Navbar/>
               </li>
             )}
           </ul>
@@ -100,6 +86,8 @@ function App() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/faculty" element={<FacultyPage />} />
         <Route path="/faculty_dashboard" element={<FacultyDashboard />} />
+        <Route path="/add-project" element={<AddProjectForm />} />
+        <Route path="/update-project" element={<UpdateProjectFormPage />} />
       </Routes>
     </Router>
   );
