@@ -81,8 +81,10 @@ const Projects = ({ id }) => {
 
 
   return (
-    <>
-      <h1>Projects :</h1>
+    <div className="project-container">
+      <h1>Projects </h1>
+      <button className="project-edit-button" onClick={() => navigate('/update-project')}>Edit</button>
+
       <div className="project-details-container">
         {projectData && projectData.length > 0 ? (
           projectData.map((project, index) => (
@@ -111,11 +113,8 @@ const Projects = ({ id }) => {
         ) : (
           <p>No project data found</p>
         )}
-        <ul className="project-edit-button">
-          <button onClick={() => navigate('/update-project')}>Edit</button>
-        </ul>
       </div>
-    </>
+    </div>
   );
 };
 

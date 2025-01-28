@@ -97,14 +97,14 @@ export async function handleUserLogin(req, res) {
     const token = jwt.sign(
       { id: user._id, email: user.email, role: user.role }, // Payload
       process.env.JWT_SECRET, // Secret key
-      { expiresIn: "1D" } // Token expiration
+      { expiresIn: "7d" } // Token expiration
     );
 
     res.cookie("token", token, {
       httpOnly: true,       // Prevents access by JavaScript (protects against XSS attacks)
       secure: process.env.NODE_ENV === "production", // Send only over HTTPS in production
       sameSite: "strict",   // Prevents CSRF attacks
-      maxAge: 3600000,      // Cookie expiration: 1 hour
+      maxAge: 7 * 24 * 60 * 60 * 1000,      // Cookie expiration: 7 days
     });
 
     
@@ -309,15 +309,8 @@ export const getSupervisors = async (req, res) => {
 
 export const getSupervisorById = async (req, res) => {
   try {
-    const { id } = req.params;
-
-    // Find the Supervisor by ID and populate referenced fields
-    const supervisor = await Supervisor.findById(id)
-      .populate("faculty_id", "name email role") // Populate faculty details
-      .populate("student_id", "name email role") // Populate student details
-      .populate("committee", "name email role")  // Populate committee members
-      .populate("srpId", "title agency status"); // Populate sponsor project details
-
+    const { id } = req.params;    
+    const supervisor = await Supervisor.find({faculty_id:id})
     if (!supervisor) {
       return res.status(404).json({ message: "Supervisor not found" });
     }

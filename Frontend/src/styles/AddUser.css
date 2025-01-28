@@ -1,0 +1,119 @@
+.AddUserForm {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 30px;
+    border: 1px solid #e3e6f0;
+    border-radius: 12px;
+    background-color: #ffffff;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .AddUserForm:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+  }
+  
+  .AddUserForm h2 {
+    text-align: center;
+    color: #34495e;
+    margin-bottom: 25px;
+    font-size: 28px;
+    font-weight: bold;
+  }
+  
+  .AddUserForm form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .AddUserForm label {
+    font-weight: 600;
+    color: #2c3e50;
+    font-size: 16px;
+    margin-bottom: 8px;
+  }
+
+  .AddUserForm-inputbox{
+    display: flex;
+    width: 50%;
+    /* border: 3px solid rebeccapurple; */
+    flex-direction: row;
+    justify-content: space-between;
+  }
+  
+  .AddUserForm input,
+  .AddUserForm select {
+    padding: 12px;
+    border: 1px solid #dfe6e9;
+    border-radius: 8px;
+    font-size: 14px;
+    color: #2c3e50;
+    background-color: #f9f9f9;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .AddUserForm input:focus,
+  .AddUserForm select:focus {
+    border-color: #3498db;
+    outline: none;
+    box-shadow: 0 0 4px rgba(52, 152, 219, 0.5);
+  }
+  
+  .AddUserForm button {
+    padding: 12px 20px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+  }
+  
+  .AddUserForm button:hover {
+    background-color: #218838;
+    transform: translateY(-2px);
+  }
+  
+  .AddUserForm button:active {
+    background-color: #1e7e34;
+  }
+  
+  .AddUserForm .form-footer {
+    text-align: center;
+    margin-top: 20px;
+  }
+  
+  .AddUserForm .form-footer a {
+    color: #3498db;
+    text-decoration: none;
+    font-size: 14px;
+  }
+  
+  .AddUserForm .form-footer a:hover {
+    text-decoration: underline;
+  }
+  
+  @media (max-width: 768px) {
+    .AddUserForm {
+      padding: 20px;
+    }
+  
+    .AddUserForm h2 {
+      font-size: 24px;
+    }
+  
+    .AddUserForm input,
+    .AddUserForm select {
+      padding: 10px;
+    }
+  
+    .AddUserForm button {
+      width: 100%;
+      padding: 14px;
+    }
+  }
+  

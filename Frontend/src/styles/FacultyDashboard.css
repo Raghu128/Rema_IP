@@ -1,65 +1,139 @@
 /* Basic styles for the dashboard */
 .dashboard-container {
-    display: flex;
-    min-height: 100vh;
-    transition: all 0.3s ease-in-out;
-    flex-direction: row;
-  }
-  
-  /* Sidebar styling */
+  display: flex;
+  height: 100vh;
+  transition: all 0.3s ease-in-out;
+  flex-direction: row;
+  font-family: Arial, sans-serif;
+}
+
+/* Sidebar styling */
+.sidebar {
+  background-color: #2f3b52;
+  color: #ffffff;
+  width: 150px; 
+  padding: 25px;
+  transition: all 0.3s ease-in-out;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.sidebar-toggle {
+  background-color: #2f3b52;
+  color: #ffffff;
+  font-size: 18px;
+  border: none;
+  cursor: pointer;
+  position: absolute;
+  top: 20px;
+  right: -50px;
+  padding: 10px;
+  border-radius: 50%; /* Circular button for better aesthetics */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Shadow for floating effect */
+  transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+.sidebar-toggle:hover {
+  background-color: #1a2536;
+  transform: scale(1.1); /* Slight zoom on hover */
+}
+
+.sidebar-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar-list li {
+  margin: 20px 0;
+}
+
+.sidebar-list li a {
+  text-decoration: none;
+  color: #ffffff;
+  font-size: 18px;
+  font-weight: 500; /* Slightly bold for readability */
+  display: flex;
+  align-items: center;
+  gap: 10px; /* Space between icons and text */
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.sidebar-list li a:hover {
+  color: #3498db; /* Highlight color on hover */
+  transform: translateX(5px); /* Subtle move on hover */
+}
+
+.sidebar-footer {
+  margin-top: auto; /* Push footer links to the bottom */
+  text-align: center;
+  font-size: 14px;
+  color: #bdc3c7; /* Lighter text for footer */
+}
+
+/* Main content area */
+.main-content {
+  flex-grow: 1;
+  padding: 30px;
+  background-color: #f1f3f7;
+}
+
+.main-content h1 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+  color: #2c3e50; /* Darker color for better contrast */
+}
+
+.main-content p {
+  font-size: 1rem;
+  line-height: 1.6; /* Improve readability */
+  color: #4d586f;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
   .sidebar {
-    background-color: #2f3b52;
-    color: white;
-    width: 250px;
-    padding: 20px;
-    transition: all 0.3s ease-in-out;
-  }
-  
-  .sidebar-closed {
-    width: 60px;
-  }
-  
-  .sidebar-toggle {
-    background-color: #2f3b52;
-    color: white;
-    font-size: 20px;
-    border: none;
-    cursor: pointer;
-    position: absolute;
-    top: 20px;
-    right: -40px;
+    width: 70px; /* Compact sidebar for smaller screens */
     padding: 10px;
-    border-radius: 5px;
   }
-  
-  .sidebar-list {
-    list-style: none;
-    padding: 0;
-  }
-  
-  .sidebar-list li {
-    margin: 15px 0;
-  }
-  
+
   .sidebar-list li a {
-    text-decoration: none;
-    color: white;
-    font-size: 18px;
+    font-size: 16px;
   }
-  
-  .sidebar-list li a:hover {
-    color: #3498db;
+
+  .sidebar-toggle {
+    right: -40px;
+    font-size: 16px;
   }
-  
-  /* Main content area */
+
   .main-content {
-    flex-grow: 1;
-    padding: 20px;
-    background-color: #f1f3f7;
+    padding: 15px;
   }
-  
-  h1 {
-    font-size: 2rem;
-    margin-bottom: 20px;
+
+  .main-content h1 {
+    font-size: 1.8rem;
   }
-  
+}
+
+/* Accessibility Enhancements */
+.sidebar-toggle:focus,
+.sidebar-list li a:focus {
+  border-bottom: 2px solid #3498db;
+  outline-offset: 2px;
+}
+
+.sidebar-list li a:active {
+  color: #1abc9c; /* Slightly different color for active state */
+}
+
+/* Additional Enhancements */
+.sidebar-list li a svg {
+  font-size: 20px;
+  transition: transform 0.3s ease;
+}
+
+.sidebar-list li a:hover svg {
+  transform: rotate(15deg); /* Fun effect on icons during hover */
+}

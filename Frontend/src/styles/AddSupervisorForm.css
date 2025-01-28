@@ -1,126 +1,190 @@
-/* AddSupervisorForm.css */
+/* Enhanced AddSupervisorForm CSS */
+.supervisor-form-container {
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 30px;
+  border: 1px solid #e3e6f0;
+  border-radius: 12px;
+  background: linear-gradient(145deg, #ffffff, #f3f4f7);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
 
-body {
-    background-color: #f4f5f7;
-    font-family: "Inter", sans-serif;
-    margin: 0;
-    padding: 0;
-  }
-  
+.supervisor-form-container:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+}
+
+.supervisor-title {
+  text-align: center;
+  font-size: 28px;
+  font-weight: bold;
+  color: #34495e;
+  margin-bottom: 30px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.supervisor-message {
+  text-align: center;
+  font-size: 16px;
+  color: #3498db;
+  margin-bottom: 20px;
+}
+
+.supervisor-list {
+  margin-bottom: 30px;
+}
+
+.supervisor-list h3 {
+  font-size: 24px;
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 15px;
+}
+
+.supervisor-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 15px;
+  border: 1px solid #dfe6e9;
+  border-radius: 8px;
+  margin-bottom: 12px;
+  background-color: #f9f9f9;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.supervisor-item:hover {
+  background-color: #ecf0f1;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.supervisor-item p {
+  margin: 0;
+  color: #34495e;
+  font-size: 14px;
+}
+
+.supervisor-edit-button {
+  background: linear-gradient(145deg, #3498db, #2980b9);
+  color: #fff;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.supervisor-edit-button:hover {
+  background: linear-gradient(145deg, #2980b9, #3498db);
+  transform: translateY(-2px);
+}
+
+.supervisor-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.supervisor-field {
+  display: flex;
+  flex-direction: column;
+}
+
+.supervisor-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 6px;
+  transition: color 0.3s ease;
+}
+
+.supervisor-input,
+.supervisor-select {
+  padding: 12px;
+  border: 1px solid #dfe6e9;
+  border-radius: 6px;
+  font-size: 14px;
+  background-color: #ffffff;
+  color: #2c3e50;
+  transition: border-color 0.3s ease, box-shadow 0.2s ease;
+}
+
+.supervisor-input:focus,
+.supervisor-select:focus {
+  border-color: #3498db;
+  outline: none;
+  box-shadow: 0 0 6px rgba(52, 152, 219, 0.5);
+}
+
+.supervisor-input:hover,
+.supervisor-select:hover {
+  border-color: #2980b9;
+}
+
+.committee-checkboxes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.committee-checkbox {
+  display: flex;
+  align-items: center;
+}
+
+.committee-checkbox label {
+  margin-left: 6px;
+  font-size: 14px;
+  color: #34495e;
+}
+
+.supervisor-button {
+  padding: 12px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #fff;
+  background: linear-gradient(145deg, #28a745, #218838);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+}
+
+.supervisor-button:hover {
+  background: linear-gradient(145deg, #218838, #28a745);
+  transform: translateY(-2px);
+}
+
+@media (max-width: 768px) {
   .supervisor-form-container {
-    max-width: 800px;
-    margin: 50px auto;
-    background-color: #ffffff;
-    border-radius: 12px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    padding: 30px;
+    padding: 20px;
   }
-  
+
   .supervisor-title {
-    text-align: center;
-    font-size: 24px;
-    font-weight: 600;
-    color: #333333;
-    margin-bottom: 20px;
+    font-size: 22px;
   }
-  
-  .supervisor-message {
-    text-align: center;
-    color: #007bff;
-    font-weight: 500;
-    margin-bottom: 20px;
-  }
-  
-  .supervisor-form {
-    display: flex;
+
+  .supervisor-item {
     flex-direction: column;
-    gap: 20px;
+    gap: 10px;
   }
-  
-  .supervisor-field {
-    display: flex;
-    flex-direction: column;
+
+  .supervisor-edit-button {
+    width: 100%;
+    text-align: center;
   }
-  
-  .supervisor-label {
-    font-size: 16px;
-    font-weight: 500;
-    color: #555555;
-    margin-bottom: 8px;
+
+  .supervisor-button {
+    width: 100%;
   }
-  
+
   .supervisor-input,
   .supervisor-select {
-    font-size: 14px;
-    padding: 10px 12px;
-    border: 1px solid #dddddd;
-    border-radius: 8px;
-    outline: none;
-    transition: border-color 0.3s;
+    padding: 12px;
   }
-  
-  .supervisor-input:focus,
-  .supervisor-select:focus {
-    border-color: #007bff;
-    box-shadow: 0 0 4px rgba(0, 123, 255, 0.3);
-  }
-  
-  .supervisor-checkbox-item {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 10px;
-  }
-  
-  .supervisor-checkbox {
-    accent-color: #007bff;
-    width: 16px;
-    height: 16px;
-  }
-  
-  .supervisor-checkbox-label {
-    font-size: 14px;
-    color: #555555;
-  }
-  
-  .supervisor-button {
-    background-color: #007bff;
-    color: #ffffff;
-    font-size: 16px;
-    font-weight: 600;
-    padding: 12px 20px;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background-color 0.3s, box-shadow 0.3s;
-  }
-  
-  .supervisor-button:hover {
-    background-color: #0056b3;
-    box-shadow: 0 4px 8px rgba(0, 123, 255, 0.2);
-  }
-  
-  .supervisor-button:active {
-    background-color: #004494;
-    box-shadow: none;
-  }
-  
-  .supervisor-button:focus {
-    outline: none;
-    box-shadow: 0 0 4px rgba(0, 123, 255, 0.5);
-  }
-  
-  @media (max-width: 600px) {
-    .supervisor-form-container {
-      padding: 20px;
-    }
-  
-    .supervisor-title {
-      font-size: 20px;
-    }
-  
-    .supervisor-field {
-      gap: 15px;
-    }
-  }
-  
+}

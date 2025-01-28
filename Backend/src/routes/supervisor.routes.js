@@ -5,7 +5,7 @@ const router = express.Router();
 
 // Define routes for supervisor CRUD
 router.post('/', createSupervisor);
-router.get('/', getSupervisors);
+// router.get('/', getSupervisors);
 router.get('/:id', getSupervisorById);
 router.put('/:id', updateSupervisor);
 router.delete('/:id', deleteSupervisor);

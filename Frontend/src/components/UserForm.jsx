@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import '../styles/AddUser.css'
 
 const AddUserForm = () => {
   const [formData, setFormData] = useState({
@@ -25,8 +26,10 @@ const AddUserForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("/api/v1/users", formData); // Ensure the API endpoint is correct
-      setMessage(`User created successfully: ${response.data.name}`);
+      const response = await axios.post("/api/v1/user/add", formData); // Ensure the API endpoint is correct
+      console.log(response.data);
+      
+      setMessage(`User created successfully: ${formData.name}`);
       // Reset form
       setFormData({
         name: "",
@@ -42,12 +45,12 @@ const AddUserForm = () => {
   };
 
   return (
-    <div>
+    <div className="AddUserForm">
       <h2>Add User</h2>
       {message && <p>{message}</p>}
       <form onSubmit={handleSubmit}>
         {/* Name */}
-        <div>
+        <div className="AddUserForm-inputbox">
           <label htmlFor="name">Name:</label>
           <input
             type="text"
@@ -60,7 +63,7 @@ const AddUserForm = () => {
         </div>
 
         {/* Role */}
-        <div>
+        <div className="AddUserForm-inputbox">
           <label htmlFor="role">Role:</label>
           <select
             id="role"
@@ -70,7 +73,7 @@ const AddUserForm = () => {
             required
           >
             <option value="btech">btech</option>
-            <option value="inter">inter</option>
+            <option value="intern">intern</option>
             <option value="faculty">Faculty</option>
             <option value="mtech">mtech</option>
             <option value="phd">phd</option>
@@ -79,7 +82,7 @@ const AddUserForm = () => {
         </div>
 
         {/* Status */}
-        <div>
+        <div className="AddUserForm-inputbox">
           <label htmlFor="status">
             <input
               type="checkbox"
@@ -93,7 +96,7 @@ const AddUserForm = () => {
         </div>
 
         {/* Email */}
-        <div>
+        <div className="AddUserForm-inputbox">
           <label htmlFor="email">Email:</label>
           <input
             type="email"
@@ -106,7 +109,7 @@ const AddUserForm = () => {
         </div>
 
         {/* Password */}
-        <div>
+        <div className="AddUserForm-inputbox">
           <label htmlFor="password">Password:</label>
           <input
             type="password"

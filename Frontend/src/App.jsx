@@ -9,6 +9,7 @@ import FacultyPage from "./pages/FacultyEditPage";
 import FacultyDashboard from "./pages/Faculty_dashboard";
 import AddProjectForm from "./components/AddProjectForm";
 import UpdateProjectFormPage from "./components/SimpleProjects/UpdateProject";
+import AddSupervisorForm from "./components/Students/AddSupervisorForm";
 import Navbar from "./components/NavBar";
 import './App.css';
 
@@ -88,6 +89,7 @@ function App() {
         <Route path="/faculty_dashboard" element={<FacultyDashboard />} />
         <Route path="/add-project" element={<AddProjectForm />} />
         <Route path="/update-project" element={<UpdateProjectFormPage />} />
+        <Route path="/update-supervisor" element={<AddSupervisorForm />} />
       </Routes>
     </Router>
   );

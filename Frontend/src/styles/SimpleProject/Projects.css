@@ -1,167 +1,134 @@
-/* Styling for the Project details container */
+/* Styling for the Project Details Container */
+.project-container {
+  width: 100%;
+  position: relative;
+}
+
+
 .project-details-container {
   width: 100%;
   max-height: 80vh;
   padding: 30px;
-  background-color: #f0f4f8; /* Soft background color for better contrast */
+  background-color: #f9fbfd; /* Slightly softer background color */
   border-radius: 10px;
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); /* Slightly stronger shadow for depth */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1); /* Balanced shadow for depth */
   margin-top: 30px;
   display: flex;
   flex-direction: row;
   gap: 5rem;
   flex-wrap: wrap;
-  overflow: scroll;
+  overflow-y: auto;
+  animation: fadeIn 0.5s ease-in-out;
 }
 
+/* Project Item Card */
 .project-item {
-  border: 3px solid rgb(64, 188, 255);
+  border: 2px solid #40bcff;
   width: 25rem;
   height: 18rem;
   background-color: #ffffff;
-  padding: 25px;
+  padding: 20px;
   margin-bottom: 25px;
   border-radius: 12px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-  transition: all 0.3s ease; /* Smooth transition effect */
-  overflow: scroll;
-}
-
-
-.project-edit-button{
-  width: 25rem;
-  height: 18rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.project-edit-button button{
-  border: 3px solid rgb(64, 188, 255);
-  width: 10rem;
-  height: 8rem;
-  font-size: 2rem;
-  background-color: #ffffff;
-  padding: 25px;
-  margin-bottom: 25px;
-  border-radius: 12px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-  transition: all 0.3s ease; /* Smooth transition effect */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for focus */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  overflow-y: auto;
+  animation: slideUp 0.5s ease-in-out;
 }
 
 .project-item:hover {
-  transform: translateY(-5px); /* Hover effect to lift the card */
-  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15); /* Stronger shadow on hover */
+  transform: translateY(-8px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
 }
 
-.project-edit-button :hover {
-  border: 3px solid rgb(255, 0, 0);
-  transform: translateY(-5px); /* Hover effect to lift the card */
-  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15);
+
+.project-edit-button  {
+  right: 30px;
+  top: 0;
+  position: absolute;
+  text-align: center;
+  border: 2px solid #40bcff;
+  width: 4rem;
+  height: 4rem;
+  font-size: 1.3rem;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
+.project-edit-button:hover  {
+  border-color: #ff4b4b;
+  transform: scale(1.1);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.2);
+}
+
+/* Project Titles and Descriptions */
 .project-title {
   font-size: 20px;
-  font-weight: 700;
+  font-weight: bold;
   color: #2c3e50;
+  margin-bottom: 8px;
 }
 
 .project-domain {
-  font-size: 18px;
+  font-size: 16px;
   color: #7f8c8d;
-  margin-bottom: 15px;
-  line-height: 1.6; /* Make the text more readable */
+  margin-bottom: 12px;
+  line-height: 1.5;
 }
 
 .project-lead {
-  font-size: 20px;
+  font-size: 18px;
   color: #2980b9;
   font-weight: 600;
-  margin-bottom: 12px;
+  margin-bottom: 10px;
 }
 
+/* Team Members Section */
 .team-members-title {
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 600;
   color: #34495e;
-  margin-bottom: 15px;
+  margin-bottom: 10px;
 }
 
 .team-members-list {
-  list-style-type: none;
-  padding-left: 0;
+  list-style: none;
+  padding: 0;
   margin: 0;
 }
 
 .team-member {
-  font-size: 18px;
+  font-size: 16px;
   color: #7f8c8d;
-  margin: 10px 0;
+  margin: 8px 0;
   padding-left: 15px;
-  transition: color 0.3s ease; /* Smooth transition for color change */
+  transition: color 0.3s ease;
 }
 
 .team-member:hover {
-  color: #2980b9; /* Change text color on hover */
+  color: #2980b9;
   cursor: pointer;
 }
 
-ul {
-  padding-left: 0;
-}
-
-p {
-  font-size: 16px;
-  color: #bdc3c7;
-}
-
-/* Additional Enhancement for Responsiveness */
-@media (max-width: 768px) {
-  .project-details-container {
-    padding: 15px;
-  }
-
-  .project-item {
-    padding: 20px;
-  }
-
-  .project-title {
-    font-size: 22px;
-  }
-
-  .project-description,
-  .project-lead {
-    font-size: 16px;
-  }
-
-  .team-members-title {
-    font-size: 18px;
-  }
-
-  .team-member {
-    font-size: 16px;
-  }
-}
-
-
-
-/* Ellipsis menu button */
+/* Ellipsis Menu */
 .ellipsis-menu {
+  position: absolute;
+  top: -10px;
+  right: 0;
   cursor: pointer;
   font-size: 20px;
   color: #7f8c8d;
   padding: 5px;
   transition: color 0.3s ease;
-  position: absolute;
-  top: -10px;
-  right: 0;
 }
 
 .ellipsis-menu:hover {
-  color: #2980b9; /* Change color on hover */
+  color: #2980b9;
 }
 
-/* Dropdown menu styling */
+/* Dropdown Menu */
 .dropdown-options {
   position: absolute;
   background-color: #ffffff;
@@ -172,6 +139,14 @@ p {
   right: 40px;
   z-index: 1;
   width: 150px;
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.dropdown-options.show {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .dropdown-options button {
@@ -190,10 +165,62 @@ p {
   background-color: #f0f4f8;
 }
 
-/* Positioning the project header */
-.project-header {
-  position: relative;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+/* Responsive Design */
+@media (max-width: 768px) {
+  .project-details-container {
+    padding: 15px;
+  }
+
+  .project-item {
+    padding: 15px;
+  }
+
+  .project-title {
+    font-size: 18px;
+  }
+
+  .project-domain,
+  .project-lead {
+    font-size: 14px;
+  }
+
+  .team-members-title {
+    font-size: 16px;
+  }
+
+  .team-member {
+    font-size: 14px;
+  }
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes zoomIn {
+  from {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
 }

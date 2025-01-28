@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import AddOrEditProjectForm from "../components/AddProjectForm";
 import AddSponsorProjectForm from "../components/AddSponsorshipForm";
-import AddSupervisorForm from "../components/AddSupervisorForm";
+import AddSupervisorForm from "../components/Students/AddSupervisorForm";
 import EquipmentAddForm from "../components/EquipmentAddForm";
 import FinanceBudgetAddForm from "../components/FinanceBudgetAddForm";
 import VenueAddForm from "../components/VenueAddForm";
