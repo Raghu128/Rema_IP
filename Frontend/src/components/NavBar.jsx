@@ -35,8 +35,8 @@ const Navbar = () => {
 
   return (
     <nav className="navbar">
-      <div className="navbar-website-name">
-        <h1>Rema</h1>
+      <div className="navbar-website-name" onClick={() => window.location.href = "/"}>
+        <img src="/images.jpeg" alt="rema logo" />
       </div>
 
 
