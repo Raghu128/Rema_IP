@@ -214,13 +214,13 @@ function AdminPage() {
         </div>
       </div>
 
-      <div className="user-list-section-delete">
+      <div className="user-list-section-delete-container">
         <h2 className="section-title">User List</h2>
-        {users.map((user) => (
+        <div className="user-list-section-delete">{users.map((user) => (
           <div className="user-item" key={user._id}>
             <p>{user.name} ({user.role})</p>
           </div>
-        ))}
+        ))}</div>
       </div>
     </div>
   );

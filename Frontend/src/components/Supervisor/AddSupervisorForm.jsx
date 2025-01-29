@@ -12,7 +12,7 @@ const AddSupervisorForm = () => {
     joining: "",
     thesis_title: "",
     committee: [],  // This will hold an array of selected faculty IDs
-    stipend: "",
+    stipend: "0",
     funding_source: "",
     srpId: null,
   });
@@ -77,6 +77,12 @@ const AddSupervisorForm = () => {
     const joiningDate = new Date(supervisor.joining);
     const formattedJoiningDate = joiningDate.toISOString().split('T')[0]; // Convert to YYYY-MM-DD format
     console.log(supervisor.srpId);
+    if (user?.id) {
+      setFormData((prevData) => ({
+        ...prevData,
+        faculty_id: user.id,
+      }));
+    }
 
     setFormData({
       faculty_id: supervisor.faculty_id,
@@ -125,6 +131,7 @@ const AddSupervisorForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    // console.log(formData);
     
 
     try {
@@ -144,7 +151,7 @@ const AddSupervisorForm = () => {
         joining: "",
         thesis_title: "",
         committee: [],
-        stipend: "",
+        stipend: "0",
         funding_source: "",
         srpId: null,
       });
@@ -159,6 +166,18 @@ const AddSupervisorForm = () => {
       setMessage("Failed to submit form");
     }
   };
+
+  const handleDeleteSupervisor = async (id) => {
+    try {
+      await axios.delete(`/api/v1/supervisors/${id}`);
+      setMessage("Supervisor deleted successfully");
+      setSupervisorList(supervisorList.filter((sup) => sup._id !== id));
+    } catch (error) {
+      console.error("Error deleting supervisor:", error);
+      setMessage("Failed to delete supervisor");
+    }
+  };
+
 
   return (
     <div className="supervisor-form-container">
@@ -177,12 +196,20 @@ const AddSupervisorForm = () => {
                 <p>
                  {supervisor.thesis_title}
                 </p>
+                <div className="supervisor-edit-container">
                 <button
                   className="supervisor-edit-button"
                   onClick={() => handleSelectSupervisor(supervisor)}
                 >
                   Edit
                 </button>
+                <button
+                  className="supervisor-delete-button"
+                  onClick={() => handleDeleteSupervisor(supervisor._id)}
+                >
+                  Delete
+                </button>
+                </div>
               </li>
             ))}
           </ul>
@@ -328,6 +355,8 @@ const AddSupervisorForm = () => {
         <button type="submit" className="supervisor-button">
           {selectedSupervisor ? "Update Supervisor" : "Add Supervisor"}
         </button>
+
+
       </form>
     </div>
   );

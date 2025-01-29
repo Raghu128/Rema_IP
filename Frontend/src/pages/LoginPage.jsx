@@ -21,11 +21,9 @@ function LoginPage() {
       console.log(user);
 
       // Redirect to the appropriate dashboard based on the role (admin or user)
-      if (user.role === "admin") {
-        window.location.href = "/admin-dashboard"; // Admin dashboard
-      } else {
-        window.location.href = "/user-dashboard"; // User dashboard
-      }
+      
+      window.location.href = "/"; // User dashboard
+      
     } catch (err) {
       setError("Invalid credentials");
     }

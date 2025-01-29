@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import "../styles/FacultyDashboard.css"; 
 import Projects from "../components/SimpleProjects/Projects";
-import Students from "../components/Students/Students";
+import Students from "../components/Supervisor/Students";
 import Venues from "../components/Venues";
 import Reports from "../components/Reports";
 import Notifications from "../components/NotificationAddForm";

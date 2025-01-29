@@ -26,10 +26,11 @@ import notificationRouter from './routes/notification.routes.js';
 import equipmentRouter from './routes/equipment.routes.js';
 import financeBudgetRouter from './routes/financeBudget.routes.js';
 import expenseRouter from './routes/expense.routes.js';
-import { getUsersByid } from "./controllers/all.controller.js"
+import { getUsersByid, handleUserLogout } from "./controllers/all.controller.js"
 
 // Routes declaration
-app.get("/api/v1/userbyid/:id", getUsersByid)
+app.get("/api/v1/userbyid/:id", getUsersByid);
+app.post("/api/v1/logout", handleUserLogout);
 app.use("/api/v1/user", userRouter);
 app.use("/api/v1/sponsor-projects", sponsorProjectRouter);
 app.use("/api/v1/supervisors", supervisorRouter);

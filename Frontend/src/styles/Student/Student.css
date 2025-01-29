@@ -1,4 +1,9 @@
 /* General container styles */
+.studentWithfaculty-main-container{
+  width: 100%;
+  height: 100%;
+}
+
 .studentWithfaculty-container {
     font-family: 'Roboto', Arial, sans-serif;
     padding: 25px;
@@ -6,15 +11,11 @@
     border-radius: 15px;
     box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
     width: 100%;
-    margin: 40px auto;
-    /* transition: all 0.3s ease-in-out;    */
+    height: 90%;
+    overflow: scroll;
   }
   
-  /* .studentWithfaculty-container:hover {
-    transform: scale(1.02);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
-  }
-   */
+ 
   /* Heading styles */
   .studentWithfaculty-heading {
     font-size: 28px;

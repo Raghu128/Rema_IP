@@ -1,17 +1,69 @@
 .navbar {
-    background-color: #2f3b52; /* Tailwind's blue-600 */
-    color: white;
-    border-bottom: 1px solid rgb(255, 255, 255);
-    height: 5rem;
-    width: 100vw;
-  }
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #2f3b52;
+  padding: 10px 20px;
+  border-bottom: 1px solid rgb(255, 255, 255);
+  color: white;
+  height: 8vh;
+  width: 100vw;
+}
 
-  .navbar-website-name {
-    width: 10%;
-    height: 100%;
-    /* border: 3px solid red; */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 2rem;
+.navbar-website-name h1 {
+  margin: 0;
+  font-size: 1.8rem;
+}
+
+.menu-toggle {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 24px;
+  color: white;
+  cursor: pointer;
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 20px;
+  border-radius: 0.5rem;
+  background: rgba(24, 94, 200, 0.6);
+  padding: 0.5rem;
+  animation: scaleAnim 0.3s ease forwards; /* Initially scale the nav */
+}
+
+.nav-links:hover {
+  background: rgb(243, 22, 22);
+  animation: scaleAnimReverse 0.3s ease forwards; 
+}
+
+@keyframes scaleAnim {
+  from {
+    transform: scale(0.8);
   }
+  to {
+    transform: scale(1);
+  }
+}
+
+@keyframes scaleAnimReverse {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.1);
+  }
+}
+
+
+.nav-links li {
+  display: inline;
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: white;
+  font-weight: bold;
+}

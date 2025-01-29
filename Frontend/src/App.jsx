@@ -5,12 +5,12 @@ import { checkSession } from "./utils/api";
 import { BrowserRouter as Router, Routes, Route, Link, Navigate } from "react-router-dom"; // Import Router components
 import LoginPage from "./pages/LoginPage";
 import AdminPage from "./pages/AdminPage";
-import FacultyPage from "./pages/FacultyEditPage";
 import FacultyDashboard from "./pages/Faculty_dashboard";
 import AddProjectForm from "./components/AddProjectForm";
 import UpdateProjectFormPage from "./components/SimpleProjects/UpdateProject";
-import AddSupervisorForm from "./components/Students/AddSupervisorForm";
+import AddSupervisorForm from "./components/Supervisor/AddSupervisorForm";
 import Navbar from "./components/NavBar";
+import NotFoundPage from "./pages/NotFoundPage";
 import './App.css';
 
 function App() {
@@ -60,37 +60,31 @@ function App() {
         <nav>
           {/* Navigation for login/signup or home depending on session */}
           <ul style={{ listStyleType: "none", padding: 0, display: "flex", gap: "15px" }}>
-            {!isLoggedIn ? (
-              <>
-                <li>
-                  <Link
-                    to="/login"
-                    style={buttonStyle}
-                    onMouseEnter={(e) => Object.assign(e.target.style, hoverEffect)}
-                    onMouseLeave={(e) => Object.assign(e.target.style, buttonStyle)}
-                  >
-                    Login
-                  </Link>
-                </li>
-      
-              </>
-            ) : (
-              <li>
-                  <Navbar/>
-              </li>
-            )}
+            <Navbar/>
           </ul>
         </nav>
       </div>
       <Routes>
-        <Route path="/admin-dashboard" element={<AdminPage />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/faculty" element={<FacultyPage />} />
-        <Route path="/faculty_dashboard" element={<FacultyDashboard />} />
-        <Route path="/add-project" element={<AddProjectForm />} />
-        <Route path="/update-project" element={<UpdateProjectFormPage />} />
-        <Route path="/update-supervisor" element={<AddSupervisorForm />} />
-      </Routes>
+  <Route
+    path="/"
+    element={
+      isLoggedIn ? (
+        user.role === "admin" ? (
+          <AdminPage />
+        ) : (
+          <FacultyDashboard />
+        )
+      ) : (
+        <LoginPage />
+      )
+    }
+  />
+  <Route path="/add-project" element={<AddProjectForm />} />
+  <Route path="/update-project" element={<UpdateProjectFormPage />} />
+  <Route path="/update-supervisor" element={<AddSupervisorForm />} />
+  <Route path="*" element={<NotFoundPage />} />
+</Routes>
+
     </Router>
   );
 }

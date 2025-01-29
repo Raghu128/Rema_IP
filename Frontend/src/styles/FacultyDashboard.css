@@ -1,7 +1,7 @@
 /* Basic styles for the dashboard */
 .dashboard-container {
   display: flex;
-  height: 100vh;
+  height: 92vh;
   transition: all 0.3s ease-in-out;
   flex-direction: row;
   font-family: Arial, sans-serif;
@@ -12,6 +12,7 @@
   background-color: #2f3b52;
   color: #ffffff;
   width: 150px; 
+  height: 100%;
   padding: 25px;
   transition: all 0.3s ease-in-out;
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */

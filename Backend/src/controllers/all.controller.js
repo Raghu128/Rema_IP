@@ -66,6 +66,22 @@ export async function handleUserSignup(req, res) {
 
 
 
+export async function handleUserLogout(req, res) {  
+  try {
+      const token = req.cookies.token || req.headers.authorization?.split(" ")[1];      
+
+      if (!token) {
+          return res.status(400).json({ message: "No token provided" });
+      }
+
+      res.clearCookie("token"); 
+
+      return res.status(200).json({ message: "Logged out successfully" });
+  } catch (error) {
+      handleError(res, error);
+  }
+}
+
 
 export async function handleUserLogin(req, res) {
   const { email, password } = req.body;

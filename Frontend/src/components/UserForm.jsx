@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { useSelector } from "react-redux";
 import '../styles/AddUser.css'
 
 const AddUserForm = () => {
@@ -12,6 +13,8 @@ const AddUserForm = () => {
   });
 
   const [message, setMessage] = useState("");
+  const { user } = useSelector((state) => state.user);
+
 
   // Handle input changes
   const handleChange = (e) => {
@@ -74,7 +77,7 @@ const AddUserForm = () => {
           >
             <option value="btech">btech</option>
             <option value="intern">intern</option>
-            <option value="faculty">Faculty</option>
+            {user.role === "admin" && <option value="faculty">faculty</option>}
             <option value="mtech">mtech</option>
             <option value="phd">phd</option>
             <option value="projectstaff">projectstaff</option>

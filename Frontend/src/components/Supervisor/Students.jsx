@@ -71,9 +71,10 @@ const Students = ({ id }) => {
   }
 
   return (
-    <div className="studentWithfaculty-container">
+   <div className="studentWithfaculty-main-container">
       <h1 className="studentWithfaculty-heading">Students</h1>
       <button onClick={() => navigate('/update-supervisor')} className="studentWithfaculty-edit-button">Edit</button>
+     <div className="studentWithfaculty-container">
       {supervisorData && Object.keys(supervisorData).length === 0 ? (
         <p className="studentWithfaculty-no-data">No students found</p>
       ) : (
@@ -103,6 +104,7 @@ const Students = ({ id }) => {
         ))
       )}
     </div>
+   </div>
   );
 };
 

@@ -66,6 +66,12 @@
   font-size: 14px;
 }
 
+.supervisor-edit-container{
+  display: flex;
+  justify-content: space-between;
+  width: 20%;
+}
+
 .supervisor-edit-button {
   background: linear-gradient(145deg, #3498db, #2980b9);
   color: #fff;
@@ -78,8 +84,25 @@
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
+.supervisor-delete-button{
+  background: linear-gradient(145deg, #e73434, #e9180d);
+  color: #fff;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
 .supervisor-edit-button:hover {
   background: linear-gradient(145deg, #2980b9, #3498db);
+  transform: translateY(-2px);
+}
+
+.supervisor-delete-button:hover{
+  background: linear-gradient(145deg, #e04242, #a50303);
   transform: translateY(-2px);
 }
 
