@@ -167,8 +167,11 @@ const UpdateProjectFormPage = () => {
   };
 
   return (
+    <div className="editproject-container">
+
+    <h2 className="editproject-title">{selectedProject ? "Edit Project" : "Add Project"}</h2>
+
     <div className="editproject-form-page">
-      <h2>{selectedProject ? "Edit Project" : "Add Project"}</h2>
 
       {message && <p className="editproject-message">{message}</p>}
 
@@ -279,8 +282,10 @@ const UpdateProjectFormPage = () => {
         />
 
         <label>Team Members:</label>
+        <div className="editproject-team-checkbox" > 
+
         {users.map((userItem) => (
-          <div key={userItem._id}>
+          <div  key={userItem._id}>
             <input
               type="checkbox"
               value={userItem._id}
@@ -290,6 +295,7 @@ const UpdateProjectFormPage = () => {
             {userItem.name} ({userItem.role})
           </div>
         ))}
+        </div>
 
         <label>Lead Author:</label>
         <select
@@ -328,6 +334,7 @@ const UpdateProjectFormPage = () => {
         </button>
         
       </form>
+    </div>
     </div>
   );
 };

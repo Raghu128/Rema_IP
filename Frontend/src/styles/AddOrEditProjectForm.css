@@ -1,16 +1,31 @@
-.editproject-form-page {
+.editproject-container{
   max-width: 800px;
-  margin: 0 auto;
-  padding: 30px;
   font-family: 'Poppins', Arial, sans-serif;
   background: linear-gradient(135deg, #f7f9fc, #ffffff);
   border: 1px solid #e0e0e0;
   border-radius: 12px;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
   transition: transform 0.3s, box-shadow 0.3s;
+  height: 92vh;
+  margin: 0 auto;
+  overflow: hidden;
+  padding: auto;
 }
 
-.editproject-form-page:hover {
+.editproject-title{
+  text-align: center;
+  font-size: 28px;
+}
+
+.editproject-form-page {
+  margin-top: 1rem;
+  margin: auto 0 ;
+  padding: 30px;
+  height: 98%;
+  overflow: scroll;
+}
+
+.editproject-container:hover {
   transform: translateY(-5px);
   box-shadow: 0 15px 25px rgba(0, 0, 0, 0.2);
 }
@@ -81,6 +96,11 @@
 .editproject-form-page ul li button:hover {
   background: linear-gradient(90deg, #0056b3, #3e92f8);
   transform: scale(1.07);
+}
+
+.editproject-team-checkbox{
+  max-height: 1000px;
+  overflow: scroll;
 }
 
 .editproject-form {

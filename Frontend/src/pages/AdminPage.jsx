@@ -80,7 +80,7 @@ function AdminPage() {
     }
     try {
       await axios.put(
-        `/api/v1/user/update/${editUser.id}`,
+        `/api/v1/user/${editUser.id}`,
         { ...editUser, role: editUser.role.toLowerCase() }, // Ensure role is lowercase
         {
           headers: {
@@ -148,7 +148,7 @@ function AdminPage() {
             <option value="mtech">MTech</option>
             <option value="phd">PHD</option>
             <option value="intern">INTERN</option>
-            <option value="other">OTHER</option>
+            <option value="projectstaff">PROJECTSTAFF</option>
           </select>
         </div>
         <button className="button" onClick={handleAddUser}>Add User</button>
