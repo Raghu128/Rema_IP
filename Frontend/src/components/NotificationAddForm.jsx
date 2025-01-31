@@ -1,25 +1,28 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { useSelector } from "react-redux";
 
 const NotificationAddForm = () => {
+  const { user } = useSelector((state) => state.user); // Get logged-in user
+  const [users, setUsers] = useState([]);
+  const [message, setMessage] = useState("");
+
+  // Initial state with logged-in user's ID for added_by
   const [formData, setFormData] = useState({
     type: "",
     text: "",
     creation_date: "",
     due_date: "",
-    priority: "low", // Default priority
-    added_by: "",
-    view: [], // Array of user IDs for view access
+    priority: "low",
+    added_by: user?.id || "", // Automatically assign logged-in user's ID
+    view: [], // Store selected user IDs for view access
   });
-
-  const [users, setUsers] = useState([]);
-  const [message, setMessage] = useState("");
 
   // Fetch users for 'added_by' and 'view'
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await axios.get("/api/v1/users"); // Replace with your user-fetching API endpoint
+        const response = await axios.get("/api/v1/user"); // Replace with actual API endpoint
         setUsers(response.data);
       } catch (error) {
         console.error("Error fetching users:", error);
@@ -29,6 +32,14 @@ const NotificationAddForm = () => {
 
     fetchUsers();
   }, []);
+
+  // Ensure 'added_by' updates if user changes (useful if data loads dynamically)
+  useEffect(() => {
+    setFormData((prevState) => ({
+      ...prevState,
+      added_by: user?.id || "",
+    }));
+  }, [user]);
 
   // Handle input changes
   const handleChange = (e) => {
@@ -42,34 +53,37 @@ const NotificationAddForm = () => {
   // Handle checkbox change for 'view'
   const handleCheckboxChange = (e) => {
     const { value, checked } = e.target;
-    setFormData((prevState) => {
-      const updatedView = checked
+    setFormData((prevState) => ({
+      ...prevState,
+      view: checked
         ? [...prevState.view, value] // Add user ID if checked
-        : prevState.view.filter((id) => id !== value); // Remove user ID if unchecked
-      return { ...prevState, view: updatedView };
-    });
+        : prevState.view.filter((id) => id !== value), // Remove user ID if unchecked
+    }));
   };
 
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      const response = await axios.post("/api/v1/notifications", formData); // Replace with your notification-add API endpoint
-      setMessage(`Notification added successfully: ${response.data.text}`);
-      // Reset form
-      setFormData({
-        type: "",
-        text: "",
-        creation_date: "",
-        due_date: "",
-        priority: "low",
-        added_by: "",
-        view: [],
-      });
-    } catch (error) {
-      console.error("Error adding notification:", error);
-      setMessage(error.response?.data?.message || "Failed to add notification.");
-    }
+    console.log(formData);
+    
+    // try {
+    //   const response = await axios.post("/api/v1/notifications", formData); // Replace with your API
+    //   setMessage(`Notification added successfully: ${response.data.text}`);
+      
+    //   // Reset form, but keep added_by set to logged-in user
+    //   setFormData({
+    //     type: "",
+    //     text: "",
+    //     creation_date: "",
+    //     due_date: "",
+    //     priority: "low",
+    //     added_by: user?.id || "",
+    //     view: [],
+    //   });
+    // } catch (error) {
+    //   console.error("Error adding notification:", error);
+    //   setMessage(error.response?.data?.message || "Failed to add notification.");
+    // }
   };
 
   return (
@@ -143,41 +157,20 @@ const NotificationAddForm = () => {
           </select>
         </div>
 
-        {/* Added By */}
-        <div>
-          <label htmlFor="added_by">Added By:</label>
-          <select
-            id="added_by"
-            name="added_by"
-            value={formData.added_by}
-            onChange={handleChange}
-            required
-          >
-            <option value="">Select User</option>
-            {users.map((user) => (
-              <option key={user._id} value={user._id}>
-                {user.name} ({user.email})
-              </option>
-            ))}
-          </select>
-        </div>
-
-        {/* View Access */}
+        {/* View Access (Multi-checkbox) */}
         <div>
           <label>View Access:</label>
-          <div>
+          <div style={{ display: "flex", flexDirection: "column" }}>
             {users.map((user) => (
-              <div key={user._id}>
-                <label>
-                  <input
-                    type="checkbox"
-                    value={user._id}
-                    checked={formData.view.includes(user._id)}
-                    onChange={handleCheckboxChange}
-                  />
-                  {user.name} ({user.email})
-                </label>
-              </div>
+              <label key={user._id} style={{ marginBottom: "5px" }}>
+                <input
+                  type="checkbox"
+                  value={user._id}
+                  checked={formData.view.includes(user._id)}
+                  onChange={handleCheckboxChange}
+                />
+                {user.name} ({user.email})
+              </label>
             ))}
           </div>
         </div>

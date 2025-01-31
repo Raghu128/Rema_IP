@@ -8,6 +8,8 @@
   background: linear-gradient(145deg, #ffffff, #f3f4f7);
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  height: 90vh;
+  overflow: scroll;
 }
 
 .supervisor-form-container:hover {

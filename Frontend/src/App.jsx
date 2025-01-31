@@ -10,6 +10,7 @@ import AddProjectForm from "./components/AddProjectForm";
 import UpdateProjectFormPage from "./components/SimpleProjects/UpdateProject";
 import AddSupervisorForm from "./components/Supervisor/AddSupervisorForm";
 import Navbar from "./components/NavBar";
+import VenueAddForm from "./components/Venues/VenueAddForm"; 
 import NotFoundPage from "./pages/NotFoundPage";
 import './App.css';
 
@@ -82,6 +83,7 @@ function App() {
   <Route path="/add-project" element={<AddProjectForm />} />
   <Route path="/update-project" element={<UpdateProjectFormPage />} />
   <Route path="/update-supervisor" element={<AddSupervisorForm />} />
+  <Route path="/edit-venue" element={<VenueAddForm/>} />
   <Route path="*" element={<NotFoundPage />} />
 </Routes>
 

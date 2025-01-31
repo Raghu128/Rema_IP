@@ -88,7 +88,7 @@ export async function handleUserLogin(req, res) {
 
   try {
     // Find the user by email
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ email });    
     
 
     if (!user) {
@@ -501,15 +501,16 @@ export const getVenueLists = async (req, res) => {
 
 
 export const getVenueByIdList = async (req, res) => {
-    const { venueIds } = req.body;
+    const  venueIds  = req.params.id;
+    
   
-    if (!Array.isArray(venueIds) || venueIds.length === 0) {
+    if (!venueIds) {
       return res.status(400).json({ message: 'Invalid or empty venue IDs array' });
     }
   
     try {
       // Fetch venues matching the IDs in the array
-      const venues = await VenueList.find({ _id: { $in: venueIds } }).populate('added_by view'); // Populate user references if needed
+      const venues = await VenueList.find({ added_by: venueIds }) // Populate user references if needed
   
       // Return the venues
       res.status(200).json({ message: 'Venues retrieved successfully', venues });
@@ -547,6 +548,7 @@ export const deleteVenueList = async (req, res) => {
 // import { Notification } from "../models/notification.model.js";
 
 export const createNotification = async (req, res) => {
+  
   try {
     
     const notification = await Notification.create(req.body);

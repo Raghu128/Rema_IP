@@ -268,7 +268,7 @@ const AddSupervisorForm = () => {
         </div>
 
         <div className="supervisor-field">
-          <label htmlFor="committee" className="supervisor-label">Committee (Faculty):</label>
+          <label className="supervisor-label">Committee (Faculty):</label>
           <div className="committee-checkboxes">
             {students
               .filter((faculty) => faculty.role === "faculty")

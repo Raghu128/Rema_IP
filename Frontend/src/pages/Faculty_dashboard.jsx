@@ -6,6 +6,7 @@ import Students from "../components/Supervisor/Students";
 import Venues from "../components/Venues";
 import Reports from "../components/Reports";
 import Notifications from "../components/NotificationAddForm";
+import VenueListComponent from "../components/Venues/VenueListComponent";
 import AddUserForm from "../components/UserForm";
 import { useSelector } from "react-redux";
 
@@ -25,7 +26,7 @@ const FacultyDashboard = () => {
       case "Students":
         return <Students id={user.id} />;
       case "Venues":
-        return <Venues />;
+        return <VenueListComponent />;
       case "Reports":
         return <Reports />;
       case "Notifications":

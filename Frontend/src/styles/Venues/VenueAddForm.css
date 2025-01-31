@@ -1,0 +1,211 @@
+/* Venue Add Form Container */
+.venue-add-form {
+  max-width: 700px;
+  margin: 10px auto;
+  padding: 25px;
+  background: linear-gradient(135deg, #4e4376, #2b5876);
+  border-radius: 16px;
+  box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.2);
+  color: white;
+  font-family: "Poppins", sans-serif;
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  height: 90vh;
+  overflow: scroll;
+}
+
+.venue-add-form:hover {
+  transform: translateY(-5px);
+  box-shadow: 0px 12px 30px rgba(0, 0, 0, 0.3);
+}
+
+/* Form Title */
+.venue-add-form-title {
+  text-align: center;
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 25px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: #f4e1a1;
+  animation: fadeIn 0.8s ease-in-out;
+  font-family: 'Montserrat', sans-serif;
+}
+
+/* Form Message */
+.venue-add-form-message {
+  text-align: center;
+  font-size: 16px;
+  color: #ffcc00;
+  font-weight: bold;
+  margin-bottom: 20px;
+  opacity: 0;
+  animation: fadeIn 0.5s ease-in-out forwards;
+}
+
+/* Venue List */
+.venue-add-form-list {
+  margin-bottom: 25px;
+}
+
+.venue-add-form-list-title {
+  text-align: center;
+  font-size: 22px;
+  margin-bottom: 15px;
+  color: #f4e1a1;
+}
+
+.venue-add-form-list-items {
+  list-style: none;
+  padding: 0;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.venue-add-form-list-item {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 15px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  text-align: center;
+  cursor: pointer;
+  transition: background 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+.venue-add-form-list-item:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: scale(1.05);
+}
+
+/* Form Styling */
+.venue-add-form-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  transition: all 0.4s ease;
+}
+
+/* Form Group */
+.venue-add-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Labels */
+.venue-add-form-group label {
+  font-size: 16px;
+  font-weight: 600;
+  color: #f4e1a1;
+}
+
+/* Inputs */
+.venue-add-form-group input,
+.venue-add-form-group select {
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  outline: none;
+  transition: all 0.3s ease-in-out;
+  background: #2b5876;
+  color: white;
+}
+
+.venue-add-form-group input:focus {
+  border-color: #ffcc00;
+  box-shadow: 0px 0px 10px rgba(255, 204, 0, 0.5);
+  background: #4e4376;
+}
+
+/* View Access Checkboxes */
+.venue-add-form-checkbox-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  max-height: 200px;
+  overflow: scroll;
+  padding: 10px;
+}
+
+.venue-add-form-checkbox-item {
+  border: 1px solid rgb(255, 255, 255);
+  background: rgba(255, 255, 255, 0.1);
+  padding: 8px;
+  border-radius: 8px;
+  transition: transform 0.3s ease-in-out, background 0.3s ease-in-out;
+}
+
+.venue-add-form-checkbox-item:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: scale(1.05);
+}
+
+/* Buttons */
+.venue-add-form-submit-button,
+.venue-add-form-delete-button {
+  background: #ffcc00;
+  color: #333;
+  padding: 14px;
+  border-radius: 10px;
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s ease-in-out, transform 0.3s ease-in-out;
+  border: none;
+  text-transform: uppercase;
+}
+
+.venue-add-form-submit-button:hover {
+  background: #e6b800;
+  transform: scale(1.05);
+}
+
+.venue-add-form-delete-button {
+  background: #ff4444;
+  color: white;
+}
+
+.venue-add-form-delete-button:hover {
+  background: #cc0000;
+  transform: scale(1.05);
+}
+
+.venue-add-form-submit-button:disabled,
+.venue-add-form-delete-button:disabled {
+  background: #d3d3d3;
+  cursor: not-allowed;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .venue-add-form {
+    max-width: 90%;
+    padding: 15px;
+  }
+
+  .venue-add-form-title {
+    font-size: 22px;
+  }
+
+  .venue-add-form-list-item {
+    font-size: 14px;
+  }
+
+  .venue-add-form-submit-button,
+  .venue-add-form-delete-button {
+    font-size: 14px;
+    padding: 12px;
+  }
+}
+
