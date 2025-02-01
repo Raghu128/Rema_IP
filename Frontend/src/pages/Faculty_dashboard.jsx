@@ -3,11 +3,11 @@ import { Link } from "react-router-dom";
 import "../styles/FacultyDashboard.css"; 
 import Projects from "../components/SimpleProjects/Projects";
 import Students from "../components/Supervisor/Students";
-import Venues from "../components/Venues";
 import Reports from "../components/Reports";
 import Notifications from "../components/NotificationAddForm";
 import VenueListComponent from "../components/Venues/VenueListComponent";
 import AddUserForm from "../components/UserForm";
+import DisplaySponsors from "../components/Sponsor/DisplaySponsors";
 import { useSelector } from "react-redux";
 
 const FacultyDashboard = () => {
@@ -27,8 +27,8 @@ const FacultyDashboard = () => {
         return <Students id={user.id} />;
       case "Venues":
         return <VenueListComponent />;
-      case "Reports":
-        return <Reports />;
+      case "Sponsor":
+        return <DisplaySponsors />;
       case "Notifications":
         return <Notifications />;
       case "Add-User":
@@ -46,7 +46,7 @@ const FacultyDashboard = () => {
           <li className="default-active"><Link onClick={() => setElement("Projects")}>Projects</Link></li>
           <li><Link onClick={() => setElement("Students")}>Students</Link></li>
           <li><Link onClick={() => setElement("Venues")}>Venues</Link></li>
-          <li><Link onClick={() => setElement("Reports")}>Reports</Link></li>
+          <li><Link onClick={() => setElement("Sponsor")}>Sponsor</Link></li>
           <li><Link onClick={() => setElement("Notifications")}>Notifications</Link></li>
           <li><Link onClick={() => setElement("Add-User")}>Add User</Link></li>
         </ul>

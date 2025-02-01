@@ -1,0 +1,251 @@
+/* Container */
+.add-sponsor-container {
+  width: 100%;
+  margin: 20px auto;
+  padding: 30px;
+  background: linear-gradient(135deg, #4e4376, #2b5876);
+  border-radius: 16px;
+  box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.2);
+  color: white;
+  font-family: "Poppins", sans-serif;
+  transition: transform 0.4s ease, box-shadow 0.4s ease, background-color 0.4s ease;
+  max-height: 90vh;
+  overflow: auto;
+}
+
+.add-sponsor-container:hover {
+  transform: translateY(-10px);
+  box-shadow: 0px 30px 60px rgba(0, 0, 0, 0.3);
+  background: linear-gradient(135deg, #2b5876, #4e4376);
+}
+
+/* Heading */
+.add-sponsor-heading {
+  text-align: center;
+  font-size: 30px;
+  font-weight: 700;
+  margin-bottom: 30px;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  color: #f4e1a1;
+  animation: fadeInUp 1s ease-in-out;
+  font-family: 'Montserrat', sans-serif;
+}
+
+/* Message */
+.add-sponsor-message {
+  text-align: center;
+  font-size: 16px;
+  color: #ffcc00;
+  font-weight: bold;
+  margin-bottom: 20px;
+  opacity: 0;
+  animation: fadeIn 0.6s ease-in-out forwards;
+}
+
+/* List */
+.add-sponsor-list {
+  margin-bottom: 25px;
+}
+
+.add-sponsor-list h3 {
+  text-align: center;
+  font-size: 24px;
+  margin-bottom: 15px;
+  color: #f4e1a1;
+}
+
+.add-sponsor-list ul {
+  padding: 0;
+  list-style: none;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.add-sponsor-item {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 18px;
+  margin-bottom: 12px;
+  border-radius: 8px;
+  text-align: center;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+  font-size: 18px;
+}
+
+.add-sponsor-item:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: scale(1.05);
+  box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* Form */
+.add-sponsor-form {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 5rem;
+  transition: all 0.4s ease;
+}
+
+.add-sponsor-group {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.add-sponsor-group label {
+  font-size: 18px;
+  font-weight: 600;
+  color: #f4e1a1;
+}
+
+.add-sponsor-group input,
+.add-sponsor-group select,
+.add-sponsor-group textarea {
+  padding: 16px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  outline: none;
+  transition: all 0.3s ease-in-out;
+  background: #2b5876;
+  color: white;
+  font-size: 16px;
+  min-width: 250px;
+}
+
+.add-sponsor-group input:focus,
+.add-sponsor-group select:focus,
+.add-sponsor-group textarea:focus {
+  border-color: #ffcc00;
+  box-shadow: 0px 0px 15px rgba(255, 204, 0, 0.5);
+  background: #4e4376;
+}
+
+.add-sponsor-actions {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-top: 20px;
+}
+
+/* Buttons */
+.add-sponsor-submit-btn,
+.add-sponsor-delete-btn {
+  background: #ffcc00;
+  color: #333;
+  padding: 16px 30px;
+  border-radius: 10px;
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+  border: none;
+  text-transform: uppercase;
+  width: 100%;
+  max-width: 200px;
+}
+
+.add-sponsor-submit-btn:hover {
+  background: #e6b800;
+  transform: scale(1.05);
+  box-shadow: 0px 5px 15px rgba(255, 204, 0, 0.3);
+}
+
+.add-sponsor-delete-btn {
+  background: #ff4444;
+  color: white;
+}
+
+.add-sponsor-delete-btn:hover {
+  background: #cc0000;
+  transform: scale(1.05);
+  box-shadow: 0px 5px 15px rgba(255, 0, 0, 0.3);
+}
+
+.add-sponsor-submit-btn:disabled,
+.add-sponsor-delete-btn:disabled {
+  background: #d3d3d3;
+  cursor: not-allowed;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .add-sponsor-container {
+    max-width: 90%;
+    padding: 20px;
+  }
+
+  .add-sponsor-heading {
+    font-size: 24px;
+  }
+
+  .add-sponsor-item {
+    font-size: 16px;
+  }
+
+  .add-sponsor-submit-btn,
+  .add-sponsor-delete-btn {
+    font-size: 16px;
+    padding: 14px;
+  }
+
+  .add-sponsor-form {
+    gap: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .add-sponsor-heading {
+    font-size: 20px;
+  }
+
+  .add-sponsor-item {
+    font-size: 14px;
+  }
+
+  .add-sponsor-submit-btn,
+  .add-sponsor-delete-btn {
+    font-size: 16px;
+    padding: 14px;
+  }
+
+  .add-sponsor-form {
+    gap: 10px;
+  }
+}

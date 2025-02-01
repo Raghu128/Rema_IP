@@ -9,6 +9,7 @@ import FacultyDashboard from "./pages/Faculty_dashboard";
 import AddProjectForm from "./components/AddProjectForm";
 import UpdateProjectFormPage from "./components/SimpleProjects/UpdateProject";
 import AddSupervisorForm from "./components/Supervisor/AddSupervisorForm";
+import AddSponsorProjectForm from "./components/Sponsor/AddSponsorshipForm";
 import Navbar from "./components/NavBar";
 import VenueAddForm from "./components/Venues/VenueAddForm"; 
 import NotFoundPage from "./pages/NotFoundPage";
@@ -83,6 +84,7 @@ function App() {
   <Route path="/add-project" element={<AddProjectForm />} />
   <Route path="/update-project" element={<UpdateProjectFormPage />} />
   <Route path="/update-supervisor" element={<AddSupervisorForm />} />
+  <Route path="/manage-sponsor" element={<AddSponsorProjectForm />} />
   <Route path="/edit-venue" element={<VenueAddForm/>} />
   <Route path="*" element={<NotFoundPage />} />
 </Routes>
