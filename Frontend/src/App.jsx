@@ -13,6 +13,7 @@ import AddSponsorProjectForm from "./components/Sponsor/AddSponsorshipForm";
 import Navbar from "./components/NavBar";
 import VenueAddForm from "./components/Venues/VenueAddForm"; 
 import NotFoundPage from "./pages/NotFoundPage";
+import EquipmentAddForm from "./components/Equipment/EquipmentAddForm";
 import './App.css';
 
 function App() {
@@ -86,6 +87,8 @@ function App() {
   <Route path="/update-supervisor" element={<AddSupervisorForm />} />
   <Route path="/manage-sponsor" element={<AddSponsorProjectForm />} />
   <Route path="/edit-venue" element={<VenueAddForm/>} />
+  <Route path="/manage-equipment" element={<EquipmentAddForm/>} />
+  
   <Route path="*" element={<NotFoundPage />} />
 </Routes>
 

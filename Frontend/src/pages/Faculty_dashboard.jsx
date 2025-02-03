@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import "../styles/FacultyDashboard.css"; 
 import Projects from "../components/SimpleProjects/Projects";
 import Students from "../components/Supervisor/Students";
-import Reports from "../components/Reports";
+import UserEquipmentList from "../components/Equipment/UserEquipmentList";
 import Notifications from "../components/NotificationAddForm";
 import VenueListComponent from "../components/Venues/VenueListComponent";
 import AddUserForm from "../components/UserForm";
@@ -33,6 +33,8 @@ const FacultyDashboard = () => {
         return <Notifications />;
       case "Add-User":
         return <AddUserForm/>
+        case "Equipment":
+          return <UserEquipmentList/>
       default:
         return <p>Select an option from the sidebar</p>; // Default message when no option is selected
     }
@@ -45,8 +47,11 @@ const FacultyDashboard = () => {
         <ul className="sidebar-list">
           <li className="default-active"><Link onClick={() => setElement("Projects")}>Projects</Link></li>
           <li><Link onClick={() => setElement("Students")}>Students</Link></li>
-          <li><Link onClick={() => setElement("Venues")}>Venues</Link></li>
           <li><Link onClick={() => setElement("Sponsor")}>Sponsor</Link></li>
+          <li><Link onClick={() => setElement("Budget")}>Budget</Link></li>
+          <li><Link onClick={() => setElement("Expenses")}>Expenses</Link></li>
+          <li><Link onClick={() => setElement("Equipment")}>Equipment</Link></li>
+          <li><Link onClick={() => setElement("Venues")}>Venues</Link></li>
           <li><Link onClick={() => setElement("Notifications")}>Notifications</Link></li>
           <li><Link onClick={() => setElement("Add-User")}>Add User</Link></li>
         </ul>

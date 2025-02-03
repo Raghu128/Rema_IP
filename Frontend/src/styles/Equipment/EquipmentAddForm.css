@@ -1,0 +1,188 @@
+/* EquipmentAddForm Styles */
+.equipment-add-form-container {
+  max-width: 600px;
+  margin: 20px auto;
+  padding: 20px;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  font-family: "Arial", sans-serif;
+  height: 90vh;
+  overflow-y: auto;
+  transition: all 0.3s ease-in-out;
+}
+
+/* Title */
+.equipment-add-form-title {
+  text-align: center;
+  font-size: 1.8rem;
+  color: #222;
+  font-weight: bold;
+  margin-bottom: 15px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Success/Error Messages */
+.equipment-add-form-message {
+  text-align: center;
+  color: #28a745;
+  font-weight: bold;
+  padding: 10px;
+  background: #e6f8eb;
+  border-radius: 5px;
+  margin-bottom: 15px;
+}
+
+/* Equipment List */
+.equipment-add-form-list {
+  margin-bottom: 20px;
+}
+
+.equipment-add-form-list h3 {
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+  color: #444;
+}
+
+.equipment-add-form-list ul {
+  list-style: none;
+  padding: 0;
+  max-height: 200px;
+  overflow-y: auto;
+  border-radius: 6px;
+  box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.equipment-add-form-list li {
+  padding: 12px;
+  background: #fafafa;
+  border-bottom: 1px solid #ddd;
+  transition: all 0.3s ease-in-out;
+  cursor: pointer;
+  font-size: 1rem;
+  color: #333;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.equipment-add-form-list li:hover {
+  background: #f0f0f0;
+  transform: scale(1.02);
+}
+
+/* Form */
+.equipment-add-form-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.equipment-add-form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+/* Labels */
+.equipment-add-form-field label {
+  font-weight: bold;
+  color: #555;
+  font-size: 1rem;
+}
+
+/* Inputs, Select & Textarea */
+.equipment-add-form-field input,
+.equipment-add-form-field select,
+.equipment-add-form-field textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: all 0.3s ease-in-out;
+  background: #fff;
+}
+
+.equipment-add-form-field input:focus,
+.equipment-add-form-field select:focus,
+.equipment-add-form-field textarea:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+  outline: none;
+}
+
+/* Buttons */
+button {
+  padding: 12px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+button:hover {
+  transform: scale(1.05);
+}
+
+/* Primary Action Button */
+button[type="submit"] {
+  background-color: #007bff;
+  color: #ffffff;
+}
+
+button[type="submit"]:hover {
+  background-color: #0056b3;
+}
+
+/* Delete Button */
+button[type="button"] {
+  background-color: #dc3545;
+  color: #ffffff;
+}
+
+button[type="button"]:hover {
+  background-color: #c82333;
+}
+
+/* Cancel Button */
+button.cancel {
+  background-color: #6c757d;
+  color: #ffffff;
+}
+
+button.cancel:hover {
+  background-color: #5a6268;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .equipment-add-form-container {
+    max-width: 90%;
+    padding: 15px;
+  }
+
+  .equipment-add-form-title {
+    font-size: 1.5rem;
+  }
+
+  .equipment-add-form-list li {
+    font-size: 0.9rem;
+  }
+
+  .equipment-add-form-field input,
+  .equipment-add-form-field select,
+  .equipment-add-form-field textarea {
+    font-size: 0.9rem;
+    padding: 8px;
+  }
+
+  button {
+    font-size: 0.9rem;
+    padding: 10px;
+  }
+}

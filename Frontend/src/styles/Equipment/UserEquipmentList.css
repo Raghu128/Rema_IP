@@ -1,0 +1,65 @@
+.equipment-list-container {
+    max-width: 700px;
+    margin: 20px auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    font-family: "Arial", sans-serif;
+  }
+  
+  h2 {
+    text-align: center;
+    color: #222;
+    font-size: 1.8rem;
+    margin-bottom: 15px;
+  }
+  
+  .loading, .error {
+    text-align: center;
+    font-size: 1.1rem;
+    font-weight: bold;
+    padding: 10px;
+  }
+  
+  .loading {
+    color: #007bff;
+  }
+  
+  .error {
+    color: #dc3545;
+  }
+  
+  .equipment-list {
+    list-style: none;
+    padding: 0;
+    max-height: 300px;
+    overflow-y: auto;
+  }
+  
+  .equipment-item {
+    padding: 12px;
+    background: #f9f9f9;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    margin-bottom: 10px;
+    transition: all 0.3s ease-in-out;
+  }
+  
+  .equipment-item h3 {
+    margin: 0;
+    font-size: 1.2rem;
+    color: #007bff;
+  }
+  
+  .equipment-item p {
+    margin: 5px 0;
+    color: #555;
+    font-size: 1rem;
+  }
+  
+  .equipment-item:hover {
+    background: #eef4ff;
+    transform: scale(1.02);
+  }
+  

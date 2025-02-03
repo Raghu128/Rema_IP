@@ -654,17 +654,14 @@ export const getEquipments = async (req, res) => {
 };
 
 export const getEquipmentById = async (req, res) => {
-    const { id } = req.params;
-  
+    const { id } = req.params;    
     if (!id) {
       return res.status(400).json({ message: 'Equipment ID is required' });
     }
   
     try {
       // Find the equipment by ID and populate references
-      const equipment = await Equipment.findById(id)
-        .populate('ownership', 'name email') // Populates ownership with user name and email
-        .populate('funding_by_srp_id', 'name'); // Populates sponsor project name
+      const equipment = await Equipment.find({ownership : id});      
   
       if (!equipment) {
         return res.status(404).json({ message: 'Equipment not found' });
