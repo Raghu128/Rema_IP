@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { useSelector } from "react-redux";
 
 const ExpenseAddForm = () => {
   const [formData, setFormData] = useState({
@@ -12,21 +13,23 @@ const ExpenseAddForm = () => {
 
   const [sponsorProjects, setSponsorProjects] = useState([]);
   const [message, setMessage] = useState("");
+  const { user } = useSelector((state) => state.user);
 
   // Fetch sponsor projects
   useEffect(() => {
     const fetchSponsorProjects = async () => {
       try {
-        const response = await axios.get("/api/v1/sponsor-projects"); // Replace with your sponsor project API endpoint
+        const response = await axios.get(`/api/v1/sponsor-projects/${user.id}`); // Replace with your sponsor project API endpoint
         setSponsorProjects(response.data);
+        setMessage("");
       } catch (error) {
         console.error("Error fetching sponsor projects:", error);
         setMessage("Failed to fetch sponsor projects.");
       }
     };
 
-    fetchSponsorProjects();
-  }, []);
+    if(user?.id)fetchSponsorProjects();
+  }, [user]);
 
   // Handle input changes
   const handleChange = (e) => {
@@ -75,7 +78,7 @@ const ExpenseAddForm = () => {
             <option value="">Select Sponsor Project</option>
             {sponsorProjects.map((project) => (
               <option key={project._id} value={project._id}>
-                {project.name} (ID: {project._id})
+                {project.agency} 
               </option>
             ))}
           </select>

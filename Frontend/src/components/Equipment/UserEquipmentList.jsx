@@ -48,7 +48,8 @@ const UserEquipmentList = () => {
         {equipment.map((item) => (
           <li key={item.id} className="equipment-item">
             <h3>{item.name}</h3>
-            <p><strong>Category:</strong> {item.category}</p>
+            <p><strong>Price:</strong> {item.amount.$numberDecimal}</p>
+            <p><strong>Location:</strong> {item.location}</p>
             <p><strong>Added On:</strong> {new Date(item.createdAt).toLocaleDateString()}</p>
           </li>
         ))}

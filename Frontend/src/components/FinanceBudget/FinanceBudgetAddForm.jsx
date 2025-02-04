@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
-import '../styles/financebudget.css';
+import '../../styles/FinanceBudget/financebudget.css';
 
 const FinanceBudgetAddForm = () => {
   const [formData, setFormData] = useState({

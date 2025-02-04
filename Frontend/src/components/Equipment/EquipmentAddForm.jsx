@@ -81,14 +81,21 @@ const EquipmentAddForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
     try {
+      const submissionData = {
+        ...formData,
+        ownership: user?.id, // Ensure ownership is always set
+      };
+  
       if (selectedEquipment) {
-        await axios.put(`/api/v1/equipment/${selectedEquipment._id}`, formData);
+        await axios.put(`/api/v1/equipment/${selectedEquipment._id}`, submissionData);
         setMessage("Equipment updated successfully.");
       } else {
-        await axios.post("/api/v1/equipment", formData);
+        await axios.post("/api/v1/equipment", submissionData);
         setMessage("Equipment added successfully.");
       }
+  
       fetchEquipment();
       resetForm();
     } catch (error) {
@@ -96,6 +103,7 @@ const EquipmentAddForm = () => {
       setMessage("Failed to save equipment.");
     }
   };
+  
 
   const handleDelete = async () => {
     if (!selectedEquipment) return;

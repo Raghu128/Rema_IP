@@ -8,6 +8,8 @@ import Notifications from "../components/NotificationAddForm";
 import VenueListComponent from "../components/Venues/VenueListComponent";
 import AddUserForm from "../components/UserForm";
 import DisplaySponsors from "../components/Sponsor/DisplaySponsors";
+import ExpenseAddForm from "../components/ExpenseAddForm";
+import FinanceBudgetAddForm from "../components/FinanceBudget/FinanceBudgetAddForm";
 import { useSelector } from "react-redux";
 
 const FacultyDashboard = () => {
@@ -33,8 +35,12 @@ const FacultyDashboard = () => {
         return <Notifications />;
       case "Add-User":
         return <AddUserForm/>
-        case "Equipment":
+      case "Equipment":
           return <UserEquipmentList/>
+      case "Expenses":
+        return <ExpenseAddForm/>
+      case "Budget":
+        return <FinanceBudgetAddForm/>
       default:
         return <p>Select an option from the sidebar</p>; // Default message when no option is selected
     }

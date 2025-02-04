@@ -7,7 +7,7 @@ const notificationSchema = new Schema({
   due_date: { type: Date },
   priority: { type: String, default: "low", enum: ['low', 'medium', 'high'] },
   added_by: { type: Schema.Types.ObjectId, ref: "User", required: true },
-  view: { type: Map, of: Boolean } // JSON of user IDs with read status
+  view: { type: [Schema.Types.ObjectId], ref: "User" } // Array of User IDs
 }, { timestamps: true });
 
 export const Notification = mongoose.model("Notification", notificationSchema);

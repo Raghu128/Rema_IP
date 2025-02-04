@@ -66,24 +66,24 @@ const NotificationAddForm = () => {
     e.preventDefault();
     console.log(formData);
     
-    // try {
-    //   const response = await axios.post("/api/v1/notifications", formData); // Replace with your API
-    //   setMessage(`Notification added successfully: ${response.data.text}`);
+    try {
+      const response = await axios.post("/api/v1/notifications", formData); // Replace with your API
+      setMessage(`Notification added successfully: ${response.data.text}`);
       
-    //   // Reset form, but keep added_by set to logged-in user
-    //   setFormData({
-    //     type: "",
-    //     text: "",
-    //     creation_date: "",
-    //     due_date: "",
-    //     priority: "low",
-    //     added_by: user?.id || "",
-    //     view: [],
-    //   });
-    // } catch (error) {
-    //   console.error("Error adding notification:", error);
-    //   setMessage(error.response?.data?.message || "Failed to add notification.");
-    // }
+      // Reset form, but keep added_by set to logged-in user
+      setFormData({
+        type: "",
+        text: "",
+        creation_date: "",
+        due_date: "",
+        priority: "low",
+        added_by: user?.id || "",
+        view: [],
+      });
+    } catch (error) {
+      console.error("Error adding notification:", error);
+      setMessage(error.response?.data?.message || "Failed to add notification.");
+    }
   };
 
   return (
