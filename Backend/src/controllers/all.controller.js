@@ -783,30 +783,56 @@ export const getFinanceBudgets = async (req, res) => {
   }
 };
 
-export const getFinanceBudgetById = async (req, res) =>  {
-    const { id } = req.params;
-  
-    if (!id) {
-      return res.status(400).json({ message: "Finance Budget ID is required" });
+export const getFinanceBudgetById = async (req, res) => {
+  const { id } = req.params; // Faculty ID
+
+  if (!id) {
+    return res.status(400).json({ message: "Faculty ID is required" });
+  }
+
+  try {
+    // Step 1: Find all SponsorProjects associated with the given faculty ID
+    const sponsorProjects = await SponsorProject.find({ faculty_id: id });
+
+    if (!sponsorProjects.length) {
+      return res.status(404).json({ message: "No Sponsor Projects found" });
     }
-  
-    try {
-      // Find FinanceBudget by ID and populate the related SponsorProject
-      const financeBudget = await FinanceBudget.findById(id).populate("srp_id", "name");
-  
-      if (!financeBudget) {
-        return res.status(404).json({ message: "Finance Budget not found" });
-      }
-  
-      res.status(200).json({
-        message: "Finance Budget retrieved successfully",
-        financeBudget,
-      });
-    } catch (error) {
-      console.error("Error retrieving Finance Budget:", error);
-      res.status(500).json({ message: "Failed to retrieve Finance Budget" });
+    
+    // Step 2: Fetch FinanceBudget for each SponsorProject and merge data
+    const financeBudgets = await Promise.all(
+      sponsorProjects.map(async (project) => {
+        const budgets = await FinanceBudget.find({ srp_id: project._id });
+
+        // Map through the budgets and add sponsor project details
+        return budgets.map((budget) => ({
+          ...budget.toObject(), // Convert Mongoose document to a plain object
+          agency: project.agency,
+          title: project.title,
+          budget: project.budget,
+        }));
+      })
+    );
+
+    // Flatten the array since `Promise.all` returns an array of arrays
+    const flattenedFinanceBudgets = financeBudgets.flat();
+
+    if (!flattenedFinanceBudgets.length) {
+      return res.status(404).json({ message: "No Finance Budgets found for these Sponsor Projects" });
     }
-}
+
+    res.status(200).json({
+      message: "Finance Budgets retrieved successfully",
+      sponsorProjects,
+      financeBudgets: flattenedFinanceBudgets,
+    });
+  } catch (error) {
+    console.error("Error retrieving Finance Budget:", error);
+    res.status(500).json({ message: "Failed to retrieve Finance Budget" });
+  }
+};
+
+
+
 
 
 
