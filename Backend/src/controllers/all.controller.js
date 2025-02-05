@@ -730,7 +730,6 @@ export const updateEquipment = async (req, res) => {
     }
     
     // Update FinanceBudget (Increase/Decrease the equipment budget)
-    console.log(priceDifference);
     
     const updatedBudget = await FinanceBudget.findOneAndUpdate(
       { srp_id: oldEquipment.funding_by_srp_id },
@@ -840,7 +839,6 @@ export const createExpense = async (req, res) => {
     const { head, srp_id, amount } = req.body;
 
     // Create the expense document
-    const expense = await Expense.create(req.body);
 
     // Find the budget for the given srp_id
     const budget = await FinanceBudget.findOne({ srp_id });
@@ -851,15 +849,17 @@ export const createExpense = async (req, res) => {
 
     // Access the correct budget field dynamically (e.g., "equipment" if head = "equipment")
     const currentAmount = budget[head]; // This dynamically accesses the field, e.g., budget.equipment
+    
 
     // Check if the amount exists and handle Decimal128 to number conversion
     const currentAmountAsNumber = currentAmount ? currentAmount.valueOf() : 0;  // Convert Decimal128 to number
 
     // Calculate the difference between the current amount and the expense amount
     const diffMoney = currentAmountAsNumber - amount;
+    
 
     if (diffMoney < 0) {
-      return res.status(400).json({ message: "Insufficient equipment budget." });
+      return res.status(400).json({ message: `Insufficient ${head} budget.` });
     }
 
     // Deduct the amount from the corresponding budget field
@@ -867,8 +867,8 @@ export const createExpense = async (req, res) => {
 
     // Save the updated budget
     await budget.save();
+    const expense = await Expense.create(req.body);
 
-    console.log(`Updated ${head} amount:`, budget[head]);  // Log the updated amount
 
     // Respond with the created expense
     res.status(201).json(expense);
@@ -890,30 +890,41 @@ export const getExpenses = async (req, res) => {
   }
 };
 
-export const getExpenseById = async (req, res) =>  {
-    const { id } = req.params;
-  
-    if (!id) {
-      return res.status(400).json({ message: "Expense ID is required" });
+export const getExpenseById = async (req, res) => {
+  try {
+    const userId = req.params.id; // Assuming user ID is passed as a route parameter
+    
+    // Find sponsor projects for the user
+    const sponsorProjects = await SponsorProject.find({ faculty_id: userId });
+
+    if (!sponsorProjects || sponsorProjects.length === 0) {
+      return res.status(404).json({ message: "No sponsor projects found for this user." });
     }
-  
-    try {
-      // Find Expense by ID and populate the related SponsorProject
-      const expense = await Expense.findById(id).populate("srp_id", "name");
-  
-      if (!expense) {
-        return res.status(404).json({ message: "Expense not found" });
-      }
-  
-      res.status(200).json({
-        message: "Expense retrieved successfully",
-        expense,
-      });
-    } catch (error) {
-      console.error("Error retrieving Expense:", error);
-      res.status(500).json({ message: "Failed to retrieve Expense" });
-    }
-}
+
+    // Extract all srp_id values
+    const srpIds = sponsorProjects.map(project => project._id);
+
+    // Find expenses related to these sponsor projects and populate sponsor project details
+    const expenses = await Expense.find({ srp_id: { $in: srpIds } }).populate("srp_id");
+
+    // Structure the response to map expenses with their respective sponsor projects
+    const expenseData = sponsorProjects.map(project => ({
+      sponsorProject: {
+        id: project._id,
+        title: project.title,
+        agency: project.agency,
+        budget: project.budget,
+      },
+      expenses: expenses.filter(expense => expense.srp_id._id.equals(project._id)),
+    }));
+
+    res.status(200).json(expenseData);
+  } catch (error) {
+    console.error("Error fetching expenses:", error);
+    res.status(500).json({ message: "Failed to fetch expenses." });
+  }
+};
+
 
 
 

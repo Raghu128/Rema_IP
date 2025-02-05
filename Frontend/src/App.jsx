@@ -12,6 +12,7 @@ import AddSupervisorForm from "./components/Supervisor/AddSupervisorForm";
 import AddSponsorProjectForm from "./components/Sponsor/AddSponsorshipForm";
 import Navbar from "./components/NavBar";
 import VenueAddForm from "./components/Venues/VenueAddForm"; 
+import ExpenseAddForm from "./components/Expenses/ExpenseAddForm";
 import NotFoundPage from "./pages/NotFoundPage";
 import EquipmentAddForm from "./components/Equipment/EquipmentAddForm";
 import './App.css';
@@ -88,7 +89,7 @@ function App() {
   <Route path="/manage-sponsor" element={<AddSponsorProjectForm />} />
   <Route path="/edit-venue" element={<VenueAddForm/>} />
   <Route path="/manage-equipment" element={<EquipmentAddForm/>} />
-  
+  <Route path="/manage-expense" element={<ExpenseAddForm/>} />
   <Route path="*" element={<NotFoundPage />} />
 </Routes>
 

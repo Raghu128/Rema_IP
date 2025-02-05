@@ -1,0 +1,167 @@
+/* Expenses List Container */
+.expenses-list-container {
+    max-width: 900px;
+    margin: 50px auto;
+    padding: 25px;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.12);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Title */
+.expenses-list-title {
+    font-size: 26px;
+    color: #222;
+    text-align: center;
+    margin-bottom: 25px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+/* Sponsor Project Card */
+.expenses-list-card {
+    background: #fdfdfd;
+    width: 100%;
+    padding: 18px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    transition: all 0.3s ease-in-out;
+    border-left: 6px solid #007bff;
+}
+
+.expenses-list-card:hover {
+    transform: translateY(-4px);
+    border-left: 6px solid #0056b3;
+}
+
+/* Project Title */
+.expenses-list-project {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #333;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.expenses-list-project span {
+    font-weight: normal;
+    color: #666;
+    font-size: 16px;
+}
+
+/* Budget Display */
+.expenses-list-budget {
+    font-size: 16px;
+    color: #444;
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
+/* Expenses List */
+.expenses-list-items {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+}
+
+/* Individual Expense */
+.expenses-list-item {
+    background: #f4f4f4;
+    padding: 10px 15px;
+    margin-bottom: 8px;
+    border-radius: 6px;
+    font-size: 15px;
+    font-weight: 500;
+    color: #333;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-left: 4px solid #007bff;
+    transition: all 0.3s ease-in-out;
+}
+
+.expenses-list-item:hover {
+    background: #e9f2ff;
+    border-left: 4px solid #0056b3;
+}
+
+.expenses-list-item strong {
+    color: #000;
+}
+
+/* No Expense Message */
+.expenses-list-no-expense {
+    font-size: 15px;
+    color: #888;
+    text-align: center;
+    margin: 12px 0;
+}
+
+/* Messages (Errors, No Data, Loading) */
+.expenses-list-message {
+    font-size: 16px;
+    color: #d9534f;
+    text-align: center;
+    font-weight: 600;
+    padding: 10px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .expenses-list-container {
+        max-width: 95%;
+        padding: 20px;
+    }
+
+    .expenses-list-title {
+        font-size: 24px;
+    }
+
+    .expenses-list-card {
+        padding: 15px;
+    }
+
+    .expenses-list-project {
+        font-size: 18px;
+    }
+
+    .expenses-list-budget {
+        font-size: 15px;
+    }
+
+    .expenses-list-item {
+        font-size: 14px;
+        padding: 8px 12px;
+    }
+}
+
+/* Mobile Optimization */
+@media (max-width: 480px) {
+    .expenses-list-title {
+        font-size: 22px;
+    }
+
+    .expenses-list-card {
+        padding: 12px;
+    }
+
+    .expenses-list-project {
+        font-size: 16px;
+    }
+
+    .expenses-list-budget {
+        font-size: 14px;
+    }
+
+    .expenses-list-item {
+        font-size: 13px;
+        padding: 8px 10px;
+    }
+}

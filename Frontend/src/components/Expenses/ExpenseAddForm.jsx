@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
+import '../../styles/Expenses/AddExpense.css'
 
 const ExpenseAddForm = () => {
   const [formData, setFormData] = useState({
@@ -15,11 +16,23 @@ const ExpenseAddForm = () => {
   const [message, setMessage] = useState("");
   const { user } = useSelector((state) => state.user);
 
+  const expenseHeads = [
+    "manpower",
+    "travel",
+    "expenses",
+    "outsourcing",
+    "contingency",
+    "consumable",
+    "others",
+    "overhead",
+    "gst"
+  ];
+  
   // Fetch sponsor projects
   useEffect(() => {
     const fetchSponsorProjects = async () => {
       try {
-        const response = await axios.get(`/api/v1/sponsor-projects/${user.id}`); // Replace with your sponsor project API endpoint
+        const response = await axios.get(`/api/v1/sponsor-projects/${user.id}`);
         setSponsorProjects(response.data);
         setMessage("");
       } catch (error) {
@@ -28,7 +41,7 @@ const ExpenseAddForm = () => {
       }
     };
 
-    if(user?.id)fetchSponsorProjects();
+    if (user?.id) fetchSponsorProjects();
   }, [user]);
 
   // Handle input changes
@@ -43,8 +56,9 @@ const ExpenseAddForm = () => {
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
     try {
-      const response = await axios.post("/api/v1/expenses", formData); // Replace with your expense-add API endpoint
+      const response = await axios.post("/api/v1/expenses", formData);
       setMessage(`Expense added successfully: ${response.data.item}`);
       // Reset form
       setFormData({
@@ -61,12 +75,12 @@ const ExpenseAddForm = () => {
   };
 
   return (
-    <div>
-      <h2>Add Expense</h2>
-      {message && <p>{message}</p>}
-      <form onSubmit={handleSubmit}>
+    <div className="addexpense-container">
+      <h2 className="addexpense-title">Add Expense</h2>
+      {message && <p className="addexpense-message">{message}</p>}
+      <form onSubmit={handleSubmit} className="addexpense-form">
         {/* Sponsor Project */}
-        <div>
+        <div className="addexpense-field">
           <label htmlFor="srp_id">Sponsor Project:</label>
           <select
             id="srp_id"
@@ -74,18 +88,19 @@ const ExpenseAddForm = () => {
             value={formData.srp_id}
             onChange={handleChange}
             required
+            className="addexpense-select"
           >
             <option value="">Select Sponsor Project</option>
             {sponsorProjects.map((project) => (
               <option key={project._id} value={project._id}>
-                {project.agency} 
+                {project.agency}
               </option>
             ))}
           </select>
         </div>
 
         {/* Item */}
-        <div>
+        <div className="addexpense-field">
           <label htmlFor="item">Item:</label>
           <input
             type="text"
@@ -94,11 +109,12 @@ const ExpenseAddForm = () => {
             value={formData.item}
             onChange={handleChange}
             required
+            className="addexpense-input"
           />
         </div>
 
         {/* Amount */}
-        <div>
+        <div className="addexpense-field">
           <label htmlFor="amount">Amount:</label>
           <input
             type="number"
@@ -108,23 +124,32 @@ const ExpenseAddForm = () => {
             onChange={handleChange}
             min="0"
             required
+            className="addexpense-input"
           />
         </div>
 
         {/* Head */}
-        <div>
+        <div className="addexpense-field">
           <label htmlFor="head">Head:</label>
-          <input
-            type="text"
+          <select
             id="head"
             name="head"
             value={formData.head}
             onChange={handleChange}
-          />
+            required
+            className="addexpense-select"
+          >
+            <option value="">Select Expense Head</option>
+            {expenseHeads.map((head, index) => (
+              <option key={index} value={head}>
+                {head}
+              </option>
+            ))}
+          </select>
         </div>
 
         {/* Payment Date */}
-        <div>
+        <div className="addexpense-field">
           <label htmlFor="payment_date">Payment Date:</label>
           <input
             type="date"
@@ -133,11 +158,14 @@ const ExpenseAddForm = () => {
             value={formData.payment_date}
             onChange={handleChange}
             required
+            className="addexpense-input"
           />
         </div>
 
         {/* Submit Button */}
-        <button type="submit">Add Expense</button>
+        <button type="submit" className="addexpense-button">
+          Add Expense
+        </button>
       </form>
     </div>
   );

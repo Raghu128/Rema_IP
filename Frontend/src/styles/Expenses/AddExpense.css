@@ -1,0 +1,85 @@
+/* Container */
+.addexpense-container {
+    max-width: 500px;
+    margin: 50px auto;
+    padding: 25px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.12);
+    text-align: center;
+}
+
+/* Title */
+.addexpense-title {
+    font-size: 24px;
+    color: #333;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+/* Messages */
+.addexpense-message {
+    font-size: 16px;
+    color: #d9534f;
+    text-align: center;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+/* Form Fields */
+.addexpense-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* Input Fields */
+.addexpense-field {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}
+
+.addexpense-field label {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 5px;
+    color: #444;
+}
+
+.addexpense-input, .addexpense-select {
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+    transition: border 0.3s ease-in-out;
+}
+
+.addexpense-input:focus, .addexpense-select:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 8px rgba(0, 123, 255, 0.2);
+}
+
+/* Button */
+.addexpense-button {
+    background: #007bff;
+    color: white;
+    padding: 12px;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s ease-in-out;
+}
+
+.addexpense-button:hover {
+    background: #0056b3;
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+    .addexpense-container {
+        max-width: 90%;
+    }
+}
