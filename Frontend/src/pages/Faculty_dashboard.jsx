@@ -4,7 +4,7 @@ import "../styles/FacultyDashboard.css";
 import Projects from "../components/SimpleProjects/Projects";
 import Students from "../components/Supervisor/Students";
 import UserEquipmentList from "../components/Equipment/UserEquipmentList";
-import Notifications from "../components/NotificationAddForm";
+import NotificationsList from "../components/Notification/NotificationsList";
 import VenueListComponent from "../components/Venues/VenueListComponent";
 import AddUserForm from "../components/UserForm";
 import DisplaySponsors from "../components/Sponsor/DisplaySponsors";
@@ -32,7 +32,7 @@ const FacultyDashboard = () => {
       case "Sponsor":
         return <DisplaySponsors />;
       case "Notifications":
-        return <Notifications />;
+        return <NotificationsList />;
       case "Add-User":
         return <AddUserForm/>
       case "Equipment":

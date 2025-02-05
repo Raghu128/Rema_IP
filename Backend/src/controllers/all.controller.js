@@ -574,10 +574,10 @@ export const getNotificationById = async (req, res) => {
     if (!id) {
       return res.status(400).json({ message: 'Notification ID is required' });
     }
-  
+    
     try {
       // Find the notification by ID
-      const notification = await Notification.findById(id).populate('added_by');
+      const notification = await Notification.find({added_by : id});
   
       if (!notification) {
         return res.status(404).json({ message: 'Notification not found' });

@@ -1,28 +1,27 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
+import '../../styles/Notification/AddForm.css'
 
 const NotificationAddForm = () => {
-  const { user } = useSelector((state) => state.user); // Get logged-in user
+  const { user } = useSelector((state) => state.user);
   const [users, setUsers] = useState([]);
   const [message, setMessage] = useState("");
 
-  // Initial state with logged-in user's ID for added_by
   const [formData, setFormData] = useState({
     type: "",
     text: "",
     creation_date: "",
     due_date: "",
     priority: "low",
-    added_by: user?.id || "", // Automatically assign logged-in user's ID
-    view: [], // Store selected user IDs for view access
+    added_by: user?.id || "",
+    view: [],
   });
 
-  // Fetch users for 'added_by' and 'view'
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await axios.get("/api/v1/user"); // Replace with actual API endpoint
+        const response = await axios.get("/api/v1/user");
         setUsers(response.data);
       } catch (error) {
         console.error("Error fetching users:", error);
@@ -33,7 +32,6 @@ const NotificationAddForm = () => {
     fetchUsers();
   }, []);
 
-  // Ensure 'added_by' updates if user changes (useful if data loads dynamically)
   useEffect(() => {
     setFormData((prevState) => ({
       ...prevState,
@@ -41,7 +39,6 @@ const NotificationAddForm = () => {
     }));
   }, [user]);
 
-  // Handle input changes
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({
@@ -50,27 +47,24 @@ const NotificationAddForm = () => {
     });
   };
 
-  // Handle checkbox change for 'view'
   const handleCheckboxChange = (e) => {
     const { value, checked } = e.target;
     setFormData((prevState) => ({
       ...prevState,
       view: checked
-        ? [...prevState.view, value] // Add user ID if checked
-        : prevState.view.filter((id) => id !== value), // Remove user ID if unchecked
+        ? [...prevState.view, value]
+        : prevState.view.filter((id) => id !== value),
     }));
   };
 
-  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log(formData);
-    
+
     try {
-      const response = await axios.post("/api/v1/notifications", formData); // Replace with your API
+      const response = await axios.post("/api/v1/notifications", formData);
       setMessage(`Notification added successfully: ${response.data.text}`);
-      
-      // Reset form, but keep added_by set to logged-in user
+
       setFormData({
         type: "",
         text: "",
@@ -87,12 +81,11 @@ const NotificationAddForm = () => {
   };
 
   return (
-    <div>
-      <h2>Add Notification</h2>
-      {message && <p>{message}</p>}
-      <form onSubmit={handleSubmit}>
-        {/* Notification Type */}
-        <div>
+    <div className="notification-container">
+      <h2 className="notification-title">Add Notification</h2>
+      {message && <p className="notification-message">{message}</p>}
+      <form onSubmit={handleSubmit} className="notification-form">
+        <div className="notification-field">
           <label htmlFor="type">Type:</label>
           <input
             type="text"
@@ -101,11 +94,11 @@ const NotificationAddForm = () => {
             value={formData.type}
             onChange={handleChange}
             required
+            className="notification-input"
           />
         </div>
 
-        {/* Notification Text */}
-        <div>
+        <div className="notification-field">
           <label htmlFor="text">Text:</label>
           <textarea
             id="text"
@@ -113,11 +106,11 @@ const NotificationAddForm = () => {
             value={formData.text}
             onChange={handleChange}
             required
+            className="notification-textarea"
           ></textarea>
         </div>
 
-        {/* Creation Date */}
-        <div>
+        <div className="notification-field">
           <label htmlFor="creation_date">Creation Date:</label>
           <input
             type="date"
@@ -126,11 +119,11 @@ const NotificationAddForm = () => {
             value={formData.creation_date}
             onChange={handleChange}
             required
+            className="notification-input"
           />
         </div>
 
-        {/* Due Date */}
-        <div>
+        <div className="notification-field">
           <label htmlFor="due_date">Due Date:</label>
           <input
             type="date"
@@ -138,11 +131,11 @@ const NotificationAddForm = () => {
             name="due_date"
             value={formData.due_date}
             onChange={handleChange}
+            className="notification-input"
           />
         </div>
 
-        {/* Priority */}
-        <div>
+        <div className="notification-field">
           <label htmlFor="priority">Priority:</label>
           <select
             id="priority"
@@ -150,6 +143,7 @@ const NotificationAddForm = () => {
             value={formData.priority}
             onChange={handleChange}
             required
+            className="notification-select"
           >
             <option value="low">Low</option>
             <option value="medium">Medium</option>
@@ -157,17 +151,17 @@ const NotificationAddForm = () => {
           </select>
         </div>
 
-        {/* View Access (Multi-checkbox) */}
-        <div>
+        <div className="notification-field notification-checkbox-group">
           <label>View Access:</label>
-          <div style={{ display: "flex", flexDirection: "column" }}>
+          <div className="notification-checkbox-container">
             {users.map((user) => (
-              <label key={user._id} style={{ marginBottom: "5px" }}>
+              <label key={user._id} className="notification-checkbox-label">
                 <input
                   type="checkbox"
                   value={user._id}
                   checked={formData.view.includes(user._id)}
                   onChange={handleCheckboxChange}
+                  className="notification-checkbox"
                 />
                 {user.name} ({user.email})
               </label>
@@ -175,8 +169,9 @@ const NotificationAddForm = () => {
           </div>
         </div>
 
-        {/* Submit Button */}
-        <button type="submit">Add Notification</button>
+        <button type="submit" className="notification-button">
+          Add Notification
+        </button>
       </form>
     </div>
   );
