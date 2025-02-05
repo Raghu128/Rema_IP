@@ -1,0 +1,90 @@
+/* Finance Budget List - World-Class Styling */
+.financebudgetlist-container {
+    max-width: 80vw;
+    margin: 40px auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .financebudgetlist-title {
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+    color: #2c3e50;
+    margin-bottom: 20px;
+  }
+  
+  .financebudgetlist-loading,
+  .financebudgetlist-error,
+  .financebudgetlist-no-data {
+    text-align: center;
+    font-size: 18px;
+    color: #e74c3c;
+    margin: 20px 0;
+  }
+  
+  .financebudgetlist-table-wrapper {
+    overflow-x: auto;
+    border-radius: 8px;
+  }
+  
+  .financebudgetlist-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #f9f9f9;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  
+  .financebudgetlist-table thead {
+    background: #2c3e50;
+    color: #ecf0f1;
+  }
+  
+  .financebudgetlist-table th, 
+  .financebudgetlist-table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+    font-size: 14px;
+  }
+  
+  .financebudgetlist-table th {
+    font-weight: bold;
+  }
+  
+  .financebudgetlist-table tbody tr {
+    transition: background 0.3s ease-in-out;
+  }
+  
+  .financebudgetlist-table tbody tr:nth-child(even) {
+    background: #f1f1f1;
+  }
+  
+  .financebudgetlist-table tbody tr:hover {
+    background: rgba(0, 0, 0, 0.05);
+  }
+  
+  .financebudgetlist-table td {
+    color: #34495e;
+  }
+  
+  /* Responsive Styles */
+  @media (max-width: 768px) {
+    .financebudgetlist-container {
+      padding: 15px;
+    }
+    
+    .financebudgetlist-table th,
+    .financebudgetlist-table td {
+      padding: 10px;
+      font-size: 12px;
+    }
+  
+    .financebudgetlist-title {
+      font-size: 20px;
+    }
+  }
+  

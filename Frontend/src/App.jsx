@@ -15,6 +15,7 @@ import VenueAddForm from "./components/Venues/VenueAddForm";
 import ExpenseAddForm from "./components/Expenses/ExpenseAddForm";
 import NotFoundPage from "./pages/NotFoundPage";
 import EquipmentAddForm from "./components/Equipment/EquipmentAddForm";
+import FinanceBudgetAddForm from './components/FinanceBudget/FinanceBudgetAddForm'
 import './App.css';
 
 function App() {
@@ -90,6 +91,7 @@ function App() {
   <Route path="/edit-venue" element={<VenueAddForm/>} />
   <Route path="/manage-equipment" element={<EquipmentAddForm/>} />
   <Route path="/manage-expense" element={<ExpenseAddForm/>} />
+  <Route path="/manage-financebudget" element={<FinanceBudgetAddForm/>} />
   <Route path="*" element={<NotFoundPage />} />
 </Routes>
 

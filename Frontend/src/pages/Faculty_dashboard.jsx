@@ -9,7 +9,7 @@ import VenueListComponent from "../components/Venues/VenueListComponent";
 import AddUserForm from "../components/UserForm";
 import DisplaySponsors from "../components/Sponsor/DisplaySponsors";
 import ExpensesList from "../components/Expenses/Allexpenses";
-import FinanceBudgetAddForm from "../components/FinanceBudget/FinanceBudgetAddForm";
+import FinanceBudgetList from "../components/FinanceBudget/FinanceBudgetList";
 import { useSelector } from "react-redux";
 
 const FacultyDashboard = () => {
@@ -40,7 +40,7 @@ const FacultyDashboard = () => {
       case "Expenses":
         return <ExpensesList/>
       case "Budget":
-        return <FinanceBudgetAddForm/>
+        return <FinanceBudgetList/>
       default:
         return <p>Select an option from the sidebar</p>; // Default message when no option is selected
     }
