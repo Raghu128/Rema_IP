@@ -2,11 +2,13 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import '../../styles/Notification/AddForm.css'
+import { useNavigate } from "react-router-dom";
 
 const NotificationAddForm = () => {
   const { user } = useSelector((state) => state.user);
   const [users, setUsers] = useState([]);
   const [message, setMessage] = useState("");
+  const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
     type: "",
@@ -82,6 +84,7 @@ const NotificationAddForm = () => {
 
   return (
     <div className="notification-container">
+      <button onClick={() => navigate(-1)}>Go Back</button>
       <h2 className="notification-title">Add Notification</h2>
       {message && <p className="notification-message">{message}</p>}
       <form onSubmit={handleSubmit} className="notification-form">

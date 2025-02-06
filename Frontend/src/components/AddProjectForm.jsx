@@ -2,9 +2,11 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import '../styles/AddOrEditProjectForm.css';
+import { useNavigate } from "react-router-dom";
 
 const AddOrEditProjectForm = ({ selectedProject, onProjectSaved, onCancel }) => {
   const { user } = useSelector((state) => state.user);
+  const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
     faculty_id: user?.id || "",  // Use _id instead of id
@@ -146,6 +148,7 @@ const AddOrEditProjectForm = ({ selectedProject, onProjectSaved, onCancel }) => 
 
   return (
     <div className="addprojectform">
+      <button onClick={() => navigate(-1)}>Go Back</button>
       <h2 className="addprojectform__heading">{selectedProject ? "Edit Project" : "Add Project"}</h2>
       {message && <p className="addprojectform__message">{message}</p>}
       <form className="addprojectform__form" onSubmit={handleSubmit}>

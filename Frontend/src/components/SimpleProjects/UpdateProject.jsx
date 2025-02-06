@@ -2,8 +2,10 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import '../../styles/AddOrEditProjectForm.css'; 
+import { useNavigate } from "react-router-dom";
 
 const UpdateProjectFormPage = () => {
+  const navigate = useNavigate();
   const { user } = useSelector((state) => state.user);
 
   const [projects, setProjects] = useState([]);
@@ -168,7 +170,7 @@ const UpdateProjectFormPage = () => {
 
   return (
     <div className="editproject-container">
-
+      <button onClick={() => navigate(-1)}>Go Back</button>
     <h2 className="editproject-title">{selectedProject ? "Edit Project" : "Add Project"}</h2>
 
     <div className="editproject-form-page">

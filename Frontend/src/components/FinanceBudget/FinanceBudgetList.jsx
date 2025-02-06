@@ -1,27 +1,24 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useSelector } from "react-redux";
+// import { useSelector } from "react-redux";
 import '../../styles/FinanceBudget/FinanceBudgetList.css'
 import { useNavigate } from "react-router-dom";
 
-const FinanceBudgetList = () => {
+const FinanceBudgetList = ({ srp_id }) => {
   const [financeBudgets, setFinanceBudgets] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const { user } = useSelector((state) => state.user);
+  // const { user } = useSelector((state) => state.user);
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchFinanceBudgets = async () => {
       try {
-        if (!user?.id) return;
-
-        // Fetch finance budgets using faculty_id
-        const financeResponse = await axios.get(`/api/v1/finance-budgets/${user.id}`);
+        const financeResponse = await axios.get(`/api/v1/finance-budgets/${srp_id}`);
 
         // Flatten the array of arrays
-        const flattenedBudgets = financeResponse.data.financeBudgets.flat();
-        
+        const flattenedBudgets = financeResponse.data.budgets.flat();
+
         setFinanceBudgets(flattenedBudgets);
         setError("");
       } catch (err) {
@@ -33,12 +30,39 @@ const FinanceBudgetList = () => {
     };
 
     fetchFinanceBudgets();
-  }, [user]);
+  }, [srp_id]);
+
+  // Calculate total amount for each category
+  const total = financeBudgets.reduce(
+    (acc, budget) => ({
+      manpower: acc.manpower + (parseFloat(budget.manpower?.$numberDecimal) || 0),
+      equipment: acc.equipment + (parseFloat(budget.equipment?.$numberDecimal) || 0),
+      travel: acc.travel + (parseFloat(budget.travel?.$numberDecimal) || 0),
+      expenses: acc.expenses + (parseFloat(budget.expenses?.$numberDecimal) || 0),
+      outsourcing: acc.outsourcing + (parseFloat(budget.outsourcing?.$numberDecimal) || 0),
+      contingency: acc.contingency + (parseFloat(budget.contingency?.$numberDecimal) || 0),
+      consumable: acc.consumable + (parseFloat(budget.consumable?.$numberDecimal) || 0),
+      others: acc.others + (parseFloat(budget.others?.$numberDecimal) || 0),
+      overhead: acc.overhead + (parseFloat(budget.overhead?.$numberDecimal) || 0),
+      gst: acc.gst + (parseFloat(budget.gst?.$numberDecimal) || 0),
+    }),
+    {
+      manpower: 0,
+      equipment: 0,
+      travel: 0,
+      expenses: 0,
+      outsourcing: 0,
+      contingency: 0,
+      consumable: 0,
+      others: 0,
+      overhead: 0,
+      gst: 0,
+    }
+  );
 
   return (
     <div className="financebudgetlist-container">
-      <h2 className="financebudgetlist-title">Finance Budgets</h2>
-      <button onClick={() => navigate("/manage-financebudget")}>Manage</button>
+      <button onClick={() => navigate(`/manage-financebudget/${srp_id}`)}>Manage</button>
       {loading && <p className="financebudgetlist-loading">Loading...</p>}
       {error && <p className="financebudgetlist-error">{error}</p>}
       {!loading && financeBudgets.length === 0 && (
@@ -49,8 +73,6 @@ const FinanceBudgetList = () => {
           <table className="financebudgetlist-table">
             <thead>
               <tr>
-                <th>Agency</th>
-                <th>Title</th>
                 <th>Year</th>
                 <th>Manpower</th>
                 <th>Equipment</th>
@@ -68,8 +90,6 @@ const FinanceBudgetList = () => {
             <tbody>
               {financeBudgets.map((budget) => (
                 <tr key={budget._id}>
-                  <td>{budget.agency}</td>
-                  <td>{budget.title}</td>
                   <td>{budget.year}</td>
                   <td>{budget.manpower?.$numberDecimal || "N/A"}</td>
                   <td>{budget.equipment?.$numberDecimal || "N/A"}</td>
@@ -84,6 +104,21 @@ const FinanceBudgetList = () => {
                   <td>{budget.status}</td>
                 </tr>
               ))}
+              {/* Total Row */}
+              <tr className="total-row">
+                <td><strong>Total</strong></td>
+                <td><strong>{total.manpower.toFixed(2)}</strong></td>
+                <td><strong>{total.equipment.toFixed(2)}</strong></td>
+                <td><strong>{total.travel.toFixed(2)}</strong></td>
+                <td><strong>{total.expenses.toFixed(2)}</strong></td>
+                <td><strong>{total.outsourcing.toFixed(2)}</strong></td>
+                <td><strong>{total.contingency.toFixed(2)}</strong></td>
+                <td><strong>{total.consumable.toFixed(2)}</strong></td>
+                <td><strong>{total.others.toFixed(2)}</strong></td>
+                <td><strong>{total.overhead.toFixed(2)}</strong></td>
+                <td><strong>{total.gst.toFixed(2)}</strong></td>
+                <td>-</td> {/* Empty column for Status */}
+              </tr>
             </tbody>
           </table>
         </div>

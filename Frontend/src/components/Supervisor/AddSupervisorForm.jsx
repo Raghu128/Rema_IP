@@ -2,9 +2,11 @@ import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import "../../styles/AddSupervisorForm.css";
+import { useNavigate } from "react-router-dom";
 
 const AddSupervisorForm = () => {
   const { user } = useSelector((state) => state.user);
+  const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
     faculty_id: "",
@@ -181,6 +183,7 @@ const AddSupervisorForm = () => {
 
   return (
     <div className="supervisor-form-container">
+      <button onClick={() => navigate(-1)}>Go Back</button>
       <h2 className="supervisor-title">
         {selectedSupervisor ? "Update Supervisor" : "Add Supervisor"}
       </h2>

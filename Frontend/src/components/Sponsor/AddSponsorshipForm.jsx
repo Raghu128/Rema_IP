@@ -2,9 +2,11 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import "../../styles/Sponsor/AddSponsorProjectForm.css";
+import { useNavigate } from "react-router-dom";
 
 const AddSponsorProjectForm = () => {
   const { user } = useSelector((state) => state.user);
+  const navigate = useNavigate();
 
   // Initialize formData with a fallback if `user` is null or undefined
   const [formData, setFormData] = useState({
@@ -121,6 +123,7 @@ const AddSponsorProjectForm = () => {
 
   return (
     <div className="add-sponsor-container">
+      <button onClick={() => navigate(-1)}>Go Back</button>
       <h2 className="add-sponsor-heading">{selectedSponsor ? "Edit Sponsorship Project" : "Add Sponsorship Project"}</h2>
 
       {message && <p className="add-sponsor-message">{message}</p>}

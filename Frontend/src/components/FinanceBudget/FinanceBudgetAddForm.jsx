@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import '../../styles/FinanceBudget/financebudget.css';
 
 const FinanceBudgetAddForm = () => {
+  const navigate = useNavigate();
+  const { srp_id } = useParams();
   const [formData, setFormData] = useState({
-    srp_id: "",
+    srp_id: srp_id,
     year: "",
     manpower: "",
     pi_compensation: "",
@@ -51,7 +54,7 @@ const FinanceBudgetAddForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
+    setLoading(true);    
     try {
       const response = await axios.post("/api/v1/finance-budgets", formData);
       setMessage(`Finance Budget added successfully for ${response.data.year}`);
@@ -81,10 +84,11 @@ const FinanceBudgetAddForm = () => {
 
   return (
     <div className="financebudget-container">
+      <button onClick={() => navigate(-1)}>Go Back</button>
       <h2 className="financebudget-header">Add Finance Budget</h2>
       {message && <p className="financebudget-message">{message}</p>}
       <form className="financebudget-form" onSubmit={handleSubmit}>
-        <div className="financebudget-field">
+        {/* <div className="financebudget-field">
           <label htmlFor="srp_id">Sponsor Project:</label>
           <select
             id="srp_id"
@@ -105,7 +109,7 @@ const FinanceBudgetAddForm = () => {
               <option disabled>No projects available</option>
             )}
           </select>
-        </div>
+        </div> */}
 
         <div className="financebudget-field">
           <label htmlFor="year">Year:</label>

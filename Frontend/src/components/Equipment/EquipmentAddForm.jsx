@@ -2,8 +2,10 @@ import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import '../../styles/Equipment/EquipmentAddForm.css';
+import { useNavigate } from "react-router-dom";
 
 const EquipmentAddForm = () => {
+  const navigate = useNavigate();
   const { user } = useSelector((state) => state.user);
   const [equipmentList, setEquipmentList] = useState([]);
   const [selectedEquipment, setSelectedEquipment] = useState(null);
@@ -135,6 +137,7 @@ const EquipmentAddForm = () => {
 
   return (
     <div className="equipment-add-form-container">
+      <button onClick={() => navigate(-1)}>Go Back</button>
       <h2 className="equipment-add-form-title">{selectedEquipment ? "Edit Equipment" : "Add Equipment"}</h2>
       {message && <p className="equipment-add-form-message">{message}</p>}
 

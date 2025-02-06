@@ -1,0 +1,13 @@
+.landingpage-dashboard{
+    width: 100%;
+    max-height: 100%;
+    overflow: scroll;
+}
+
+.landingpage-element-container{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    height: 40rem;
+    justify-content: space-between;
+}

@@ -2,8 +2,10 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import '../../styles/Expenses/AddExpense.css'
+import { useNavigate } from "react-router-dom";
 
 const ExpenseAddForm = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     srp_id: "",
     item: "",
@@ -76,6 +78,7 @@ const ExpenseAddForm = () => {
 
   return (
     <div className="addexpense-container">
+      <button onClick={() => navigate(-1)}>Go Back</button>
       <h2 className="addexpense-title">Add Expense</h2>
       {message && <p className="addexpense-message">{message}</p>}
       <form onSubmit={handleSubmit} className="addexpense-form">

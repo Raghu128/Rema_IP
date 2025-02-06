@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "../../styles/Venues/VenueAddForm.css";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 const VenueAddForm = () => {
   const { user } = useSelector((state) => state.user);
@@ -9,6 +10,7 @@ const VenueAddForm = () => {
   const [selectedVenue, setSelectedVenue] = useState(null);
   const [users, setUsers] = useState([]);
   const [message, setMessage] = useState("");
+  const navigate = useNavigate();
 
   const initialFormState = {
     venue: "",
@@ -108,6 +110,7 @@ const VenueAddForm = () => {
 
   return (
     <div className="venue-add-form">
+      <button onClick={() => navigate(-1)}>Go Back</button>
       <h2 className="venue-add-form-title">{selectedVenue ? "Edit Venue" : "Add Venue"}</h2>
       {message && <p className="venue-add-form-message">{message}</p>}
 

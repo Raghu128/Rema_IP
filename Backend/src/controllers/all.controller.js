@@ -633,9 +633,9 @@ export const createEquipment = async (req, res) => {
     }
     
     // Check if there is enough budget for equipment purchase
-    if (diffMoney < 0) {
-      return res.status(400).json({ message: "Insufficient equipment budget." });
-    }
+    // if (diffMoney < 0) {
+    //   return res.status(400).json({ message: "Insufficient equipment budget." });
+    // }
     
     // Create the equipment
     const equipment = await Equipment.create(req.body);
@@ -650,8 +650,8 @@ export const createEquipment = async (req, res) => {
     });
 
     // Deduct the amount from the equipment budget and save
-    budget.equipment -= amount;
-    await budget.save();
+    // budget.equipment -= amount;
+    // await budget.save();
 
     res.status(201).json({ message: "Equipment and expense created successfully.", equipment, expense });
   } catch (error) {
@@ -704,7 +704,7 @@ export const updateEquipment = async (req, res) => {
       return res.status(404).json({ message: "Equipment not found" });
     }
     
-    const oldPrice = oldEquipment.amount;
+    // const oldPrice = oldEquipment.amount;
     const newPrice = req.body.amount;
     
     // Update the equipment details
@@ -714,7 +714,7 @@ export const updateEquipment = async (req, res) => {
       { new: true }
     );
     
-    const priceDifference = oldPrice - newPrice;
+    // const priceDifference = oldPrice - newPrice;
     
     // Update Expense (Set new amount for the existing expense)
     
@@ -731,15 +731,15 @@ export const updateEquipment = async (req, res) => {
     
     // Update FinanceBudget (Increase/Decrease the equipment budget)
     
-    const updatedBudget = await FinanceBudget.findOneAndUpdate(
-      { srp_id: oldEquipment.funding_by_srp_id },
-      { $inc: { equipment: priceDifference } }, // Adjust equipment budget
-      { new: true }
-    );
+    // const updatedBudget = await FinanceBudget.findOneAndUpdate(
+    //   { srp_id: oldEquipment.funding_by_srp_id },
+    //   { $inc: { equipment: priceDifference } }, // Adjust equipment budget
+    //   { new: true }
+    // );
 
-    if (!updatedBudget) {
-      return res.status(404).json({ message: "Finance budget record not found" });
-    }
+    // if (!updatedBudget) {
+    //   return res.status(404).json({ message: "Finance budget record not found" });
+    // }
 
     res.status(200).json(updatedEquipment);
   } catch (error) {
@@ -792,38 +792,12 @@ export const getFinanceBudgetById = async (req, res) => {
 
   try {
     // Step 1: Find all SponsorProjects associated with the given faculty ID
-    const sponsorProjects = await SponsorProject.find({ faculty_id: id });
 
-    if (!sponsorProjects.length) {
-      return res.status(404).json({ message: "No Sponsor Projects found" });
-    }
+    const budgets = await FinanceBudget.find({ srp_id: id });
     
-    // Step 2: Fetch FinanceBudget for each SponsorProject and merge data
-    const financeBudgets = await Promise.all(
-      sponsorProjects.map(async (project) => {
-        const budgets = await FinanceBudget.find({ srp_id: project._id });
-
-        // Map through the budgets and add sponsor project details
-        return budgets.map((budget) => ({
-          ...budget.toObject(), // Convert Mongoose document to a plain object
-          agency: project.agency,
-          title: project.title,
-          budget: project.budget,
-        }));
-      })
-    );
-
-    // Flatten the array since `Promise.all` returns an array of arrays
-    const flattenedFinanceBudgets = financeBudgets.flat();
-
-    if (!flattenedFinanceBudgets.length) {
-      return res.status(404).json({ message: "No Finance Budgets found for these Sponsor Projects" });
-    }
-
     res.status(200).json({
       message: "Finance Budgets retrieved successfully",
-      sponsorProjects,
-      financeBudgets: flattenedFinanceBudgets,
+      budgets
     });
   } catch (error) {
     console.error("Error retrieving Finance Budget:", error);
@@ -874,25 +848,25 @@ export const createExpense = async (req, res) => {
     }
 
     // Access the correct budget field dynamically (e.g., "equipment" if head = "equipment")
-    const currentAmount = budget[head]; // This dynamically accesses the field, e.g., budget.equipment
+    // const currentAmount = budget[head]; // This dynamically accesses the field, e.g., budget.equipment
     
 
-    // Check if the amount exists and handle Decimal128 to number conversion
-    const currentAmountAsNumber = currentAmount ? currentAmount.valueOf() : 0;  // Convert Decimal128 to number
+    // // Check if the amount exists and handle Decimal128 to number conversion
+    // const currentAmountAsNumber = currentAmount ? currentAmount.valueOf() : 0;  // Convert Decimal128 to number
 
-    // Calculate the difference between the current amount and the expense amount
-    const diffMoney = currentAmountAsNumber - amount;
+    // // Calculate the difference between the current amount and the expense amount
+    // const diffMoney = currentAmountAsNumber - amount;
     
 
-    if (diffMoney < 0) {
-      return res.status(400).json({ message: `Insufficient ${head} budget.` });
-    }
+    // if (diffMoney < 0) {
+    //   return res.status(400).json({ message: `Insufficient ${head} budget.` });
+    // }
 
-    // Deduct the amount from the corresponding budget field
-    budget[head] = currentAmountAsNumber - amount;
+    // // Deduct the amount from the corresponding budget field
+    // budget[head] = currentAmountAsNumber - amount;
 
-    // Save the updated budget
-    await budget.save();
+    // // Save the updated budget
+    // await budget.save();
     const expense = await Expense.create(req.body);
 
 
@@ -973,30 +947,30 @@ export const updateExpense = async (req, res) => {
       return res.status(400).json({ message: "Failed to update expense" });
     }
 
-    // Calculate the difference in amount
-    const amountDifference = oldAmount-updatedExpense.amount;
+    // // Calculate the difference in amount
+    // const amountDifference = oldAmount-updatedExpense.amount;
 
-    // Update the FinanceBudget (adjust the corresponding field by the amount difference)
-    const budget = await FinanceBudget.findOne({ srp_id: updatedExpense.srp_id });
+    // // Update the FinanceBudget (adjust the corresponding field by the amount difference)
+    // const budget = await FinanceBudget.findOne({ srp_id: updatedExpense.srp_id });
 
-    if (!budget) {
-      return res.status(404).json({ message: "Finance budget not found" });
-    }
+    // if (!budget) {
+    //   return res.status(404).json({ message: "Finance budget not found" });
+    // }
 
-    // Determine which field to update (e.g., 'equipment' based on the expense category)
-    const head = updatedExpense.head;  // Assuming 'head' determines which category (equipment, travel, etc.)
+    // // Determine which field to update (e.g., 'equipment' based on the expense category)
+    // const head = updatedExpense.head;  // Assuming 'head' determines which category (equipment, travel, etc.)
 
-    const currentAmount = budget[head];
+    // const currentAmount = budget[head];
 
-    if (currentAmount == null) {
-      return res.status(400).json({ message: "Invalid budget field" });
-    }
+    // if (currentAmount == null) {
+    //   return res.status(400).json({ message: "Invalid budget field" });
+    // }
 
     // Adjust the corresponding field in the FinanceBudget
-    budget[head] = currentAmount + amountDifference;
+    // budget[head] = currentAmount + amountDifference;
 
     // Save the updated budget
-    await budget.save();
+    // await budget.save();
 
     // Respond with the updated expense
     res.status(200).json(updatedExpense);
