@@ -413,21 +413,21 @@ const AddSupervisorForm = () => {
     fetchSponsors();
   }, [user]);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const [usersRes, supervisorsRes] = await Promise.all([
-          axios.get("/api/v1/user"),
-          axios.get(`/api/v1/supervisors/${user.id}`),
-        ]);
-        setStudents(usersRes.data);
-        setSupervisorList(supervisorsRes.data);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
+  const fetchSupervisor = async () => {
+    try {
+      const [usersRes, supervisorsRes] = await Promise.all([
+        axios.get("/api/v1/user"),
+        axios.get(`/api/v1/supervisors/${user.id}`),
+      ]);
+      setStudents(usersRes.data);
+      setSupervisorList(supervisorsRes.data);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
 
-    if (user?.id) fetchData();
+  useEffect(() => {
+    if (user?.id) fetchSupervisor();
   }, [user]);
 
   useEffect(() => {
@@ -504,6 +504,8 @@ const AddSupervisorForm = () => {
         funding_source: "",
         srpId: null,
       });
+
+      if (user?.id) fetchSupervisor();
     } catch (error) {
       console.error("Error submitting form:", error);
       setMessage("Failed to submit form");
