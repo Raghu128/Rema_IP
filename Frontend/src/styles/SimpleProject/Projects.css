@@ -1,226 +1,207 @@
-/* Styling for the Project Details Container */
+
+/* 🌟 Fade-in Page Transition */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 🌟 Project Container */
 .project-container {
-  width: 100%;
+  max-width: 100%;
+  margin: 0rem auto;
+  margin-bottom: 3rem;
+  padding: 20px;
+  text-align: left;
   position: relative;
 }
 
-
-.project-details-container {
-  width: 100%;
-  max-height: 80vh;
-  padding: 30px;
-  background-color: #f9fbfd; /* Slightly softer background color */
-  border-radius: 10px;
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1); /* Balanced shadow for depth */
-  margin-top: 30px;
-  display: flex;
-  flex-direction: row;
-  gap: 5rem;
-  flex-wrap: wrap;
-  overflow-y: auto;
-  animation: fadeIn 0.5s ease-in-out;
+/* 🌟 Page Title */
+h1 {
+  font-size: 2.7rem;
+  background: linear-gradient(135deg, #007bff, #ff6b6b);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 700;
+  margin-bottom: 20px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  transition: transform 0.3s ease-in-out;
+  /* animation: neonGlow 1.5s infinite alternate; */
 }
 
-/* Project Item Card */
-.project-item {
-  border: 2px solid #40bcff;
-  width: 25rem;
-  height: 18rem;
-  background-color: #ffffff;
-  padding: 20px;
-  margin-bottom: 25px;
-  border-radius: 12px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for focus */
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  overflow-y: auto;
-  animation: slideUp 0.5s ease-in-out;
+/* 🔥 Neon Glow Animation */
+@keyframes neonGlow {
+  from {
+    text-shadow: 0px 0px 10px rgba(0, 123, 255, 0.6);
+  }
+  to {
+    text-shadow: 0px 0px 20px rgba(255, 107, 107, 0.8);
+  }
 }
 
-.project-item:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
-}
-
-
-.project-edit-button  {
-  right: 30px;
-  top: 0;
-  position: absolute;
-  text-align: center;
-  border: 2px solid #40bcff;
-  width: 4rem;
-  height: 4rem;
-  font-size: 1.3rem;
-  background-color: #ffffff;
-  border-radius: 12px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.project-edit-button:hover  {
-  border-color: #ff4b4b;
-  transform: scale(1.1);
-  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.2);
-}
-
-/* Project Titles and Descriptions */
-.project-title {
-  font-size: 20px;
+/* 🌟 Glassy Edit Button with Ripple Effect */
+.project-edit-button {
+  background: rgba(255, 255, 255, 0.2);
+  color: rgb(0, 0, 0);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  padding: 12px 24px;
+  font-size: 1rem;
   font-weight: bold;
-  color: #2c3e50;
-  margin-bottom: 8px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  position: absolute;
+  top: 0;
+  right: 0;
+  overflow: hidden;
+  box-shadow: 0px 4px 15px rgba(0, 123, 255, 0.4);
 }
 
-.project-domain {
-  font-size: 16px;
-  color: #7f8c8d;
-  margin-bottom: 12px;
-  line-height: 1.5;
+/* 🌊 Ripple Effect */
+.project-edit-button::after {
+  content: "";
+  position: absolute;
+  width: 200%;
+  height: 200%;
+  top: 50%;
+  left: 50%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.2) 10%, transparent 70%);
+  transform: translate(-50%, -50%) scale(0);
+  opacity: 0;
+  transition: transform 0.6s ease-out, opacity 0.8s ease-out;
 }
 
-.project-lead {
-  font-size: 18px;
-  color: #2980b9;
-  font-weight: 600;
+.project-edit-button:active::after {
+  transform: translate(-50%, -50%) scale(1);
+  opacity: 1;
+}
+
+/* 🌟 Card Grid */
+.project-details-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 20px;
+  justify-content: center;
+}
+
+/* 🌟 Glassy Project Card */
+.project-item {
+  background: rgba(255, 255, 255, 0.2);
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 4px 8px 20px rgba(0, 0, 0, 0.1);
+  transition: transform 0.4s ease-in-out, box-shadow 0.3s ease-in-out;
+  text-align: left;
+  backdrop-filter: blur(12px);
+  position: relative;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  overflow: hidden;
+}
+
+/* 🎭 3D Depth & Parallax Hover */
+.project-item:hover {
+  transform: perspective(800px) rotateX(6deg) rotateY(-6deg) scale(1.05);
+  box-shadow: 6px 12px 25px rgba(0, 0, 0, 0.3);
+}
+
+/* 🌟 Project Title */
+.project-title {
+  font-size: 1.7rem;
+  color: #007bff;
+  font-weight: bold;
   margin-bottom: 10px;
+  transition: color 0.3s ease-in-out;
 }
 
-/* Team Members Section */
+/* 🎨 Glowing Title Hover */
+.project-title:hover {
+  color: #ff6b6b;
+  text-shadow: 0px 0px 8px rgba(255, 107, 107, 0.8);
+}
+
+/* 🌟 Team Members Section */
 .team-members-title {
-  font-size: 18px;
-  font-weight: 600;
-  color: #34495e;
-  margin-bottom: 10px;
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: #444;
+  margin-top: 15px;
 }
 
 .team-members-list {
   list-style: none;
   padding: 0;
-  margin: 0;
+  margin-top: 5px;
+  max-height: 12rem;
+  overflow: scroll;
 }
 
+/* 🌟 Custom Scrollbar */
+.team-members-list::-webkit-scrollbar {
+}
+
+.team-members-list::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 123, 255, 0.5);
+  border-radius: 1px;
+}
+
+/* 🌟 Team Member Styling */
 .team-member {
-  font-size: 16px;
-  color: #7f8c8d;
-  margin: 8px 0;
-  padding-left: 15px;
-  transition: color 0.3s ease;
-}
-
-.team-member:hover {
-  color: #2980b9;
-  cursor: pointer;
-}
-
-/* Ellipsis Menu */
-.ellipsis-menu {
-  position: absolute;
-  top: -10px;
-  right: 0;
-  cursor: pointer;
-  font-size: 20px;
-  color: #7f8c8d;
-  padding: 5px;
-  transition: color 0.3s ease;
-}
-
-.ellipsis-menu:hover {
-  color: #2980b9;
-}
-
-/* Dropdown Menu */
-.dropdown-options {
-  position: absolute;
-  background-color: #ffffff;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  border-radius: 5px;
-  padding: 10px;
-  top: 30px;
-  right: 40px;
-  z-index: 1;
-  width: 150px;
-  opacity: 0;
-  transform: translateY(-10px);
-  transition: opacity 0.3s ease, transform 0.3s ease;
-}
-
-.dropdown-options.show {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.dropdown-options button {
-  width: 100%;
-  padding: 8px 0;
   text-align: left;
-  font-size: 16px;
-  border: none;
-  background-color: #ffffff;
-  color: #2980b9;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
+  background: rgba(255, 255, 255, 0.6);
+  padding: 10px;
+  margin: 5px 0;
+  border-radius: 8px;
+  font-size: 1rem;
+  color: #333;
+  transition: transform 0.3s ease-in-out, background 0.3s ease-in-out;
+  font-weight: 500;
 }
 
-.dropdown-options button:hover {
-  background-color: #f0f4f8;
+/* 🔥 Hover Effect */
+.team-member:hover {
+  background: rgba(0, 123, 255, 0.5);
+  transform: translateY(-5px) scale(1.05);
+  box-shadow: 0px 0px 12px rgba(0, 123, 255, 0.3);
 }
 
-/* Responsive Design */
-@media (max-width: 768px) {
-  .project-details-container {
-    padding: 15px;
+/* 🌙 Dark Mode */
+@media (prefers-color-scheme: dark) {
+  body {
+    background: linear-gradient(135deg, #232526, #414345);
+    color: white;
   }
 
   .project-item {
-    padding: 15px;
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.3);
   }
 
   .project-title {
-    font-size: 18px;
-  }
-
-  .project-domain,
-  .project-lead {
-    font-size: 14px;
-  }
-
-  .team-members-title {
-    font-size: 16px;
+    color: #80d0c7;
   }
 
   .team-member {
-    font-size: 14px;
+    background: rgba(255, 255, 255, 0.2);
+  }
+
+  .team-member:hover {
+    background: rgba(128, 208, 199, 0.5);
   }
 }
 
-/* Animations */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
+/* 🌟 Responsive Design */
+@media (max-width: 768px) {
+  .project-details-container {
+    grid-template-columns: repeat(auto-fill, minmax(100%, 1fr));
   }
-  to {
-    opacity: 1;
-  }
-}
 
-@keyframes slideUp {
-  from {
-    transform: translateY(20px);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
-}
-
-@keyframes zoomIn {
-  from {
-    transform: scale(0.9);
-    opacity: 0;
-  }
-  to {
-    transform: scale(1);
-    opacity: 1;
+  .project-title {
+    font-size: 1.5rem;
   }
 }

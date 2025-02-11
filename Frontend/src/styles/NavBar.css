@@ -1,82 +1,165 @@
+/* General Navbar Styling */
 .navbar {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  background-color: #2f3b52;
-  padding: 10px 20px;
-  border-bottom: 1px solid rgb(255, 255, 255);
+  justify-content: space-between;
+  background-color: #2c3e50;
+  padding: 12px 20px;
   color: white;
-  height: 8vh;
   width: 100vw;
-}
-
-.navbar-website-name {
-  /* width: 5%; */
-  height: 100%;
-  /* border-radius: 8rem; */
-  cursor: pointer;
-  overflow: hidden;
-  background: none; 
-}
-
-.navbar-website-name img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover; 
-  mix-blend-mode:darken;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  border-bottom: 1px solid rgb(155, 155, 155);
 }
 
 
-
-.menu-toggle {
-  display: none;
-  background: none;
-  border: none;
-  font-size: 24px;
-  color: white;
+/* Logo and Branding */
+.navbar-brand {
+  display: flex;
+  align-items: center;
   cursor: pointer;
 }
 
-.nav-links {
+/* Logo Hover Animation */
+.navbar-logo {
+  height: 50px;
+  width: auto;
+  border-radius: 5px;
+  transition: transform 0.3s ease-in-out;
+}
+
+.navbar-logo:hover {
+  transform: scale(1.1) rotate(8deg);
+}
+
+/* Navigation Menu */
+.navbar-menu {
+  display: flex;
+  align-items: center;
+}
+
+/* User Greeting */
+.navbar-user {
+  margin-right: 15px;
+  font-size: 16px;
+  font-weight: 500;
+  animation: fadeIn 0.5s ease-in-out forwards;
+}
+
+/* Navigation Links */
+.navbar-links {
   list-style: none;
   display: flex;
-  gap: 20px;
-  border-radius: 0.5rem;
-  background: rgba(24, 94, 200, 0.6);
-  padding: 0.5rem;
-  animation: scaleAnim 0.3s ease forwards; /* Initially scale the nav */
+  align-items: center;
+  margin: 0;
+  padding: 0;
 }
 
-.nav-links:hover {
-  background: rgb(243, 22, 22);
-  animation: scaleAnimReverse 0.3s ease forwards; 
+.navbar-links li {
+  margin-left: 15px;
+  animation: fadeIn 0.6s ease-in-out forwards;
+  position: relative;
 }
 
-@keyframes scaleAnim {
-  from {
-    transform: scale(0.8);
-  }
-  to {
-    transform: scale(1);
-  }
-}
-
-@keyframes scaleAnimReverse {
-  from {
-    transform: scale(1);
-  }
-  to {
-    transform: scale(1.1);
-  }
-}
-
-
-.nav-links li {
-  display: inline;
-}
-
-.nav-links a {
+/* Glow Effect on Hover */
+.navbar-links a {
   text-decoration: none;
   color: white;
-  font-weight: bold;
+  font-weight: 500;
+  font-size: 15px;
+  transition: color 0.3s ease-in-out, transform 0.2s ease-in-out;
+  position: relative;
+  padding-bottom: 5px;
+}
+
+.navbar-links a:hover {
+  color: #f39c12;
+  transform: translateY(-2px);
+}
+
+/* Border Animation under links */
+.navbar-links a::after {
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 2px;
+  background-color: #f39c12;
+  left: 50%;
+  bottom: 0;
+  transition: width 0.3s ease-in-out, left 0.3s ease-in-out;
+}
+
+.navbar-links a:hover::after {
+  width: 100%;
+  left: 0;
+}
+
+/* Logout Button */
+.navbar-logout {
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  font-size: 14px;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background 0.3s ease-in-out, transform 0.2s ease-in-out;
+  animation: pulse 1.5s infinite;
+}
+
+/* Logout Button Hover Effect */
+.navbar-logout:hover {
+  background-color: #c0392b;
+  transform: scale(1.05);
+}
+
+/* Pulsating Effect */
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 5px rgba(231, 76, 60, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 15px rgba(231, 76, 60, 0.8);
+  }
+  100% {
+    box-shadow: 0 0 5px rgba(231, 76, 60, 0.5);
+  }
+}
+
+/* Mobile Menu Toggle */
+.menu-toggle {
+  display: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: white;
+  transition: transform 0.3s ease-in-out;
+}
+
+.menu-toggle:hover {
+  transform: scale(1.2);
+}
+
+
+
+/* Keyframe Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

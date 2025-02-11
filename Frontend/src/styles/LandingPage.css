@@ -1,13 +1,25 @@
-.landingpage-dashboard{
-    width: 100%;
-    max-height: 100%;
-    overflow: scroll;
-}
-
-.landingpage-element-container{
-    width: 100%;
+.landingpage-dashboard {
+    text-align: center;
+    padding: 20px;
+  }
+  
+  .landingpage-header h1 {
+    font-size: 24px;
+    color: #333;
+  }
+  
+  .landingpage-content {
     display: flex;
-    flex-direction: row;
-    height: 40rem;
-    justify-content: space-between;
-}
+    gap: 20px;
+    justify-content: center;
+    margin-top: 20px;
+  }
+  
+  .landingpage-card {
+    background: white;
+    padding: 15px;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    width: 45%;
+  }
+  

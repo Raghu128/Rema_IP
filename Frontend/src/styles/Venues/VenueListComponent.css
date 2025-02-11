@@ -1,106 +1,101 @@
-/* Venue List Container */
-.venue-list-container {
-    width: 45%;
-    margin: 20px auto;
-    padding: 40px;
-    background: linear-gradient(135deg, #4e4376, #2b5876);
-    border-radius: 12px;
-    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.2);
-    color: white;
-    font-family: "Poppins", sans-serif;
-    overflow: scroll;
-  }
-  
-  .venue-list-title {
-    font-size: 26px;
-    text-align: center;
-    color: #f4e1a1;
-    margin-bottom: 30px;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-  }
+.venue-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+  padding: 20px;
+  animation: fadeIn 0.8s ease-in-out;
+}
 
-  /* Loading Spinner */
-  .loading-spinner {
-    text-align: center;
-    font-size: 18px;
-    color: #ffcc00;
-    font-weight: bold;
+/* Smooth fade-in animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
   }
-  
-  /* No Venues Found */
-  .no-venues {
-    text-align: center;
-    font-size: 18px;
-    color: #ff4444;
-    font-weight: bold;
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
-  
-  /* Venue List */
-  .venue-list {
-    list-style: none;
-    padding: 0;
+}
+
+.venue-card {
+  padding: 20px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+  box-shadow: 3px 5px 15px rgba(0, 0, 0, 0.15);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  animation: popUp 0.5s ease-out forwards;
+}
+
+/* Hover effect */
+.venue-card:hover {
+  transform: scale(1.05);
+  box-shadow: 5px 7px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Pop-up animation */
+@keyframes popUp {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
   }
-  
-  .venue-item {
-    background: rgba(255, 255, 255, 0.1);
-    padding: 15px;
-    margin-bottom: 20px;
-    border-radius: 8px;
-    transition: transform 0.3s ease-in-out, background 0.3s ease-in-out;
+  to {
+    opacity: 1;
+    transform: scale(1);
   }
-  
-  .venue-item:hover {
-    background: rgba(255, 255, 255, 0.3);
-    transform: scale(1.05);
-  }
-  
-  /* Venue Details */
-  .venue-details h3 {
-    font-size: 20px;
-    font-weight: 600;
-    color: #f4e1a1;
-  }
-  
-  .venue-details p {
-    font-size: 16px;
-    color: #ffffff;
-    margin: 5px 0;
-  }
-  
-  /* View Venue Button */
-  .view-venue-btn {
-    background: #ffcc00;
-    color: #333;
-    padding: 10px 20px;
-    border-radius: 8px;
-    font-size: 16px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background 0.3s ease-in-out, transform 0.3s ease-in-out;
-    border: none;
-    text-transform: uppercase;
-    margin-top: 10px;
-  }
-  
-  .view-venue-btn:hover {
-    background: #e6b800;
-    transform: scale(1.05);
-  }
-  
-  
-  .manage-venue-btn {
-    background-color: #ffcc00;
-    color: white;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    font-weight: bold;
-    transition: background-color 0.3s ease;
-  }
-  
-  .manage-venue-btn:hover {
-    background-color: #e6b800;
-  }
-  
+}
+
+/* Subtle glowing effect */
+.venue-card::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.3), transparent);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.venue-card:hover::before {
+  opacity: 1;
+}
+
+.venue-card h3 {
+  color: #007bff;
+  font-size: 1.4rem;
+  margin-bottom: 10px;
+}
+
+.venue-card p {
+  font-size: 1rem;
+  color: #444;
+  margin-bottom: 8px;
+  transition: color 0.3s ease;
+}
+
+/* Hovering text effect */
+.venue-card:hover p {
+  color: #222;
+}
+
+/* Add a button inside the card */
+.venue-card .view-details {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 8px 12px;
+  background: #007bff;
+  color: white;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  text-align: center;
+  transition: background 0.3s ease;
+}
+
+.venue-card .view-details:hover {
+  background: #0056b3;
+}

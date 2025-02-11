@@ -6,18 +6,22 @@ import "../styles/LandingPage.css";
 
 const LandingPage = () => {
   const { user } = useSelector((state) => state.user);
-  
 
   return (
-    <div className="landingpage-dashboard" >
-      <h1>Welcome, {user?.email}</h1>
-      <p>Faculty Dashboard - Manage your projects and finances</p>
-
-        <div className="landingpage-element-container">
-          <NotificationsList/>
-          <VenueListComponent/>
-        </div>
+    <div className="landingpage-dashboard">
       
+
+      <div className="landingpage-content">
+        <div className="landingpage-card">
+          <h2>📢 Notifications</h2>
+          <NotificationsList />
+        </div>
+
+        <div className="landingpage-card">
+          <h2>📍 Venues</h2>
+          <VenueListComponent />
+        </div>
+      </div>
     </div>
   );
 };

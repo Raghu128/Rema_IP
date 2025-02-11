@@ -1,65 +1,197 @@
+/* Grand-Level Equipment List Styling */
 .equipment-list-container {
-    max-width: 700px;
-    margin: 20px auto;
-    padding: 20px;
-    background: #fff;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    font-family: "Arial", sans-serif;
+  max-width: 700px;
+  margin: 20px auto;
+  padding: 20px;
+  background: linear-gradient(135deg, #ffffff, #f8f9fa);
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  font-family: "Arial", sans-serif;
+  animation: fadeInScale 1.2s ease-in-out;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Moving Background Animation */
+.equipment-list-container::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(0,123,255,0.2) 10%, transparent 50%);
+  animation: moveBackground 10s infinite linear;
+  z-index: -1;
+}
+
+/* Title Styling */
+h2 {
+  text-align: center;
+  color: #222;
+  font-size: 2rem;
+  margin-bottom: 20px;
+  position: relative;
+  animation: slideDown 1s ease-in-out;
+}
+
+/* Glowing Underline Animation */
+h2::after {
+  content: "";
+  width: 80px;
+  height: 3px;
+  background-color: #007bff;
+  position: absolute;
+  bottom: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-radius: 5px;
+  animation: pulseLine 2s infinite ease-in-out;
+}
+
+/* Loading & Error Messages */
+.loading, .error {
+  text-align: center;
+  font-size: 1.2rem;
+  font-weight: bold;
+  padding: 12px;
+  animation: bounceIn 0.7s ease-in-out;
+}
+
+.loading {
+  color: #007bff;
+}
+
+.error {
+  color: #dc3545;
+}
+
+/* List Container */
+.equipment-list {
+  list-style: none;
+  padding: 0;
+  max-height: 350px;
+  overflow-y: auto;
+  animation: fadeInUp 0.9s ease-in-out;
+}
+
+/* "Breathing" effect while loading */
+.equipment-list.loading {
+  animation: breathing 2s infinite ease-in-out;
+}
+
+/* Equipment Items */
+.equipment-item {
+  padding: 15px;
+  background: #f9f9f9;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  margin-bottom: 12px;
+  transition: all 0.4s ease-in-out;
+  position: relative;
+  opacity: 0;
+  animation: fadeInUp 0.8s ease-in-out forwards;
+}
+
+/* Staggered Reveal Effect */
+.equipment-item:nth-child(1) { animation-delay: 0.2s; }
+.equipment-item:nth-child(2) { animation-delay: 0.4s; }
+.equipment-item:nth-child(3) { animation-delay: 0.6s; }
+.equipment-item:nth-child(4) { animation-delay: 0.8s; }
+
+/* Title inside Equipment Item */
+.equipment-item h3 {
+  margin: 0;
+  font-size: 1.3rem;
+  color: #007bff;
+}
+
+/* Description inside Equipment Item */
+.equipment-item p {
+  margin: 6px 0;
+  color: #555;
+  font-size: 1rem;
+}
+
+/* Interactive 3D Hover Effect */
+.equipment-item:hover {
+  background: #eef4ff;
+  transform: scale(1.05) rotateX(5deg);
+  border: 1px solid #007bff;
+  box-shadow: 0 10px 25px rgba(0, 123, 255, 0.3);
+}
+
+/* Glowing Shine Effect */
+.equipment-item::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: -100%;
+  width: 300%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.3);
+  transform: skewX(-45deg);
+  transition: left 0.6s ease-in-out;
+}
+
+.equipment-item:hover::before {
+  left: 100%;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .equipment-list-container {
+      max-width: 90%;
+      padding: 18px;
   }
-  
+
   h2 {
-    text-align: center;
-    color: #222;
-    font-size: 1.8rem;
-    margin-bottom: 15px;
+      font-size: 1.7rem;
   }
-  
-  .loading, .error {
-    text-align: center;
-    font-size: 1.1rem;
-    font-weight: bold;
-    padding: 10px;
-  }
-  
-  .loading {
-    color: #007bff;
-  }
-  
-  .error {
-    color: #dc3545;
-  }
-  
-  .equipment-list {
-    list-style: none;
-    padding: 0;
-    max-height: 300px;
-    overflow-y: auto;
-  }
-  
+
   .equipment-item {
-    padding: 12px;
-    background: #f9f9f9;
-    border-radius: 8px;
-    border: 1px solid #ddd;
-    margin-bottom: 10px;
-    transition: all 0.3s ease-in-out;
+      font-size: 1rem;
+      padding: 12px;
   }
-  
-  .equipment-item h3 {
-    margin: 0;
-    font-size: 1.2rem;
-    color: #007bff;
-  }
-  
-  .equipment-item p {
-    margin: 5px 0;
-    color: #555;
-    font-size: 1rem;
-  }
-  
-  .equipment-item:hover {
-    background: #eef4ff;
-    transform: scale(1.02);
-  }
-  
+}
+
+/* Keyframes for Animations */
+@keyframes fadeInScale {
+  0% { opacity: 0; transform: scale(0.9); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+@keyframes fadeInUp {
+  0% { opacity: 0; transform: translateY(15px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideDown {
+  0% { opacity: 0; transform: translateY(-20px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes bounceIn {
+  0% { transform: scale(0.9); opacity: 0; }
+  60% { transform: scale(1.1); opacity: 1; }
+  100% { transform: scale(1); }
+}
+
+@keyframes pulseLine {
+  0% { width: 80px; opacity: 1; }
+  50% { width: 100px; opacity: 0.5; }
+  100% { width: 80px; opacity: 1; }
+}
+
+@keyframes breathing {
+  0% { transform: scale(1); opacity: 0.9; }
+  50% { transform: scale(1.03); opacity: 1; }
+  100% { transform: scale(1); opacity: 0.9; }
+}
+
+/* Moving Background Animation */
+@keyframes moveBackground {
+  0% { transform: translateX(0) translateY(0); }
+  50% { transform: translateX(50px) translateY(50px); }
+  100% { transform: translateX(0) translateY(0); }
+}

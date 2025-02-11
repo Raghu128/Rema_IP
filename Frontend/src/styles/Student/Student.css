@@ -1,256 +1,215 @@
-/* General container styles */
-.studentWithfaculty-main-container{
+
+
+/* --------------------------- */
+/* 🌟 Main Container – Frosted Glass Card */
+/* --------------------------- */
+.studentWithfaculty-main-container {
   width: 100%;
   height: 100%;
+  background: rgba(255, 255, 255, 0.2);
+  padding: 35px;
+  border-radius: 20px;
+  box-shadow: 0px 15px 30px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  backdrop-filter: blur(20px);
+  animation: fadeInUp 1s ease-in-out;
+  border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
-.studentWithfaculty-container {
-    font-family: 'Roboto', Arial, sans-serif;
-    padding: 25px;
-    background: linear-gradient(145deg, #ffffff, #f1f4f8);
-    border-radius: 15px;
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
-    width: 100%;
-    height: 90%;
-    overflow: scroll;
+/* 🎭 Fade-in Animation */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
   }
-  
- 
-  /* Heading styles */
-  .studentWithfaculty-heading {
-    font-size: 28px;
-    font-weight: bold;
-    color: #2d3436;
-    margin-bottom: 30px;
-    text-align: center;
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-    background: linear-gradient(90deg, #6a11cb, #2575fc);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* --------------------------- */
+/* 🌟 Heading – Neon Glow Effect */
+/* --------------------------- */
+.studentWithfaculty-heading {
+  font-size: 2.8rem;
+  color: #1e3a8a;
+  font-weight: 700;
+  margin-bottom: 20px;
+  text-transform: uppercase;
+  letter-spacing: 1.8px;
+  text-shadow: 0px 0px 10px rgba(30, 58, 138, 0.6);
+  position: relative;
+}
+
+/* 🌀 Subtle Glowing Pulse */
+.studentWithfaculty-heading::after {
+  content: "";
+  position: absolute;
+  bottom: -5px;
+  left: 50%;
+  width: 50px;
+  height: 3px;
+  background: #007bff;
+  border-radius: 2px;
+  transform: translateX(-50%);
+  box-shadow: 0px 0px 8px rgba(0, 123, 255, 0.8);
+}
+
+/* --------------------------- */
+/* 🌟 Edit Button – Floating 3D Effect */
+/* --------------------------- */
+.studentWithfaculty-edit-button {
+  background: linear-gradient(135deg, #007bff, #0056b3);
+  color: white;
+  border: none;
+  padding: 12px 30px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  border-radius: 15px;
+  cursor: pointer;
+  transition: all 0.4s ease-in-out;
+  margin-bottom: 20px;
+  box-shadow: 0px 6px 15px rgba(0, 123, 255, 0.4);
+  position: relative;
+  overflow: hidden;
+}
+
+/* 🚀 Button Hover Effect */
+.studentWithfaculty-edit-button:hover {
+  background: linear-gradient(135deg, #0056b3, #003580);
+  transform: scale(1.12);
+  box-shadow: 0px 8px 20px rgba(0, 123, 255, 0.6);
+}
+
+/* 🎇 Floating Glow Effect */
+.studentWithfaculty-edit-button::before {
+  content: "";
+  position: absolute;
+  width: 150%;
+  height: 150%;
+  top: 50%;
+  left: 50%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.2) 10%, transparent 60%);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.studentWithfaculty-edit-button:hover::before {
+  opacity: 1;
+}
+
+/* --------------------------- */
+/* 🌟 Student Data Container */
+/* --------------------------- */
+.studentWithfaculty-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+}
+
+/* --------------------------- */
+/* 🌟 Role Section – Glass Card with Animated Glow */
+/* --------------------------- */
+.studentWithfaculty-role-section {
+  background: rgba(255, 255, 255, 0.15);
+  padding: 30px;
+  border-radius: 18px;
+  box-shadow: 2px 5px 20px rgba(0, 0, 0, 0.15);
+  transition: transform 0.4s ease-in-out, box-shadow 0.4s ease-in-out;
+  text-align: left;
+  backdrop-filter: blur(15px);
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  width: 20rem;
+}
+
+/* 🎭 Hover effect - Floating Glow */
+.studentWithfaculty-role-section:hover {
+  transform: translateY(-6px) scale(1.07);
+  box-shadow: 4px 10px 30px rgba(0, 0, 0, 0.25);
+}
+
+/* 🔥 Neon Glow on Hover */
+.studentWithfaculty-role-section:hover::before {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 80%);
+  opacity: 1;
+  transition: opacity 0.5s ease-in-out;
+}
+
+/* --------------------------- */
+/* 🌟 Role Title – Dynamic Hover Color */
+/* --------------------------- */
+.studentWithfaculty-role {
+  font-size: 1.8rem;
+  color: #007bff;
+  font-weight: bold;
+  margin-bottom: 12px;
+  transition: color 0.4s ease-in-out;
+}
+
+.studentWithfaculty-role:hover {
+  color: #ff6b6b;
+  text-shadow: 0px 0px 12px rgba(255, 107, 107, 0.8);
+}
+
+/* --------------------------- */
+/* 🌟 Student List - Smooth Scroll */
+/* --------------------------- */
+.studentWithfaculty-list {
+  list-style: none;
+  padding: 0;
+  margin-top: 10px;
+  max-height: 12rem;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #007bff rgba(255, 255, 255, 0.3);
+}
+
+/* --------------------------- */
+/* 🌟 Student List Item - Hover Elevation */
+/* --------------------------- */
+.studentWithfaculty-list-item {
+  background: rgba(255, 255, 255, 0.4);
+  padding: 14px;
+  margin: 10px 0;
+  border-radius: 12px;
+  font-size: 1.1rem;
+  color: #333;
+  transition: transform 0.3s ease-in-out, background 0.3s ease-in-out;
+  text-align: center;
+  font-weight: 500;
+  position: relative;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* 🔥 Hover Effect */
+.studentWithfaculty-list-item:hover {
+  background: rgba(0, 123, 255, 0.3);
+  transform: scale(1.05);
+  box-shadow: 0px 6px 15px rgba(0, 123, 255, 0.4);
+}
+
+/* --------------------------- */
+/* 🌟 Responsive Design */
+/* --------------------------- */
+@media (max-width: 768px) {
+  .studentWithfaculty-container {
+    flex-direction: column;
+    align-items: center;
   }
 
-  .studentWithfaculty-edit-button {
-    position: relative;
-    top: -20px;
-    background-color: #3498db; /* Light blue color */
-    color: white; /* White text */
-    border: none; /* Remove default border */
-    padding: 10px 20px; /* Add padding for size */
-    font-size: 16px; /* Adjust font size */
-    font-weight: bold; /* Make the text bold */
-    border-radius: 5px; /* Slightly rounded corners */
-    cursor: pointer; /* Pointer cursor on hover */
-    transition: all 0.3s ease; /* Smooth transition effect */
-  }
-  
-  .studentWithfaculty-edit-button:hover {
-    background-color: #2980b9; /* Darker blue on hover */
-    transform: scale(1.05); /* Slight zoom-in effect */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add shadow on hover */
-  }
-  
-  .studentWithfaculty-edit-button:active {
-    background-color: #1c5980; /* Even darker blue when clicked */
-    transform: scale(0.98); /* Slight press-in effect */
-  }
-  
-  
-  /* No data message */
-  .studentWithfaculty-no-data {
-    font-size: 18px;
-    color: #95a5a6;
-    text-align: center;
-    margin-top: 40px;
-    font-style: italic;
-    animation: fadeIn 1.5s ease-in-out;
-  }
-  
-  /* Fade-in animation */
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-      transform: translateY(10px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-  
-  /* Role section styles */
   .studentWithfaculty-role-section {
-    border: 2px solid #dcdfe3;
-    border-radius: 12px;
-    padding: 20px;
-    margin-bottom: 30px;
-    background: linear-gradient(145deg, #ffffff, #f8fafc);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s ease, background-color 0.3s ease;
-    position: relative;
-  }
-  
-  .studentWithfaculty-role-section:hover {
-    transform: translateY(-5px);
-    background: linear-gradient(145deg, #f0f4f8, #ffffff);
-  }
-  
-  /* Role section badge */
-  .studentWithfaculty-role-badge {
-    position: absolute;
-    top: -12px;
-    right: -12px;
-    background-color: #6a11cb;
-    color: #fff;
-    font-size: 14px;
-    font-weight: bold;
-    padding: 8px 12px;
-    border-radius: 50px;
-    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
-    text-transform: uppercase;
-    animation: popIn 0.5s ease;
-  }
-  
-  @keyframes popIn {
-    from {
-      transform: scale(0.8);
-      opacity: 0;
-    }
-    to {
-      transform: scale(1);
-      opacity: 1;
-    }
-  }
-  
-  /* Role title */
-  .studentWithfaculty-role {
-    font-size: 22px;
-    font-weight: 700;
-    color: #34495e;
-    margin-bottom: 15px;
-    border-left: 6px solid #3498db;
-    padding-left: 10px;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
-  }
-  
-  /* Student list */
-  .studentWithfaculty-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-  
-  .studentWithfaculty-list-item {
-    margin-bottom: 20px;
-    padding: 15px;
-    border-radius: 12px;
-    background: #ffffff;
-    border: 1px solid #e1e4e8;
-    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.05);
-    transition: all 0.3s ease;
-    position: relative;
-    overflow: hidden;
-  }
-  
-  .studentWithfaculty-list-item:hover {
-    background: #ecf3fc;
-    transform: translateY(-3px) scale(1.02);
-    box-shadow: 0 5px 12px rgba(0, 0, 0, 0.1);
-  }
-  
-  /* Subtle gradient bar on hover */
-  .studentWithfaculty-list-item::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 5px;
-    width: 0;
-    background: linear-gradient(90deg, #6a11cb, #2575fc);
-    transition: width 0.3s ease;
-  }
-  
-  .studentWithfaculty-list-item:hover::before {
     width: 100%;
   }
-  
-  /* Student name and thesis */
-  .studentWithfaculty-name {
-    font-size: 18px;
-    font-weight: bold;
-    color: #2c3e50;
-  }
-  
-  .studentWithfaculty-thesis {
-    font-size: 16px;
-    color: #7f8c8d;
-    margin-top: 8px;
-    line-height: 1.6;
-    font-style: italic;
-  }
-  
-  /* Loading and error messages */
-  .studentWithfaculty-loading,
-  .studentWithfaculty-error {
-    font-size: 20px;
-    font-weight: 600;
-    text-align: center;
-    margin: 25px 0;
-  }
-  
-  .studentWithfaculty-loading {
-    color: #3498db;
-    animation: bounce 1.5s infinite;
-  }
-  
-  /* Bouncing animation for loading */
-  @keyframes bounce {
-    0%, 100% {
-      transform: translateY(0);
-    }
-    50% {
-      transform: translateY(-10px);
-    }
-  }
-  
-  .studentWithfaculty-error {
-    color: #e74c3c;
-    background-color: #fceeee;
-    border: 1px solid #f5c6cb;
-    padding: 15px;
-    border-radius: 8px;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
-  }
-  
-  /* Add responsiveness */
-  @media (max-width: 768px) {
-    .studentWithfaculty-container {
-      padding: 20px;
-    }
-  
-    .studentWithfaculty-heading {
-      font-size: 24px;
-    }
-  
-    .studentWithfaculty-role {
-      font-size: 18px;
-    }
-  
-    .studentWithfaculty-list-item {
-      padding: 12px;
-    }
-  
-    .studentWithfaculty-name {
-      font-size: 16px;
-    }
-  
-    .studentWithfaculty-thesis {
-      font-size: 14px;
-    }
-  
-    .studentWithfaculty-role-badge {
-      font-size: 12px;
-      padding: 6px 10px;
-    }
-  }
-  
+}

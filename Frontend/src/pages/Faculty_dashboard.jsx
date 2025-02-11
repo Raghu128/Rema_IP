@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import "../styles/FacultyDashboard.css"; 
+import "../styles/FacultyDashboard.css";
+import { useSelector } from "react-redux";
+
 import Projects from "../components/SimpleProjects/Projects";
 import Students from "../components/Supervisor/Students";
 import UserEquipmentList from "../components/Equipment/UserEquipmentList";
@@ -9,63 +11,53 @@ import VenueListComponent from "../components/Venues/VenueListComponent";
 import AddUserForm from "../components/UserForm";
 import DisplaySponsors from "../components/Sponsor/DisplaySponsors";
 import ExpensesList from "../components/Expenses/Allexpenses";
-import FinanceBudgetList from "../components/FinanceBudget/FinanceBudgetList";
 import LandingPage from "../components/LandingPage";
-import { useSelector } from "react-redux";
 
 const FacultyDashboard = () => {
-  // Set "Projects" as the default value for currElement
   const [currElement, setElement] = useState("");
   const { user } = useSelector((state) => state.user);
 
-  // Function to render the current component based on currElement
+  // Function to render the current component based on selected option
   const renderComponent = () => {
-    if (!user?.id) {
-      return <p>Loading... Please wait.</p>; // Show a loading message if user.id is not available
-    }
-    switch (currElement) {
-      case "Projects":
-        return <Projects id={user.id} />;
-      case "Students":
-        return <Students id={user.id} />;
-      case "Venues":
-        return <VenueListComponent />;
-      case "Sponsor":
-        return <DisplaySponsors />;
-      case "Notifications":
-        return <NotificationsList />;
-      case "Add-User":
-        return <AddUserForm/>
-      case "Equipment":
-          return <UserEquipmentList/>
-      case "Expenses":
-        return <ExpensesList/>
-      default:
-        return <LandingPage/>; // Default message when no option is selected
-    }
+    if (!user?.id) return <p>Loading... Please wait.</p>;
+
+    const componentMap = {
+      Projects: <Projects id={user.id} />,
+      Students: <Students id={user.id} />,
+      Venues: <VenueListComponent />,
+      Sponsor: <DisplaySponsors />,
+      Notifications: <NotificationsList />,
+      "Add-User": <AddUserForm />,
+      Equipment: <UserEquipmentList />,
+      Expenses: <ExpensesList />,
+    };
+
+    return componentMap[currElement] || <LandingPage />;
   };
 
+
   return (
-    <div className="dashboard-container">
+    <div className="faculty-dashboard-container">
       {/* Sidebar */}
-      <div className="sidebar">
-        <ul className="sidebar-list">
-          <li className="default-active"><Link onClick={() => setElement("Projects")}>Projects</Link></li>
-          <li><Link onClick={() => setElement("Students")}>Students</Link></li>
-          <li><Link onClick={() => setElement("Sponsor")}>Sponsor</Link></li>
-          {/* <li><Link onClick={() => setElement("Budget")}>Budget</Link></li> */}
-          <li><Link onClick={() => setElement("Expenses")}>Expenses</Link></li>
-          <li><Link onClick={() => setElement("Equipment")}>Equipment</Link></li>
-          {/* <li><Link onClick={() => setElement("Venues")}>Venues</Link></li>
-          <li><Link onClick={() => setElement("Notifications")}>Notifications</Link></li> */}
-          <li><Link onClick={() => setElement("Add-User")}>Add User</Link></li>
+      <div className="faculty-sidebar">
+        <ul className="faculty-sidebar-list">
+          {[
+            "Projects",
+            "Students",
+            "Sponsor",
+            "Expenses",
+            "Equipment",
+            "Add-User",
+          ].map((item) => (
+            <li key={item}>
+              <Link onClick={() => setElement(item)}>{item}</Link>
+            </li>
+          ))}
         </ul>
       </div>
 
-      {/* Main Content Area */}
-      <div className="main-content">
-        {renderComponent()}
-      </div>
+      {/* Main Content */}
+      <div className="faculty-main-content">{renderComponent()}</div>
     </div>
   );
 };

@@ -1,50 +1,46 @@
-import React, { useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
-import "../styles/NavBar.css";
+import "../styles/Navbar.css";
 
 const Navbar = () => {
   const { user } = useSelector((state) => state.user);
 
-
-  async function logoutUser() {
-
+  const logoutUser = async () => {
     try {
       const response = await fetch('/api/v1/logout', {
-        method: 'POST', // or 'GET', depending on your implementation
-        headers: {
-          'Content-Type': 'application/json',
-          // Optionally, add the Authorization token if required
-          // 'Authorization': `Bearer ${yourToken}`
-        },
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
       });
-
-      const data = await response.json();
 
       if (response.ok) {
         window.location.reload();
       } else {
-        console.error(data.message); // Handle error (e.g., show an alert)
+        const data = await response.json();
+        console.error(data.message);
       }
     } catch (error) {
-      console.error('Error logging out:', error); // Handle network errors
+      console.error("Error logging out:", error);
     }
-  }
-
+  };
 
   return (
     <nav className="navbar">
-      <div className="navbar-website-name" onClick={() => window.location.href = "/"}>
-        <img src="/images.jpeg" alt="rema logo" />
+      <div className="navbar-brand" onClick={() => window.location.href = "/"}>
+        <img src="/images.jpeg" alt="Website Logo" className="navbar-logo" />
       </div>
 
-
-
-      {/* Navigation Links */}
-      {user && <ul className={`nav-links`}>
-        <li><Link onClick={logoutUser}>Logout</Link></li>
-      </ul>}
+      <div className="navbar-menu">
+        {user && <span className="navbar-user">Hello, {user?.email.split("@")[0]}</span>}
+        <ul className="navbar-links">
+          {user && (
+            <li>
+              <button className="navbar-logout" onClick={logoutUser}>Logout</button>
+            </li>
+          )}
+        </ul>
+      </div>
     </nav>
   );
 };

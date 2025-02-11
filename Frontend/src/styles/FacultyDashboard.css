@@ -1,140 +1,186 @@
-/* Basic styles for the dashboard */
-.dashboard-container {
+/* Faculty Dashboard Layout */
+.faculty-dashboard-container {
   display: flex;
-  height: 92vh;
-  transition: all 0.3s ease-in-out;
-  flex-direction: row;
-  font-family: Arial, sans-serif;
+  height: 100vh;
+  background: linear-gradient(135deg, #f4f4f4, #e0e0e0);
+  overflow: hidden;
+  transition: all 0.4s ease-in-out;
 }
 
-/* Sidebar styling */
-.sidebar {
-  background-color: #2f3b52;
-  color: #ffffff;
-  width: 150px; 
-  height: 100%;
-  padding: 25px;
-  transition: all 0.3s ease-in-out;
-  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+/* Sidebar Styling */
+.faculty-sidebar {
+  width: 9rem;
+  background: linear-gradient(180deg, #2c3e50, #34495e);
+  color: white;
+  padding: 20px;
+  box-shadow: 4px 0 10px rgba(0, 0, 0, 0.3);
+  transition: width 0.4s ease-in-out;
+  position: relative;
+  overflow: hidden;
 }
 
-.sidebar-toggle {
-  background-color: #2f3b52;
-  color: #ffffff;
-  font-size: 18px;
-  border: none;
-  cursor: pointer;
-  position: absolute;
-  top: 20px;
-  right: -50px;
+/* Sidebar Collapsible */
+.faculty-sidebar.collapsed {
+  width: 80px;
   padding: 10px;
-  border-radius: 50%; /* Circular button for better aesthetics */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Shadow for floating effect */
-  transition: transform 0.3s ease, background-color 0.3s ease;
 }
 
-.sidebar-toggle:hover {
-  background-color: #1a2536;
-  transform: scale(1.1); /* Slight zoom on hover */
+/* Sidebar Expand Effect */
+.faculty-sidebar:hover {
+  width: 15rem;
 }
 
-.sidebar-list {
+/* Sidebar List */
+.faculty-sidebar-list {
   list-style: none;
   padding: 0;
   margin: 0;
 }
 
-.sidebar-list li {
-  margin: 20px 0;
+.faculty-sidebar-list li {
+  margin-bottom: 14px;
+  position: relative;
+  transition: transform 0.3s ease-in-out;
 }
 
-.sidebar-list li a {
+/* Sidebar Link Styling */
+.faculty-sidebar-list a {
   text-decoration: none;
-  color: #ffffff;
-  font-size: 18px;
-  font-weight: 500; /* Slightly bold for readability */
+  color: white;
   display: flex;
   align-items: center;
-  gap: 10px; /* Space between icons and text */
-  transition: color 0.3s ease, transform 0.3s ease;
+  gap: 10px;
+  padding: 12px 16px;
+  border-radius: 6px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  transition: background 0.3s ease-in-out, transform 0.2s, box-shadow 0.3s;
+  position: relative;
+  overflow: hidden;
 }
 
-.sidebar-list li a:hover {
-  color: #3498db; /* Highlight color on hover */
-  transform: translateX(5px); /* Subtle move on hover */
+/* Sidebar Hover Effect */
+.faculty-sidebar-list a:hover {
+  background: linear-gradient(90deg, #f39c12, #e67e22);
+  transform: translateX(6px);
+  box-shadow: 2px 2px 10px rgba(243, 156, 18, 0.5);
 }
 
-.sidebar-footer {
-  margin-top: auto; /* Push footer links to the bottom */
-  text-align: center;
-  font-size: 14px;
-  color: #bdc3c7; /* Lighter text for footer */
+/* Active Sidebar Link */
+.faculty-sidebar-list li.active a {
+  background: #e67e22;
+  font-weight: bold;
+  box-shadow: 0px 0px 15px rgba(230, 126, 34, 0.6);
 }
 
-/* Main content area */
-.main-content {
-  flex-grow: 1;
-  padding: 30px;
-  background-color: #f1f3f7;
+/* Sidebar Icons */
+.faculty-sidebar-list a i {
+  font-size: 18px;
+  transition: transform 0.3s ease-in-out;
 }
 
-.main-content h1 {
-  font-size: 2rem;
-  margin-bottom: 20px;
-  color: #2c3e50; /* Darker color for better contrast */
+/* Animate Icons on Hover */
+.faculty-sidebar-list a:hover i {
+  transform: rotate(10deg);
 }
 
-.main-content p {
-  font-size: 1rem;
-  line-height: 1.6; /* Improve readability */
-  color: #4d586f;
+/* Ripple Effect on Click */
+.faculty-sidebar-list a:active::after {
+  content: "";
+  position: absolute;
+  background: rgba(255, 255, 255, 0.3);
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  transform: scale(0);
+  animation: ripple 0.5s ease-out forwards;
 }
 
-/* Responsive Design */
+@keyframes ripple {
+  to {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
+
+/* Animated Active Indicator */
+.faculty-sidebar-list li.active::before {
+  content: "";
+  position: absolute;
+  left: -10px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 6px;
+  height: 60%;
+  background: #f1c40f;
+  border-radius: 5px;
+  animation: glow 1s infinite alternate;
+}
+
+/* Glow Animation for Active Indicator */
+@keyframes glow {
+  from {
+    box-shadow: 0px 0px 8px rgba(241, 196, 15, 0.5);
+  }
+  to {
+    box-shadow: 0px 0px 16px rgba(241, 196, 15, 0.9);
+  }
+}
+
+/* Main Content Area */
+.faculty-main-content {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+  background: white;
+  border-radius: 12px;
+  margin: 20px;
+  animation: slideIn 0.5s ease-in-out;
+}
+
+/* Slide-in Animation for Main Content */
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Sidebar Toggle Button */
+.faculty-sidebar-toggle {
+  position: absolute;
+  top: 20px;
+  right: -30px;
+  background: #e67e22;
+  color: white;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  box-shadow: 2px 2px 10px rgba(230, 126, 34, 0.5);
+}
+
+.faculty-sidebar-toggle:hover {
+  background: #f39c12;
+}
+
+/* Responsive Sidebar Adjustments */
 @media (max-width: 768px) {
-  .sidebar {
-    width: 70px; /* Compact sidebar for smaller screens */
-    padding: 10px;
+  .faculty-sidebar {
+    width: 220px;
   }
 
-  .sidebar-list li a {
-    font-size: 16px;
+  .faculty-sidebar:hover {
+    width: 240px;
   }
 
-  .sidebar-toggle {
-    right: -40px;
-    font-size: 16px;
-  }
-
-  .main-content {
+  .faculty-main-content {
+    margin: 10px;
     padding: 15px;
   }
-
-  .main-content h1 {
-    font-size: 1.8rem;
-  }
-}
-
-/* Accessibility Enhancements */
-.sidebar-toggle:focus,
-.sidebar-list li a:focus {
-  border-bottom: 2px solid #3498db;
-  outline-offset: 2px;
-}
-
-.sidebar-list li a:active {
-  color: #1abc9c; /* Slightly different color for active state */
-}
-
-/* Additional Enhancements */
-.sidebar-list li a svg {
-  font-size: 20px;
-  transition: transform 0.3s ease;
-}
-
-.sidebar-list li a:hover svg {
-  transform: rotate(15deg); /* Fun effect on icons during hover */
 }
