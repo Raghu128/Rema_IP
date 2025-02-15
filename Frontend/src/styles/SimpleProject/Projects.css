@@ -105,10 +105,10 @@ h1 {
 }
 
 /* 🎭 3D Depth & Parallax Hover */
-.project-item:hover {
+/* .project-item:hover {
   transform: perspective(800px) rotateX(6deg) rotateY(-6deg) scale(1.05);
   box-shadow: 6px 12px 25px rgba(0, 0, 0, 0.3);
-}
+} */
 
 /* 🌟 Project Title */
 .project-title {
@@ -141,9 +141,6 @@ h1 {
   overflow: scroll;
 }
 
-/* 🌟 Custom Scrollbar */
-.team-members-list::-webkit-scrollbar {
-}
 
 .team-members-list::-webkit-scrollbar-thumb {
   background-color: rgba(0, 123, 255, 0.5);
@@ -225,4 +222,17 @@ h1 {
   box-shadow: 0 0 10px rgba(0, 123, 255, 0.3);
   outline: none;
   transform: scale(1.02);
+}
+
+
+.project-toggle-button{
+  position: absolute;
+  bottom: 0;
+  right: 1rem;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.project-toggle-button:hover{
+  text-decoration: underline;
 }

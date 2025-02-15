@@ -8,7 +8,8 @@ const Projects = ({ id }) => {
   const [filteredProjects, setFilteredProjects] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [searchQuery, setSearchQuery] = useState(""); // State for search query
+  const [searchQuery, setSearchQuery] = useState("");
+  const [expandedProject, setExpandedProject] = useState(null);
   const navigate = useNavigate();
 
   const getUserName = async (userId) => {
@@ -30,6 +31,9 @@ const Projects = ({ id }) => {
 
         const updatedProjects = await Promise.all(
           projects.map(async (project) => {
+            const facultyName = await getUserName(project.faculty_id);
+            const leadAuthorName = await getUserName(project.lead_author);
+            
             const updatedTeamMembers = await Promise.all(
               project.team.map(async (teamMemberId) => {
                 const name = await getUserName(teamMemberId);
@@ -44,13 +48,15 @@ const Projects = ({ id }) => {
 
             return {
               ...project,
+              facultyName,
+              leadAuthorName,
               teamMembersMap,
             };
           })
         );
 
         setProjectData(updatedProjects);
-        setFilteredProjects(updatedProjects); // Initialize filteredProjects with full list
+        setFilteredProjects(updatedProjects);
         setLoading(false);
       } catch (err) {
         setError("Error fetching project data from backend");
@@ -61,7 +67,6 @@ const Projects = ({ id }) => {
     fetchProject();
   }, [id]);
 
-  // Search filter function
   useEffect(() => {
     if (projectData) {
       const filtered = projectData.filter((project) =>
@@ -71,20 +76,14 @@ const Projects = ({ id }) => {
     }
   }, [searchQuery, projectData]);
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-
-  if (error) {
-    return <div>{error}</div>;
-  }
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>{error}</div>;
 
   return (
     <div className="project-container">
       <h1>Projects</h1>
       <button className="project-edit-button" onClick={() => navigate('/update-project')}>Edit</button>
-
-      {/* 🔍 Search Bar */}
+      
       <input
         type="text"
         placeholder="Search project ..."
@@ -99,10 +98,13 @@ const Projects = ({ id }) => {
             <div key={index} className="project-item">
               <div className="project-header">
                 <h2 className="project-title">{project.name}</h2>
+                
               </div>
-              <p className="project-domain">{project.domain}</p>
-              <h4 className="project-lead">Project Lead: {project.teamMembersMap[project.lead_author]}</h4>
-              <h4 className="team-members-title">Team members:</h4>
+              
+              <p><strong>Domain:</strong> {project.domain}</p>
+              <p><strong>Sub-Domain:</strong> {project.sub_domain}</p>
+              <p><strong>Project Lead:</strong> {project.leadAuthorName}</p>
+              <h4>Team members:</h4>
               <ul className="team-members-list">
                 {project.team && project.team.length > 0 ? (
                   project.team.map((teamMemberId, index) => (
@@ -114,6 +116,30 @@ const Projects = ({ id }) => {
                   <p>No team members found</p>
                 )}
               </ul>
+              
+              {expandedProject === index && (
+                <div className="full-project-info">
+                  <p><strong>Status:</strong> {project.status}</p>
+                  <p><strong>Venue:</strong> {project.venue || "N/A"}</p>
+                  <p><strong>Created on:</strong> {new Date(project.creation_date).toLocaleDateString()}</p>
+                  <p><strong>End Date:</strong> {project.end_date ? new Date(project.end_date).toLocaleDateString() : "N/A"}</p>
+                  <p><strong>Date of Submission:</strong> {project.date_of_submission ? new Date(project.date_of_submission).toLocaleDateString() : "N/A"}</p>
+                  <p><strong>Next Deadline:</strong> {project.next_deadline ? new Date(project.next_deadline).toLocaleDateString() : "N/A"}</p>
+                  <p><strong>Remarks:</strong> {project.remarks || "No remarks"}</p>
+                    <p>
+                      📄 <strong>Paper:</strong> <a href={project.paper_url} target="_blank" rel="noopener noreferrer">View Paper</a>
+                    </p>
+                    <p>
+                      📩 <strong>Submission:</strong> <a href={project.submission_url} target="_blank" rel="noopener noreferrer">View Submission</a>
+                    </p>
+                </div>
+              )}
+              <span 
+                  className="project-toggle-button" 
+                  onClick={() => setExpandedProject(expandedProject === index ? null : index)}
+                >
+                  {expandedProject === index ? "less" : "more"}
+                </span>
             </div>
           ))
         ) : (
