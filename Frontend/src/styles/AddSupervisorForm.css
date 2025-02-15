@@ -1,215 +1,211 @@
-/* Enhanced AddSupervisorForm CSS */
+/* ---------- Global Styling ---------- */
 .supervisor-form-container {
-  max-width: 800px;
-  margin: 20px auto;
-  padding: 30px;
-  border: 1px solid #e3e6f0;
+  max-width: 600px;
+  margin: 40px auto;
+  padding: 25px;
+  background: linear-gradient(135deg, #ffffff, #f9f9f9);
   border-radius: 12px;
-  background: linear-gradient(145deg, #ffffff, #f3f4f7);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  height: 90vh;
-  overflow: scroll;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  font-family: "Poppins", sans-serif;
+  animation: fadeInSlide 0.8s ease-in-out;
+  position: relative;
+  overflow: hidden;
 }
 
-.supervisor-form-container:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+/* Form Entrance Animation */
+@keyframes fadeInSlide {
+  from {
+      opacity: 0;
+      transform: translateY(-30px);
+  }
+  to {
+      opacity: 1;
+      transform: translateY(0);
+  }
 }
 
+/* Title Animation */
 .supervisor-title {
   text-align: center;
-  font-size: 28px;
-  font-weight: bold;
-  color: #34495e;
-  margin-bottom: 30px;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-}
-
-.supervisor-message {
-  text-align: center;
-  font-size: 16px;
-  color: #3498db;
-  margin-bottom: 20px;
-}
-
-.supervisor-list {
-  margin-bottom: 30px;
-}
-
-.supervisor-list h3 {
-  font-size: 24px;
+  font-size: 1.8rem;
   font-weight: 600;
-  color: #2c3e50;
-  margin-bottom: 15px;
+  color: #333;
+  margin-bottom: 20px;
+  position: relative;
+  animation: slideInTitle 0.8s ease-in-out;
 }
 
-.supervisor-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 12px 15px;
-  border: 1px solid #dfe6e9;
-  border-radius: 8px;
-  margin-bottom: 12px;
-  background-color: #f9f9f9;
-  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+@keyframes slideInTitle {
+  from {
+      opacity: 0;
+      transform: translateY(-20px);
+  }
+  to {
+      opacity: 1;
+      transform: translateY(0);
+  }
 }
 
-.supervisor-item:hover {
-  background-color: #ecf0f1;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+/* Floating Background Animation */
+.supervisor-form-container::before {
+  content: "";
+  position: absolute;
+  top: -50px;
+  left: -50px;
+  width: 120px;
+  height: 120px;
+  background: rgba(0, 123, 255, 0.2);
+  border-radius: 50%;
+  z-index: 0;
+  animation: floating 5s infinite alternate ease-in-out;
 }
 
-.supervisor-item p {
-  margin: 0;
-  color: #34495e;
-  font-size: 14px;
+.supervisor-form-container::after {
+  content: "";
+  position: absolute;
+  bottom: -50px;
+  right: -50px;
+  width: 120px;
+  height: 120px;
+  background: rgba(255, 165, 0, 0.2);
+  border-radius: 50%;
+  z-index: 0;
+  animation: floating 6s infinite alternate ease-in-out;
 }
 
-.supervisor-edit-container{
-  display: flex;
-  justify-content: space-between;
-  width: 20%;
+@keyframes floating {
+  from {
+      transform: translateY(-10px) translateX(-10px);
+  }
+  to {
+      transform: translateY(10px) translateX(10px);
+  }
 }
 
-.supervisor-edit-button {
-  background: linear-gradient(145deg, #3498db, #2980b9);
-  color: #fff;
-  border: none;
-  padding: 8px 14px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 14px;
-  transition: background 0.3s ease, transform 0.2s ease;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
-
-.supervisor-delete-button{
-  background: linear-gradient(145deg, #e73434, #e9180d);
-  color: #fff;
-  border: none;
-  padding: 8px 14px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 14px;
-  transition: background 0.3s ease, transform 0.2s ease;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
-
-.supervisor-edit-button:hover {
-  background: linear-gradient(145deg, #2980b9, #3498db);
-  transform: translateY(-2px);
-}
-
-.supervisor-delete-button:hover{
-  background: linear-gradient(145deg, #e04242, #a50303);
-  transform: translateY(-2px);
-}
-
+/* Form Styling */
 .supervisor-form {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  position: relative;
+  z-index: 1;
+  gap: 0.8rem;
 }
 
-.supervisor-field {
-  display: flex;
-  flex-direction: column;
-}
-
-.supervisor-label {
-  font-size: 14px;
-  font-weight: 600;
-  color: #2c3e50;
+/* Label Styling */
+label {
+  font-weight: 500;
+  color: #555;
   margin-bottom: 6px;
-  transition: color 0.3s ease;
+  display: block;
+  font-size: 0.95rem;
+  transition: 0.3s ease-in-out;
 }
 
-.supervisor-input,
-.supervisor-select {
-  padding: 12px;
-  border: 1px solid #dfe6e9;
-  border-radius: 6px;
-  font-size: 14px;
-  background-color: #ffffff;
-  color: #2c3e50;
-  transition: border-color 0.3s ease, box-shadow 0.2s ease;
+/* Floating Label Effect */
+input:focus + label,
+select:focus + label {
+  transform: translateY(-20px);
+  font-size: 0.85rem;
+  color: #007bff;
 }
 
-.supervisor-input:focus,
-.supervisor-select:focus {
-  border-color: #3498db;
+/* Input Fields */
+input,
+select {
+  width: 100%;
+  padding: 10px;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: all 0.3s ease-in-out;
+  background: #fff;
+  position: relative;
+}
+
+/* Glowing Effect on Focus */
+input:focus,
+select:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 12px rgba(0, 123, 255, 0.4);
   outline: none;
-  box-shadow: 0 0 6px rgba(52, 152, 219, 0.5);
+  transform: scale(1.03);
 }
 
-.supervisor-input:hover,
-.supervisor-select:hover {
-  border-color: #2980b9;
-}
-
-.committee-checkboxes {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-}
-
-.committee-checkbox {
-  display: flex;
-  align-items: center;
-}
-
-.committee-checkbox label {
-  margin-left: 6px;
-  font-size: 14px;
-  color: #34495e;
-}
-
-.supervisor-button {
-  padding: 12px 20px;
-  font-size: 16px;
-  font-weight: bold;
+/* Animated Submit Button */
+button {
+  margin-top: 15px;
+  padding: 12px;
+  background: linear-gradient(135deg, #007bff, #0056b3);
   color: #fff;
-  background: linear-gradient(145deg, #28a745, #218838);
   border: none;
   border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
   cursor: pointer;
-  transition: background 0.3s ease, transform 0.2s ease;
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease-in-out;
+  box-shadow: 0 5px 15px rgba(0, 123, 255, 0.3);
+  position: relative;
 }
 
-.supervisor-button:hover {
-  background: linear-gradient(145deg, #218838, #28a745);
-  transform: translateY(-2px);
+/* Button Hover - 3D Bounce */
+button:hover {
+  background: linear-gradient(135deg, #0056b3, #003580);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0, 123, 255, 0.5);
 }
 
+/* Button Click Effect */
+button:active {
+  transform: scale(0.98);
+}
+
+/* Success/Error Message */
+.supervisor-message {
+  text-align: center;
+  font-weight: bold;
+  font-size: 1rem;
+  padding: 10px;
+  border-radius: 6px;
+  margin-top: 10px;
+  opacity: 0;
+  animation: fadeInMessage 0.5s ease-in-out forwards;
+}
+
+@keyframes fadeInMessage {
+  from {
+      opacity: 0;
+      transform: translateY(-10px);
+  }
+  to {
+      opacity: 1;
+      transform: translateY(0);
+  }
+}
+
+.supervisor-message.success {
+  background: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+}
+
+.supervisor-message.error {
+  background: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+}
+
+/* Responsive Design */
 @media (max-width: 768px) {
   .supervisor-form-container {
-    padding: 20px;
+      width: 90%;
+      padding: 20px;
   }
 
   .supervisor-title {
-    font-size: 22px;
+      font-size: 1.5rem;
   }
 
-  .supervisor-item {
-    flex-direction: column;
-    gap: 10px;
-  }
-
-  .supervisor-edit-button {
-    width: 100%;
-    text-align: center;
-  }
-
-  .supervisor-button {
-    width: 100%;
-  }
-
-  .supervisor-input,
-  .supervisor-select {
-    padding: 12px;
+  button {
+      font-size: 0.95rem;
   }
 }

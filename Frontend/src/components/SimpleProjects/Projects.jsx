@@ -5,11 +5,11 @@ import "../../styles/SimpleProject/Projects.css";
 
 const Projects = ({ id }) => {
   const [projectData, setProjectData] = useState(null);
+  const [filteredProjects, setFilteredProjects] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  // const [teamMembers, setTeamMembers] = useState({});
+  const [searchQuery, setSearchQuery] = useState(""); // State for search query
   const navigate = useNavigate();
-  const [dropdownVisible, setDropdownVisible] = useState(null); // State to manage visibility of the dropdown menu
 
   const getUserName = async (userId) => {
     try {
@@ -20,8 +20,6 @@ const Projects = ({ id }) => {
       return "Unknown User";
     }
   };
-
-  
 
   useEffect(() => {
     const fetchProject = async () => {
@@ -52,6 +50,7 @@ const Projects = ({ id }) => {
         );
 
         setProjectData(updatedProjects);
+        setFilteredProjects(updatedProjects); // Initialize filteredProjects with full list
         setLoading(false);
       } catch (err) {
         setError("Error fetching project data from backend");
@@ -62,14 +61,15 @@ const Projects = ({ id }) => {
     fetchProject();
   }, [id]);
 
-  const toggleDropdown = (index) => {
-    setDropdownVisible(dropdownVisible === index ? null : index); // Toggle visibility based on the index
-  };
-
-  const handleEdit = (projectId) => {
-    navigate("/update-project")
-  };
-
+  // Search filter function
+  useEffect(() => {
+    if (projectData) {
+      const filtered = projectData.filter((project) =>
+        project.name.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+      setFilteredProjects(filtered);
+    }
+  }, [searchQuery, projectData]);
 
   if (loading) {
     return <div>Loading...</div>;
@@ -79,19 +79,26 @@ const Projects = ({ id }) => {
     return <div>{error}</div>;
   }
 
-
   return (
     <div className="project-container">
-      <h1>Projects </h1>
+      <h1>Projects</h1>
       <button className="project-edit-button" onClick={() => navigate('/update-project')}>Edit</button>
 
+      {/* 🔍 Search Bar */}
+      <input
+        type="text"
+        placeholder="Search project ..."
+        className="search-bar"
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
+      />
+
       <div className="project-details-container">
-        {projectData && projectData.length > 0 ? (
-          projectData.map((project, index) => (
+        {filteredProjects && filteredProjects.length > 0 ? (
+          filteredProjects.map((project, index) => (
             <div key={index} className="project-item">
               <div className="project-header">
-                <h2 className="project-title">Name: {project.name}</h2>
-                
+                <h2 className="project-title">{project.name}</h2>
               </div>
               <p className="project-domain">{project.domain}</p>
               <h4 className="project-lead">Project Lead: {project.teamMembersMap[project.lead_author]}</h4>
@@ -100,14 +107,13 @@ const Projects = ({ id }) => {
                 {project.team && project.team.length > 0 ? (
                   project.team.map((teamMemberId, index) => (
                     <li key={index} className="team-member">
-                      {index+1}. {project.teamMembersMap[teamMemberId]}
+                      {index + 1}. {project.teamMembersMap[teamMemberId]}
                     </li>
                   ))
                 ) : (
                   <p>No team members found</p>
                 )}
               </ul>
-
             </div>
           ))
         ) : (

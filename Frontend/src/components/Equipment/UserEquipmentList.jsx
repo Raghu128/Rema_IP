@@ -1,11 +1,11 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import "../../styles/Equipment/UserEquipmentList.css"; 
 
 const UserEquipmentList = () => {
-    const { user } = useSelector((state) => state.user);
+  const { user } = useSelector((state) => state.user);
   const [equipment, setEquipment] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -13,12 +13,10 @@ const UserEquipmentList = () => {
 
   useEffect(() => {
     if (!user) return;
-    
+
     const fetchEquipment = async () => {
       try {
-        const response = await axios.get(
-          `api/v1/equipment/${user.id}`
-        );
+        const response = await axios.get(`api/v1/equipment/${user.id}`);
         setEquipment(response.data.equipment);
       } catch (err) {
         setError("Failed to fetch equipment. Please try again.");
@@ -31,29 +29,43 @@ const UserEquipmentList = () => {
   }, [user]);
 
   if (!user) {
-    return <p>Please log in to view your equipment.</p>;
+    return <p className="equipment-list-message">Please log in to view your equipment.</p>;
   }
 
   return (
     <div className="equipment-list-container">
-      <h2>Your Equipment</h2>
-      <button onClick={() => navigate('manage-equipment')}>Manage</button>
-      
+      <button onClick={() => navigate("/manage-equipment")} className="manage-equipment-btn">
+        Manage Equipment
+      </button>
+
+      <h2 className="equipment-list-title">Your Equipment</h2>
+
       {loading && <p className="loading">Loading equipment...</p>}
       {error && <p className="error">{error}</p>}
-      
-      {!loading && equipment.length === 0 && <p>No equipment found.</p>}
+      {!loading && equipment.length === 0 && <p className="equipment-list-message">No equipment found.</p>}
 
-      <ul className="equipment-list">
-        {equipment.map((item) => (
-          <li key={item.id} className="equipment-item">
-            <h3>{item.name}</h3>
-            <p><strong>Price:</strong> {item.amount.$numberDecimal}</p>
-            <p><strong>Location:</strong> {item.location}</p>
-            <p><strong>Added On:</strong> {new Date(item.createdAt).toLocaleDateString()}</p>
-          </li>
-        ))}
-      </ul>
+      {!loading && equipment.length > 0 && (
+        <table className="equipment-table">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Price (₹)</th>
+              <th>Location</th>
+              <th>Added On</th>
+            </tr>
+          </thead>
+          <tbody>
+            {equipment.map((item) => (
+              <tr key={item.id}>
+                <td>{item.name}</td>
+                <td>₹{parseFloat(item.amount.$numberDecimal).toFixed(2)}</td>
+                <td>{item.location}</td>
+                <td>{new Date(item.createdAt).toLocaleDateString()}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
     </div>
   );
 };

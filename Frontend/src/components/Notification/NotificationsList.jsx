@@ -27,6 +27,34 @@ const NotificationsList = () => {
     fetchNotifications();
   }, [user]);
 
+  // Function to get an icon for notification type
+  const getTypeIcon = (type) => {
+    switch (type?.toLowerCase()) {
+      case "todo":
+        return "📝"; // Notepad icon
+      case "reminder":
+        return "⏰"; // Alarm clock icon
+      case "deadline":
+        return "📅"; // Calendar icon
+      default:
+        return "📌"; // Default pin icon
+    }
+  };
+
+  // Function to get an icon for priority
+  const getPriorityIcon = (priority) => {
+    switch (priority?.toLowerCase()) {
+      case "high":
+        return "🔴"; // Red circle for high priority
+      case "medium":
+        return "🟠"; // Orange circle for medium priority
+      case "low":
+        return "🟢"; // Green circle for low priority
+      default:
+        return "⚪"; // Default white circle
+    }
+  };
+
   return (
     <div className="notification-container">
       <button className="add-btn" onClick={() => navigate("/manage-notification")}>
@@ -41,13 +69,22 @@ const NotificationsList = () => {
         <div className="notification-grid">
           {notifications.map((notif) => (
             <div key={notif._id} className="notification-card">
-              <h3>{notif.type || "General"}</h3>
-              <p>📩 {notif.text}</p>
-              <p>📅 {new Date(notif.creation_date).toLocaleDateString()}</p>
-              <p>⏳ Due: {new Date(notif.due_date).toLocaleDateString()}</p>
-              <span className={`priority ${notif.priority.toLowerCase()}`}>
-                {notif.priority}
-              </span>
+              {/* Tags for Notification Type and Priority */}
+              <div className="notification-tags">
+                <span className="type-icon">{getTypeIcon(notif.type)}</span>
+                <span className="priority-icon">{getPriorityIcon(notif.priority)}</span>
+              </div>
+
+              {/* Notification Details */}
+              <p className="notification-text">📩 {notif.text}</p>
+
+              {/* Due Date */}
+              <p className="notification-date">📅 Due: {new Date(notif.due_date).toLocaleDateString()}</p>
+
+              {/* Added By */}
+              <p className="notification-added-by">
+                🏷️ Added by: {notif.added_by === user.id ? "Self" : notif.added_by_name}
+              </p>
             </div>
           ))}
         </div>

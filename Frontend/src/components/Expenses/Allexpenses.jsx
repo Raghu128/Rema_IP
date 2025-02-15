@@ -38,34 +38,50 @@ const ExpensesList = () => {
 
   return (
     <div className="expenses-list-container">
-        <button onClick={() => navigate("/manage-expense")}>Manage</button>
+      <button onClick={() => navigate("/manage-expense")} className="manage-expense-btn">
+        Manage Expenses
+      </button>
+
       <h2 className="expenses-list-title">User Expenses</h2>
+
       {expenseData.length === 0 ? (
         <p className="expenses-list-message">No expenses found.</p>
       ) : (
-        expenseData.map(({ sponsorProject, expenses }) => (
-          <div key={sponsorProject.id} className="expenses-list-card">
-            <h3 className="expenses-list-project">
-              {sponsorProject.title} <span>({sponsorProject.agency})</span>
-            </h3>
-            <p className="expenses-list-budget">
-              <strong>Budget:</strong> ₹{parseFloat(sponsorProject.budget.$numberDecimal).toFixed(2)}
-            </p>
-            <ul className="expenses-list-items">
+        <div>
+          {expenseData.map(({ sponsorProject, expenses }) => (
+            <div key={sponsorProject.id} className="expenses-project-section">
+              <h3 className="expenses-list-project">
+                {sponsorProject.title} <span>({sponsorProject.agency})</span>
+              </h3>
+              <p className="expenses-list-budget">
+                <strong>Budget:</strong> ₹{parseFloat(sponsorProject.budget.$numberDecimal).toFixed(2)}
+              </p>
+
               {expenses.length === 0 ? (
                 <p className="expenses-list-no-expense">No expenses recorded for this project.</p>
               ) : (
-                expenses.map(expense => (
-                  <li key={expense._id} className="expenses-list-item">
-                    <strong>Item:</strong> {expense.item} | 
-                    <strong> Amount:</strong> ₹{parseFloat(expense.amount.$numberDecimal).toFixed(2)} |
-                    <strong>Head:</strong> {expense.head}
-                  </li>
-                ))
+                <table className="expenses-table">
+                  <thead>
+                    <tr>
+                      <th>Item</th>
+                      <th>Amount (₹)</th>
+                      <th>Head</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {expenses.map((expense) => (
+                      <tr key={expense._id}>
+                        <td>{expense.item}</td>
+                        <td>{parseFloat(expense.amount.$numberDecimal).toFixed(2)}</td>
+                        <td>{expense.head}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
               )}
-            </ul>
-          </div>
-        ))
+            </div>
+          ))}
+        </div>
       )}
     </div>
   );

@@ -12,12 +12,12 @@ const LandingPage = () => {
       
 
       <div className="landingpage-content">
-        <div className="landingpage-card">
+        <div className="landingpage-notification">
           <h2>📢 Notifications</h2>
           <NotificationsList />
         </div>
 
-        <div className="landingpage-card">
+        <div className="landingpage-venue">
           <h2>📍 Venues</h2>
           <VenueListComponent />
         </div>

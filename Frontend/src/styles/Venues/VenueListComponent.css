@@ -99,3 +99,11 @@
 .venue-card .view-details:hover {
   background: #0056b3;
 }
+
+
+.expand-btn, .collapse-btn{
+  border: none;
+  width: 3rem;
+  height: 2rem;
+  font-size: 0.6rem;
+}
