@@ -1,13 +1,26 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import axios from "axios";
 import "../../styles/Notification/NotificationsList.css";
 import { useNavigate } from "react-router-dom";
+
+// Function to fetch user name based on userId
+const getUserName = async (userId) => {
+  try {
+    const response = await axios.get(`/api/v1/userbyid/${userId}`);
+    return response.data[0]?.name || "Unknown User"; // Ensure fallback if name is missing
+  } catch (err) {
+    console.error("Error fetching user name", err);
+    return "Unknown User";
+  }
+};
 
 const NotificationsList = () => {
   const { user } = useSelector((state) => state.user);
   const [notifications, setNotifications] = useState([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+  console.log(notifications);
 
   useEffect(() => {
     if (!user || !user.id) return;
@@ -16,7 +29,16 @@ const NotificationsList = () => {
       try {
         const response = await fetch(`/api/v1/notifications/${user.id}`);
         const data = (await response.json()).notification;
-        setNotifications(data);
+
+        // Fetch user names for added_by field
+        const updatedNotifications = await Promise.all(
+          data.map(async (notif) => {
+            const addedByName = notif.added_by === user.id ? "Self" : await getUserName(notif.added_by);
+            return { ...notif, added_by_name: addedByName };
+          })
+        );
+
+        setNotifications(updatedNotifications);
       } catch (error) {
         console.error("Error fetching notifications:", error);
       } finally {
@@ -27,17 +49,42 @@ const NotificationsList = () => {
     fetchNotifications();
   }, [user]);
 
+  // Function to check if notification is expired
+  const isExpired = (dueDate) => new Date(dueDate) < new Date();
+
+  // Function to delete a notification
+  const deleteNotification = async (id, added_by) => {
+    if(added_by !== user?.id) {
+      alert("You cannot delete this");
+      return;
+    }
+    const confirmDelete = window.confirm("Are you sure you want to delete this notification?");
+    if (!confirmDelete) return;
+
+
+    try {
+      const response = await fetch(`/api/v1/notifications/${id}`, { method: "DELETE" });
+      if (response.ok) {
+        setNotifications((prev) => prev.filter((notif) => notif._id !== id));
+      } else {
+        console.error("Failed to delete notification");
+      }
+    } catch (error) {
+      console.error("Error deleting notification:", error);
+    }
+  };
+
   // Function to get an icon for notification type
   const getTypeIcon = (type) => {
     switch (type?.toLowerCase()) {
       case "todo":
-        return "📝"; // Notepad icon
+        return "📝";
       case "reminder":
-        return "⏰"; // Alarm clock icon
+        return "⏰";
       case "deadline":
-        return "📅"; // Calendar icon
+        return "📅";
       default:
-        return "📌"; // Default pin icon
+        return "📌";
     }
   };
 
@@ -45,13 +92,13 @@ const NotificationsList = () => {
   const getPriorityIcon = (priority) => {
     switch (priority?.toLowerCase()) {
       case "high":
-        return "🔴"; // Red circle for high priority
+        return "🔴";
       case "medium":
-        return "🟠"; // Orange circle for medium priority
+        return "🟠";
       case "low":
-        return "🟢"; // Green circle for low priority
+        return "🟢";
       default:
-        return "⚪"; // Default white circle
+        return "⚪";
     }
   };
 
@@ -67,26 +114,32 @@ const NotificationsList = () => {
         <p className="notification-message">No notifications available.</p>
       ) : (
         <div className="notification-grid">
-          {notifications.map((notif) => (
-            <div key={notif._id} className="notification-card">
-              {/* Tags for Notification Type and Priority */}
-              <div className="notification-tags">
-                <span className="type-icon">{getTypeIcon(notif.type)}</span>
-                <span className="priority-icon">{getPriorityIcon(notif.priority)}</span>
+          {notifications.map((notif) => {
+            const expired = isExpired(notif.due_date);
+            return (
+              <div key={notif._id} className={`notification-card ${expired ? "expired" : ""}`}>
+                {/* Tags for Notification Type and Priority */}
+                <div className="notification-tags">
+                  <span className="notification-bin-btn" onClick={() => deleteNotification(notif._id, notif.added_by)}>🗑️</span>
+                  <span className="type-icon">{getTypeIcon(notif.type)}</span>
+                  <span className="priority-icon">{getPriorityIcon(notif.priority)}</span>
+                </div>
+
+                {/* Notification Details */}
+                <p className="notification-text">📩 {notif.text}</p>
+
+                {/* Due Date */}
+                <p className="notification-date">
+                  📅 Due: {new Date(notif.due_date).toLocaleDateString()}
+                </p>
+
+                {/* Added By */}
+                <p className="notification-added-by">
+                  🏷️ Added by: {notif.added_by_name}
+                </p>
               </div>
-
-              {/* Notification Details */}
-              <p className="notification-text">📩 {notif.text}</p>
-
-              {/* Due Date */}
-              <p className="notification-date">📅 Due: {new Date(notif.due_date).toLocaleDateString()}</p>
-
-              {/* Added By */}
-              <p className="notification-added-by">
-                🏷️ Added by: {notif.added_by === user.id ? "Self" : notif.added_by_name}
-              </p>
-            </div>
-          ))}
+            );
+          })}
         </div>
       )}
     </div>

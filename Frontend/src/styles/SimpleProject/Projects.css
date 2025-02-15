@@ -60,7 +60,7 @@ h1 {
   top: 0;
   right: 0;
   overflow: hidden;
-  box-shadow: 0px 4px 15px rgba(0, 123, 255, 0.4);
+  box-shadow: 0px 4px 15px rgba(118, 166, 216, 0.4);
 }
 
 /* 🌊 Ripple Effect */
@@ -71,7 +71,7 @@ h1 {
   height: 200%;
   top: 50%;
   left: 50%;
-  background: radial-gradient(circle, rgba(255, 255, 255, 0.2) 10%, transparent 70%);
+  background: radial-gradient(circle, rgba(255, 34, 34, 0.2) 10%, transparent 70%);
   transform: translate(-50%, -50%) scale(0);
   opacity: 0;
   transition: transform 0.6s ease-out, opacity 0.8s ease-out;

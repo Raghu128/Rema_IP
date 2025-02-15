@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import axios from "axios";
-import "../../styles/Expenses/ExpensesList.css"; // Import the CSS file
+import "../../styles/Expenses/ExpensesList.css";
 import { useNavigate } from "react-router-dom";
 
 const ExpensesList = () => {
   const { user } = useSelector((state) => state.user);
   const [expenseData, setExpenseData] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const navigate = useNavigate();
@@ -32,6 +33,11 @@ const ExpensesList = () => {
     fetchExpenses();
   }, [user?.id]);
 
+  // Filter expenses by agency name
+  const filteredExpenses = expenseData.filter(({ sponsorProject }) =>
+    sponsorProject.agency.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   if (!user?.id) return <p className="expenses-list-message">Please log in to view expenses.</p>;
   if (loading) return <p className="expenses-list-message">Loading expenses...</p>;
   if (error) return <p className="expenses-list-message">{error}</p>;
@@ -44,43 +50,72 @@ const ExpensesList = () => {
 
       <h2 className="expenses-list-title">User Expenses</h2>
 
-      {expenseData.length === 0 ? (
+      {/* Search Bar */}
+      <input
+        type="text"
+        placeholder="Search by agency..."
+        className="expenses-search-bar"
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
+      />
+
+      {filteredExpenses.length === 0 ? (
         <p className="expenses-list-message">No expenses found.</p>
       ) : (
         <div>
-          {expenseData.map(({ sponsorProject, expenses }) => (
-            <div key={sponsorProject.id} className="expenses-project-section">
-              <h3 className="expenses-list-project">
-                {sponsorProject.title} <span>({sponsorProject.agency})</span>
-              </h3>
-              <p className="expenses-list-budget">
-                <strong>Budget:</strong> ₹{parseFloat(sponsorProject.budget.$numberDecimal).toFixed(2)}
-              </p>
+          {filteredExpenses.map(({ sponsorProject, expenses }) => {
+            // Calculate total expenses for this project
+            const totalExpenses = expenses.reduce(
+              (sum, expense) => sum + parseFloat(expense.amount.$numberDecimal),
+              0
+            );
+            const budget = parseFloat(sponsorProject.budget.$numberDecimal);
+            const remainingBudget = budget - totalExpenses;
 
-              {expenses.length === 0 ? (
-                <p className="expenses-list-no-expense">No expenses recorded for this project.</p>
-              ) : (
-                <table className="expenses-table">
-                  <thead>
-                    <tr>
-                      <th>Item</th>
-                      <th>Amount (₹)</th>
-                      <th>Head</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {expenses.map((expense) => (
-                      <tr key={expense._id}>
-                        <td>{expense.item}</td>
-                        <td>{parseFloat(expense.amount.$numberDecimal).toFixed(2)}</td>
-                        <td>{expense.head}</td>
+            return (
+              <div key={sponsorProject.id} className="expenses-project-section">
+                <h3 className="expenses-list-project">
+                  {sponsorProject.title} <span>({sponsorProject.agency})</span>
+                </h3>
+                <p className="expenses-list-budget">
+                  <strong>Budget:</strong> ₹{budget.toFixed(2)}
+                </p>
+
+                {expenses.length === 0 ? (
+                  <p className="expenses-list-no-expense">No expenses recorded for this project.</p>
+                ) : (
+                  <table className="expenses-table">
+                    <thead>
+                      <tr>
+                        <th>Item</th>
+                        <th>Amount (₹)</th>
+                        <th>Head</th>
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
-              )}
-            </div>
-          ))}
+                    </thead>
+                    <tbody>
+                      {expenses.map((expense) => (
+                        <tr key={expense._id}>
+                          <td>{expense.item}</td>
+                          <td>{parseFloat(expense.amount.$numberDecimal).toFixed(2)}</td>
+                          <td>{expense.head}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                )}
+
+                {/* Total Expenses & Remaining Budget */}
+                <div className="total-expenses-section">
+                  <p>
+                    <strong>Total Expenses:</strong> ₹{totalExpenses.toFixed(2)}
+                  </p>
+                  <p className={remainingBudget < 0 ? "over-budget" : "within-budget"}>
+                    <strong>Remaining Budget:</strong> ₹{remainingBudget.toFixed(2)}
+                  </p>
+                </div>
+              </div>
+            );
+          })}
         </div>
       )}
     </div>

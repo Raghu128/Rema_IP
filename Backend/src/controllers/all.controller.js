@@ -510,8 +510,9 @@ export const getVenueByIdList = async (req, res) => {
   
     try {
       // Fetch venues matching the IDs in the array
-      const venues = await VenueList.find({ added_by: venueIds }) // Populate user references if needed
-  
+      const venues = await VenueList.find({ 
+        $or: [{ added_by: venueIds }, { view: venueIds }]
+       }) // Populate user references if needed
       // Return the venues
       res.status(200).json({ message: 'Venues retrieved successfully', venues });
     } catch (error) {
@@ -577,7 +578,10 @@ export const getNotificationById = async (req, res) => {
     
     try {
       // Find the notification by ID
-      const notification = await Notification.find({added_by : id});
+      const notification = await Notification.find({
+        $or: [{ added_by: id }, { view: id }]
+    });
+
   
       if (!notification) {
         return res.status(404).json({ message: 'Notification not found' });

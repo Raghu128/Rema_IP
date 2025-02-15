@@ -18,7 +18,16 @@ const VenueAddForm = () => {
     url: "",
     added_by: user?.id || "",
     date: "",
+    abstract_submission: "",
+    paper_submission: "",
+    author_response: "",
+    meta_review: "",
+    notification: "",
+    commitment: "",
+    main_conference_start: "",
+    main_conference_end: "",
     location: "",
+    time_zone: "",
     view: [],
   };
 
@@ -40,6 +49,7 @@ const VenueAddForm = () => {
   const fetchVenues = async () => {
     if (!user?.id) return;
     try {
+
       const response = await axios.get(`/api/v1/venues?added_by=${user.id}`);
       setVenues(response.data);
     } catch (error) {
@@ -52,27 +62,27 @@ const VenueAddForm = () => {
     fetchVenues();
   }, [user]);
 
-  const handleVenueSelect = (venue) => {
-    setSelectedVenue(venue);
-    setFormData({
-      ...venue,
-      date: venue.date ? new Date(venue.date).toISOString().split("T")[0] : "",
-    });
-  };
+  useEffect(()=> {
+
+    setFormData((prevData) => ({
+      ...prevData,
+      added_by: user?.id,
+    }));
+  },[user])
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
+    const { name, value, type, checked } = e.target;
 
-  const handleCheckboxChange = (e) => {
-    const { value, checked } = e.target;
-    setFormData((prevState) => {
-      const updatedView = checked
-        ? [...prevState.view, value]
-        : prevState.view.filter((id) => id !== value);
-      return { ...prevState, view: updatedView };
-    });
+    if (type === "checkbox") {
+      setFormData((prevData) => ({
+        ...prevData,
+        view: checked
+          ? [...prevData.view, value]
+          : prevData.view.filter((id) => id !== value),
+      }));
+    } else {
+      setFormData({ ...formData, [name]: value });
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -90,94 +100,71 @@ const VenueAddForm = () => {
       fetchVenues();
     } catch (error) {
       console.error("Error saving venue:", error);
-      setMessage(error.response?.data?.message || "Failed to save venue.");
-    }
-  };
-
-  const handleDelete = async () => {
-    if (!selectedVenue) return;
-    try {
-      await axios.delete(`/api/v1/venues/${selectedVenue._id}`);
-      setMessage("Venue deleted successfully!");
-      setFormData(initialFormState);
-      setSelectedVenue(null);
-      fetchVenues();
-    } catch (error) {
-      console.error("Error deleting venue:", error);
-      setMessage("Failed to delete venue.");
+      setMessage("Failed to save venue.");
     }
   };
 
   return (
-    <div className="venue-add-form">
-      <button onClick={() => navigate(-1)}>Go Back</button>
-      <h2 className="venue-add-form-title">{selectedVenue ? "Edit Venue" : "Add Venue"}</h2>
-      {message && <p className="venue-add-form-message">{message}</p>}
+    <div className="venue-form-container">
+      <button className="venue-form-back-btn" onClick={() => navigate(-1)}>Go Back</button>
+      <h2 className="venue-form-title">{selectedVenue ? "Edit Venue" : "Add Venue"}</h2>
+      {message && <p className="venue-form-message">{message}</p>}
+      <form className="venue-form" onSubmit={handleSubmit}>
+        <label className="venue-form-label">Venue Name:</label>
+        <input type="text" name="venue" value={formData.venue} onChange={handleChange} className="venue-form-input" required />
 
-      <div className="venue-add-form-list">
-        <h3 className="venue-add-form-list-title">Your Venues</h3>
-        {venues.length > 0 ? (
-          <ul className="venue-add-form-list-items">
-            {venues.map((venue) => (
-              <li key={venue._id} onClick={() => handleVenueSelect(venue)} className="venue-add-form-list-item">
-                {venue.venue} ({venue.year})
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p className="venue-add-form-no-venues">No venues added yet.</p>
-        )}
-      </div>
+        <label className="venue-form-label">Year:</label>
+        <input type="number" name="year" value={formData.year} onChange={handleChange} className="venue-form-input" required min="1900" />
 
-      <form onSubmit={handleSubmit} className="venue-add-form-container">
-        <div className="venue-add-form-group">
-          <label htmlFor="venue">Venue Name:</label>
-          <input type="text" id="venue" name="venue" value={formData.venue} onChange={handleChange} required />
+        <label className="venue-form-label">URL:</label>
+        <input type="url" name="url" value={formData.url} onChange={handleChange} className="venue-form-input" />
+
+        <label className="venue-form-label">Date:</label>
+        <input type="date" name="date" value={formData.date} onChange={handleChange} className="venue-form-input" />
+
+        <label className="venue-form-label">Abstract Submission:</label>
+        <input type="date" name="abstract_submission" value={formData.abstract_submission} onChange={handleChange} className="venue-form-input" />
+
+        <label className="venue-form-label">Paper Submission:</label>
+        <input type="date" name="paper_submission" value={formData.paper_submission} onChange={handleChange} className="venue-form-input" />
+
+        <label className="venue-form-label">Author Response:</label>
+        <input type="date" name="author_response" value={formData.author_response} onChange={handleChange} className="venue-form-input" />
+
+        {/* adding here */}
+        <label className="venue-form-label">Meta Review:</label>
+        <input type="date" name="meta_review" value={formData.meta_review} onChange={handleChange} className="venue-form-input" />
+
+        <label className="venue-form-label">Notification:</label>
+        <input type="date" name="notification" value={formData.notification} onChange={handleChange} className="venue-form-input" />
+
+        <label className="venue-form-label">Commitment:</label>
+        <input type="date" name="commitment" value={formData.commitment} onChange={handleChange} className="venue-form-input" />
+
+        <label className="venue-form-label">Main Conference Start:</label>
+        <input type="date" name="main_conference_start" value={formData.main_conference_start} onChange={handleChange} className="venue-form-input" />
+
+        <label className="venue-form-label">Main Conference End:</label>
+        <input type="date" name="main_conference_end" value={formData.main_conference_end} onChange={handleChange} className="venue-form-input" />
+
+        <label className="venue-form-label">Location:</label>
+        <input type="text" name="location" value={formData.location} onChange={handleChange} className="venue-form-input" />
+
+        <label className="venue-form-label">Time Zone:</label>
+        <input type="text" name="time_zone" value={formData.time_zone} onChange={handleChange} className="venue-form-input" />
+
+
+        <label className="venue-form-label">View Access:</label>
+        <div className="venue-form-checkbox-group">
+          {users.map((user) => (
+            <div key={user._id} className="venue-form-checkbox">
+              <input type="checkbox" value={user._id} onChange={handleChange} checked={formData.view.includes(user._id)} />
+              ({user.email})
+            </div>
+          ))}
         </div>
 
-        <div className="venue-add-form-group">
-          <label htmlFor="year">Year:</label>
-          <input type="number" id="year" name="year" value={formData.year} onChange={handleChange} required min="1900" />
-        </div>
-
-        <div className="venue-add-form-group">
-          <label htmlFor="url">URL:</label>
-          <input type="url" id="url" name="url" value={formData.url} onChange={handleChange} />
-        </div>
-
-        <div className="venue-add-form-group">
-          <label htmlFor="date">Date:</label>
-          <input type="date" id="date" name="date" value={formData.date} onChange={handleChange} />
-        </div>
-
-        <div className="venue-add-form-group">
-          <label htmlFor="location">Location:</label>
-          <input type="text" id="location" name="location" value={formData.location} onChange={handleChange} />
-        </div>
-
-        <div className="venue-add-form-group">
-          <label>View Access:</label>
-          <div className="venue-add-form-checkbox-group">
-            {users.map((user) => (
-              <div key={user._id} className="venue-add-form-checkbox-item">
-                <label>
-                  <input
-                    type="checkbox"
-                    value={user._id}
-                    checked={formData.view.includes(user._id)}
-                    onChange={handleCheckboxChange}
-                  />
-                  {user.name} ({user.email})
-                </label>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        <button type="submit" className="venue-add-form-submit-button">{selectedVenue ? "Update Venue" : "Add Venue"}</button>
-        {selectedVenue && (
-          <button type="button" className="venue-add-form-delete-button" onClick={handleDelete}>Delete Venue</button>
-        )}
+        <button type="submit" className="venue-form-submit-btn">{selectedVenue ? "Update Venue" : "Add Venue"}</button>
       </form>
     </div>
   );

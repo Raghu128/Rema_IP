@@ -88,18 +88,24 @@ const NotificationAddForm = () => {
       <h2 className="notification-title">Add Notification</h2>
       {message && <p className="notification-message">{message}</p>}
       <form onSubmit={handleSubmit} className="notification-form">
-        <div className="notification-field">
-          <label htmlFor="type">Type:</label>
-          <input
-            type="text"
-            id="type"
-            name="type"
-            value={formData.type}
-            onChange={handleChange}
-            required
-            className="notification-input"
-          />
-        </div>
+      <div className="notification-field">
+  <label htmlFor="type">Type:</label>
+  <select
+    id="type"
+    name="type"
+    value={formData.type}
+    onChange={handleChange}
+    required
+    className="notification-input"
+  >
+    <option value="">Select Type</option>
+    <option value="reminder">Reminder</option>
+    <option value="todo">To-Do</option>
+    <option value="deadline">Deadline</option>
+    <option value="other">Other</option>
+  </select>
+</div>
+
 
         <div className="notification-field">
           <label htmlFor="text">Text:</label>

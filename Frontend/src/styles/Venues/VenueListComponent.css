@@ -4,6 +4,9 @@
   gap: 20px;
   padding: 20px;
   animation: fadeIn 0.8s ease-in-out;
+  max-height: 30rem;
+  overflow: scroll;
+  margin-top: 1rem;
 }
 
 /* Smooth fade-in animation */
@@ -28,6 +31,7 @@
   position: relative;
   overflow: hidden;
   animation: popUp 0.5s ease-out forwards;
+  border: 3px solid rebeccapurple;
 }
 
 /* Hover effect */
