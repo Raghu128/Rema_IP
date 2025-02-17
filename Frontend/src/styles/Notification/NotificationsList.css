@@ -2,7 +2,6 @@
     text-align: left;
     padding: 20px;
     animation: fadeIn 0.8s ease-in-out;
-
   }
   
   /* Smooth fade-in animation */
@@ -24,6 +23,7 @@
     margin: 1rem;
     max-height: 35rem;
     overflow: scroll;
+    scrollbar-width: none;
   }
   
   /* Notification Card */

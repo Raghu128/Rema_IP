@@ -20,7 +20,6 @@ const NotificationsList = () => {
   const [notifications, setNotifications] = useState([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
-  console.log(notifications);
 
   useEffect(() => {
     if (!user || !user.id) return;

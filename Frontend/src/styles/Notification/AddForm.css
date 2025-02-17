@@ -120,6 +120,7 @@
     padding: 1rem;
     max-height: 12rem;
     overflow: scroll;
+    scrollbar-width: none;
 }
 
 /* Enhanced button */

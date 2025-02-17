@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import MinutesOfMeeting from "../MinutesOfMeeting/MinutesOfMeeting";
 import "../../styles/SimpleProject/Projects.css";
 
 const Projects = ({ id }) => {
@@ -10,6 +11,7 @@ const Projects = ({ id }) => {
   const [error, setError] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [expandedProject, setExpandedProject] = useState(null);
+  const [showNotes, setShowNotes] = useState(null); // Track which project’s notes are open
   const navigate = useNavigate();
 
   const getUserName = async (userId) => {
@@ -98,7 +100,6 @@ const Projects = ({ id }) => {
             <div key={index} className="project-item">
               <div className="project-header">
                 <h2 className="project-title">{project.name}</h2>
-                
               </div>
               
               <p><strong>Domain:</strong> {project.domain}</p>
@@ -126,20 +127,39 @@ const Projects = ({ id }) => {
                   <p><strong>Date of Submission:</strong> {project.date_of_submission ? new Date(project.date_of_submission).toLocaleDateString() : "N/A"}</p>
                   <p><strong>Next Deadline:</strong> {project.next_deadline ? new Date(project.next_deadline).toLocaleDateString() : "N/A"}</p>
                   <p><strong>Remarks:</strong> {project.remarks || "No remarks"}</p>
-                    <p>
-                      📄 <strong>Paper:</strong> <a href={project.paper_url} target="_blank" rel="noopener noreferrer">View Paper</a>
-                    </p>
-                    <p>
-                      📩 <strong>Submission:</strong> <a href={project.submission_url} target="_blank" rel="noopener noreferrer">View Submission</a>
-                    </p>
+                  <p>
+                    📄 <strong>Paper:</strong> <a href={project.paper_url} target="_blank" rel="noopener noreferrer">View Paper</a>
+                  </p>
+                  <p>
+                    📩 <strong>Submission:</strong> <a href={project.submission_url} target="_blank" rel="noopener noreferrer">View Submission</a>
+                  </p>
                 </div>
               )}
-              <span 
+              
+              <div className="project-actions">
+                <span 
                   className="project-toggle-button" 
                   onClick={() => setExpandedProject(expandedProject === index ? null : index)}
                 >
                   {expandedProject === index ? "less" : "more"}
                 </span>
+
+                <span 
+                  className="project-notes-button" 
+                  onClick={() => setShowNotes(showNotes === index ? null : index)}
+                >
+                  Notes
+                </span>
+              </div>
+
+              {showNotes === index && (
+                <div className="project-notes-overlay">
+                  <div className="project-notes-content">
+                    <button className="project-close-notes-button" onClick={() => setShowNotes(null)}>✖</button>
+                    <MinutesOfMeeting projectId={project._id} />
+                  </div>
+                </div>
+              )}
             </div>
           ))
         ) : (

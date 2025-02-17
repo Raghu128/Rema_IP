@@ -383,7 +383,10 @@ export const getProjectById = async (req, res) => {
   const id = req.params.id;
   
     try {
-      const project = await Project.find({ faculty_id: id });
+      const project = await Project.find({
+        $or: [{ faculty_id: id }, { team: id }]
+      });
+      
       
       if (!project) {
         return res.status(404).json({ message: 'Project not found' });
@@ -429,12 +432,10 @@ export const createMinutesOfMeeting = async (req, res) => {
 };
 
 export const getMinutesOfMeetingById = async (req, res) => {
-
+  const id = req.params.id;  
     try {
       // Find the Minutes of Meeting document by ID
-      const meeting = await MinutesOfMeeting.findById(id)
-        .populate('pid', 'name domain') // Populate project fields (name, domain) as an example
-        .populate('added_by', 'name email'); // Populate user details (name, email) for the added_by field
+      const meeting = await MinutesOfMeeting.find({pid: id})
   
       // Check if the meeting exists
       if (!meeting) {

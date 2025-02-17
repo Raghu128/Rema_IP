@@ -5,6 +5,7 @@
   padding: 20px;
   overflow: scroll;
   max-height: 85vh;
+  scrollbar-width: none;
 }
 
 .manage-expense-btn {

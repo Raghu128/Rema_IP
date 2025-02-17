@@ -4,6 +4,7 @@ import "../../styles/Sponsor/DisplaySponsors.css";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import FinanceBudgetList from "../FinanceBudget/FinanceBudgetList";
+import MinutesOfMeeting from "../MinutesOfMeeting/MinutesOfMeeting"; // Import the MinutesOfMeeting component
 
 const DisplaySponsors = () => {
   const [sponsors, setSponsors] = useState([]);
@@ -11,6 +12,7 @@ const DisplaySponsors = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [loading, setLoading] = useState(true);
   const [selectedSponsor, setSelectedSponsor] = useState(null);
+  const [showNotes, setShowNotes] = useState(null); // Track which sponsor’s notes are open
   const { user } = useSelector((state) => state.user);
   const navigate = useNavigate();
 
@@ -130,6 +132,30 @@ const DisplaySponsors = () => {
                   <p>
                     <strong>Remarks:</strong> {sponsor.remarks}
                   </p>
+
+                  {/* Notes Button */}
+                  <span 
+                    className="sponsor-notes-button" 
+                    onClick={() => setShowNotes(showNotes === sponsor._id ? null : sponsor._id)}
+                  >
+                    Notes
+                  </span>
+
+                  {/* Notes Overlay */}
+                  {showNotes === sponsor._id && (
+                    <div className="sponsor-notes-overlay">
+                      <div className="sponsor-notes-content">
+                        <button
+                          className="sponsor-close-notes-button"
+                          onClick={() => setShowNotes(null)}
+                          
+                        >
+                          ✖
+                        </button>
+                        <MinutesOfMeeting projectId={sponsor._id} />
+                      </div>
+                    </div>
+                  )}
                 </div>
               ))}
             </div>

@@ -85,7 +85,7 @@ h1 {
 /* 🌟 Card Grid */
 .project-details-container {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
   gap: 20px;
   justify-content: center;
 }
@@ -235,4 +235,57 @@ h1 {
 
 .project-toggle-button:hover{
   text-decoration: underline;
+}
+
+
+
+
+
+.project-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.project-toggle-button,
+.project-notes-button {
+  cursor: pointer;
+  color: blue;
+  text-decoration: underline;
+  font-size: 14px;
+  margin-right: 10px;
+}
+
+.project-notes-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.project-notes-content {
+  width: 95%;
+  height: 95%;
+  background: white;
+  padding: 5px;
+  border-radius: 10px;
+  overflow: hidden;
+  /* position: relative; */
+}
+
+.project-close-notes-button {
+  position: absolute;
+  top: 0;
+  right: 15px;
+  background: blue;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  z-index: 1000;
 }
