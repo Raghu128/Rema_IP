@@ -41,7 +41,10 @@ app.use("/api/v1/notifications", notificationRouter);
 app.use("/api/v1/equipment", equipmentRouter);
 app.use("/api/v1/finance-budgets", financeBudgetRouter);
 app.use("/api/v1/expenses", expenseRouter);
- 
+app.get("/", (req, res) => {
+    res.status(200).send("Hello from backend");
+});
+
 
 
 export { app }
