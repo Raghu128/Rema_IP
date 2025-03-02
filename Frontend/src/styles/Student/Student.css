@@ -1,92 +1,21 @@
-/* Main Container */
-.studentWithfaculty-main-container {
-  width: 90%;
-  margin: auto;
-  text-align: center;
-  padding: 20px;
-  animation: fadeIn 0.8s ease-in-out;
+.studentWithfaculty-container{
+  height: 70vh;
+  overflow: scroll;
 }
 
-/* Heading */
-.studentWithfaculty-heading {
-  font-size: 26px;
-  margin-bottom: 20px;
-  font-weight: bold;
-  color: #333;
-  transition: transform 0.3s ease-in-out;
-}
 
-.studentWithfaculty-heading:hover {
-  transform: scale(1.05);
-}
-
-/* Edit Button */
-.studentWithfaculty-edit-button {
-  background: linear-gradient(135deg, #007bff, #0056b3);
-  color: white;
-  padding: 10px 18px;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  margin-bottom: 20px;
-  transition: all 0.3s ease-in-out;
-  font-size: 14px;
-}
-
-.studentWithfaculty-edit-button:hover {
-  background: linear-gradient(135deg, #0056b3, #007bff);
-  transform: scale(1.05);
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-}
-
-/* Search Bar */
-.search-bar {
-  width: 60%;
-  padding: 10px;
-  margin: 10px 0;
-  border: 2px solid #007bff;
-  border-radius: 8px;
-  font-size: 16px;
-  transition: all 0.3s ease-in-out;
-}
-
-.search-bar:focus {
-  outline: none;
-  border-color: #0056b3;
-  box-shadow: 0px 0px 10px rgba(0, 91, 187, 0.5);
-}
-
-/* Table */
+/* Ensure the table uses a fixed layout with collapsed borders */
 .studentWithfaculty-table {
   width: 100%;
-  border-collapse: collapse;
-  margin-top: 15px;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
-  border-radius: 8px;
+  border-collapse: collapse; /* Use collapse instead of separate */
+  table-layout: fixed; /* Enforce fixed column widths */
+  margin-top: 16px;
 }
 
-/* Table Header */
-.studentWithfaculty-table th {
-  background: linear-gradient(135deg, #007bff, #0056b3);
-  color: white;
-  font-size: 16px;
-  padding: 12px;
-  text-align: center;
-  transition: background 0.3s ease-in-out;
-}
-
-/* Table Cells */
-.studentWithfaculty-table th,
-.studentWithfaculty-table td {
-  border: 1px solid #ddd;
-  padding: 14px;
-  text-align: center;
-  font-size: 14px;
-  transition: all 0.3s ease-in-out;
-}
-
-/* Fixed Size for Table Cells */
+/* Set fixed widths for each column:
+   Column 1: Name (30%)
+   Column 2: Role (20%)
+   Column 3: Project Info (50%) */
 .studentWithfaculty-table th:nth-child(1),
 .studentWithfaculty-table td:nth-child(1) {
   width: 30%;
@@ -94,22 +23,65 @@
 
 .studentWithfaculty-table th:nth-child(2),
 .studentWithfaculty-table td:nth-child(2) {
-  width: 70%;
+  width: 20%;
 }
 
-/* Table Row Hover Effect */
-.studentWithfaculty-table tbody tr {
-  transition: all 0.3s ease-in-out;
+.studentWithfaculty-table th:nth-child(3),
+.studentWithfaculty-table td:nth-child(3) {
+  width: 50%;
 }
 
-.studentWithfaculty-table tbody tr:hover {
-  background-color: #e3f2fd;
-  transform: scale(1.01);
+/* Table Header Styling */
+.studentWithfaculty-table th {
+  background-color: #007bff;
+  color: #fff;
+  font-size: 16px;
+  padding: 12px;
+  text-align: center;
+  border: 1px solid #ddd;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  transition: background 0.3s ease-in-out;
 }
 
-/* Alternating Row Color */
-.studentWithfaculty-table tbody tr:nth-child(even) {
-  background-color: #f8f9fa;
+/* Table Data Cell Styling */
+.studentWithfaculty-table td {
+  background-color: #fff;
+  padding: 12px;
+  font-size: 15px;
+  color: #555;
+  vertical-align: top;
+  text-align: center;
+  border: 1px solid #ddd;
+}
+
+/* Optional: Adjust project info items inside the Project Info column */
+.project-info-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 0;
+}
+
+.project-thesis {
+  font-weight: 600;
+  color: #333;
+  margin-right: 10px;
+}
+
+.project-stipend {
+  font-style: italic;
+  color: #007bff;
+}
+
+/* Role Section Heading */
+.studentWithfaculty-role {
+  font-size: 24px;
+  font-weight: 600;
+  color: #007bff;
+  margin: 32px 0 12px;
+  text-align: left;
+  letter-spacing: 2px;
 }
 
 /* Fade-In Animation */
@@ -123,14 +95,10 @@
     transform: translateY(0);
   }
 }
+.studentWithfaculty-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
 
-
-.studentWithfaculty-role {
-  font-size: 24px;
-  font-weight: bold;
-  text-transform: uppercase;
-  color: #007bff;
-  margin: 20px 0 10px;
-  text-align: center;
-  letter-spacing: 2px;
 }

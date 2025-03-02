@@ -11,54 +11,18 @@ const Projects = ({ id }) => {
   const [error, setError] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [expandedProject, setExpandedProject] = useState(null);
-  const [showNotes, setShowNotes] = useState(null); // Track which project’s notes are open
+  const [showNotes, setShowNotes] = useState(null);
   const navigate = useNavigate();
-
-  const getUserName = async (userId) => {
-    try {
-      const response = await axios.get(`/api/v1/userbyid/${userId}`);
-      return response.data[0].name;
-    } catch (err) {
-      console.error("Error fetching user name", err);
-      return "Unknown User";
-    }
-  };
+  
 
   useEffect(() => {
     const fetchProject = async () => {
       try {
         setLoading(true);
         const response = await axios.get(`/api/v1/projects/${id}`);
-        const projects = response.data;
-
-        const updatedProjects = await Promise.all(
-          projects.map(async (project) => {
-            const facultyName = await getUserName(project.faculty_id);
-            const leadAuthorName = await getUserName(project.lead_author);
-            
-            const updatedTeamMembers = await Promise.all(
-              project.team.map(async (teamMemberId) => {
-                const name = await getUserName(teamMemberId);
-                return { id: teamMemberId, name };
-              })
-            );
-
-            const teamMembersMap = updatedTeamMembers.reduce((acc, member) => {
-              acc[member.id] = member.name;
-              return acc;
-            }, {});
-
-            return {
-              ...project,
-              facultyName,
-              leadAuthorName,
-              teamMembersMap,
-            };
-          })
-        );
-
-        setProjectData(updatedProjects);
-        setFilteredProjects(updatedProjects);
+        // response.data is assumed to be an array of populated projects
+        setProjectData(response.data);
+        setFilteredProjects(response.data);
         setLoading(false);
       } catch (err) {
         setError("Error fetching project data from backend");
@@ -97,20 +61,20 @@ const Projects = ({ id }) => {
       <div className="project-details-container">
         {filteredProjects && filteredProjects.length > 0 ? (
           filteredProjects.map((project, index) => (
-            <div key={index} className="project-item">
+            <div key={project._id} className="project-item">
               <div className="project-header">
                 <h2 className="project-title">{project.name}</h2>
               </div>
               
               <p><strong>Domain:</strong> {project.domain}</p>
               <p><strong>Sub-Domain:</strong> {project.sub_domain}</p>
-              <p><strong>Project Lead:</strong> {project.leadAuthorName}</p>
-              <h4>Team members:</h4>
+              <p><strong>Project Lead:</strong> {project.lead_author?.name || "Unknown"}</p>
+              <h4>Team Members:</h4>
               <ul className="team-members-list">
                 {project.team && project.team.length > 0 ? (
-                  project.team.map((teamMemberId, index) => (
-                    <li key={index} className="team-member">
-                      {index + 1}. {project.teamMembersMap[teamMemberId]}
+                  project.team.map((member, index) => (
+                    <li key={member._id} className="team-member">
+                      {index + 1}. {member.name}
                     </li>
                   ))
                 ) : (
@@ -122,17 +86,39 @@ const Projects = ({ id }) => {
                 <div className="full-project-info">
                   <p><strong>Status:</strong> {project.status}</p>
                   <p><strong>Venue:</strong> {project.venue || "N/A"}</p>
-                  <p><strong>Created on:</strong> {new Date(project.creation_date).toLocaleDateString()}</p>
-                  <p><strong>End Date:</strong> {project.end_date ? new Date(project.end_date).toLocaleDateString() : "N/A"}</p>
-                  <p><strong>Date of Submission:</strong> {project.date_of_submission ? new Date(project.date_of_submission).toLocaleDateString() : "N/A"}</p>
-                  <p><strong>Next Deadline:</strong> {project.next_deadline ? new Date(project.next_deadline).toLocaleDateString() : "N/A"}</p>
+                  <p>
+                    <strong>Created on:</strong>{" "}
+                    {new Date(project.creation_date).toLocaleDateString()}
+                  </p>
+                  <p>
+                    <strong>End Date:</strong>{" "}
+                    {project.end_date ? new Date(project.end_date).toLocaleDateString() : "N/A"}
+                  </p>
+                  <p>
+                    <strong>Date of Submission:</strong>{" "}
+                    {project.date_of_submission ? new Date(project.date_of_submission).toLocaleDateString() : "N/A"}
+                  </p>
+                  <p>
+                    <strong>Next Deadline:</strong>{" "}
+                    {project.next_deadline ? new Date(project.next_deadline).toLocaleDateString() : "N/A"}
+                  </p>
                   <p><strong>Remarks:</strong> {project.remarks || "No remarks"}</p>
-                  <p>
-                    📄 <strong>Paper:</strong> <a href={project.paper_url} target="_blank" rel="noopener noreferrer">View Paper</a>
-                  </p>
-                  <p>
-                    📩 <strong>Submission:</strong> <a href={project.submission_url} target="_blank" rel="noopener noreferrer">View Submission</a>
-                  </p>
+                  {project.paper_url && (
+                    <p>
+                      📄 <strong>Paper:</strong>{" "}
+                      <a href={project.paper_url} target="_blank" rel="noopener noreferrer">
+                        View Paper
+                      </a>
+                    </p>
+                  )}
+                  {project.submission_url && (
+                    <p>
+                      📩 <strong>Submission:</strong>{" "}
+                      <a href={project.submission_url} target="_blank" rel="noopener noreferrer">
+                        View Submission
+                      </a>
+                    </p>
+                  )}
                 </div>
               )}
               

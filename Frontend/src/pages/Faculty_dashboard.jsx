@@ -12,6 +12,7 @@ import AddUserForm from "../components/UserForm";
 import DisplaySponsors from "../components/Sponsor/DisplaySponsors";
 import ExpensesList from "../components/Expenses/Allexpenses";
 import LandingPage from "../components/LandingPage";
+import LeavesForFacultyPage from "../components/Leaves/AllLeaves";
 
 const FacultyDashboard = () => {
   const [currElement, setElement] = useState("");
@@ -30,6 +31,7 @@ const FacultyDashboard = () => {
       "Add-User": <AddUserForm />,
       Equipment: <UserEquipmentList />,
       Expenses: <ExpensesList />,
+      Leaves: <LeavesForFacultyPage/>,
     };
 
     return componentMap[currElement] || <LandingPage />;
@@ -48,6 +50,7 @@ const FacultyDashboard = () => {
             "Expenses",
             "Equipment",
             "Add-User",
+            "Leaves",
           ].map((item) => (
             <li key={item}>
               <Link onClick={() => setElement(item)}>{item}</Link>

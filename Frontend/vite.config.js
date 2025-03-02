@@ -12,11 +12,6 @@ export default defineConfig(({ mode }) => {
         '/api': env.VITE_BACKEND_URL,
       },
     },
-    resolve: {
-      alias: {
-        '@': path.resolve(__dirname, 'src')
-      }
-    },
     plugins: [react()],
   }
 })

@@ -105,7 +105,6 @@ const AddOrEditProjectForm = ({ selectedProject, onProjectSaved, onCancel }) => 
     e.preventDefault();
     
     // Log the formData to verify the faculty_id
-    console.log("Form Data:", formData);
     
     try {
       let response;

@@ -26,6 +26,8 @@ import notificationRouter from './routes/notification.routes.js';
 import equipmentRouter from './routes/equipment.routes.js';
 import financeBudgetRouter from './routes/financeBudget.routes.js';
 import expenseRouter from './routes/expense.routes.js';
+import leaveRoutes from "./routes/leave.routes.js";
+
 import { getUsersByid, handleUserLogout } from "./controllers/all.controller.js"
 
 // Routes declaration
@@ -41,6 +43,10 @@ app.use("/api/v1/notifications", notificationRouter);
 app.use("/api/v1/equipment", equipmentRouter);
 app.use("/api/v1/finance-budgets", financeBudgetRouter);
 app.use("/api/v1/expenses", expenseRouter);
+app.use("/api/v1/leaves", leaveRoutes);
+
+
+
 app.get("/", (req, res) => {
     res.status(200).send("Hello from backend");
 });

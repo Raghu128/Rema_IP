@@ -61,7 +61,6 @@ const NotificationAddForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(formData);
 
     try {
       const response = await axios.post("/api/v1/notifications", formData);

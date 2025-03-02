@@ -104,7 +104,6 @@ const UpdateProjectFormPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(formData);
 
     try {
       const response = selectedProject

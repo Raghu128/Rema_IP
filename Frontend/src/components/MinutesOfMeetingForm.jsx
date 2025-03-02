@@ -78,7 +78,6 @@ const MinutesOfMeetingForm = ({ currentUserId, onSubmitSuccess }) => {
     // }
 
     try {
-        console.log(formData);
       const response = await axios.post("/api/v1/minutes-of-meeting", formData);
       
       setSuccessMessage("Minutes of Meeting added successfully!");

@@ -96,7 +96,6 @@ function AdminPage() {
     }
   };
 
-  console.log(user);
 
   if (!user || user.role !== "admin") {
     return (

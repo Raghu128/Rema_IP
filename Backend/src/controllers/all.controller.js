@@ -10,6 +10,8 @@ import { FinanceBudget } from "../models/financeBudgetSchema.js";
 import { Expense } from "../models/expenseSchema.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
+import { Leave } from "../models/leaveSchema.js";
+
 
 
 
@@ -224,6 +226,83 @@ export const deleteUser = async (req, res) => {
 
 
 
+// GET Leave by ID
+export const getLeaveByid = async (req, res) => {
+  const id = req.params.id;
+  try {
+    // Using find() with an _id filter to match your user controller style
+    const leave = await Leave.find({ _id: id });
+    res.status(200).json(leave);
+  } catch (error) {
+    handleError(res, error);
+  }
+};
+
+// UPDATE Leave by ID
+export const updateLeave = async (req, res) => {
+  try {
+    const leave = await Leave.findByIdAndUpdate(req.params.id, req.body, {
+      new: true, // return the updated document
+    });
+    res.status(200).json(leave);
+  } catch (error) {
+    handleError(res, error);
+  }
+};
+
+// DELETE Leave by ID
+export const deleteLeave = async (req, res) => {
+  try {
+    await Leave.findByIdAndDelete(req.params.id);
+    res.status(204).send(); // 204 No Content
+  } catch (error) {
+    handleError(res, error);
+  }
+};
+
+
+
+export const fetchLeavesByfacultyId = async (req, res) => {
+  
+  try {
+    const { facultyId } = req.params;
+
+    // 1) Find all supervisor docs where faculty_id = facultyId
+    const supervisors = await Supervisor.find({ faculty_id: facultyId });
+
+    // 2) Extract the student IDs from those supervisor docs
+    const studentIds = supervisors.map((sup) => sup.student_id);
+
+    // 3) Find all leaves for those students
+    //    Optionally, populate the user field to get user details (name, email, etc.)
+    const leaves = await Leave.find({ user: { $in: studentIds } })
+      .populate("user", "name email role");
+
+    res.status(200).json(leaves);
+  } catch (error) {
+    handleError(res, error);
+  }
+};
+
+
+
+
+export const addLeave = async (req, res) => {
+  try {
+    const { user, from, to, reason } = req.body;
+    // Create a new leave document with the provided data
+    const newLeave = new Leave({ user, from, to, reason });
+    await newLeave.save();
+
+    res.status(201).json({
+      success: true,
+      leave: newLeave,
+      message: "Leave added successfully",
+    });
+  } catch (error) {
+    handleError(res, error);
+  }
+};
 
 
 
@@ -325,9 +404,14 @@ export const getSupervisors = async (req, res) => {
 
 export const getSupervisorById = async (req, res) => {
   try {
-    const { id } = req.params;    
-    const supervisor = await Supervisor.find({faculty_id:id})
-    if (!supervisor) {
+    const { id } = req.params;
+    const supervisor = await Supervisor.find({ faculty_id: id })
+      .populate("faculty_id", "name role ")
+      .populate("student_id", "name role")
+      .populate("committee", "name role");
+    
+
+    if (!supervisor || supervisor.length === 0) {
       return res.status(404).json({ message: "Supervisor not found" });
     }
 
@@ -337,6 +421,8 @@ export const getSupervisorById = async (req, res) => {
     res.status(500).json({ message: "Internal server error", error: error.message });
   }
 };
+
+
 
 export const updateSupervisor = async (req, res) => {
   try {
@@ -382,22 +468,25 @@ export const getProjects = async (req, res) => {
 export const getProjectById = async (req, res) => {
   const id = req.params.id;
   
-    try {
-      const project = await Project.find({
-        $or: [{ faculty_id: id }, { team: id }]
-      });
-      
-      
-      if (!project) {
-        return res.status(404).json({ message: 'Project not found' });
-      }
-  
-      res.status(200).json(project);
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ message: 'Server error' });
+  try {
+    const project = await Project.find({
+      $or: [{ faculty_id: id }, { team: id }]
+    })
+      .populate('faculty_id', 'name')
+      .populate('team', 'name')
+      .populate('lead_author', 'name');
+
+    if (!project || project.length === 0) {
+      return res.status(404).json({ message: 'Project not found' });
     }
-}
+
+    res.status(200).json(project);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
 
 export const updateProject = async (req, res) => {
   try {
@@ -430,25 +519,26 @@ export const createMinutesOfMeeting = async (req, res) => {
     handleError(res, error);
   }
 };
-
 export const getMinutesOfMeetingById = async (req, res) => {
   const id = req.params.id;  
-    try {
-      // Find the Minutes of Meeting document by ID
-      const meeting = await MinutesOfMeeting.find({pid: id})
-  
-      // Check if the meeting exists
-      if (!meeting) {
-        return res.status(404).json({ message: 'Minutes of Meeting not found' });
-      }
-  
-      // Return the meeting details
-      res.json(meeting);
-    } catch (error) {
-      console.error('Error fetching Minutes of Meeting:', error);
-      res.status(500).json({ message: 'Server error' });
+  try {
+    // Find the Minutes of Meeting documents by pid and populate the added_by field with the user's name
+    const meeting = await MinutesOfMeeting.find({ pid: id })
+      .populate('added_by', 'name');
+
+    // Check if any meeting exists
+    if (!meeting || meeting.length === 0) {
+      return res.status(404).json({ message: 'Minutes of Meeting not found' });
     }
-}
+
+    // Return the meeting details including the added_by name
+    res.json(meeting);
+  } catch (error) {
+    console.error('Error fetching Minutes of Meeting:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
 
 export const getMinutesOfMeetings = async (req, res) => {
   try {
@@ -502,25 +592,25 @@ export const getVenueLists = async (req, res) => {
 
 
 export const getVenueByIdList = async (req, res) => {
-    const  venueIds  = req.params.id;
-    
-  
-    if (!venueIds) {
-      return res.status(400).json({ message: 'Invalid or empty venue IDs array' });
-    }
-  
-    try {
-      // Fetch venues matching the IDs in the array
-      const venues = await VenueList.find({ 
-        $or: [{ added_by: venueIds }, { view: venueIds }]
-       }) // Populate user references if needed
-      // Return the venues
-      res.status(200).json({ message: 'Venues retrieved successfully', venues });
-    } catch (error) {
-      console.error('Error retrieving venues by ID list:', error);
-      res.status(500).json({ message: 'Failed to retrieve venues' });
-    }
+  const venueIds = req.params.id;
+
+  if (!venueIds) {
+    return res.status(400).json({ message: 'Invalid or empty venue IDs array' });
+  }
+
+  try {
+    // Find venues matching the given condition and populate the added_by field with the user's name
+    const venues = await VenueList.find({ 
+      $or: [{ added_by: venueIds }, { view: venueIds }]
+    }).populate('added_by', 'name');
+
+    res.status(200).json({ message: 'Venues retrieved successfully', venues });
+  } catch (error) {
+    console.error('Error retrieving venues by ID list:', error);
+    res.status(500).json({ message: 'Failed to retrieve venues' });
+  }
 };
+
 
 
 
@@ -571,30 +661,29 @@ export const getNotifications = async (req, res) => {
 
 
 export const getNotificationById = async (req, res) => {
-    const { id } = req.params;
-  
-    if (!id) {
-      return res.status(400).json({ message: 'Notification ID is required' });
-    }
-    
-    try {
-      // Find the notification by ID
-      const notification = await Notification.find({
-        $or: [{ added_by: id }, { view: id }]
-    });
+  const { id } = req.params;
 
-  
-      if (!notification) {
-        return res.status(404).json({ message: 'Notification not found' });
-      }
-  
-      // Return the notification
-      res.status(200).json({ message: 'Notification retrieved successfully', notification });
-    } catch (error) {
-      console.error('Error retrieving notification:', error);
-      res.status(500).json({ message: 'Failed to retrieve notification' });
+  if (!id) {
+    return res.status(400).json({ message: 'Notification ID is required' });
+  }
+
+  try {
+    // Find the notification by ID and populate the added_by field with the user's name
+    const notification = await Notification.find({
+      $or: [{ added_by: id }, { view: id }]
+    }).populate('added_by', 'name');
+
+    if (!notification || notification.length === 0) {
+      return res.status(404).json({ message: 'Notification not found' });
     }
-}
+
+    res.status(200).json({ message: 'Notification retrieved successfully', notification });
+  } catch (error) {
+    console.error('Error retrieving notification:', error);
+    res.status(500).json({ message: 'Failed to retrieve notification' });
+  }
+};
+
 
 
 

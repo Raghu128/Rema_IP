@@ -18,7 +18,6 @@ function LoginPage() {
       
       // If login is successful, set the user info in Redux store
       dispatch(setUser(user));
-      console.log(user);
 
       // Redirect to the appropriate dashboard based on the role (admin or user)
       

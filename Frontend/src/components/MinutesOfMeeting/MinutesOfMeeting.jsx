@@ -7,7 +7,6 @@ const MinutesOfMeeting = ({ projectId }) => {
   const { user } = useSelector((state) => state.user);
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
-  const [userNames, setUserNames] = useState({});
   const messagesContainerRef = useRef(null);
 
   useEffect(() => {
@@ -15,16 +14,6 @@ const MinutesOfMeeting = ({ projectId }) => {
       try {
         const response = await axios.get(`/api/v1/minutes-of-meeting/${projectId}`);
         const messagesData = response.data;
-
-        const uniqueUserIds = [...new Set(messagesData.map((msg) => msg.added_by))];
-        const userNamesMap = {};
-        await Promise.all(
-          uniqueUserIds.map(async (userId) => {
-            userNamesMap[userId] = await getUserName(userId);
-          })
-        );
-
-        setUserNames(userNamesMap);
         setMessages(messagesData);
       } catch (error) {
         console.error("Error fetching minutes:", error);
@@ -44,20 +33,6 @@ const MinutesOfMeeting = ({ projectId }) => {
     }
   };
 
-  const getUserName = async (userId) => {
-    if (userNames[userId]) return userNames[userId];
-
-    try {
-      const response = await axios.get(`/api/v1/userbyid/${userId}`);
-      const userName = response.data[0]?.name || "Unknown User";
-      setUserNames((prev) => ({ ...prev, [userId]: userName }));
-      return userName;
-    } catch (err) {
-      console.error("Error fetching user name", err);
-      return "Unknown User";
-    }
-  };
-
   const handleAddMessage = async () => {
     if (!newMessage.trim()) return;
 
@@ -71,13 +46,12 @@ const MinutesOfMeeting = ({ projectId }) => {
     try {
       const response = await axios.post("/api/v1/minutes-of-meeting/", messageData);
       const addedMessage = response.data;
-
-      const senderName = await getUserName(user.id);
-
-      setMessages([...messages, { ...addedMessage, added_by: user.id }]);
-      setUserNames((prev) => ({ ...prev, [user.id]: senderName }));
+      // If added_by is not populated, manually attach the current user's info
+      if (!addedMessage.added_by || !addedMessage.added_by.name) {
+        addedMessage.added_by = { _id: user.id, name: user.name };
+      }
+      setMessages([...messages, addedMessage]);
       setNewMessage("");
-
       setTimeout(scrollToBottom, 100);
     } catch (error) {
       console.error("Error adding message:", error);
@@ -131,13 +105,13 @@ const MinutesOfMeeting = ({ projectId }) => {
         {messages.length === 0 ? (
           <p>No messages yet.</p>
         ) : (
-          Object.entries(groupedMessages).map(([date, messages]) => (
+          Object.entries(groupedMessages).map(([date, msgs]) => (
             <div key={date} className="message-group">
               <div className="date-separator">{date}</div>
-              {messages.map((msg) => {
-                const isCurrentUser = msg.added_by === user.id;
-                const senderName = userNames[msg.added_by] || "Loading...";
-
+              {msgs.map((msg) => {
+                const isCurrentUser = msg.added_by?._id === user.id;
+                // Use the populated name directly from the added_by object
+                const senderName = msg.added_by?.name || "Unknown User";
                 return (
                   <div key={msg._id} className={`message-item ${isCurrentUser ? "sent" : "received"}`}>
                     <div className="message-content">

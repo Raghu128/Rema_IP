@@ -1,0 +1,44 @@
+.leaves-container {
+    padding: 20px;
+    max-width: 1000px;
+    margin: 20px auto;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .leaves-container h2 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+  }
+  
+  .leaves-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+  }
+  
+  .leaves-table th,
+  .leaves-table td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .leaves-table th {
+    background-color: #f0f0f0;
+    font-weight: 600;
+  }
+  
+  .leaves-table tr:nth-child(even) {
+    background-color: #fafafa;
+  }
+  
+  .error-message {
+    color: #e74c3c;
+    text-align: center;
+    margin-bottom: 10px;
+    font-weight: bold;
+  }
+  
