@@ -18,6 +18,7 @@ import EquipmentAddForm from "./components/Equipment/EquipmentAddForm";
 import FinanceBudgetAddForm from './components/FinanceBudget/FinanceBudgetAddForm'
 import NotificationAddForm from "./components/Notification/NotificationAddForm";
 import AddLeaveForm from "./components/Leaves/LeavesForm";
+import StudentDashboard from "./pages/Student_dashboard";
 import './App.css';
 
 function App() {
@@ -78,8 +79,10 @@ function App() {
       isLoggedIn ? (
         user.role === "admin" ? (
           <AdminPage />
-        ) : (
+        ) : user.role === "faculty" ? (
           <FacultyDashboard />
+        ) : (
+          <StudentDashboard />
         )
       ) : (
         <LoginPage />

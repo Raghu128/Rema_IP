@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 import MinutesOfMeeting from "../MinutesOfMeeting/MinutesOfMeeting";
 import "../../styles/SimpleProject/Projects.css";
 
-const Projects = ({ id }) => {
+const StudentProjects = ({ id }) => {
   const [projectData, setProjectData] = useState(null);
   const [filteredProjects, setFilteredProjects] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -12,16 +11,17 @@ const Projects = ({ id }) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [expandedProject, setExpandedProject] = useState(null);
   const [showNotes, setShowNotes] = useState(null);
-  const navigate = useNavigate();
   
 
   useEffect(() => {
     const fetchProject = async () => {
       try {
         setLoading(true);
-        const response = await axios.get(`/api/v1/projects/${id}`);
+        const response = await axios.get(`/api/v1/projects/student/${id}`);
         // response.data is assumed to be an array of populated projects
         setProjectData(response.data);
+        console.log(response.data);
+        
         setFilteredProjects(response.data);
         setLoading(false);
       } catch (err) {
@@ -48,7 +48,6 @@ const Projects = ({ id }) => {
   return (
     <div className="project-container">
       {/* <h1>Projects</h1> */}
-      <button className="project-edit-button" onClick={() => navigate('/update-project')}>Edit</button>
       
       <input
         type="text"
@@ -64,6 +63,7 @@ const Projects = ({ id }) => {
             <div key={project._id} className="project-item">
               <div className="project-header">
                 <h2 className="project-title">{project.name}</h2>
+                <h2>Under - {project.faculty_id.name}</h2>
               </div>
               
               <p><strong>Domain:</strong> {project.domain}</p>
@@ -156,4 +156,4 @@ const Projects = ({ id }) => {
   );
 };
 
-export default Projects;
+export default StudentProjects;

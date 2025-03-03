@@ -5,6 +5,7 @@
     background-color: #f9f9f9;
     border-radius: 8px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    position: relative;
   }
   
   .leaves-container h2 {
@@ -42,3 +43,10 @@
     font-weight: bold;
   }
   
+    
+  .manage-leave-btn{
+    position: absolute;
+    margin: 1rem;
+    top: 0;
+    right: 0;
+  }

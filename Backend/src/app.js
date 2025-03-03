@@ -48,7 +48,7 @@ app.use("/api/v1/leaves", leaveRoutes);
 
 
 app.get("/", (req, res) => {
-    res.status(200).send("Hello from backend");
+    res.status(200).send("Updated backend 3 march 2025 4:36");
 });
 
 

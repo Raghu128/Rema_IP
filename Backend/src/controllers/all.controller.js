@@ -229,9 +229,9 @@ export const deleteUser = async (req, res) => {
 // GET Leave by ID
 export const getLeaveByid = async (req, res) => {
   const id = req.params.id;
-  try {
+  try {    
     // Using find() with an _id filter to match your user controller style
-    const leave = await Leave.find({ _id: id });
+    const leave = await Leave.find({ user: id });
     res.status(200).json(leave);
   } catch (error) {
     handleError(res, error);
@@ -471,6 +471,28 @@ export const getProjectById = async (req, res) => {
   try {
     const project = await Project.find({
       $or: [{ faculty_id: id }, { team: id }]
+    })
+      .populate('faculty_id', 'name')
+      .populate('team', 'name')
+      .populate('lead_author', 'name');
+
+    if (!project || project.length === 0) {
+      return res.status(404).json({ message: 'Project not found' });
+    }
+
+    res.status(200).json(project);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
+export const getProjectByStudentId = async (req, res) => {
+  const id = req.params.id;
+  
+  try {
+    const project = await Project.find({
+      team: { $in: [id] }
     })
       .populate('faculty_id', 'name')
       .populate('team', 'name')
@@ -787,6 +809,27 @@ export const getEquipmentById = async (req, res) => {
     }
 }
 
+export const getEquipmentByUsingId = async (req, res) => {
+  const { id } = req.params;    
+  if (!id) {
+    return res.status(400).json({ message: 'Equipment ID is required' });
+  }
+
+  try {    
+    // Find the equipment by ID and populate references
+    const equipment = await Equipment.find({usingUser : id});      
+
+    if (!equipment) {
+      return res.status(404).json({ message: 'Equipment not found' });
+    }
+
+    // Return the equipment details
+    res.status(200).json({ message: 'Equipment retrieved successfully', equipment });
+  } catch (error) {
+    console.error('Error retrieving equipment:', error);
+    res.status(500).json({ message: 'Failed to retrieve equipment' });
+  }
+}
 
 export const updateEquipment = async (req, res) => {
   try {

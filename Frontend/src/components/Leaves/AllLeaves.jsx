@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import "../../styles/Leaves/LeavesForFacultyPage.css"; // Import the CSS file
 
 const LeavesForFacultyPage = () => {
   const { user } = useSelector((state) => state.user);
   const [leaves, setLeaves] = useState([]);
   const [error, setError] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchLeaves = async () => {
@@ -54,6 +56,9 @@ const LeavesForFacultyPage = () => {
 
   return (
     <div className="leaves-container">
+      <button className="manage-leave-btn" onClick={() => navigate(`/manage-leaves`)}>
+        ✏️
+      </button>
       <h2>All Leaves for Your Students</h2>
       {error && <p className="error-message">{error}</p>}
       {rows.length === 0 ? (
