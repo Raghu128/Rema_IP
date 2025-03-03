@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useSelector } from "react-redux";
 import "../../styles/Sponsor/AddSponsorProjectForm.css";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 const AddSponsorProjectForm = () => {
@@ -9,7 +9,7 @@ const AddSponsorProjectForm = () => {
   const navigate = useNavigate();
 
   // Initialize formData with a fallback if `user` is null or undefined
-  const [formData, setFormData] = useState({
+  const initialFormState = {
     faculty_id: user ? user.id : "",
     agency: "",
     title: "",
@@ -19,11 +19,13 @@ const AddSponsorProjectForm = () => {
     duration: "",
     budget: "",
     remarks: "",
-  });
+  };
 
+  const [formData, setFormData] = useState(initialFormState);
   const [sponsors, setSponsors] = useState([]);
   const [selectedSponsor, setSelectedSponsor] = useState(null);
   const [message, setMessage] = useState("");
+  const [searchQuery, setSearchQuery] = useState(""); // added search state
 
   useEffect(() => {
     if (user && user.id) {
@@ -37,7 +39,7 @@ const AddSponsorProjectForm = () => {
       };
       fetchSponsors();
     }
-  }, [user?.id]); // Ensure that useEffect runs only if user and user.id are available
+  }, [user?.id]);
 
   const handleSelectSponsor = (sponsor) => {
     setSelectedSponsor(sponsor);
@@ -108,30 +110,35 @@ const AddSponsorProjectForm = () => {
 
   const resetForm = () => {
     setSelectedSponsor(null);
-    setFormData({
-      faculty_id: user ? user.id : "",
-      agency: "",
-      title: "",
-      cfp_url: "",
-      status: "active",
-      start_date: "",
-      duration: "",
-      budget: "",
-      remarks: "",
-    });
+    setFormData(initialFormState);
   };
+
+  // Filter sponsors by search query (e.g., search by title)
+  const filteredSponsors = sponsors.filter((sponsor) =>
+    sponsor.title.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   return (
     <div className="add-sponsor-container">
       <button onClick={() => navigate(-1)}>Go Back</button>
-      <h2 className="add-sponsor-heading">{selectedSponsor ? "Edit Sponsorship Project" : "Add Sponsorship Project"}</h2>
-
+      <h2 className="add-sponsor-heading">
+        {selectedSponsor ? "Edit Sponsorship Project" : "Add Sponsorship Project"}
+      </h2>
       {message && <p className="add-sponsor-message">{message}</p>}
+      
+      {/* Search Bar for existing projects */}
+      <input 
+        type="text" 
+        placeholder="Search existing projects..." 
+        className="add-sponsor-search-bar" 
+        value={searchQuery} 
+        onChange={(e) => setSearchQuery(e.target.value)} 
+      />
 
       <div className="add-sponsor-list">
-        <h3>Existing Sponsorship Projects</h3>
+        <h3 className="add-sponsor-list-title">Existing Sponsorship Projects</h3>
         <ul>
-          {sponsors.map((sponsor) => (
+          {filteredSponsors.map((sponsor) => (
             <li key={sponsor._id} onClick={() => handleSelectSponsor(sponsor)} className="add-sponsor-item">
               {sponsor.title} - {sponsor.agency}
             </li>
@@ -177,6 +184,7 @@ const AddSponsorProjectForm = () => {
           <label htmlFor="budget">Budget:</label>
           <input type="number" id="budget" name="budget" value={formData.budget} onChange={handleChange} required min="0" />
         </div>
+
 
         <div className="add-sponsor-group">
           <label htmlFor="remarks">Remarks:</label>

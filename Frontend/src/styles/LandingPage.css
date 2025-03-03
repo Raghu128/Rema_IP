@@ -15,10 +15,10 @@
     margin-top: 20px;
   }
   
-.landingpage-notification{
-  width: 75%;
-}
-
-.landingpage-venue{
-  width: 25%;
+  .landingpage-notification{
+    width: 70%;
+  }
+  
+  .landingpage-venue{
+  width: 30%;
 }

@@ -158,8 +158,8 @@ const VenueAddForm = () => {
         <div className="venue-form-checkbox-group">
           {users.map((user) => (
             <div key={user._id} className="venue-form-checkbox">
-              <input type="checkbox" value={user._id} onChange={handleChange} checked={formData.view.includes(user._id)} />
-              ({user.email})
+              <input type="checkbox" value={user._id} onChange={handleChange} checked={formData.view.includes(user._id)} className="venue-access-checkbox" />
+              {user.email}
             </div>
           ))}
         </div>

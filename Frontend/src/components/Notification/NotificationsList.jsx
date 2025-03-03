@@ -1,28 +1,37 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import axios from "axios";
-import "../../styles/Notification/NotificationsList.css";
 import { useNavigate } from "react-router-dom";
+import "../../styles/Notification/NotificationsList.css";
+import Loader from "../Loader";
 
 const NotificationsList = () => {
   const { user } = useSelector((state) => state.user);
   const [notifications, setNotifications] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
     if (!user || !user.id) return;
 
     const fetchNotifications = async () => {
+      setLoading(true);
+      setError(null);
+
       try {
         const response = await fetch(`/api/v1/notifications/${user.id}`);
+        if (!response.ok) {
+          throw new Error(`Error: ${response.status} ${response.statusText}`);
+        }
         const data = (await response.json()).notification;
 
-        // If added_by is populated as an object, check if its _id matches user.id.
+        // Map notifications to include added_by_name from populated object (if available)
         const updatedNotifications = data.map((notif) => {
           const addedByName =
             notif.added_by && typeof notif.added_by === "object"
-              ? (notif.added_by._id === user.id ? "Self" : notif.added_by.name)
+              ? notif.added_by._id === user.id
+                ? "Self"
+                : notif.added_by.name
               : "Unknown User";
           return { ...notif, added_by_name: addedByName };
         });
@@ -30,6 +39,7 @@ const NotificationsList = () => {
         setNotifications(updatedNotifications);
       } catch (error) {
         console.error("Error fetching notifications:", error);
+        setError("Failed to load notifications. Please try again.");
       } finally {
         setLoading(false);
       }
@@ -38,10 +48,10 @@ const NotificationsList = () => {
     fetchNotifications();
   }, [user]);
 
-  // Check if notification is expired based on due_date
+  // Helper function: check if notification is expired based on due_date
   const isExpired = (dueDate) => new Date(dueDate) < new Date();
 
-  // Delete notification if current user is the one who added it
+  // Delete notification if allowed
   const deleteNotification = async (id, added_by) => {
     if (
       added_by &&
@@ -60,22 +70,22 @@ const NotificationsList = () => {
     if (!confirmDelete) return;
 
     try {
+      setLoading(true);
       const response = await fetch(`/api/v1/notifications/${id}`, {
         method: "DELETE",
       });
-      if (response.ok) {
-        setNotifications((prev) =>
-          prev.filter((notif) => notif._id !== id)
-        );
-      } else {
-        console.error("Failed to delete notification");
+      if (!response.ok) {
+        throw new Error("Failed to delete notification.");
       }
+      setNotifications((prev) => prev.filter((notif) => notif._id !== id));
     } catch (error) {
       console.error("Error deleting notification:", error);
+      setError("Failed to delete notification. Please try again.");
+    } finally {
+      setLoading(false);
     }
   };
 
-  // Function to get an icon for the notification type
   const getTypeIcon = (type) => {
     switch (type?.toLowerCase()) {
       case "todo":
@@ -89,7 +99,6 @@ const NotificationsList = () => {
     }
   };
 
-  // Function to get an icon for the priority level
   const getPriorityIcon = (priority) => {
     switch (priority?.toLowerCase()) {
       case "high":
@@ -103,56 +112,56 @@ const NotificationsList = () => {
     }
   };
 
+  if (loading) {
+    return <Loader />;
+  }
+
   return (
     <div className="notification-container">
-      <button
-        className="add-btn"
-        onClick={() => navigate("/manage-notification")}
-      >
-        ➕ Add Notification
+      <button className="notification-add-btn" onClick={() => navigate("/manage-notification")}>
+        ➕  
       </button>
 
-      {loading ? (
-        <p className="notification-message">Loading notifications...</p>
-      ) : notifications.length === 0 ? (
+      {error && <p className="notification-error">{error}</p>}
+      {!loading && !error && notifications.length === 0 && (
         <p className="notification-message">No notifications available.</p>
-      ) : (
-        <div className="notification-grid">
-          {notifications.map((notif) => {
-            const expired = isExpired(notif.due_date);
-            return (
-              <div
-                key={notif._id}
-                className={`notification-card ${expired ? "expired" : ""}`}
-              >
-                <div className="notification-tags">
-                  <span
-                    className="notification-bin-btn"
-                    onClick={() =>
-                      deleteNotification(notif._id, notif.added_by)
-                    }
-                  >
-                    🗑️
-                  </span>
-                  <span className="type-icon">{getTypeIcon(notif.type)}</span>
-                  <span className="priority-icon">
-                    {getPriorityIcon(notif.priority)}
-                  </span>
-                </div>
+      )}
 
-                <p className="notification-text">📩 {notif.text}</p>
-
-                <p className="notification-date">
-                  📅 Due: {new Date(notif.due_date).toLocaleDateString()}
-                </p>
-
-                <p className="notification-added-by">
-                  🏷️ Added by: {notif.added_by_name}
-                </p>
-              </div>
-            );
-          })}
-        </div>
+      {!loading && !error && notifications.length > 0 && (
+        <table className="notification-table">
+          <thead>
+            <tr>
+              <th>Type</th>
+              <th>Priority</th>
+              <th>Text</th>
+              <th>Due Date</th>
+              <th>Added By</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {notifications.map((notif) => {
+              const expired = isExpired(notif.due_date);
+              return (
+                <tr key={notif._id} className={expired ? "expired" : ""}>
+                  <td>{getTypeIcon(notif.type)}</td>
+                  <td>{getPriorityIcon(notif.priority)}</td>
+                  <td>{notif.text}</td>
+                  <td>{new Date(notif.due_date).toLocaleDateString()}</td>
+                  <td>{notif.added_by_name}</td>
+                  <td>
+                    <button
+                      className="notification-delete-btn"
+                      onClick={() => deleteNotification(notif._id, notif.added_by)}
+                    >
+                      🗑️
+                    </button>
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
       )}
     </div>
   );

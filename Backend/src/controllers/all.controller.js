@@ -795,7 +795,7 @@ export const getEquipmentById = async (req, res) => {
   
     try {
       // Find the equipment by ID and populate references
-      const equipment = await Equipment.find({ownership : id});      
+      const equipment = await Equipment.find({ownership : id}).populate("usingUser", "name");      
   
       if (!equipment) {
         return res.status(404).json({ message: 'Equipment not found' });
@@ -817,7 +817,7 @@ export const getEquipmentByUsingId = async (req, res) => {
 
   try {    
     // Find the equipment by ID and populate references
-    const equipment = await Equipment.find({usingUser : id});      
+    const equipment = await Equipment.find({usingUser : id}).populate("ownership", "name");      
 
     if (!equipment) {
       return res.status(404).json({ message: 'Equipment not found' });

@@ -144,7 +144,7 @@ const AddLeaveForm = () => {
             <input className="leaves-input" type="date" name="from" value={formData.from} onChange={handleChange} required />
 
             <label className="leaves-label">To Date:</label>
-            <input className="leaves-input" type="date" name="to" value={formData.to} onChange={handleChange} required />
+            <input className="leaves-input" type="date" name="to" value={formData.to} onChange={handleChange}  />
 
             <label className="leaves-label">Reason:</label>
             <textarea className="leaves-textarea" name="reason" value={formData.reason} onChange={handleChange} required />

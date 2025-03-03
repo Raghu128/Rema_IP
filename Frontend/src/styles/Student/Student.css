@@ -1,6 +1,27 @@
+.studentWithfaculty-main-container{
+  /* border: 3px solid red; */
+  position: relative;
+}
+
+
 .studentWithfaculty-container{
   height: 70vh;
   overflow: scroll;
+  border: 3px solid rgba(147, 146, 146, 0.452);
+  padding: 2rem;
+}
+
+.studentWithfaculty-edit-button{
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.student-search-bar{
+  position: absolute;
+  top: 2%;
+  right: 40%;
+  width: 20rem;
 }
 
 

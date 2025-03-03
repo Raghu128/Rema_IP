@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "../../styles/Student/Student.css";
+import Loader from '../Loader';
 
 const Students = ({ id }) => {
   const [supervisorData, setSupervisorData] = useState(null);
@@ -80,7 +81,7 @@ const Students = ({ id }) => {
   }, [searchQuery, supervisorData]);
 
   if (loading)
-    return <div className="studentWithfaculty-loading">Loading...</div>;
+    return  <Loader/>;
   if (error)
     return <div className="studentWithfaculty-error">{error}</div>;
 
@@ -96,11 +97,10 @@ const Students = ({ id }) => {
         </button>
       </div>
 
-      {/* Search Bar */}
       <input
         type="text"
         placeholder="Search student by name..."
-        className="search-bar"
+        className="student-search-bar"
         value={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)}
       />

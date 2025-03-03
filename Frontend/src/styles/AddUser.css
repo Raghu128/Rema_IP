@@ -29,6 +29,7 @@
   }
   
   .AddUserForm label {
+    margin-right: 1rem;
     font-weight: 600;
     color: #2c3e50;
     font-size: 16px;
@@ -37,8 +38,7 @@
 
   .AddUserForm-inputbox{
     display: flex;
-    width: 50%;
-    /* border: 3px solid rebeccapurple; */
+    width: 60%;
     flex-direction: row;
     justify-content: space-between;
   }
@@ -51,6 +51,7 @@
     font-size: 14px;
     color: #2c3e50;
     background-color: #f9f9f9;
+    width: 60%;
     transition: border-color 0.3s ease, box-shadow 0.3s ease;
   }
   

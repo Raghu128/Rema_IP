@@ -3,6 +3,7 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import "../../styles/Equipment/UserEquipmentList.css"; 
+import Loader from '../Loader'
 
 const UserEquipmentList = () => {
   const { user } = useSelector((state) => state.user);
@@ -10,6 +11,8 @@ const UserEquipmentList = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const navigate = useNavigate();
+  console.log(equipment);
+  
 
   useEffect(() => {
     if (!user) return;
@@ -31,11 +34,12 @@ const UserEquipmentList = () => {
   if (!user) {
     return <p className="equipment-list-message">Please log in to view your equipment.</p>;
   }
+  if(loading) return <Loader/>;
 
   return (
     <div className="equipment-list-container">
       <button onClick={() => navigate("/manage-equipment")} className="manage-equipment-btn">
-        Manage Equipment
+        Manage
       </button>
 
       <h2 className="equipment-list-title">Your Equipment</h2>
@@ -52,15 +56,17 @@ const UserEquipmentList = () => {
               <th>Price (₹)</th>
               <th>Location</th>
               <th>Added On</th>
+              <th>User</th>
             </tr>
           </thead>
           <tbody>
-            {equipment.map((item) => (
-              <tr key={item.id}>
+            {equipment.map((item, index) => (
+              <tr key={item.id || `equipment-${index}`}>
                 <td>{item.name}</td>
                 <td>₹{parseFloat(item.amount.$numberDecimal).toFixed(2)}</td>
                 <td>{item.location}</td>
                 <td>{new Date(item.createdAt).toLocaleDateString()}</td>
+                <td>{item.usingUser.name}</td>
               </tr>
             ))}
           </tbody>

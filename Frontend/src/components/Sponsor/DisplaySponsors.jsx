@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import FinanceBudgetList from "../FinanceBudget/FinanceBudgetList";
 import MinutesOfMeeting from "../MinutesOfMeeting/MinutesOfMeeting"; // Import the MinutesOfMeeting component
+import Loader from '../Loader'
 
 const DisplaySponsors = () => {
   const [sponsors, setSponsors] = useState([]);
@@ -43,7 +44,7 @@ const DisplaySponsors = () => {
   };
 
   if (loading) {
-    return <div>Loading sponsors...</div>;
+    return <Loader/>;
   }
 
   return (

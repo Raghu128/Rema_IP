@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import MinutesOfMeeting from "../MinutesOfMeeting/MinutesOfMeeting";
 import "../../styles/SimpleProject/Projects.css";
+import Loader from '../Loader'
 
 const StudentProjects = ({ id }) => {
   const [projectData, setProjectData] = useState(null);
@@ -20,7 +21,6 @@ const StudentProjects = ({ id }) => {
         const response = await axios.get(`/api/v1/projects/student/${id}`);
         // response.data is assumed to be an array of populated projects
         setProjectData(response.data);
-        console.log(response.data);
         
         setFilteredProjects(response.data);
         setLoading(false);
@@ -42,7 +42,7 @@ const StudentProjects = ({ id }) => {
     }
   }, [searchQuery, projectData]);
 
-  if (loading) return <div>Loading...</div>;
+  if (loading) return <Loader/>;
   if (error) return <div>{error}</div>;
 
   return (

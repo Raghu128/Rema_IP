@@ -1,113 +1,113 @@
-.venue-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 20px;
+/* Container */
+.venue-list-container {
+  width: 100%;
+  margin: 20px auto;
   padding: 20px;
-  animation: fadeIn 0.8s ease-in-out;
-  max-height: 30rem;
-  overflow: scroll;
-  margin-top: 1rem;
+  background: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  max-height: 85vh;
+  overflow-y: auto;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-/* Smooth fade-in animation */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.venue-card {
-  padding: 20px;
-  border-radius: 12px;
-  background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
-  box-shadow: 3px 5px 15px rgba(0, 0, 0, 0.15);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
-  animation: popUp 0.5s ease-out forwards;
-  border: 3px solid rebeccapurple;
-}
-
-/* Hover effect */
-.venue-card:hover {
-  transform: scale(1.05);
-  box-shadow: 5px 7px 20px rgba(0, 0, 0, 0.2);
-}
-
-/* Pop-up animation */
-@keyframes popUp {
-  from {
-    opacity: 0;
-    transform: scale(0.9);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-/* Subtle glowing effect */
-.venue-card::before {
-  content: "";
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: radial-gradient(circle, rgba(255, 255, 255, 0.3), transparent);
-  opacity: 0;
-  transition: opacity 0.4s ease;
-}
-
-.venue-card:hover::before {
-  opacity: 1;
-}
-
-.venue-card h3 {
-  color: #007bff;
-  font-size: 1.4rem;
-  margin-bottom: 10px;
-}
-
-.venue-card p {
-  font-size: 1rem;
-  color: #444;
-  margin-bottom: 8px;
-  transition: color 0.3s ease;
-}
-
-/* Hovering text effect */
-.venue-card:hover p {
-  color: #222;
-}
-
-/* Add a button inside the card */
-.venue-card .view-details {
-  display: inline-block;
-  margin-top: 10px;
-  padding: 8px 12px;
+/* Manage Button */
+.manage-venue-btn {
   background: #007bff;
-  color: white;
-  border-radius: 6px;
-  font-size: 0.9rem;
-  text-align: center;
+  color: #fff;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+  margin-bottom: 15px;
   transition: background 0.3s ease;
 }
-
-.venue-card .view-details:hover {
+.manage-venue-btn:hover {
   background: #0056b3;
 }
 
+/* Title */
+.venue-list-title {
+  text-align: center;
+  font-size: 22px;
+  color: #222;
+  font-weight: bold;
+  margin-bottom: 15px;
+  letter-spacing: 0.5px;
+}
 
-.expand-btn, .collapse-btn{
+/* No Venues Message */
+.no-venues {
+  text-align: center;
+  font-size: 14px;
+  color: #555;
+}
+
+/* Table Styles */
+.venue-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+.venue-table th,
+.venue-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+.venue-table th {
+  background-color: #007bff;
+  color: #fff;
+  text-transform: uppercase;
+  font-size: 13px;
+  letter-spacing: 0.3px;
+}
+.venue-table tbody tr:nth-child(even) {
+  background-color: #f8f9fa;
+}
+
+/* Expanded Details Row */
+.venue-details-row td {
+  background: #f9f9f9;
+  padding: 10px;
+}
+.venue-details p {
+  margin: 4px 0;
+  font-size: 13px;
+  color: #333;
+}
+
+/* Expand/Collapse Buttons */
+.expand-btn,
+.collapse-btn {
+  background: transparent;
   border: none;
-  width: 3rem;
-  height: 2rem;
-  font-size: 0.6rem;
+  color: #007bff;
+  cursor: pointer;
+  font-size: 12px;
+  text-decoration: underline;
+  transition: color 0.3s ease;
+}
+.expand-btn:hover,
+.collapse-btn:hover {
+  color: #0056b3;
+}
+
+/* Expired Venue Row */
+.venue-table tbody tr.expired {
+  background-color: #ffdddd;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .venue-list-container {
+    width: 95%;
+    padding: 1rem;
+  }
+  .venue-table th,
+  .venue-table td {
+    font-size: 12px;
+    padding: 6px;
+  }
 }

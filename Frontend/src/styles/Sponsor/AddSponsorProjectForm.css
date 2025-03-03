@@ -1,251 +1,180 @@
 /* Container */
 .add-sponsor-container {
-  width: 100%;
-  margin: 20px auto;
-  padding: 30px;
-  background: linear-gradient(135deg, #4e4376, #2b5876);
-  border-radius: 16px;
-  box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.2);
-  color: white;
-  font-family: "Poppins", sans-serif;
-  transition: transform 0.4s ease, box-shadow 0.4s ease, background-color 0.4s ease;
-  max-height: 90vh;
-  overflow: auto;
+  width: 80vw;
+  max-width: 900px;
+  margin: 2rem auto;
+  padding: 2rem 3rem;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  overflow-y: auto;
+  height: 88vh;
 }
 
-.add-sponsor-container:hover {
-  transform: translateY(-10px);
-  box-shadow: 0px 30px 60px rgba(0, 0, 0, 0.3);
-  background: linear-gradient(135deg, #2b5876, #4e4376);
+/* Back Button */
+.add-sponsor-container button:first-of-type {
+  background: #ff5a5f;
+  color: #fff;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  margin-bottom: 20px;
+  transition: background 0.3s ease;
+}
+.add-sponsor-container button:first-of-type:hover {
+  background: #e14b50;
 }
 
-/* Heading */
+/* Heading & Message */
 .add-sponsor-heading {
   text-align: center;
-  font-size: 30px;
-  font-weight: 700;
-  margin-bottom: 30px;
-  text-transform: uppercase;
-  letter-spacing: 3px;
-  color: #f4e1a1;
-  animation: fadeInUp 1s ease-in-out;
-  font-family: 'Montserrat', sans-serif;
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+  color: #333;
+  font-weight: bold;
 }
 
-/* Message */
 .add-sponsor-message {
   text-align: center;
-  font-size: 16px;
-  color: #ffcc00;
-  font-weight: bold;
-  margin-bottom: 20px;
-  opacity: 0;
-  animation: fadeIn 0.6s ease-in-out forwards;
+  font-size: 1rem;
+  margin-bottom: 1rem;
+  color: green;
 }
 
-/* List */
-.add-sponsor-list {
-  margin-bottom: 25px;
-}
-
-.add-sponsor-list h3 {
-  text-align: center;
-  font-size: 24px;
-  margin-bottom: 15px;
-  color: #f4e1a1;
-}
-
-.add-sponsor-list ul {
-  padding: 0;
-  list-style: none;
-  max-height: 200px;
-  overflow-y: auto;
-}
-
-.add-sponsor-item {
-  background: rgba(255, 255, 255, 0.1);
-  padding: 18px;
-  margin-bottom: 12px;
-  border-radius: 8px;
-  text-align: center;
-  cursor: pointer;
-  transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
-  font-size: 18px;
-}
-
-.add-sponsor-item:hover {
-  background: rgba(255, 255, 255, 0.3);
-  transform: scale(1.05);
-  box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.3);
-}
-
-/* Form */
-.add-sponsor-form {
+/* Search Bar */
+.add-sponsor-search-bar {
   width: 100%;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  gap: 5rem;
-  transition: all 0.4s ease;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1.5rem;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+.add-sponsor-search-bar:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 6px rgba(0, 123, 255, 0.3);
+  outline: none;
+  background: #fff;
 }
 
+/* Existing Sponsorship Projects List */
+.add-sponsor-list {
+  margin-bottom: 2rem;
+}
+.add-sponsor-list-title {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  color: #007bff;
+  text-align: center;
+}
+.add-sponsor-item {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid #ddd;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+.add-sponsor-item:hover {
+  background: #f1f1f1;
+}
+
+/* Form Layout using CSS Grid */
+.add-sponsor-form {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+
+}
+
+/* Form Group */
 .add-sponsor-group {
   display: flex;
   flex-direction: column;
-  gap: 15px;
 }
-
 .add-sponsor-group label {
-  font-size: 18px;
   font-weight: 600;
-  color: #f4e1a1;
+  margin-bottom: 0.5rem;
+  color: #333;
+  font-size: 1rem;
 }
 
+/* Inputs, Selects, Textareas */
 .add-sponsor-group input,
 .add-sponsor-group select,
 .add-sponsor-group textarea {
-  padding: 16px;
-  border-radius: 10px;
-  border: 1px solid #ddd;
-  outline: none;
-  transition: all 0.3s ease-in-out;
-  background: #2b5876;
-  color: white;
-  font-size: 16px;
-  min-width: 250px;
+  padding: 0.75rem;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  font-size: 1rem;
+  background: #f9f9f9;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
-
 .add-sponsor-group input:focus,
 .add-sponsor-group select:focus,
 .add-sponsor-group textarea:focus {
-  border-color: #ffcc00;
-  box-shadow: 0px 0px 15px rgba(255, 204, 0, 0.5);
-  background: #4e4376;
+  border-color: #007bff;
+  box-shadow: 0 0 6px rgba(0, 123, 255, 0.3);
+  outline: none;
+  background: #fff;
 }
 
+/* Make textareas span two columns */
+.add-sponsor-group textarea {
+  grid-column: span 2;
+  resize: vertical;
+}
+
+/* Action Buttons (Submit & Delete) */
 .add-sponsor-actions {
+  grid-column: span 2;
   display: flex;
-  justify-content: center;
-  gap: 1.5rem;
-  margin-top: 20px;
+  gap: 1rem;
+  margin-top: 1rem;
 }
-
-/* Buttons */
 .add-sponsor-submit-btn,
 .add-sponsor-delete-btn {
-  background: #ffcc00;
-  color: #333;
-  padding: 16px 30px;
-  border-radius: 10px;
-  font-size: 18px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+  flex: 1;
+  padding: 0.75rem;
+  font-size: 1rem;
+  font-weight: bold;
   border: none;
-  text-transform: uppercase;
-  width: 100%;
-  max-width: 200px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
-
+.add-sponsor-submit-btn {
+  background: linear-gradient(135deg, #007bff, #0056b3);
+  color: #fff;
+}
 .add-sponsor-submit-btn:hover {
-  background: #e6b800;
+  background: linear-gradient(135deg, #0056b3, #003f80);
   transform: scale(1.05);
-  box-shadow: 0px 5px 15px rgba(255, 204, 0, 0.3);
 }
-
 .add-sponsor-delete-btn {
-  background: #ff4444;
-  color: white;
+  background: #dc3545;
+  color: #fff;
 }
-
 .add-sponsor-delete-btn:hover {
-  background: #cc0000;
+  background: #c82333;
   transform: scale(1.05);
-  box-shadow: 0px 5px 15px rgba(255, 0, 0, 0.3);
-}
-
-.add-sponsor-submit-btn:disabled,
-.add-sponsor-delete-btn:disabled {
-  background: #d3d3d3;
-  cursor: not-allowed;
-}
-
-/* Animations */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(50px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes slideInRight {
-  from {
-    opacity: 0;
-    transform: translateX(50px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
 }
 
 /* Responsive Design */
 @media (max-width: 768px) {
   .add-sponsor-container {
-    max-width: 90%;
-    padding: 20px;
+    width: 95%;
+    padding: 1rem 1.5rem;
   }
-
-  .add-sponsor-heading {
-    font-size: 24px;
-  }
-
-  .add-sponsor-item {
-    font-size: 16px;
-  }
-
-  .add-sponsor-submit-btn,
-  .add-sponsor-delete-btn {
-    font-size: 16px;
-    padding: 14px;
-  }
-
+  
   .add-sponsor-form {
-    gap: 20px;
+    grid-template-columns: 1fr;
   }
-}
-
-@media (max-width: 480px) {
-  .add-sponsor-heading {
-    font-size: 20px;
-  }
-
-  .add-sponsor-item {
-    font-size: 14px;
-  }
-
-  .add-sponsor-submit-btn,
-  .add-sponsor-delete-btn {
-    font-size: 16px;
-    padding: 14px;
-  }
-
-  .add-sponsor-form {
-    gap: 10px;
+  
+  .add-sponsor-group textarea, .add-sponsor-actions {
+    grid-column: span 1;
   }
 }

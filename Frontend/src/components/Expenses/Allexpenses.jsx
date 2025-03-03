@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import axios from "axios";
 import "../../styles/Expenses/ExpensesList.css";
 import { useNavigate } from "react-router-dom";
+import Loader from '../Loader'
 
 const ExpensesList = () => {
   const { user } = useSelector((state) => state.user);
@@ -39,13 +40,13 @@ const ExpensesList = () => {
   );
 
   if (!user?.id) return <p className="expenses-list-message">Please log in to view expenses.</p>;
-  if (loading) return <p className="expenses-list-message">Loading expenses...</p>;
+  if (loading) return <Loader/>;
   if (error) return <p className="expenses-list-message">{error}</p>;
 
   return (
     <div className="expenses-list-container">
       <button onClick={() => navigate("/manage-expense")} className="manage-expense-btn">
-        Manage Expenses
+        Manage
       </button>
 
       <h2 className="expenses-list-title">User Expenses</h2>

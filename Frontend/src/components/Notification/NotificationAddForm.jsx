@@ -171,7 +171,7 @@ const NotificationAddForm = () => {
                   onChange={handleCheckboxChange}
                   className="notification-checkbox"
                 />
-                {user.name} ({user.email})
+                {user.email}
               </label>
             ))}
           </div>

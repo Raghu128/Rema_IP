@@ -2,6 +2,8 @@
   width: 90%;
   margin: auto;
   text-align: center;
+  position: relative;
+  margin-top: 1rem;
 }
 
 .manage-equipment-btn {
@@ -12,6 +14,9 @@
   border-radius: 5px;
   cursor: pointer;
   margin-bottom: 15px;
+  position: absolute;
+  right: 0;
+  top: -5%;
 }
 
 .equipment-list-title {

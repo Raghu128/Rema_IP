@@ -2,21 +2,26 @@ import React, { useEffect, useState, useRef } from "react";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import "../../styles/MinutesOfMeeting/MinutesOfMeeting.css";
+import Loader from '../Loader'
 
 const MinutesOfMeeting = ({ projectId }) => {
   const { user } = useSelector((state) => state.user);
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [posting, setPosting] = useState(false);
   const messagesContainerRef = useRef(null);
 
   useEffect(() => {
     const fetchMessages = async () => {
+      setLoading(true);
       try {
         const response = await axios.get(`/api/v1/minutes-of-meeting/${projectId}`);
-        const messagesData = response.data;
-        setMessages(messagesData);
+        setMessages(response.data);
       } catch (error) {
         console.error("Error fetching minutes:", error);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -36,6 +41,7 @@ const MinutesOfMeeting = ({ projectId }) => {
   const handleAddMessage = async () => {
     if (!newMessage.trim()) return;
 
+    setPosting(true);
     const messageData = {
       pid: projectId,
       text: newMessage,
@@ -46,7 +52,6 @@ const MinutesOfMeeting = ({ projectId }) => {
     try {
       const response = await axios.post("/api/v1/minutes-of-meeting/", messageData);
       const addedMessage = response.data;
-      // If added_by is not populated, manually attach the current user's info
       if (!addedMessage.added_by || !addedMessage.added_by.name) {
         addedMessage.added_by = { _id: user.id, name: user.name };
       }
@@ -55,6 +60,8 @@ const MinutesOfMeeting = ({ projectId }) => {
       setTimeout(scrollToBottom, 100);
     } catch (error) {
       console.error("Error adding message:", error);
+    } finally {
+      setPosting(false);
     }
   };
 
@@ -96,13 +103,17 @@ const MinutesOfMeeting = ({ projectId }) => {
 
   const groupedMessages = groupMessagesByDate();
 
+  if(loading) return <Loader/>;
+
   return (
     <div className="mom-container">
       <h2>Minutes of Meeting</h2>
 
       {/* Messages List */}
       <div className="messages-list" ref={messagesContainerRef}>
-        {messages.length === 0 ? (
+        {loading ? (
+          <p className="loading-message">Loading messages...</p>
+        ) : messages.length === 0 ? (
           <p>No messages yet.</p>
         ) : (
           Object.entries(groupedMessages).map(([date, msgs]) => (
@@ -110,7 +121,6 @@ const MinutesOfMeeting = ({ projectId }) => {
               <div className="date-separator">{date}</div>
               {msgs.map((msg) => {
                 const isCurrentUser = msg.added_by?._id === user.id;
-                // Use the populated name directly from the added_by object
                 const senderName = msg.added_by?.name || "Unknown User";
                 return (
                   <div key={msg._id} className={`message-item ${isCurrentUser ? "sent" : "received"}`}>
@@ -133,10 +143,11 @@ const MinutesOfMeeting = ({ projectId }) => {
       <div className="message-input">
         <input
           type="text"
-          placeholder="Type a message..."
+          placeholder={posting ? "Sending..." : "Type a message..."}
           value={newMessage}
           onChange={(e) => setNewMessage(e.target.value)}
           onKeyDown={handleKeyDown}
+          disabled={posting}
         />
       </div>
     </div>

@@ -3,6 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import MinutesOfMeeting from "../MinutesOfMeeting/MinutesOfMeeting";
 import "../../styles/SimpleProject/Projects.css";
+import Loader from '../Loader';
 
 const Projects = ({ id }) => {
   const [projectData, setProjectData] = useState(null);
@@ -42,7 +43,7 @@ const Projects = ({ id }) => {
     }
   }, [searchQuery, projectData]);
 
-  if (loading) return <div>Loading...</div>;
+  if (loading) return <Loader/>;
   if (error) return <div>{error}</div>;
 
   return (
