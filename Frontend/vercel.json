@@ -1,0 +1,6 @@
+{
+    "rewrites": [
+      { "source": "/api/(.*)", "destination": "https://rema-backend.vercel.app/api/$1" }
+    ]
+  }
+  
