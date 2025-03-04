@@ -411,7 +411,7 @@ export const getSupervisorById = async (req, res) => {
       .populate("committee", "name role");
     
 
-    if (!supervisor || supervisor.length === 0) {
+    if (!supervisor) {
       return res.status(404).json({ message: "Supervisor not found" });
     }
 
@@ -476,7 +476,7 @@ export const getProjectById = async (req, res) => {
       .populate('team', 'name')
       .populate('lead_author', 'name');
 
-    if (!project || project.length === 0) {
+    if (!project) {
       return res.status(404).json({ message: 'Project not found' });
     }
 
@@ -498,7 +498,7 @@ export const getProjectByStudentId = async (req, res) => {
       .populate('team', 'name')
       .populate('lead_author', 'name');
 
-    if (!project || project.length === 0) {
+    if (!project) {
       return res.status(404).json({ message: 'Project not found' });
     }
 
@@ -691,14 +691,16 @@ export const getNotificationById = async (req, res) => {
 
   try {
     // Find the notification by ID and populate the added_by field with the user's name
+    
     const notification = await Notification.find({
       $or: [{ added_by: id }, { view: id }]
     }).populate('added_by', 'name');
 
-    if (!notification || notification.length === 0) {
+    if (!notification ) {
       return res.status(404).json({ message: 'Notification not found' });
     }
-
+   
+    
     res.status(200).json({ message: 'Notification retrieved successfully', notification });
   } catch (error) {
     console.error('Error retrieving notification:', error);
@@ -1034,7 +1036,7 @@ export const getExpenseById = async (req, res) => {
     // Find sponsor projects for the user
     const sponsorProjects = await SponsorProject.find({ faculty_id: userId });
 
-    if (!sponsorProjects || sponsorProjects.length === 0) {
+    if (!sponsorProjects) {
       return res.status(404).json({ message: "No sponsor projects found for this user." });
     }
 

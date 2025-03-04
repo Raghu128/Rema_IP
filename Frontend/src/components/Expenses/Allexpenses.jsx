@@ -34,6 +34,8 @@ const ExpensesList = () => {
     fetchExpenses();
   }, [user?.id]);
 
+  
+
   // Filter expenses by agency name
   const filteredExpenses = expenseData.filter(({ sponsorProject }) =>
     sponsorProject.agency.toLowerCase().includes(searchQuery.toLowerCase())

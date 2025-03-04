@@ -69,6 +69,11 @@
   color: #333;
 }
 
+.expenses-list-message{
+  margin: 20% auto;
+  color: red;
+}
+
 .expenses-table {
   width: 100%;
   border-collapse: collapse;
