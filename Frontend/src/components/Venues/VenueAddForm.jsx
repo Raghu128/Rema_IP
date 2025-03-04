@@ -110,51 +110,50 @@ const VenueAddForm = () => {
       <h2 className="venue-form-title">{selectedVenue ? "Edit Venue" : "Add Venue"}</h2>
       {message && <p className="venue-form-message">{message}</p>}
       <form className="venue-form" onSubmit={handleSubmit}>
-        <label className="venue-form-label">Venue Name:</label>
         <input type="text" name="venue" value={formData.venue} onChange={handleChange} className="venue-form-input" required />
+        <label className="venue-form-label">Venue Name</label>
 
-        <label className="venue-form-label">Year:</label>
         <input type="number" name="year" value={formData.year} onChange={handleChange} className="venue-form-input" required min="1900" />
+        <label className="venue-form-label">Year</label>
 
-        <label className="venue-form-label">URL:</label>
         <input type="url" name="url" value={formData.url} onChange={handleChange} className="venue-form-input" />
+        <label className="venue-form-label">URL</label>
 
-        <label className="venue-form-label">Date:</label>
         <input type="date" name="date" value={formData.date} onChange={handleChange} className="venue-form-input" />
+        <label className="venue-form-label">Date</label>
 
-        <label className="venue-form-label">Abstract Submission:</label>
         <input type="date" name="abstract_submission" value={formData.abstract_submission} onChange={handleChange} className="venue-form-input" />
+        <label className="venue-form-label">Abstract Submission</label>
 
-        <label className="venue-form-label">Paper Submission:</label>
         <input type="date" name="paper_submission" value={formData.paper_submission} onChange={handleChange} className="venue-form-input" />
+        <label className="venue-form-label">Paper Submission</label>
 
-        <label className="venue-form-label">Author Response:</label>
         <input type="date" name="author_response" value={formData.author_response} onChange={handleChange} className="venue-form-input" />
+        <label className="venue-form-label">Author Response</label>
 
         {/* adding here */}
-        <label className="venue-form-label">Meta Review:</label>
         <input type="date" name="meta_review" value={formData.meta_review} onChange={handleChange} className="venue-form-input" />
+        <label className="venue-form-label">Meta Review</label>
 
-        <label className="venue-form-label">Notification:</label>
         <input type="date" name="notification" value={formData.notification} onChange={handleChange} className="venue-form-input" />
+        <label className="venue-form-label">Notification</label>
 
-        <label className="venue-form-label">Commitment:</label>
         <input type="date" name="commitment" value={formData.commitment} onChange={handleChange} className="venue-form-input" />
+        <label className="venue-form-label">Commitment</label>
 
-        <label className="venue-form-label">Main Conference Start:</label>
         <input type="date" name="main_conference_start" value={formData.main_conference_start} onChange={handleChange} className="venue-form-input" />
+        <label className="venue-form-label">Main Conference Start</label>
 
-        <label className="venue-form-label">Main Conference End:</label>
         <input type="date" name="main_conference_end" value={formData.main_conference_end} onChange={handleChange} className="venue-form-input" />
+        <label className="venue-form-label">Main Conference End</label>
 
-        <label className="venue-form-label">Location:</label>
         <input type="text" name="location" value={formData.location} onChange={handleChange} className="venue-form-input" />
+        <label className="venue-form-label">Location</label>
 
-        <label className="venue-form-label">Time Zone:</label>
         <input type="text" name="time_zone" value={formData.time_zone} onChange={handleChange} className="venue-form-input" />
+        <label className="venue-form-label">Time Zone</label>
 
 
-        <label className="venue-form-label">View Access:</label>
         <div className="venue-form-checkbox-group">
           {users.map((user) => (
             <div key={user._id} className="venue-form-checkbox">
@@ -163,6 +162,7 @@ const VenueAddForm = () => {
             </div>
           ))}
         </div>
+          <label className="venue-form-label">View Access</label>
 
         <button type="submit" className="venue-form-submit-btn">{selectedVenue ? "Update Venue" : "Add Venue"}</button>
       </form>
