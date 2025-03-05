@@ -30,6 +30,12 @@ const FinanceBudgetAddForm = () => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    if (!user) {
+      navigate("/"); // Redirect to home if user is null
+    }
+  }, [user, navigate]);
+
+  useEffect(() => {
     const fetchSponsorProjects = async () => {
       if (!user?.id) return;
       try {

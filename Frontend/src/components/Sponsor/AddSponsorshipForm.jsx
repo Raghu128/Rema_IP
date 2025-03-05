@@ -28,6 +28,12 @@ const AddSponsorProjectForm = () => {
   const [searchQuery, setSearchQuery] = useState(""); // added search state
 
   useEffect(() => {
+    if (!user) {
+      navigate("/"); // Redirect to home if user is null
+    }
+  }, [user, navigate]);
+
+  useEffect(() => {
     if (user && user.id) {
       const fetchSponsors = async () => {
         try {

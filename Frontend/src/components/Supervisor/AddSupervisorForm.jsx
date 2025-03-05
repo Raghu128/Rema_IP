@@ -427,6 +427,12 @@ const AddSupervisorForm = () => {
   };
 
   useEffect(() => {
+    if (!user) {
+      navigate("/"); // Redirect to home if user is null
+    }
+  }, [user, navigate]);
+
+  useEffect(() => {
     if (user?.id) fetchSupervisor();
   }, [user]);
 

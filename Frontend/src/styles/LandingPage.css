@@ -1,24 +1,38 @@
 .landingpage-dashboard {
-    text-align: center;
-    padding: 20px;
-  }
-  
-  .landingpage-header h1 {
-    font-size: 24px;
-    color: #333;
-  }
-  
-  .landingpage-content {
-    display: flex;
-    gap: 20px;
-    justify-content: center;
-    margin-top: 20px;
-  }
-  
-  .landingpage-notification{
-    width: 70%;
-  }
-  
-  .landingpage-venue{
+  text-align: center;
+  padding: 20px;
+}
+
+.landingpage-header h1 {
+  font-size: 24px;
+  color: #333;
+}
+
+.landingpage-content {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.landingpage-notification {
+  width: 70%;
+}
+
+.landingpage-venue {
   width: 30%;
+}
+
+@media (max-width: 988px) {
+  .landingpage-content {
+    flex-direction: column;
+  }
+
+  .landingpage-notification {
+    width: 100%;
+  }
+
+  .landingpage-venue {
+    width: 100%;
+  }
 }

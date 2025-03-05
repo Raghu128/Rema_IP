@@ -118,9 +118,13 @@ const NotificationsList = () => {
 
   return (
     <div className="notification-container">
+      <div className="notification-top-container">
+                <h2 id="notification-title">📢 Notifications</h2>
       <button className="notification-add-btn" onClick={() => navigate("/manage-notification")}>
         ➕  
       </button>
+      </div>
+      
 
       {error && <p className="notification-error">{error}</p>}
       {!loading && !error && notifications.length === 0 && (

@@ -21,6 +21,12 @@ const AddLeaveForm = () => {
   const [editingLeaveId, setEditingLeaveId] = useState(null);
 
   useEffect(() => {
+    if (!user) {
+      navigate("/"); // Redirect to home if user is null
+    }
+  }, [user, navigate]);
+
+  useEffect(() => {
     const fetchStudents = async () => {
       try {
         const response = await axios.get("/api/v1/user");

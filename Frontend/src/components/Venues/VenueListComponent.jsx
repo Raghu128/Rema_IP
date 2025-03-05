@@ -59,7 +59,7 @@ const VenueListComponent = () => {
   return (
     <div className="venue-list-container">
       <button className="manage-venue-btn" onClick={() => navigate("/edit-venue")}>
-        ✏️ Manage Venues
+        ✏️ 
       </button>
       <h2 className="venue-list-title">Venue List</h2>
       {venues.length === 0 ? (

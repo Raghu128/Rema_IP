@@ -29,6 +29,12 @@ const AddOrEditProjectForm = ({ selectedProject, onProjectSaved, onCancel }) => 
   const [users, setUsers] = useState([]);
   const [message, setMessage] = useState("");
 
+  useEffect(() => {
+    if (!user) {
+      navigate("/"); // Redirect to home if user is null
+    }
+  }, [user, navigate]);
+
   // Prefill form for editing
   useEffect(() => {
     if (selectedProject) {

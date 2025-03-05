@@ -21,6 +21,12 @@ const NotificationAddForm = () => {
   });
 
   useEffect(() => {
+    if (!user) {
+      navigate("/"); // Redirect to home if user is null
+    }
+  }, [user, navigate]);
+
+  useEffect(() => {
     const fetchUsers = async () => {
       try {
         const response = await axios.get("/api/v1/user");

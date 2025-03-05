@@ -13,7 +13,6 @@ const LandingPage = () => {
 
       <div className="landingpage-content">
         <div className="landingpage-notification">
-          <h2>📢 Notifications</h2>
           <NotificationsList />
         </div>
 

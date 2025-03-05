@@ -31,6 +31,12 @@ const UpdateProjectFormPage = () => {
   const [users, setUsers] = useState([]);
   const [message, setMessage] = useState("");
 
+  useEffect(() => {
+    if (!user) {
+      navigate("/"); // Redirect to home if user is null
+    }
+  }, [user, navigate]);
+
   // Fetch projects for the logged-in user
   useEffect(() => {
     const fetchProjects = async () => {

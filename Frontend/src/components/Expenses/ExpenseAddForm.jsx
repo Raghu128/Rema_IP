@@ -29,6 +29,11 @@ const ExpenseAddForm = () => {
     "overhead",
     "gst"
   ];
+  useEffect(() => {
+    if (!user) {
+      navigate("/"); // Redirect to home if user is null
+    }
+  }, [user, navigate]);
   
   // Fetch sponsor projects
   useEffect(() => {

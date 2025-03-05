@@ -1,102 +1,121 @@
-/* Container */
+/* Enhanced NotificationsList.css */
 .notification-container {
-  max-width: 80%;
-  margin: 30px auto;
-  padding: 30px;
+  padding: 20px;
+  width: 100%;
   background: #ffffff;
-  border-radius: 12px;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  max-height: 90vh;
-  overflow-y: auto;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  border-radius: 10px;
+  transition: all 0.3s ease;
+}
+
+.notification-top-container{
+  display: flex;
+  flex-direction: row-reverse;
+  width: 100%;
   position: relative;
+  justify-content: start;
+  margin: 1rem auto;
 }
 
-/* Add Notification Button */
+.notification-container:hover {
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+#notification-title{
+
+}
+
 .notification-add-btn {
-  background: #007bff;
-  color: #fff;
+  background: linear-gradient(135deg, #007bff, #0056b3);
+  color: white;
   border: none;
-  padding: 10px 15px;
-  border-radius: 5px;
+  padding: 12px 18px;
+  border-radius: 50px;
+  font-size: 22px;
   cursor: pointer;
-  font-size: 14px;
-  margin-bottom: 20px;
-  transition: background 0.3s ease;
+  display: block;
+  margin: 0 auto 20px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   position: absolute;
-  top: 0;
   right: 0;
-}
-.notification-add-btn:hover {
-  background: #0056b3;
+  top: -10px;
 }
 
-/* Message Styles */
-.notification-message {
+.notification-add-btn:hover {
+  background: linear-gradient(135deg, #5b9ce1, #003d80);
+  transform: scale(1.05);
+}
+
+.notification-error, .notification-message {
   text-align: center;
   font-size: 16px;
-  margin-bottom: 12px;
-}
-.notification-error {
-  text-align: center;
   color: #d9534f;
   font-weight: bold;
-  font-size: 16px;
-  margin-bottom: 12px;
+  margin-bottom: 10px;
 }
 
-/* Table Styles */
 .notification-table {
-  margin-top: 2rem;
   width: 100%;
   border-collapse: collapse;
+  margin-top: 10px;
   font-size: 16px;
+  border-radius: 8px;
+  overflow: hidden;
 }
-.notification-table th,
-.notification-table td {
-  border: 1px solid #ddd;
-  padding: 12px;
+
+.notification-table th, .notification-table td {
+  padding: 14px;
   text-align: left;
+  border-bottom: 2px solid #ddd;
 }
+
 .notification-table th {
-  background-color: #007bff;
-  color: #fff;
+  background: linear-gradient(135deg, #007bff, #0056b3);
+  color: white;
+  font-weight: bold;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-.notification-table tbody tr:nth-child(even) {
-  background-color: #f2f2f2;
+  letter-spacing: 1px;
 }
 
-/* Expired row styling */
-.notification-table tbody tr.expired {
-  background-color: #ffdddd;
+.notification-table tr:hover {
+  background: rgba(0, 123, 255, 0.15);
+  transition: background 0.3s ease;
 }
 
-/* Delete Button */
-.notification-delete-btn {
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  font-size: 18px;
-  transition: transform 0.2s ease, color 0.2s ease;
+.notification-table .expired {
+  background: rgba(220, 53, 69, 0.15);
   color: #dc3545;
-}
-.notification-delete-btn:hover {
-  transform: scale(1.2);
-  color: #c82333;
+  font-weight: bold;
 }
 
-/* Responsive Design */
+.notification-delete-btn {
+  background: linear-gradient(135deg, #dc3545, #b02a37);
+  color: white;
+  border: none;
+  padding: 10px 14px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.notification-delete-btn:hover {
+  background: linear-gradient(135deg, #b02a37, #8b1f2b);
+  transform: scale(1.1);
+}
+
 @media (max-width: 768px) {
   .notification-container {
-    width: 95%;
-    padding: 1.5rem;
+    padding: 15px;
   }
-  .notification-table th,
-  .notification-table td {
+  .notification-table {
     font-size: 14px;
-    padding: 10px;
+  }
+  .notification-table th, .notification-table td {
+    padding: 12px;
+  }
+  .notification-add-btn {
+    font-size: 18px;
   }
 }
