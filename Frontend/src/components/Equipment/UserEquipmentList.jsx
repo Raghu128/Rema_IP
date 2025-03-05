@@ -11,7 +11,6 @@ const UserEquipmentList = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const navigate = useNavigate();
-  console.log(equipment);
   
 
   useEffect(() => {
