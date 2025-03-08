@@ -107,7 +107,7 @@ const MinutesOfMeeting = ({ projectId }) => {
 
   return (
     <div className="mom-container">
-      <h2>Minutes of Meeting</h2>
+      <h2>Notes</h2>
 
       {/* Messages List */}
       <div className="messages-list" ref={messagesContainerRef}>

@@ -1,132 +1,150 @@
+/* FinanceBudgetAddForm.css */
+
+/* Main Container */
 .financebudget-container {
-    max-width: 700px;
-    margin: 30px auto;
-    padding: 20px 25px;
-    background: linear-gradient(135deg, #ffffff, #f9f9f9);
-    border-radius: 12px;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-    height: 88vh;
-    overflow: scroll;
-  }
-  
-  .financebudget-header {
-    font-size: 2rem;
-    font-weight: 700;
-    color: #2c3e50;
-    margin-bottom: 20px;
-    text-align: center;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-  }
-  
-  .financebudget-message {
-    margin-bottom: 20px;
-    padding: 12px;
-    font-size: 1rem;
-    color: #fff;
-    border-radius: 8px;
-    text-align: center;
-    font-weight: 600;
-  }
-  
-  .financebudget-message.success {
-    background-color: #27ae60;
-  }
-  
-  .financebudget-message.error {
-    background-color: #e74c3c;
-  }
-  
-  .financebudget-form {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-  }
-  
-  .financebudget-field {
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .financebudget-field label {
-    font-size: 0.95rem;
-    font-weight: 600;
-    color: #34495e;
-    margin-bottom: 6px;
-  }
-  
-  .financebudget-input {
-    padding: 12px 14px;
-    font-size: 1rem;
-    color: #2c3e50;
-    background-color: #ffffff;
-    border: 1.5px solid #dcdde1;
-    border-radius: 8px;
-    transition: all 0.3s ease;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-  }
-  
-  .financebudget-input:focus {
-    border-color: #3498db;
-    box-shadow: 0 4px 8px rgba(52, 152, 219, 0.2);
-    outline: none;
-  }
-  
-  .financebudget-input:hover {
-    border-color: #7f8c8d;
-  }
-  
-  .financebudget-input[type="number"]::-webkit-inner-spin-button,
-  .financebudget-input[type="number"]::-webkit-outer-spin-button {
-    -webkit-appearance: none;
-  }
-  
-  .financebudget-submit {
-    padding: 14px 18px;
-    font-size: 1rem;
-    font-weight: 700;
-    color: #ffffff;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f8f9fa;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    max-width: 960px;
+    margin: 10px auto;
+}
+
+/* Go Back Button */
+.financebudget-back-btn {
     background-color: #3498db;
+    color: white;
     border: none;
+    padding: 10px 18px;
     border-radius: 8px;
-    text-transform: uppercase;
     cursor: pointer;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    transition: background-color 0.3s ease, box-shadow 0.3s ease;
-  }
-  
-  .financebudget-submit:hover {
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+    display: inline-flex;  /* Align icon with text */
+    align-items: center;
+    gap: 8px;            /* Space between icon and text */
+    margin-bottom: 20px;
+}
+
+.financebudget-back-btn:hover {
     background-color: #2980b9;
-    box-shadow: 0 6px 15px rgba(41, 128, 185, 0.4);
-  }
-  
-  .financebudget-submit:disabled {
-    background-color: #bdc3c7;
-    cursor: not-allowed;
-    box-shadow: none;
-  }
-  
-  .financebudget-form select.financebudget-input {
-    appearance: none;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 5'%3E%3Cpath fill='%23bdc3c7' d='M2 0L0 2h4zM2 5L0 3h4z'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 12px center;
-    background-size: 12px;
+}
+
+/* Title */
+.financebudget-title {
+    font-size: 2rem;
+    color: #2c3e50;
+    text-align: center;
+    margin-bottom: 30px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Message */
+.financebudget-message {
+    color: #28a745;
+    background-color: #e9f8ef;
+    border: 1px solid #bde7d3;
+    padding: 14px;
+    border-radius: 8px;
+    margin-bottom: 25px;
+    text-align: center;
+    font-weight: 500;
+}
+/* Error message */
+.financebudget-message.error {
+  color: #dc3545;
+  background-color: #f8d7da;
+  border-color: #f5c6cb;
+}
+
+/* Form */
+.financebudget-form {
+    display: flex;
+    flex-direction: column; /* Stack form elements vertically */
+    gap: 20px; /* Space between form rows */
+    padding: 25px;
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+/* Form Rows and Groups */
+.financebudget-form-row {
+    display: flex;
+    flex-wrap: wrap; /* Allow wrapping to the next line */
+    gap: 20px;
+    justify-content: space-between; /* Distribute space */
+}
+
+.financebudget-form-group {
+    flex: 1 1 calc(50% - 10px); /*  Two columns, account for gap */
+    display: flex;
+    flex-direction: column;
+    min-width: 0; /* Add this */
+}
+
+.financebudget-form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: #444;
+    font-size: 1rem;
+}
+
+.financebudget-input,
+.financebudget-form select {  /* Style the select as well */
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 1rem;
+    color: #333;
+    background-color: #f8f8f8;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    box-sizing: border-box;
+}
+
+.financebudget-input:focus,
+.financebudget-form select:focus {
+    border-color: #888;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.25);
+}
+
+
+/* Submit Button */
+.financebudget-submit-btn {
+    background-color: #2ecc71;
+    color: white;
+    border: none;
+    padding: 14px 28px;
+    border-radius: 8px;
     cursor: pointer;
-  }
-  
-  .financebudget-field select.financebudget-input:hover,
-  .financebudget-field select.financebudget-input:focus {
-    border-color: #3498db;
-  }
-  
-  .financebudget-form input.financebudget-input[type="number"] {
-    text-align: left;
-  }
-  
-  .financebudget-field:hover {
-    transform: scale(1.01);
-    transition: transform 0.2s ease-in-out;
-  }
-  
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+    align-self: center;        /* Center the button */
+    display: inline-flex;  /* Align icon with text */
+    align-items: center;
+    gap: 8px;          /* Space between icon and text */
+    margin-top: 10px; /* Space from last row */
+}
+
+.financebudget-submit-btn:hover {
+    background-color: #27ae60;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .financebudget-form-row {
+        flex-direction: column; /* Stack form elements vertically */
+    }
+
+    .financebudget-form-group {
+        flex-basis: 100%; /* Full width on smaller screens */
+    }
+}

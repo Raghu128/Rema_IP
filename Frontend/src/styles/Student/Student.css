@@ -1,125 +1,214 @@
-.studentWithfaculty-main-container{
-  /* border: 3px solid red; */
-  position: relative;
+/* Student.css - With Role Filter */
+
+/* General Container Styles */
+.student-container {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f8f9fa;
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+  max-width: 1100px;
+  margin: 30px auto;
+  overflow-x: auto;
 }
 
-
-.studentWithfaculty-container{
-  height: 70vh;
-  overflow: scroll;
-  border: 3px solid rgba(147, 146, 146, 0.452);
-  padding: 2rem;
-}
-
-.studentWithfaculty-edit-button{
-  position: absolute;
-  top: 0;
-  right: 0;
-}
-
-.student-search-bar{
-  position: absolute;
-  top: 2%;
-  right: 40%;
-  width: 20rem;
-}
-
-
-/* Ensure the table uses a fixed layout with collapsed borders */
-.studentWithfaculty-table {
-  width: 100%;
-  border-collapse: collapse; /* Use collapse instead of separate */
-  table-layout: fixed; /* Enforce fixed column widths */
-  margin-top: 16px;
-}
-
-/* Set fixed widths for each column:
-   Column 1: Name (30%)
-   Column 2: Role (20%)
-   Column 3: Project Info (50%) */
-.studentWithfaculty-table th:nth-child(1),
-.studentWithfaculty-table td:nth-child(1) {
-  width: 30%;
-}
-
-.studentWithfaculty-table th:nth-child(2),
-.studentWithfaculty-table td:nth-child(2) {
-  width: 20%;
-}
-
-.studentWithfaculty-table th:nth-child(3),
-.studentWithfaculty-table td:nth-child(3) {
-  width: 50%;
-}
-
-/* Table Header Styling */
-.studentWithfaculty-table th {
-  background-color: #007bff;
-  color: #fff;
-  font-size: 16px;
-  padding: 12px;
-  text-align: center;
-  border: 1px solid #ddd;
-  border-top-left-radius: 8px;
-  border-top-right-radius: 8px;
-  transition: background 0.3s ease-in-out;
-}
-
-/* Table Data Cell Styling */
-.studentWithfaculty-table td {
-  background-color: #fff;
-  padding: 12px;
-  font-size: 15px;
-  color: #555;
-  vertical-align: top;
-  text-align: center;
-  border: 1px solid #ddd;
-}
-
-/* Optional: Adjust project info items inside the Project Info column */
-.project-info-item {
+/* Header Section */
+.student-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 6px 0;
+  margin-bottom: 25px;
+  padding-bottom: 15px;
+  border-bottom: 2px solid #dee2e6;
 }
 
-.project-thesis {
+.student-title {
+  font-size: 2.4rem;
+  color: #2c3e50;
+  margin: 0;
   font-weight: 600;
+}
+
+.student-edit-button {
+  background: linear-gradient(to right, #007bff, #0056b3);
+  color: white;
+  border: none;
+  padding: 12px 22px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 1.1rem;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+}
+
+.student-edit-button:hover {
+  background: linear-gradient(to right, #0056b3, #003366);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Search Bar */
+.student-search-container {
+  display: flex;
+  align-items: center;
+  background-color: #fff;
+  padding: 12px 18px;
+  border-radius: 10px;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+  margin-bottom: 30px;
+  transition: box-shadow 0.3s ease;
+}
+
+.student-search-container:focus-within {
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.student-search-icon {
+  color: #4a90e2;
+  margin-right: 12px;
+  font-size: 1.2rem;
+}
+
+.student-search-input {
+  border: none;
+  outline: none;
+  font-size: 1.1rem;
   color: #333;
+  flex-grow: 1;
+  background-color: transparent;
+  margin-right: 10px; /* Add margin-right */
+}
+
+/* Role Filter Select */
+.student-role-select {
+  padding: 10px 15px;
+  border: 1px solid #ced4da;
+  border-radius: 8px;
+  font-size: 1rem;
+  color: #495057;
+  background-color: #fff;
+  cursor: pointer;
+  appearance: none; /* Remove default dropdown arrow */
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
   margin-right: 10px;
 }
 
-.project-stipend {
-  font-style: italic;
-  color: #007bff;
+.student-role-select:focus {
+  border-color: #80bdff;
+  outline: none;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
 }
 
-/* Role Section Heading */
-.studentWithfaculty-role {
-  font-size: 24px;
-  font-weight: 600;
-  color: #007bff;
-  margin: 32px 0 12px;
-  text-align: left;
-  letter-spacing: 2px;
+.student-filter-icon {
+  color: #6c757d; /* Gray color for the filter icon */
+  margin-left: auto; /* Push icon to the right */
+  font-size: 1.2rem;
 }
 
-/* Fade-In Animation */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+/* Table Container */
+.student-table-container {
+  overflow-x: auto;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  border-radius: 8px;
+  overflow: hidden;
 }
-.studentWithfaculty-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+
+/* Role Sections */
+.student-role-section {
+  margin-bottom: 40px;
+}
+
+.student-role-title {
+  font-size: 1.9rem;
+  color: #3498db;
   margin-bottom: 20px;
+  border-bottom: 3px solid #3498db;
+  padding-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-weight: 500;
+}
 
+/* Table Styles */
+.student-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: white;
+}
+
+.student-table th,
+.student-table td {
+  padding: 16px 20px;
+  text-align: left;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.student-table th {
+  background-color: #f5f7fa;
+  font-weight: 600;
+  color: #444;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.student-table tbody tr:nth-child(even) {
+  background-color: #f8f9fa;
+}
+
+.student-table tbody tr:hover {
+  background-color: #f0f3ff;
+}
+
+/* Project List */
+.student-project-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.student-project-item {
+  margin-bottom: 10px;
+  padding: 12px 18px;
+  border-radius: 8px;
+  background-color: #f0f8ff;
+  border-left: 5px solid #3498db;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.student-project-item:hover {
+  transform: translateX(3px);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.12);
+}
+
+.student-project-item span {
+  display: block;
+}
+
+.student-project-item span:first-child {
+  font-weight: 500;
+  color: #333;
+}
+
+/* No Data Message */
+.student-no-data {
+  text-align: center;
+  font-style: italic;
+  color: #777;
+  padding: 30px;
+}
+
+/* Error Message */
+.student-error {
+  color: #721c24;
+  background-color: #f8d7da;
+  border: 1px solid #f5c6cb;
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  text-align: center;
 }

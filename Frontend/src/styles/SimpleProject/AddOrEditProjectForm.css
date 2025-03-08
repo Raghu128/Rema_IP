@@ -1,0 +1,285 @@
+/* AddOrEditProjectForm.css - OVERFLOW AND STYLING ENHANCEMENTS */
+
+/* ------------------------------------------------------------- */
+/* General Styles                                                */
+/* ------------------------------------------------------------- */
+
+.editproject-container {
+  max-width: 1200px; /* As provided */
+  margin: 0px auto;
+  padding: 30px;
+  background-color: #f9f9f9; /* As provided */
+  border-radius: 12px;  /* As provided */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); /* As provided */
+  overflow-y: scroll;
+  height: 100vh;
+  background: #f0f4ff; 
+
+  /* Removed explicit height constraint, allow for scrolling */
+}
+
+/* Hide scrollbar - BUT MAKE SURE SCROLLING WORKS */
+.editproject-container::-webkit-scrollbar,
+.project-list-scroll::-webkit-scrollbar,
+.editproject-team-checkbox::-webkit-scrollbar {
+  width: 0px;  /* Hide scrollbar visually */
+}
+/* ------------------------------------------------------------- */
+/* Header & Messaging                                           */
+/* ------------------------------------------------------------- */
+
+.go-back-btn {
+  background-color: #007bff;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  /* margin-bottom: 25px; */
+  transition: background-color 0.3s ease;
+  display: block;  /* Important for margin auto to work */
+  margin-left: 0;   /* Remove left margin*/
+  margin-right: auto; /* Center horizontally */
+}
+
+
+.go-back-btn:hover {
+  background-color: #0056b3;
+}
+
+.editproject-title {
+  text-align: center;
+  margin-bottom: 30px;
+  color: #455dd1;
+  font-size: 28px;
+  font-weight: 600;
+}
+
+.editproject-form-page {
+  background-color: white;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  
+}
+
+.editproject-message {
+  color: #d9534f; /* Red color */
+  text-align: center;
+  margin-bottom: 15px;
+  font-weight: 500;
+}
+
+/* ------------------------------------------------------------- */
+/* Project Selection (For Edit Mode)                            */
+/* ------------------------------------------------------------- */
+
+.project-selection {
+  margin-bottom: 25px;
+  /* overflow-x: hidden; Add */
+}
+
+.project-search-box,
+.team-search-box {
+  display: flex;
+  margin-bottom: 15px;
+  margin-left: 4px;
+  width: 30%;
+  align-items: center; /* Vertically center items */
+}
+
+.project-search-input,
+.team-search-input {
+  flex-grow: 1;
+  padding: 10px 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 16px;
+   margin-right: 10px;
+}
+
+.project-search-btn,
+.team-search-btn {
+  background-color: #007bff;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  white-space: nowrap; /* Prevent wrapping */
+}
+
+.project-search-btn:hover,
+.team-search-btn:hover {
+  background-color: #0056b3;
+}
+.project-list-scroll,
+.editproject-team-checkbox {
+  max-height: 250px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  padding: 15px;
+  padding-right: 5px; /* Add padding */
+  border-radius: 6px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+
+.editproject-all-project {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid; /* Use CSS Grid */
+  grid-template-columns: repeat(6, 1fr); /* 5 columns of equal width */
+  gap: 15px; /* Spacing between grid items (adjust as needed) */
+  justify-items: center; 
+}
+
+.editproject-all-project li button {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  border: none;
+  background-color: #f0f0f0;
+  text-align: left;
+  cursor: pointer;
+  border-bottom: 1px solid #ddd;
+  /* transition: background-color 0.3s ease; */
+   white-space: normal; /* Allow wrapping */
+}
+
+.editproject-all-project li button:hover {
+  background-color: #e0e0e0;
+}
+
+/* ------------------------------------------------------------- */
+/* Form Styling                                                */
+/* ------------------------------------------------------------- */
+
+.editproject-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  flex-wrap: wrap; /* Allow wrapping */
+}
+
+.form-group {
+  flex-basis: calc(50% - 10px); /*  48% didn't account for gap */
+  display: flex;
+  flex-direction: column;
+   min-width: 0; /* Add */
+}
+
+.form-group.full-width {
+  flex-basis: 100%;
+}
+
+.form-group label {
+  margin-bottom: 8px;
+  color: #333;
+  font-weight: 500;
+}
+
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+.form-group textarea {
+  resize: vertical;
+}
+
+/* ------------------------------------------------------------- */
+/* Action Buttons                                               */
+/* ------------------------------------------------------------- */
+
+.form-actions {
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+}
+
+.editproject-submit,
+.editproject-reset {
+  padding: 12px 25px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 16px;
+  margin: 0 10px;
+  transition: background-color 0.3s ease;
+}
+
+.editproject-submit {
+  background-color: #28a745;
+  color: white;
+}
+
+.editproject-reset {
+  background-color: #dc3545;
+  color: white;
+}
+
+.editproject-submit:hover {
+  background-color: #218838;
+}
+
+.editproject-reset:hover {
+  background-color: #c82333;
+}
+
+/* ------------------------------------------------------------- */
+/* Checkbox Items                                               */
+/* ------------------------------------------------------------- */
+
+.checkbox-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: auto 8px;
+  border: 1px solid black;
+  padding: 2px;
+}
+.checkbox-item input{
+  width: 1rem;
+  margin-right: 1rem;
+}
+
+.checkbox-item label {
+  font-size: 16px;
+}
+
+.checkbox-item input:active {
+  background-color: red; /* Remove if you don't want this */
+  transform: none !important;
+}
+
+.checkbox-item label {
+  transform: none !important;
+}
+
+
+
+/* ------------------------------------------------------------- */
+/* Responsiveness                                              */
+/* ------------------------------------------------------------- */
+
+@media (max-width: 768px) {
+  .form-row {
+      flex-direction: column; /* Stack elements vertically */
+  }
+   .form-group {
+      flex-basis: 100%; /* Full width on smaller screens */
+  }
+}

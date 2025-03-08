@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setUser, clearUser } from "./redux/slices/userSlice";
 import { checkSession } from "./utils/api";
@@ -18,15 +18,18 @@ import FinanceBudgetAddForm from './components/FinanceBudget/FinanceBudgetAddFor
 import NotificationAddForm from "./components/Notification/NotificationAddForm";
 import AddLeaveForm from "./components/Leaves/LeavesForm";
 import StudentDashboard from "./pages/Student_dashboard";
+import RemaLoader from "./components/RemaLoader";
 import './App.css';
 
 function AppContent() {
   const dispatch = useDispatch();
   const { isLoggedIn, user } = useSelector((state) => state.user);
-  const location = useLocation(); 
+  const location = useLocation();
+  const [loading, setLoading] = useState(true); // ✅ Add loading state
 
   useEffect(() => {
     const fetchSession = async () => {
+      setLoading(true); // ✅ Show loading before API call
       try {
         const user = await checkSession();
         if (user) {
@@ -37,10 +40,18 @@ function AppContent() {
       } catch (err) {
         dispatch(clearUser());
       }
+      setLoading(false); 
     };
 
     fetchSession();
   }, [dispatch]);
+
+  // ✅ Show loading message while API is fetching
+  if (loading) {
+    return (
+      <RemaLoader/>
+    );
+  }
 
   return (
     <>

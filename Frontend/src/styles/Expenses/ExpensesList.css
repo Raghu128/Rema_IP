@@ -1,169 +1,199 @@
+/* ExpensesList.css */
+
+/* Main Container */
 .expenses-list-container {
-  width: 100%;
-  margin: auto;
-  text-align: center;
-  padding: 20px;
-  overflow-y: scroll;
-  max-height: 85vh;
-  scrollbar-width: none;
-  position: relative;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f8f9fa;
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  max-width: 1100px;
+  margin: 30px auto;
 }
 
-.manage-expense-btn {
-  background-color: #007bff;
-  color: white;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  margin-bottom: 20px;
-  font-size: 16px;
-  transition: all 0.3s ease-in-out;
-  box-shadow: 0px 4px 6px rgba(0, 123, 255, 0.2);
-  position: absolute;
-  top: -10px;
-  right: 0;
-}
-
-.manage-expense-btn:hover {
-  background-color: #0056b3;
-  transform: scale(1.05);
+/* Header Section */
+.expenses-list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+  padding-bottom: 15px;
+  border-bottom: 2px solid #dee2e6;
 }
 
 .expenses-list-title {
-  font-size: 24px;
-  margin-bottom: 15px;
-  color: #333;
-  font-weight: bold;
-  position: absolute;
-  left: 0;
-  top: 0;
+  font-size: 2.2rem;
+  color: #2c3e50;
+  margin: 0;
+  font-weight: 600;
+  display: flex;         /* Use flexbox */
+  align-items: center;   /* Vertically center */
+  gap: 10px;            /* Space between icon and text */
 }
 
-.expenses-project-section {
+.expenses-list-title-icon {
+font-size: 1.8rem;
+color: #3498db;
+}
+.manage-expense-btn {
+background-color: #2ecc71; /* Green */
+color: white;
+padding: 10px 20px;
+border: none;
+border-radius: 8px;
+cursor: pointer;
+font-size: 1rem;
+transition: background-color 0.3s ease;
+box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+ display: inline-flex;  /* Align icon and text */
+align-items: center;
+gap: 8px;
+}
+
+.manage-expense-btn:hover {
+ background-color: #27ae60;
+ box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+/* Search Bar */
+.expenses-search-bar {
+  display: flex;
+  align-items: center;
+  background-color: #fff;
+  padding: 12px 18px;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.06);
   margin-bottom: 30px;
+  transition: box-shadow 0.3s ease;
+}
+.expenses-search-icon {
+color: #3498db;
+margin-right: 10px;
+font-size: 1.1rem;
+}
+.expenses-search-bar:focus-within {
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+}
+
+.expenses-search-bar input {
+  border: none;
+  outline: none;
+  font-size: 1rem;
+  color: #495057;
+  flex-grow: 1;
+  background-color: transparent;
+}
+
+/* Main Content Area */
+.expenses-list-content {
+  /* Add styles as needed, maybe a grid or flex layout for project sections */
+}
+
+/* Project Section */
+.expenses-project-section {
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
   padding: 20px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  background: #f9f9f9;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s ease-in-out;
-  margin-top: 5rem;
+  margin-bottom: 25px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .expenses-project-section:hover {
-  transform: scale(1.02);
-  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.15);
+  transform: translateY(-5px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
 }
-
 .expenses-list-project {
-  font-size: 20px;
-  margin-bottom: 8px;
-  font-weight: bold;
-  color: #007bff;
+  font-size: 1.5rem;
+  color: #34495e;
+  margin-bottom: 15px;
+  border-bottom: 2px solid #3498db;
+  padding-bottom: 10px;
 }
 
+.expenses-list-project span {
+  font-size: 1rem;
+  color: #777;
+  margin-left: 8px;
+}
 .expenses-list-budget {
-  font-size: 18px;
-  font-weight: bold;
-  color: #333;
+  margin-bottom: 15px;
+  font-size: 1.1rem;
+  color: #555;
+  display: flex;         /* Use flexbox */
+  align-items: center;   /* Vertically center icon and text */
+  gap: 10px;
 }
 
-.expenses-list-message{
-  margin: 20% auto;
-  color: red;
-}
 
+/* Table */
 .expenses-table {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 15px;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.expenses-table th, 
+.expenses-table th,
 .expenses-table td {
-  border: 1px solid #ddd;
-  padding: 12px;
+  padding: 12px 15px;
   text-align: left;
-  font-size: 16px;
+  border-bottom: 1px solid #e9ecef;
 }
 
 .expenses-table th {
-  background-color: #007bff;
-  color: white;
-  font-size: 18px;
-  font-weight: bold;
-  padding: 14px;
+  background-color: #f5f7fa;
+  font-weight: 600;
+  color: #34495e;
   text-transform: uppercase;
-}
-
-.expenses-table tbody tr {
-  transition: all 0.3s ease-in-out;
-  opacity: 0;
-  transform: translateY(10px);
-  animation: fadeIn 0.5s ease-in-out forwards;
+  letter-spacing: 0.5px;
 }
 
 .expenses-table tbody tr:nth-child(even) {
-  background-color: #f2f2f2;
+  background-color: #f8f9fa; /* Zebra striping */
 }
 
 .expenses-table tbody tr:hover {
-  background-color: #e1ecff;
-  transform: scale(1.01);
+  background-color: #f0f3ff;
 }
 
-@keyframes fadeIn {
-  from {
-      opacity: 0;
-      transform: translateY(10px);
-  }
-  to {
-      opacity: 1;
-      transform: translateY(0);
-  }
-}
-
+/* Total Expenses Section */
 .total-expenses-section {
-  margin-top: 15px;
-  padding: 10px;
-  background-color: #e9f5ff;
-  border-radius: 8px;
-  text-align: center;
-  font-size: 16px;
-  font-weight: bold;
+  margin-top: 20px;
+  padding-top: 15px;
+  border-top: 2px solid #dee2e6;
+  display: flex;  /* Use flexbox to easily align and space */
+  justify-content: space-between; /* Put space between items */
+  align-items: center;
+}
+.total-expenses-row td{
+font-weight: 600;
 }
 
-.over-budget {
-  color: red;
+.total-expenses-section p {
+  margin: 5px 0;
+   display: flex;         /* Use flexbox */
+  align-items: center;   /* Vertically center icon and text */
+  gap: 10px;
 }
 
 .within-budget {
-  color: green;
-}
-.expenses-search-bar {
-  width: 100%;
-  max-width: 400px;
-  padding: 10px;
-  font-size: 16px;
-  margin-bottom: 20px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  text-align: center;
-  position: absolute;
-  top: 0;
-  left: 35%;
+  color: #28a745; /* Green */
 }
 
-.total-amount-section {
-  margin-top: 20px;
-  padding: 15px;
-  background-color: #007bff;
-  color: white;
-  font-size: 18px;
-  font-weight: bold;
-  border-radius: 8px;
+.over-budget {
+  color: #dc3545; /* Red */
+}
+
+/* No Expenses Message */
+.expenses-list-no-expense {
+  font-style: italic;
+  color: #777;
+  margin-bottom: 10px;
+}
+
+/* General Message (Error/Info) */
+.expenses-list-message {
   text-align: center;
-  box-shadow: 0px 4px 6px rgba(0, 123, 255, 0.2);
+  padding: 20px;
+  font-style: italic;
+  color: #777;
 }

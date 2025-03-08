@@ -1,268 +1,226 @@
+/* Projects.css */
 
-/* 🌟 Fade-in Page Transition */
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* 🌟 Project Container */
-.project-container {
-  max-width: 100%;
-  margin: 0rem auto;
-  margin-bottom: 3rem;
+/* General Styles */
+.projects-container {
+  font-family: 'Arial', sans-serif;
+  background: #f0f4ff; 
   padding: 20px;
-  text-align: left;
-  position: relative;
-}
-
-/* 🌟 Page Title */
-h1 {
-  font-size: 2.7rem;
-  background: linear-gradient(135deg, #007bff, #ff6b6b);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  font-weight: 700;
-  margin-bottom: 20px;
-  text-transform: uppercase;
-  letter-spacing: 1.5px;
-  transition: transform 0.3s ease-in-out;
-  /* animation: neonGlow 1.5s infinite alternate; */
-}
-
-/* 🔥 Neon Glow Animation */
-@keyframes neonGlow {
-  from {
-    text-shadow: 0px 0px 10px rgba(0, 123, 255, 0.6);
-  }
-  to {
-    text-shadow: 0px 0px 20px rgba(255, 107, 107, 0.8);
-  }
-}
-
-/* 🌟 Glassy Edit Button with Ripple Effect */
-.project-edit-button {
-  background: rgba(255, 255, 255, 0.2);
-  color: rgb(0, 0, 0);
-  border: 2px solid rgba(255, 255, 255, 0.3);
-  padding: 12px 24px;
-  font-size: 1rem;
-  font-weight: bold;
   border-radius: 12px;
-  cursor: pointer;
-  transition: all 0.3s ease-in-out;
-  position: absolute;
-  top: 0;
-  right: 0;
-  overflow: hidden;
-  box-shadow: 0px 4px 15px rgba(118, 166, 216, 0.4);
-}
-
-/* 🌊 Ripple Effect */
-.project-edit-button::after {
-  content: "";
-  position: absolute;
-  width: 200%;
-  height: 200%;
-  top: 50%;
-  left: 50%;
-  background: radial-gradient(circle, rgba(255, 34, 34, 0.2) 10%, transparent 70%);
-  transform: translate(-50%, -50%) scale(0);
-  opacity: 0;
-  transition: transform 0.6s ease-out, opacity 0.8s ease-out;
-}
-
-.project-edit-button:active::after {
-  transform: translate(-50%, -50%) scale(1);
-  opacity: 1;
-}
-
-/* 🌟 Card Grid */
-.project-details-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-  gap: 20px;
-  justify-content: center;
-}
-
-/* 🌟 Glassy Project Card */
-.project-item {
-  background: rgba(255, 255, 255, 0.2);
-  padding: 20px;
-  border-radius: 15px;
-  box-shadow: 4px 8px 20px rgba(0, 0, 0, 0.1);
-  transition: transform 0.4s ease-in-out, box-shadow 0.3s ease-in-out;
-  text-align: left;
-  backdrop-filter: blur(12px);
-  position: relative;
-  border: 1px solid rgba(255, 255, 255, 0.4);
-  overflow: hidden;
-}
-
-/* 🎭 3D Depth & Parallax Hover */
-/* .project-item:hover {
-  transform: perspective(800px) rotateX(6deg) rotateY(-6deg) scale(1.05);
-  box-shadow: 6px 12px 25px rgba(0, 0, 0, 0.3);
-} */
-
-/* 🌟 Project Title */
-.project-title {
-  font-size: 1.7rem;
-  color: #007bff;
-  font-weight: bold;
-  margin-bottom: 10px;
-  transition: color 0.3s ease-in-out;
-}
-
-/* 🎨 Glowing Title Hover
-.project-title:hover {
-  color: #ff6b6b;
-  text-shadow: 0px 0px 8px rgba(255, 107, 107, 0.8);
-} */
-
-/* 🌟 Team Members Section */
-.team-members-title {
-  font-size: 1.3rem;
-  font-weight: bold;
-  color: #444;
-  margin-top: 15px;
-}
-
-.team-members-list {
-  list-style: none;
-  padding: 0;
-  margin-top: 5px;
-  max-height: 12rem;
-  overflow: scroll;
-}
-
-
-.team-members-list::-webkit-scrollbar-thumb {
-  background-color: rgba(0, 123, 255, 0.5);
-  border-radius: 1px;
-}
-
-/* 🌟 Team Member Styling */
-.team-member {
-  text-align: left;
-  background: rgba(255, 255, 255, 0.6);
-  padding: 10px;
-  margin: 5px 0;
-  border-radius: 8px;
-  font-size: 1rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
   color: #333;
-  transition: transform 0.3s ease-in-out, background 0.3s ease-in-out;
-  font-weight: 500;
-}
-
-/* 🔥 Hover Effect */
-.team-member:hover {
-  background: rgba(0, 123, 255, 0.5);
-  transform: translateY(-5px) scale(1.05);
-  box-shadow: 0px 0px 12px rgba(0, 123, 255, 0.3);
-}
-
-/* 🌙 Dark Mode */
-@media (prefers-color-scheme: dark) {
-  body {
-    background: linear-gradient(135deg, #232526, #414345);
-    color: white;
-  }
-
-  .project-item {
-    background: rgba(255, 255, 255, 0.1);
-    border-color: rgba(255, 255, 255, 0.3);
-  }
-
-  .project-title {
-    color: #80d0c7;
-  }
-
-  .team-member {
-    background: rgba(255, 255, 255, 0.2);
-  }
-
-  .team-member:hover {
-    background: rgba(128, 208, 199, 0.5);
-  }
-}
-
-/* 🌟 Responsive Design */
-@media (max-width: 768px) {
-  .project-details-container {
-    grid-template-columns: repeat(auto-fill, minmax(100%, 1fr));
-  }
-
-  .project-title {
-    font-size: 1.5rem;
-  }
-}
-
-
-
-.search-bar {
-  width: 100%;
-  max-width: 400px;
-  padding: 10px;
-  margin: 15px auto;
-  display: block;
-  border: 2px solid #ddd;
-  border-radius: 8px;
-  font-size: 1rem;
-  transition: 0.3s ease-in-out;
-}
-
-.search-bar:focus {
-  border-color: #007bff;
-  box-shadow: 0 0 10px rgba(0, 123, 255, 0.3);
-  outline: none;
-  transform: scale(1.02);
-}
-
-
-.project-toggle-button{
-  position: absolute;
-  bottom: 0;
-  right: 1rem;
-  cursor: pointer;
-  font-weight: bold;
-}
-
-.project-toggle-button:hover{
-  text-decoration: underline;
-}
-
-
-
-
-
-.project-actions {
   display: flex;
-  gap: 10px;
-  margin-top: 10px;
+  flex-direction: column;
+  min-height: 80vh; /* Reduced min-height */
+  max-width: 1200px; /* Added max-width */
+  margin: 0 auto; /* Center the container */
 }
 
-.project-toggle-button,
-.project-notes-button {
+/* Header */
+.projects-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #e0e5ff; /* Light blue border */
+  margin-bottom: 20px;
+}
+
+.projects-title {
+  font-size: 2.2rem;
+  color: #455dd1; /* Violet-blue title */
+  margin: 0;
+}
+
+.projects-edit-button {
+  background: linear-gradient(to right, #6a7ee7, #8b34eb); /* Violet gradient */
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 6px;
   cursor: pointer;
-  color: blue;
-  text-decoration: underline;
-  font-size: 14px;
+  transition: background 0.3s ease;
+  font-size: 1rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.projects-edit-button:hover {
+  background: linear-gradient(to right, #5a6ece, #782dc8); /* Darker violet gradient */
+}
+
+/* Search Bar */
+.projects-search {
+  display: flex;
+  align-items: center;
+  background: #fff;
+  padding: 10px 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.06);
+  margin-bottom: 25px;
+}
+
+.projects-search-icon {
+  color: #7784e4; /* Light violet icon */
   margin-right: 10px;
 }
 
+.projects-search-input {
+  border: none;
+  outline: none;
+  font-size: 1rem;
+  color: #555;
+  flex-grow: 1;
+}
+
+/* Projects Grid */
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 25px;
+  flex-grow: 1;
+  width: 100%;
+  max-height: 65vh;
+  overflow-y: scroll;
+  scrollbar-width: none;
+}
+
+/* Project Card */
+.project-card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.06);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* Distribute space evenly */
+}
+
+.project-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.12);
+}
+
+.project-card-header {
+  margin-bottom: 15px;
+  border-bottom: 1px solid #e9f0ff; /* Light blue border */
+  padding-bottom: 12px;
+}
+
+.project-card-title {
+  font-size: 1.6rem;
+  color: #3c49a8; /* Darker violet title */
+  margin: 0;
+}
+
+.project-card-body {
+  flex-grow: 1;
+  margin-bottom: 15px;  /* Add some spacing before the actions */
+}
+
+/* Meta Information */
+.project-card-meta {
+  font-size: 0.95rem;
+  color: #666;
+  line-height: 1.6;
+}
+
+.project-card-meta p {
+  margin: 8px 0;
+  display: flex;
+  align-items: center;
+}
+
+.project-card-meta svg {
+  margin-right: 8px;
+  color: #7784e4; /* Light violet icon */
+}
+
+/* Project Details */
+.project-card-details {
+  margin-top: 15px;
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.project-card-details p {
+  margin: 8px 0;
+  display: flex;
+  align-items: center;
+}
+
+.project-card-details svg {
+  margin-right: 8px;
+  color: #7784e4; /* Light violet icon */
+}
+
+.project-card-details a {
+  color: #5a69e4; /* Blue link */
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.project-card-details a:hover {
+  text-decoration: underline;
+  color: #4552b8; /* Darker blue link */
+}
+
+/* Actions */
+.project-card-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 15px;
+}
+
+.project-card-toggle-button,
+.project-card-notes-button {
+  background: linear-gradient(to right, #5a69e4, #7784e4); /* Blue gradient */
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  font-size: 0.9rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.project-card-toggle-button:hover,
+.project-card-notes-button:hover {
+  background: linear-gradient(to right, #4a57b8, #636fbb); /* Darker blue gradient */
+}
+
+/* No Data State */
+.no-data {
+  text-align: center;
+  padding: 20px;
+  font-style: italic;
+  color: #999;
+}
+
+/* Error Message */
+.error-message {
+  color: #a94442;
+  text-align: center;
+  padding: 15px;
+  background: #f2dede;
+  border: 1px solid #ebccd1;
+  border-radius: 6px;
+}
+
+/* Divider */
+.project-divider {
+  border-color: #d8e2f9; /* Light blue divider */
+  margin: 20px 0;
+}
+
+/* Notes Modal Overlay */
 .project-notes-overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.7);
+  background-color: rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -270,22 +228,28 @@ h1 {
 }
 
 .project-notes-content {
-  width: 95%;
-  height: 95%;
-  background: white;
-  padding: 5px;
-  border-radius: 10px;
-  overflow: hidden;
-  /* position: relative; */
+  background: #fff;
+  padding: 25px;
+  border-radius: 12px;
+  width: 85%;
+  max-width: 900px;
+  position: relative;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  height: 60%;
 }
 
 .project-close-notes-button {
   position: absolute;
-  top: 0;
+  top: 15px;
   right: 15px;
-  background: blue;
+  background: none;
   border: none;
-  font-size: 20px;
+  font-size: 24px;
   cursor: pointer;
-  z-index: 1000;
+  color: #777;
+  transition: color 0.3s ease;
+}
+
+.project-close-notes-button:hover {
+  color: #333;
 }

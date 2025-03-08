@@ -12,14 +12,14 @@ const LandingPage = () => {
       
 
       <div className="landingpage-content">
-        <div className="landingpage-notification">
+        {/* <div className="landingpage-notification"> */}
           <NotificationsList />
-        </div>
+        {/* </div> */}
 
-        <div className="landingpage-venue">
-          <h2>📍 Venues</h2>
+        {/* <div className="landingpage-venue"> */}
+          {/* <h2>📍 Venues</h2> */}
           <VenueListComponent />
-        </div>
+        {/* </div> */}
       </div>
     </div>
   );

@@ -1,176 +1,249 @@
-.notification-container {
-    max-width: 80%;
-    margin: 30px auto;
+/* AddForm.css - Enhanced */
+
+/* Main Container */
+.notification-form-container {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f8f9fa;
     padding: 30px;
-    background: #ffffff;
-    border-radius: 12px;
-    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    max-height: 90vh;
-    overflow-y: auto;
+    border-radius: 15px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    max-width: 960px; /* Increased max-width */
+    margin: 30px auto;
+    height: 97vh;
+    overflow-y: scroll;
 }
 
-.notification-container:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.2);
+/* Back Button */
+.notification-back-btn {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    padding: 12px 20px; /* Increased padding */
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1.1rem; /* Increased font size */
+    transition: background-color 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 25px;
 }
 
+.notification-back-btn:hover {
+    background-color: #2980b9;
+}
+
+/* Title */
 .notification-title {
+    font-size: 2.4rem; /* Increased font size */
+    color: #2c3e50;
     text-align: center;
-    color: #222;
-    font-size: 28px;
-    font-weight: bold;
-    margin-bottom: 20px;
-    letter-spacing: 1px;
+    margin-bottom: 30px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    display: flex; /* Use flexbox for icon and text */
+    align-items: center; /* Center vertically */
+    justify-content: center; /* Center horizontally */
+    gap: 15px;
+}
+.notification-title-icon{
+    color: #e74c3c;
+    margin-right: 8px;
+    font-size: 2rem;
+}
+/* Message (Success/Error) */
+.notification-message {
+    padding: 14px 20px; /* Increased padding */
+    border-radius: 8px;
+    text-align: center;
+    margin-bottom: 25px;
+    font-weight: 500;
+    transition: all 0.3s ease; /* Smooth transition for changes */
 }
 
 .notification-message {
-    text-align: center;
-    color: #d9534f;
-    font-weight: bold;
-    font-size: 15px;
-    margin-bottom: 12px;
+    color: #155724;
+    background-color: #d4edda;
+    border: 1px solid #c3e6cb;
 }
 
-/* Flexbox for row-wise layout */
+.notification-message.error {
+    color: #721c24;
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+}
+
+/* Form */
 .notification-form {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
-    align-items: center;
-    justify-content: space-between;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Responsive columns */
+  gap: 25px; /* Increased gap */
+  padding: 25px;
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
 }
 
-.notification-field {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 12px;
-    width: 48%; /* Two fields per row */
+.notification-form-row{
+   display: flex;
+    flex-wrap: wrap;  /* Allow wrapping to the next line */
+    gap: 20px;        /* Space between items in a row */
+    align-items: flex-start;
 }
 
-.notification-field label {
-    font-weight: 600;
-    color: #333;
-    font-size: 15px;
-    min-width: 120px;
+.notification-form-group {
+    flex: 1 1 250px; /* Flexible, with a minimum width */
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.notification-form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: #444;
+    font-size: 1rem;
+     display: flex;         /* Use flexbox to align icon and text */
+  align-items: center;   /* Vertically center */
+  gap: 10px;
 }
 
 .notification-input,
-.notification-textarea,
-.notification-select {
-    flex: 1;
-    padding: 12px;
-    border: 2px solid #ddd;
+.notification-select,
+.notification-textarea {
+    width: 100%;
+    padding: 14px; /* Increased padding */
+    border: 1px solid #ddd;
     border-radius: 8px;
-    font-size: 16px;
+    font-size: 1.05rem; /* Slightly larger font */
+    color: #333;
+    background-color: #f9f9f9;
     transition: border-color 0.3s ease, box-shadow 0.3s ease;
-    background: #f9f9f9;
-}
-
-.notification-input:focus,
-.notification-textarea:focus,
-.notification-select:focus {
-    border-color: #007bff;
-    box-shadow: 0 0 6px rgba(0, 123, 255, 0.3);
-    outline: none;
-    background: #fff;
+    box-sizing: border-box;
 }
 
 .notification-textarea {
-    height: 100px;
+    min-height: 140px; /* Increased height */
     resize: vertical;
 }
 
-/* Row-wise checkbox group */
-.notification-checkbox-group {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 15px;
-    margin-top: 12px;
-    align-items: center;
+.notification-input:focus,
+.notification-select:focus,
+.notification-textarea:focus {
+    border-color: #888;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.25);
 }
 
-.notification-checkbox-container{
-    border: 1px dashed rgb(108, 108, 108);
-    padding: 1rem;
-    max-height: 12rem;
-    /* width: 80%; */
-    overflow: scroll;
-    scrollbar-width: none;
+/* Checkbox Group */
+.notification-checkbox-group {
+    grid-column: span 2; /* Span across all columns */
+}
+
+/* Search Container within Checkbox Group */
+.notification-search-container {
     display: flex;
-    flex-direction: column;
-    /* border:  3px solid rebeccapurple;  */
+    align-items: center;
+    background-color: #fff;
+    padding: 10px 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.06);
+    margin-bottom: 15px;
+    transition: box-shadow 0.3s ease;
+}
+
+.notification-search-container:focus-within {
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+}
+
+.notification-search-icon {
+    color: #3498db;
+    margin-right: 10px;
+    font-size: 1.1rem;
+}
+
+.notification-search-input {
+    flex-grow: 1;
+    border: none;
+    outline: none;
+    font-size: 1rem;
+    color: #495057;
+    background-color: transparent;
+}
+
+/* Checkbox Container */
+.notification-checkbox-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); /* Responsive columns */
+    gap: 12px; /* Increased gap */
+    max-height: 250px; /* Increased max-height */
+    overflow-y: auto;
+    padding: 15px;  /* Increased padding */
+    border: 1px solid #ddd;
+    border-radius: 8px;
 
 }
 
 .notification-checkbox-label {
     display: flex;
-    /* align-items: center; */
-    gap: 5px; /* Space between checkbox and email text */
-    padding: 5px 10px;
-    border: 1px solid #ccc; /* Optional: adds a subtle border */
-    border-radius: 5px;
+    align-items: center;
     cursor: pointer;
+    padding: 8px 12px; /* Increased padding */
+    border-radius: 6px;
+    transition: background-color 0.3s ease;
 }
 
 .notification-checkbox-label:hover {
-    color: #007bff;
+    background-color: #f0f3ff;
+}
+
+.notification-checkbox-label input{
+    width: 1rem;
 }
 
 .notification-checkbox {
-    width: 1rem;
-    margin-right: 10px;
-    accent-color: #007bff;
-    transform: scale(1.1);
-    transition: transform 0.2s ease;
-}
-
-.notification-checkbox:checked {
-    transform: scale(1.2);
-}
-
-
-
-/* Enhanced button */
-.notification-button {
-    background: linear-gradient(135deg, #007bff, #0056b3);
-    color: white;
-    padding: 14px 24px;
-    border: none;
-    border-radius: 8px;
-    font-size: 17px;
-    font-weight: bold;
+    margin-right: 10px; /* Increased margin */
     cursor: pointer;
-    transition: background 0.3s ease, transform 0.2s ease;
-    display: block;
-    margin: 25px auto 0;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transform: scale(1.1); /* Slightly larger checkbox */
 }
 
-.notification-button:hover {
-    background: linear-gradient(135deg, #0056b3, #003f80);
-    transform: scale(1.05);
+/* Submit Button */
+.notification-submit-btn {
+    background-color: #2ecc71;
+    color: white;
+    border: none;
+    width: 20rem;
+    padding: 14px 28px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+    align-self: center;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 10px; /* Space from form */
+    grid-column: 1 / -1;                  /*  Full width */
+
 }
 
-.notification-button:active {
-    transform: scale(0.98);
-    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+.notification-submit-btn:hover {
+    background-color: #27ae60;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
 }
 
-/* Responsive design */
+/* Responsive Adjustments */
 @media (max-width: 768px) {
     .notification-form {
-        flex-direction: column;
+        grid-template-columns: 1fr; /* Single column on smaller screens */
     }
-
-    .notification-field {
-        width: 100%;
-        flex-direction: column;
-        align-items: flex-start;
+    .notification-form-row{
+      flex-direction: column;
     }
-
-    .notification-checkbox-group {
-        flex-direction: column;
+    .notification-checkbox-container {
+        grid-template-columns: 1fr; /* Single column for checkboxes on small screens */
     }
 }

@@ -99,18 +99,19 @@ const NotificationsList = () => {
     }
   };
 
-  const getPriorityIcon = (priority) => {
+  const getPriorityClass = (priority) => {
     switch (priority?.toLowerCase()) {
       case "high":
-        return "🔴";
+        return "priority-high";
       case "medium":
-        return "🟠";
+        return "priority-medium";
       case "low":
-        return "🟢";
+        return "priority-low";
       default:
-        return "⚪";
+        return "";
     }
   };
+  
 
   if (loading) {
     return <Loader />;
@@ -136,7 +137,6 @@ const NotificationsList = () => {
           <thead>
             <tr>
               <th>Type</th>
-              <th>Priority</th>
               <th>Text</th>
               <th>Due Date</th>
               <th>Added By</th>
@@ -147,9 +147,9 @@ const NotificationsList = () => {
             {notifications.map((notif) => {
               const expired = isExpired(notif.due_date);
               return (
-                <tr key={notif._id} className={expired ? "expired" : ""}>
+                <tr key={notif._id} className={`${getPriorityClass(notif.priority)} ${expired ? "expired" : ""}`}>
                   <td>{getTypeIcon(notif.type)}</td>
-                  <td>{getPriorityIcon(notif.priority)}</td>
+                  {/* <td>{getPriorityIcon(notif.priority)}</td> */}
                   <td>{notif.text}</td>
                   <td>{new Date(notif.due_date).toLocaleDateString()}</td>
                   <td>{notif.added_by_name}</td>

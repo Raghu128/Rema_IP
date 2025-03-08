@@ -1,85 +1,153 @@
-/* Container */
+/* AddExpense.css */
+
+/* Main Container */
 .addexpense-container {
-    max-width: 500px;
-    margin: 50px auto;
-    padding: 25px;
-    background: #fff;
-    border-radius: 12px;
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.12);
-    text-align: center;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f8f9fa;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    max-width: 900px;
+    margin: 30px auto;
+}
+
+/* Back Button */
+.addexpense-back-btn {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+    display: inline-flex; /* Align icon with text */
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 25px; /* Space between button and title */
+}
+
+.addexpense-back-btn:hover {
+    background-color: #2980b9;
 }
 
 /* Title */
 .addexpense-title {
-    font-size: 24px;
-    color: #333;
-    font-weight: bold;
-    margin-bottom: 20px;
-}
-
-/* Messages */
-.addexpense-message {
-    font-size: 16px;
-    color: #d9534f;
+    font-size: 2.2rem;
+    color: #2c3e50;
     text-align: center;
+    margin-bottom: 30px;
     font-weight: 600;
-    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
-/* Form Fields */
+/* Message (Success/Error) */
+.addexpense-message {
+    padding: 12px 18px;
+    border-radius: 8px;
+    text-align: center;
+    margin-bottom: 25px;
+    font-weight: 500;
+}
+/*Success Message */
+.addexpense-message {
+    color: #155724;
+    background-color: #d4edda;
+    border: 1px solid #c3e6cb;
+}
+
+/* Error Message */
+.addexpense-message.error {
+    color: #721c24;
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+}
+
+/* Form */
 .addexpense-form {
     display: flex;
-    flex-direction: column;
-    gap: 15px;
+    flex-direction: column; /* Stack form elements vertically */
+    gap: 25px; /* Increased gap for better spacing */
+    padding: 25px;
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
 }
-
-/* Input Fields */
-.addexpense-field {
+.addexpense-form-row {
     display: flex;
-    flex-direction: column;
-    text-align: left;
+    flex-wrap: wrap;  /* Allow wrapping to the next line */
+    gap: 20px;        /* Space between items in a row */
+    align-items: flex-start; /* Align items to top */
 }
 
-.addexpense-field label {
-    font-size: 14px;
-    font-weight: 600;
-    margin-bottom: 5px;
+.addexpense-form-group {
+    flex: 1 1 300px;  /* Flexible, but with a minimum width */
+    min-width: 0;   /* Add this */
+    display: flex;        /* Add this */
+    flex-direction: column; /* Add this */
+}
+
+.addexpense-form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
     color: #444;
+    font-size: 1rem;
 }
 
-.addexpense-input, .addexpense-select {
-    padding: 10px;
-    border-radius: 6px;
-    border: 1px solid #ccc;
-    font-size: 16px;
-    transition: border 0.3s ease-in-out;
-}
-
-.addexpense-input:focus, .addexpense-select:focus {
-    border-color: #007bff;
-    outline: none;
-    box-shadow: 0 0 8px rgba(0, 123, 255, 0.2);
-}
-
-/* Button */
-.addexpense-button {
-    background: #007bff;
-    color: white;
+.addexpense-input,
+.addexpense-select {
+    width: 100%;
     padding: 12px;
-    border: none;
-    border-radius: 6px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background 0.3s ease-in-out;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 1rem;
+    color: #333;
+    background-color: #f9f9f9;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    box-sizing: border-box;  /*  Include padding in width */
 }
 
-.addexpense-button:hover {
-    background: #0056b3;
+.addexpense-input:focus,
+.addexpense-select:focus {
+    border-color: #888;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.25); /* Focus ring */
+}
+
+/* Submit Button */
+.addexpense-submit-btn {
+    background-color: #2ecc71; /* Green */
+    color: white;
+    border: none;
+    padding: 14px 28px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+    display: inline-flex; /* Use flexbox to center icon and text */
+    align-items: center; /* Vertically center */
+    justify-content: center; /* Horizontally center */
+    gap: 10px; /* Space between icon and text */
+    margin-top: 10px; /* Space from last row */
+    align-self: center; /* Center the button horizontally */
+}
+
+
+.addexpense-submit-btn:hover {
+    background-color: #27ae60;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
 }
 
 /* Responsive Design */
-@media (max-width: 600px) {
-    .addexpense-container {
-        max-width: 90%;
+@media (max-width: 768px) {
+  .addexpense-form-row {
+        flex-direction: column; /* Stack form elements vertically */
     }
+
+    .addexpense-form-group{
+     flex-basis: 100%;
+  }
 }

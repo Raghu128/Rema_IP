@@ -1,53 +1,59 @@
 /* Enhanced NotificationsList.css */
 .notification-container {
   padding: 20px;
-  width: 100%;
+  width: 70%;
+  max-width: 900px;
   background: #ffffff;
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  border-radius: 12px;
+  border-left: 6px solid red;
+  margin: 20px auto;
   transition: all 0.3s ease;
-}
-
-.notification-top-container{
-  display: flex;
-  flex-direction: row-reverse;
-  width: 100%;
-  position: relative;
-  justify-content: start;
-  margin: 1rem auto;
+  max-height: 80vh;
+  overflow-y: scroll;
+  scrollbar-width: none;
 }
 
 .notification-container:hover {
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
 }
 
-#notification-title{
-
+/* Top Section */
+.notification-top-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #ddd;
 }
 
+#notification-title {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+}
+
+/* Add Notification Button */
 .notification-add-btn {
-  background: linear-gradient(135deg, #007bff, #0056b3);
+  background: #007bff;
   color: white;
   border: none;
-  padding: 12px 18px;
-  border-radius: 50px;
-  font-size: 22px;
+  padding: 12px;
+  border-radius: 20%;
+  font-size: 20px;
   cursor: pointer;
-  display: block;
-  margin: 0 auto 20px;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  position: absolute;
-  right: 0;
-  top: -10px;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
 }
 
 .notification-add-btn:hover {
-  background: linear-gradient(135deg, #5b9ce1, #003d80);
-  transform: scale(1.05);
+  background: #0056b3;
+  transform: scale(1.1);
 }
 
-.notification-error, .notification-message {
+/* Error & Message Styles */
+.notification-error,
+.notification-message {
   text-align: center;
   font-size: 16px;
   color: #d9534f;
@@ -55,6 +61,7 @@
   margin-bottom: 10px;
 }
 
+/* Notification Table */
 .notification-table {
   width: 100%;
   border-collapse: collapse;
@@ -64,55 +71,96 @@
   overflow: hidden;
 }
 
-.notification-table th, .notification-table td {
+.notification-table th,
+.notification-table td {
   padding: 14px;
   text-align: left;
-  border-bottom: 2px solid #ddd;
+  border-bottom: 1px solid #ddd;
 }
 
+/* Table Header */
 .notification-table th {
-  background: linear-gradient(135deg, #007bff, #0056b3);
+  background: #007bff;
   color: white;
   font-weight: bold;
   text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: 0.5px;
+  text-align: center;
 }
 
-.notification-table tr:hover {
-  background: rgba(0, 123, 255, 0.15);
-  transition: background 0.3s ease;
+
+
+.notification-table td{
+  text-align: center;
+  word-wrap: break-word;
 }
 
+/* Type Column - Emphasized */
+.notification-table td:first-child {
+  font-size: 28px;
+  font-weight: bold;
+}
+
+/* Expired Notifications */
 .notification-table .expired {
-  background: rgba(220, 53, 69, 0.15);
+  background: rgba(64, 61, 61, 0.1);
   color: #dc3545;
   font-weight: bold;
 }
 
+/* Delete Button */
 .notification-delete-btn {
-  background: linear-gradient(135deg, #dc3545, #b02a37);
-  color: white;
+  background: none;
   border: none;
-  padding: 10px 14px;
-  border-radius: 5px;
+  color: #dc3545;
+  font-size: 18px;
   cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s ease, color 0.2s ease;
 }
+
+/* Highlight on hover with translation effect */
+.notification-table tr {
+  transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+.notification-table tr:hover {
+  transform: translateX(10px); /* Moves the row 10px to the right */
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+
+/* Priority-based row colors */
+.priority-high {
+  background-color: rgba(255, 71, 87, 0.2); /* Light red */
+}
+
+.priority-medium {
+  background-color: rgba(255, 204, 0, 0.2); /* Light yellow */
+}
+
+.priority-low {
+  background-color: rgba(40, 167, 69, 0.2); /* Light green */
+}
+
+
+
+
 
 .notification-delete-btn:hover {
-  background: linear-gradient(135deg, #b02a37, #8b1f2b);
-  transform: scale(1.1);
+  color: #b02a37;
+  transform: scale(1.2);
 }
 
+/* Responsive Design */
 @media (max-width: 768px) {
   .notification-container {
-    padding: 15px;
+    width: 95%;
   }
   .notification-table {
     font-size: 14px;
   }
-  .notification-table th, .notification-table td {
+  .notification-table th,
+  .notification-table td {
     padding: 12px;
   }
   .notification-add-btn {

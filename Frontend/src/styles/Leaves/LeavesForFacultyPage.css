@@ -1,52 +1,139 @@
+/* LeavesForFacultyPage.css */
+
+/* Main Container */
 .leaves-container {
-    padding: 20px;
-    max-width: 1000px;
-    margin: 20px auto;
-    background-color: #f9f9f9;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f8f9fa;
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  max-width: 1000px;
+  margin: 30px auto;
+}
+
+/* Header Section */
+.leaves-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #dee2e6;
+}
+
+/* Title */
+.leaves-title {
+  font-size: 2.2rem;
+  color: #2c3e50;
+  margin: 0;
+  font-weight: 600;
+  display: flex;         /* Use flexbox to align icon and text */
+  align-items: center;   /* Vertically center */
+  gap: 10px;            /* Space between icon and text */
+}
+
+.leaves-title-icon {
+    color: #3498db; /* Example color - adjust as needed */
+    margin-right: 8px; /* Space between icon and title text */
+    font-size: 1.8rem;
+}
+
+/* Manage Button */
+.manage-leave-btn {
+    background-color: #2ecc71; /* Green */
+    color: white;
+    padding: 10px 20px;
+    border: none;
     border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    position: relative;
-  }
-  
-  .leaves-container h2 {
-    text-align: center;
-    color: #333;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+     display: inline-flex;  /* Align icon and text */
+  align-items: center;
+  gap: 8px;
+}
+
+
+.manage-leave-btn:hover {
+  background-color: #27ae60;
+   box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+/* Loading, Error, and No Data Messages */
+.leaves-loading,
+.leaves-error,
+.leaves-no-data {
+  text-align: center;
+  padding: 20px;
+  font-style: italic;
+  color: #777;
+}
+
+.leaves-error {
+    color: #dc3545;
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+    border-radius: 8px;
+    padding: 15px;
     margin-bottom: 20px;
-  }
-  
-  .leaves-table {
+}
+
+/* --- TABLE STYLES (CORRECTED) --- */
+.leaves-table {
     width: 100%;
-    border-collapse: collapse;
-    margin-top: 10px;
-  }
-  
-  .leaves-table th,
-  .leaves-table td {
-    padding: 12px 15px;
+    border-collapse: collapse; /* Important for consistent borders */
+    margin-top: 20px;
+    background-color: white;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    overflow: hidden;
+    display: table; /* CRUCIAL: Ensure table display */
+}
+
+.leaves-table th,
+.leaves-table td {
+    padding: 15px 20px;
     text-align: left;
-    border-bottom: 1px solid #ddd;
-  }
-  
-  .leaves-table th {
-    background-color: #f0f0f0;
+    border-bottom: 1px solid #e9ecef;
+    display: table-cell; /* CRUCIAL: Ensure table-cell display */
+}
+
+.leaves-table thead {
+  display: table-header-group; /* CRUCIAL: Ensure thead is displayed correctly */
+}
+
+.leaves-table th {
+    background-color: #f5f7fa;
     font-weight: 600;
-  }
-  
-  .leaves-table tr:nth-child(even) {
-    background-color: #fafafa;
-  }
-  
-  .error-message {
-    color: #e74c3c;
-    text-align: center;
-    margin-bottom: 10px;
-    font-weight: bold;
-  }
-  
-    
-  .manage-leave-btn{
-    position: absolute;
-    margin: 1rem;
-    top: 0;
-    right: 0;
-  }
+    color: #444;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+     position: sticky;  /*  Make headers sticky */
+    top: 0;           /*  Stick to the top */
+    z-index: 2;        /*  Ensure they're above the content */
+    /* Add a subtle shadow to the sticky header */
+    box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.1);
+}
+
+.leaves-table tbody {
+    display: table-row-group; /* CRUCIAL: display as table-row-group */
+}
+.leaves-table tr {
+    display: table-row; /* CRUCIAL: Ensure table-row display */
+}
+
+
+.leaves-table tbody tr:nth-child(even) {
+    background-color: #f8f9fa; /* Zebra striping */
+}
+
+.leaves-table tbody tr:hover {
+    background-color: #f0f3ff; /* Highlight on hover */
+}
+
+.leaves-table td:first-child {
+    display: table-cell; /*  CRUCIAL:  Keep this as table-cell */
+    align-items: center;  /* Vertically center icon */
+    gap: 8px;              /* Space between icon and text */
+}
