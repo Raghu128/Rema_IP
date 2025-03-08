@@ -169,7 +169,7 @@ function AdminPage() {
             }}
             value={editUser.id}
           >
-            <option value="">Select User to Update/Delete</option>
+            <option value="" className="">Select User to Update/Delete</option>
             {users.map((user) => (
               <option key={user._id} value={user._id}>
                 {user.name} ({user.role})
@@ -213,14 +213,14 @@ function AdminPage() {
         </div>
       </div>
 
-      <div className="user-list-section-delete-container">
+      {/* <div className="user-list-section-delete-container">
         <h2 className="section-title">User List</h2>
         <div className="user-list-section-delete">{users.map((user) => (
           <div className="user-item" key={user._id}>
             <p>{user.name} ({user.role})</p>
           </div>
         ))}</div>
-      </div>
+      </div> */}
     </div>
   );
 }

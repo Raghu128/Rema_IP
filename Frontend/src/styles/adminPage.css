@@ -4,7 +4,7 @@
     padding: 30px;
     max-width: 1300px;
     margin: 0 auto;
-    height: 92vh;
+    max-height: 95vh;
     background-color: #f7f7f9;
     border-radius: 10px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
@@ -12,13 +12,27 @@
 }
 
 /* Title Styling */
-.admin-dashboard-title {
+.admin-dashboard-title,
+.section-title {
+    color: #2c3e50; /* Darker shade of blue/gray */
     text-align: center;
-    font-size: 28px; /* Reduced from 36px */
-    font-weight: 700;
-    color: #333;
-    margin-bottom: 40px;
+    margin-bottom: 30px; /* Increased margin */
+    font-weight: 700; /* Bolder font */
+}
+
+.admin-dashboard-title {
+    font-size: 1.5rem; /* Larger title */
+    text-transform: uppercase;
     letter-spacing: 1px;
+    border-bottom: 3px solid #3498db; /* Thicker, blue border */
+    padding-bottom: 18px; /* Increased padding */
+}
+
+.section-title {
+    font-size: 1.9rem; /* Larger section title */
+    margin-top: 20px; /* Increased margin */
+    border-bottom: 2px solid #3498db; /* Blue border */
+    padding-bottom: 12px; /* Increased padding */
 }
 
 /* Add User Section */

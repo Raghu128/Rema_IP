@@ -52,12 +52,12 @@
   
   .sent {
     align-self: flex-end;
-    background-color: #dcf8c6;
+    background-color: #e0e5ff;
   }
   
   .received {
     align-self: flex-start;
-    background-color: #fff;
+    background-color: #98a7f5;
   }
   
   .message-time {

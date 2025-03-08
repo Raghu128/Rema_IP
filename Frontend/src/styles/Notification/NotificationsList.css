@@ -6,7 +6,7 @@
   background: #ffffff;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
   border-radius: 12px;
-  border-left: 6px solid red;
+  border-left: 6px solid rgb(75, 92, 197);
   margin: 20px auto;
   transition: all 0.3s ease;
   max-height: 80vh;

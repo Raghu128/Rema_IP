@@ -1,14 +1,29 @@
 import React, { useState, useEffect } from "react";
-import "../styles/RemaLoader.css"; // Ensure to create this CSS file
+import "../styles/RemaLoader.css"; // Make sure this path is correct
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 
 const RemaLoader = () => {
     const [fadeOut, setFadeOut] = useState(false);
+    const [dots, setDots] = useState('');
 
     useEffect(() => {
-        // Simulate a loading time before fading out
-        const timer = setTimeout(() => setFadeOut(true), 4000); // Increased to 4s for longer animation
+        const fadeTimer = setTimeout(() => setFadeOut(true), 4000);
 
-        return () => clearTimeout(timer);
+        const dotInterval = setInterval(() => {
+            setDots(prevDots => {
+                if (prevDots.length === 3) {
+                    return '';
+                } else {
+                    return prevDots + '.';
+                }
+            });
+        }, 300);
+
+        return () => {
+            clearTimeout(fadeTimer);
+            clearInterval(dotInterval);
+        }
     }, []);
 
     return (
@@ -19,7 +34,17 @@ const RemaLoader = () => {
                 <span className="rema-letter m">m</span>
                 <span className="rema-letter a">a</span>
             </div>
-            <div className="rema-loader-spinner"></div> {/* Added spinner */}
+            {/* <div className="rema-loader-spinner">
+                <FontAwesomeIcon icon={faSpinner} spin />
+             </div> */}
+               {/*  Subtle, animated background shapes  */}
+            <div className="rema-loader-shapes">
+                <div className="shape circle"></div>
+                <div className="shape square"></div>
+                <div className="shape triangle"></div>
+            </div>
+
+            <p className="rema-loader-text">Loading{dots}</p>
         </div>
     );
 };
