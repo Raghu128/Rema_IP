@@ -26,6 +26,7 @@
   width: auto;
   border-radius: 5px;
   transition: transform 0.3s ease-in-out;
+  /* mix-blend-mode:multiply */
 }
 
 .navbar-logo:hover {

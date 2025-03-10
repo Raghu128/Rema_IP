@@ -103,7 +103,7 @@
 
 /* Expired Notifications */
 .notification-table .expired {
-  background: rgba(64, 61, 61, 0.1);
+  background: rgba(64, 61, 61, 0.416);
   color: #dc3545;
   font-weight: bold;
 }
@@ -124,22 +124,22 @@
 }
 
 .notification-table tr:hover {
-  transform: translateX(10px); /* Moves the row 10px to the right */
-  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 30px;
+  transform: translateX(10px);
 }
 
 
 /* Priority-based row colors */
 .priority-high {
-  background-color: rgba(255, 71, 87, 0.2); /* Light red */
+  background-color: rgba(240, 7, 27, 0.47); /* Light red */
 }
 
 .priority-medium {
-  background-color: rgba(255, 204, 0, 0.2); /* Light yellow */
+  background-color: rgba(225, 234, 47, 0.2); /* Light yellow */
 }
 
 .priority-low {
-  background-color: rgba(40, 167, 69, 0.2); /* Light green */
+  background-color: rgba(0, 255, 60, 0.44); /* Light green */
 }
 
 

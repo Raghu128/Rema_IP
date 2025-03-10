@@ -28,7 +28,7 @@ const Navbar = () => {
   return (
     <nav className="navbar">
       <div className="navbar-brand" onClick={() => window.location.href = "/"}>
-        <img src="/images.jpeg" alt="Website Logo" className="navbar-logo" />
+        <img src="/Logo.png" alt="Website Logo" className="navbar-logo" />
       </div>
 
       <div className="navbar-menu">
