@@ -1,13 +1,9 @@
-Here's a well-structured, detailed, and visually appealing **README.md** file for your GitHub repository:  
-
----
-
 # 📌 Rema-Dash  
 
 🚀 **Rema-Dash** is a project management dashboard designed for faculty and students to efficiently handle research projects, student leaves, expenses, and equipment usage. This web application streamlines academic project management, ensuring smooth collaboration between professors and students.  
 
 🔗 **Live Demo**: [Rema-Dash](https://rema-dash.vercel.app/)  
-
+![Demo App](/ScreenShots/ProjectManage.png)
 ---
 
 ## 📖 Table of Contents  
@@ -18,7 +14,6 @@ Here's a well-structured, detailed, and visually appealing **README.md** file fo
 - [📌 Environment Variables](#-environment-variables)  
 - [📂 Folder Structure](#-folder-structure)  
 - [📊 Database Schema](#-database-schema)  
-- [🖥 Screenshots](#-screenshots)  
 - [👨‍💻 API Endpoints](#-api-endpoints)  
 - [🤝 Contributing](#-contributing)  
 - [📄 License](#-license)  
@@ -179,14 +174,6 @@ The backend uses MongoDB with the following schema:
 | status     | Enum    | ongoing, completed, cancelled |
 
 > **For full schema details, check the backend folder.**
-
----
-
-## 🖥 Screenshots  
-![Dashboard Screenshot](https://github.com/your-repo-name/assets/screenshot.png)
-
-
-> *(Add screenshots of the dashboard here)*  
 
 ---
 
