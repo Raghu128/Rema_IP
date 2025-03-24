@@ -1,8 +1,8 @@
-# 📌 Rema-Dash  
+# 📌 Rema  
 
-🚀 **Rema-Dash** is a project management dashboard designed for faculty and students to efficiently handle research projects, student leaves, expenses, and equipment usage. This web application streamlines academic project management, ensuring smooth collaboration between professors and students.  
+🚀 **Rema** is a project management dashboard designed for faculty and students to efficiently handle research projects, student leaves, expenses, and equipment usage. This web application streamlines academic project management, ensuring smooth collaboration between professors and students.  
 
-🔗 **Live Demo**: [Rema-Dash](https://rema-dash.vercel.app/)  
+🔗 **Live Demo**: [Rema](https://rema-dash.vercel.app/)  
 ![Demo App](/ScreenShots/ProjectManage.png)
 ---
 
