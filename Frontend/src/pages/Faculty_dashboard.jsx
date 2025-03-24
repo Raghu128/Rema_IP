@@ -1,7 +1,7 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import "../styles/FacultyDashboard.css";
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { useSelector } from "react-redux";
+import "../styles/FacultyDashboard.css";
 
 import Projects from "../components/SimpleProjects/Projects";
 import Students from "../components/Supervisor/Students";
@@ -15,10 +15,14 @@ import LandingPage from "../components/LandingPage";
 import LeavesForFacultyPage from "../components/Leaves/AllLeaves";
 
 const FacultyDashboard = () => {
-  const [currElement, setElement] = useState("");
+  const [searchParams, setSearchParams] = useSearchParams();
+  const navigate = useNavigate();
   const { user } = useSelector((state) => state.user);
 
-  // Function to render the current component based on selected option
+  // Get tab from URL params (default to "Projects" if not provided)
+  const currElement = searchParams.get("tab");
+
+  // Function to render the current component based on selected tab
   const renderComponent = () => {
     if (!user?.id) return <p>Loading... Please wait.</p>;
 
@@ -31,29 +35,27 @@ const FacultyDashboard = () => {
       "Add-User": <AddUserForm />,
       Equipment: <UserEquipmentList />,
       Expenses: <ExpensesList />,
-      Leaves: <LeavesForFacultyPage/>,
+      Leaves: <LeavesForFacultyPage />,
     };
 
     return componentMap[currElement] || <LandingPage />;
   };
 
+  // Function to handle navigation and update URL params
+  const handleNavigation = (tab) => {
+    setSearchParams({ tab });
+  };
 
   return (
     <div className="faculty-dashboard-container">
       {/* Sidebar */}
       <div className="faculty-sidebar">
         <ul className="faculty-sidebar-list">
-          {[
-            "Projects",
-            "Students",
-            "Sponsor",
-            "Expenses",
-            "Equipment",
-            "Add-User",
-            "Leaves",
-          ].map((item) => (
+          {["Projects", "Students", "Sponsor", "Expenses", "Equipment", "Leaves"].map((item) => (
             <li key={item}>
-              <Link onClick={() => setElement(item)}>{item}</Link>
+              <Link to={`?tab=${item}`} onClick={() => handleNavigation(item)}>
+                {item}
+              </Link>
             </li>
           ))}
         </ul>

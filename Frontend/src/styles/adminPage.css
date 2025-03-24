@@ -1,213 +1,370 @@
+/* AdminPage.css */
+
 /* Admin Page Layout */
+:root {
+  --primary-color: #2c3e50;
+  --secondary-color: #3498db;
+  --accent-color: #e74c3c;
+  --background-color: #f5f6fa;
+  --text-color: #2c3e50;
+  --border-radius: 8px;
+  --transition-speed: 0.3s;
+}
+
 .admin-page {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    padding: 30px;
-    max-width: 1300px;
-    margin: 0 auto;
-    max-height: 95vh;
-    background-color: #f7f7f9;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    overflow: scroll;
+  display: flex;
+  min-height: 100vh;
+  background-color: var(--background-color);
 }
 
-/* Title Styling */
-.admin-dashboard-title,
-.section-title {
-    color: #2c3e50; /* Darker shade of blue/gray */
-    text-align: center;
-    margin-bottom: 30px; /* Increased margin */
-    font-weight: 700; /* Bolder font */
+/* Sidebar Styles */
+.admin-page-sidebar {
+  width: 220px;
+  background: var(--primary-color);
+  padding: 2rem 1rem;
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+  transition: all var(--transition-speed) ease;
 }
 
-.admin-dashboard-title {
-    font-size: 1.5rem; /* Larger title */
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    border-bottom: 3px solid #3498db; /* Thicker, blue border */
-    padding-bottom: 18px; /* Increased padding */
+.admin-page-sidebar-btn {
+  width: 100%;
+  padding: 1rem;
+  margin: 0.5rem 0;
+  border: none;
+  background: transparent;
+  color: white;
+  font-size: 1rem;
+  cursor: pointer;
+  border-radius: var(--border-radius);
+  transition: all var(--transition-speed) ease;
 }
 
-.section-title {
-    font-size: 1.9rem; /* Larger section title */
-    margin-top: 20px; /* Increased margin */
-    border-bottom: 2px solid #3498db; /* Blue border */
-    padding-bottom: 12px; /* Increased padding */
+.admin-page-sidebar-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  transform: translateX(5px);
 }
 
-/* Add User Section */
-.add-user-section,
-.update-user-section {
-    margin: 20px 0;
-    padding: 25px;
-    background-color: #ffffff;
-    border-radius: 10px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: 15px; /* Reduced gap */
+.admin-page-active {
+  background: var(--secondary-color) !important;
+  font-weight: bold;
 }
 
-.add-user-section {
-    border: 1px solid #e3e4e8;
+/* Main Content Area */
+.admin-page-content {
+  flex: 1;
+  padding: 2rem;
+  overflow-y: auto;
 }
 
-/* Input Fields and Select Dropdown */
-.admin-input-filed {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    gap: 15px; /* Reduced gap */
+.admin-page-title {
+  color: var(--text-color);
+  margin-bottom: 2rem;
+  font-size: 2.5rem;
+  font-weight: 700;
+  position: relative;
 }
 
-.input-field {
-    padding: 10px 16px; /* Reduced padding */
-    font-size: 14px; /* Reduced from 16px */
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    width: 48%;
-    margin-bottom: 15px;
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+.admin-page-title::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 0;
+  width: 60px;
+  height: 4px;
+  background: var(--secondary-color);
+  border-radius: 2px;
 }
 
-.input-field:focus {
-    outline: none;
-    border-color: #4e73df;
-    box-shadow: 0 0 5px rgba(78, 115, 223, 0.4);
+/* Form Elements */
+.admin-page-form {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2rem;
+  background: white;
+  padding: 2rem;
+  border-radius: var(--border-radius);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-/* Select Dropdown Styling */
-.select-dropdown {
-    padding: 10px 16px; /* Reduced padding */
-    font-size: 14px; /* Reduced from 16px */
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    width: 48%;
-    background-color: #ffffff;
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+.admin-page-input,
+.admin-page-select {
+  padding: 0.8rem 1rem;
+  border: 2px solid #e1e1e1;
+  border-radius: var(--border-radius);
+  font-size: 1rem;
+  transition: all var(--transition-speed) ease;
 }
 
-.select-dropdown:focus {
-    outline: none;
-    border-color: #4e73df;
-    box-shadow: 0 0 5px rgba(78, 115, 223, 0.4);
+.admin-page-input:focus,
+.admin-page-select:focus {
+  border-color: var(--secondary-color);
+  box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+  outline: none;
 }
 
-/* Add Button */
-.button {
-    padding: 10px 16px; /* Reduced padding */
-    background-color: #4e73df;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    font-size: 14px; /* Reduced from 16px */
-    cursor: pointer;
-    width: 100%;
-    max-width: 400px;
-    margin: 20px auto;
-    transition: background-color 0.3s ease, transform 0.2s ease;
+.admin-page-btn {
+  background: var(--secondary-color);
+  color: white;
+  border: none;
+  padding: 0.8rem 1.5rem;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  font-weight: 600;
+  transition: all var(--transition-speed) ease;
 }
 
-.button:hover {
-    background-color: #2e59d9;
-    transform: translateY(-2px);
+.admin-page-btn:hover {
+  background: #2980b9;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.button:active {
-    transform: translateY(2px);
+/* Table Styles */
+.admin-page-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  background: white;
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-/* Section Titles */
-.section-title {
-    font-size: 20px; /* Reduced from 26px */
-    font-weight: 600;
-    color: #333;
-    margin-bottom: 10px; /* Reduced margin */
+.admin-page-table-header {
+  background: var(--primary-color);
+  color: white;
+  padding: 1rem;
+  text-align: left;
+  cursor: pointer;
+  transition: background var(--transition-speed) ease;
 }
 
-
-.user-list-section-delete-container{
-    height: 40%;
-    margin-top: 40px;
-    padding: 25px;
-    background-color: #ffffff;
-    border-radius: 10px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
+.admin-page-table-header:hover {
+  background: #34495e;
 }
 
-/* User List Section */
-.user-list-section-delete {
-   
-    max-height: 90%;
-    overflow: scroll;
+.admin-page-table-row {
+  transition: background var(--transition-speed) ease;
 }
 
-.user-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 12px; /* Reduced padding */
-    background-color: #f8f9fa;
-    border-radius: 8px;
-    margin-bottom: 12px; /* Reduced margin */
-    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+.admin-page-table-row:hover {
+  background: #f8f9fa;
 }
 
-.user-item:hover {
-    background-color: #e9ecef;
-    box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+.admin-page-table-cell {
+  padding: 1rem;
+  border-bottom: 1px solid #e1e1e1;
 }
 
-.user-item p {
-    margin: 0;
-    font-size: 14px; /* Reduced from 16px */
-    color: #555;
+/* Action Buttons */
+.admin-page-action-btn {
+  padding: 0.5rem 1rem;
+  margin: 0 0.25rem;
+  border: none;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  font-weight: 500;
+  transition: all var(--transition-speed) ease;
 }
 
-/* Delete Button */
-.delete-button {
-    background-color: #dc3545;
-    color: white;
-    border: none;
-    padding: 6px 12px; /* Reduced padding */
-    font-size: 12px; /* Reduced from 14px */
-    cursor: pointer;
-    border-radius: 8px;
-    transition: background-color 0.3s ease, transform 0.2s ease;
+.admin-page-action-btn:nth-child(1) {
+  background: #2ecc71;
+  color: white;
 }
 
-.delete-button:hover {
-    background-color: #c82333;
-    transform: translateY(-2px);
+.admin-page-action-btn:nth-child(2) {
+  background: var(--accent-color);
+  color: white;
 }
 
-.delete-button:active {
-    transform: translateY(2px);
+.admin-page-action-btn:nth-child(3) {
+  background: #f1c40f;
+  color: white;
 }
 
-/* Unauthorized User Message */
-.unauthorized-message {
-    text-align: center;
-    font-size: 16px; /* Reduced from 20px */
-    font-weight: bold;
-    color: #ff4d4f;
-    margin-top: 40px;
+.admin-page-action-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* Responsive Design for Mobile */
+/* Modal Styles */
+.admin-page-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  animation: fadeIn 0.3s ease;
+}
+
+.admin-page-modal-content {
+  background: white;
+  padding: 2rem;
+  border-radius: var(--border-radius);
+  width: 90%;
+  max-width: 500px;
+  animation: slideIn 0.3s ease;
+}
+
+.admin-page-modal-title {
+  margin-bottom: 1.5rem;
+  color: var(--text-color);
+}
+
+.admin-page-modal-label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: var(--text-color);
+}
+
+.admin-page-modal-input,
+.admin-page-modal-select {
+  width: 100%;
+  padding: 0.8rem;
+  margin-bottom: 1rem;
+  border: 2px solid #e1e1e1;
+  border-radius: var(--border-radius);
+  transition: all var(--transition-speed) ease;
+}
+
+.admin-page-modal-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+/* Database Schema Styles */
+.admin-page-schema-container {
+  max-height: 78vh;
+  overflow-y: scroll;
+  scrollbar-width: none;
+  display: grid;
+  gap: 1.5rem;
+}
+
+.admin-page-schema-card {
+  background: white;
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: all var(--transition-speed) ease;
+}
+
+.admin-page-schema-header {
+  padding: 1rem;
+  background: var(--primary-color);
+  color: white;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.admin-page-schema-attributes {
+  padding: 1rem;
+  animation: slideDown 0.3s ease;
+}
+
+.admin-page-attribute-header {
+  display: grid;
+  grid-template-columns: 2fr 2fr 1fr 2fr;
+  padding: 0.5rem;
+  background: #f8f9fa;
+  font-weight: bold;
+}
+
+.admin-page-schema-row {
+  display: grid;
+  grid-template-columns: 2fr 2fr 1fr 2fr;
+  padding: 0.5rem;
+  border-bottom: 1px solid #e1e1e1;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideDown {
+  from {
+    max-height: 0;
+    opacity: 0;
+  }
+  to {
+    max-height: 1000px;
+    opacity: 1;
+  }
+}
+
+/* Responsive Design */
 @media (max-width: 768px) {
-    .admin-input-filed {
-        flex-direction: column;
-    }
+  .admin-page {
+    flex-direction: column;
+  }
 
-    .input-field,
-    .select-dropdown {
-        width: 100%;
-    }
+  .admin-page-sidebar {
+    width: 100%;
+    padding: 1rem;
+  }
 
-    .button {
-        width: 100%;
-    }
+  .admin-page-form {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-page-table {
+    display: block;
+    overflow-x: auto;
+  }
+
+  .admin-page-modal-content {
+    width: 95%;
+    margin: 1rem;
+  }
+}
+
+/* Message Styles */
+.admin-page-message {
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: var(--border-radius);
+  background: #dff0d8;
+  color: #3c763d;
+  border: 1px solid #d6e9c6;
+  animation: slideIn 0.3s ease;
+}
+
+/* Search Input Styles */
+.admin-page-search-input {
+  width: 100%;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  border: 2px solid #e1e1e1;
+  border-radius: var(--border-radius);
+  font-size: 1rem;
+  transition: all var(--transition-speed) ease;
+}
+
+.admin-page-search-input:focus {
+  border-color: var(--secondary-color);
+  box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+  outline: none;
 }

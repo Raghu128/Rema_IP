@@ -1,17 +1,18 @@
+// AddLeaveForm.js
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import axios from "axios";
-import "../../styles/Leaves/AddLeaveForm.css";
+import "../../styles/Leaves/AddLeaveForm.css"; // Make sure you have this CSS file
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowLeft, faPlus, faEdit, faCalendarAlt, faUser, faTrash, faSearch } from '@fortawesome/free-solid-svg-icons';
+import { faArrowLeft, faPlus, faEdit, faCalendarAlt, faTrash, faSearch } from '@fortawesome/free-solid-svg-icons';
 
 const AddLeaveForm = () => {
     const { user } = useSelector((state) => state.user);
     const navigate = useNavigate();
 
-    const [selectedStudent, setSelectedStudent] = useState("");
-    const [students, setStudents] = useState([]);
+    const [selectedFaculty, setSelectedFaculty] = useState("");
+    const [faculty, setFaculty] = useState([]);
     const [leaves, setLeaves] = useState([]);
     const [formData, setFormData] = useState({
         from: "",
@@ -21,7 +22,7 @@ const AddLeaveForm = () => {
     const [message, setMessage] = useState("");
     const [isEditing, setIsEditing] = useState(false);
     const [editingLeaveId, setEditingLeaveId] = useState(null);
-    const [searchQuery, setSearchQuery] = useState(""); // For searching students
+    const [searchQuery, setSearchQuery] = useState("");
 
     useEffect(() => {
         if (!user) {
@@ -30,30 +31,27 @@ const AddLeaveForm = () => {
     }, [user, navigate]);
 
     useEffect(() => {
-        const fetchStudents = async () => {
+        const fetchFaculty = async () => {
             try {
                 const response = await axios.get("/api/v1/user");
-                setStudents(
-                    response.data.filter(
-                        (student) => student.role !== "faculty" && student.role !== "admin"
-                    )
-                );
+                setFaculty(response.data.filter((facultyMember) => facultyMember.role === "faculty" && facultyMember.role !== "admin"));
             } catch (error) {
-                console.error("Error fetching students:", error);
+                console.error("Error fetching faculty:", error);
             }
         };
-        fetchStudents();
+
+        fetchFaculty();
     }, []);
 
     useEffect(() => {
-        if (selectedStudent) {
-            fetchLeaves(selectedStudent);
+        if (selectedFaculty) {
+            fetchLeaves(selectedFaculty);
         }
-    }, [selectedStudent]);
+    }, [selectedFaculty]);
 
-    const fetchLeaves = async (studentId) => {
+    const fetchLeaves = async (facultyId) => {
         try {
-            const response = await axios.get(`/api/v1/leaves/${studentId}`);
+          const response = await axios.get(`/api/v1/leaves/${user?.id}`);
             const formattedLeaves = response.data.map((leave) => ({
                 ...leave,
                 from: leave.from.split("T")[0],
@@ -65,171 +63,159 @@ const AddLeaveForm = () => {
         }
     };
 
-    const handleStudentChange = (e) => {
-        setSelectedStudent(e.target.value);
+    const handleFacultyChange = (e) => {
+        setSelectedFaculty(e.target.value);
         setIsEditing(false);
         setEditingLeaveId(null);
         setFormData({ from: "", to: "", reason: "" });
+        setMessage(""); // Clear messages
     };
 
     const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData((prevData) => ({ ...prevData, [name]: value }));
+        setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
     const handleEdit = (leave) => {
-        setFormData({
-            from: leave.from,
-            to: leave.to,
-            reason: leave.reason,
-        });
+        setFormData({ from: leave.from, to: leave.to, reason: leave.reason });
         setIsEditing(true);
         setEditingLeaveId(leave._id);
     };
 
-    const handleSubmit = async (e) => {
+  const handleSubmit = async (e) => {
         e.preventDefault();
         setMessage("");
 
         try {
-            if (isEditing) {
-                await axios.put(`/api/v1/leaves/${editingLeaveId}`, formData);
-                setMessage("Leave updated successfully");
-            } else {
-                await axios.post("/api/v1/leaves", {
-                    ...formData,
-                    user: selectedStudent,
-                });
-                setMessage("Leave added successfully");
-            }
+          if (isEditing) {
+            await axios.put(`/api/v1/leaves/${editingLeaveId}`, formData);
+            setMessage("Leave updated successfully.");
+          } else {
+            await axios.post("/api/v1/leaves", {
+              ...formData,
+              user_id: user.id,
+              faculty_id: selectedFaculty,
+            });
+            setMessage("Leave added successfully.");
+          }
+
+          // Refresh leaves list after adding or updating
+          fetchLeaves(selectedFaculty);
+
+          // Reset form and editing state
             setIsEditing(false);
             setEditingLeaveId(null);
             setFormData({ from: "", to: "", reason: "" });
-            fetchLeaves(selectedStudent);
+
+
         } catch (error) {
             console.error("Error submitting form:", error);
-            setMessage("Failed to process leave request");
+            setMessage("Failed to process leave request." ); // More specific error message
         }
     };
-     const handleDelete = async () => {
-        if (!editingLeaveId) return; // Should not happen, but good to check
 
+
+    const handleDelete = async (leaveId) => {
         try {
-            await axios.delete(`/api/v1/leaves/${editingLeaveId}`);
+            await axios.delete(`/api/v1/leaves/${leaveId}`);
             setMessage("Leave deleted successfully.");
-            setIsEditing(false); // Clear editing state
-            setEditingLeaveId(null);
-            setFormData({ from: "", to: "", reason: "" }); // Clear form
-            fetchLeaves(selectedStudent); // Refresh leaves list
+          fetchLeaves(selectedFaculty);
+            // You might want to update the leaves state here after successful deletion
         } catch (error) {
             console.error("Error deleting leave:", error);
-            setMessage("Failed to delete leave.");
+             setMessage("Failed to delete leave.");
         }
     };
+
     const handleCancelEdit = () => {
         setIsEditing(false);
         setEditingLeaveId(null);
-        setFormData({ from: "", to: "", reason: "" }); //Clear form
-        setMessage(""); // Clear any messages
-    }
+        setFormData({ from: "", to: "", reason: "" });
+        setMessage(""); // Clear any previous messages
+    };
 
-    // Filter students based on search query
-    const filteredStudents = students.filter(student =>
-        student.name.toLowerCase().includes(searchQuery.toLowerCase())
+  const filteredFaculty = faculty.filter(facultyMember =>
+        facultyMember.name.toLowerCase().includes(searchQuery.toLowerCase())
     );
 
-    return (
+
+  return (
         <div className="leaves-form-container">
+      {/* Back Button */}
             <button className="leaves-back-btn" onClick={() => navigate(-1)}>
                 <FontAwesomeIcon icon={faArrowLeft} /> Go Back
             </button>
-            <h2 className="leaves-title">Manage Leaves</h2>
+            <h2 className="leaves-title">Add Leaves</h2>
 
-            {/* Search Bar */}
+      {/* Search Bar */}
             <div className="leaves-search-container">
                 <FontAwesomeIcon icon={faSearch} className="leaves-search-icon" />
                 <input
                     type="text"
-                    placeholder="Search students..."
+                    placeholder="Search faculty..."
                     className="leaves-search-input"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                />
-            </div>
+        />
+      </div>
 
-            <div className="leaves-student-select-section">
-              <label htmlFor="studentSelect" className="leaves-label">Select Student:</label>
-              <select id="studentSelect" className="leaves-select" value={selectedStudent} onChange={handleStudentChange} required>
-                <option value="">Select a student here</option>
-                {filteredStudents.map((student) => (
-                  <option key={student._id} value={student._id}>
-                    {student.name} ({student.email})
-                  </option>
+
+            {/* Faculty Select Dropdown */}
+          <div className="leaves-student-select-section"> {/* Updated label and variable names */}
+            <label htmlFor="facultySelect" className="leaves-label">Select Faculty:</label>
+            <select id="facultySelect" className="leaves-select" value={selectedFaculty} onChange={handleFacultyChange} required>
+                <option value="">Select a Faculty here</option>
+                {filteredFaculty.map((facultyMember) => (
+                    <option key={facultyMember._id} value={facultyMember._id}>
+                        {facultyMember.name} ({facultyMember.email})
+                    </option>
                 ))}
-              </select>
-           </div>
+            </select>
+        </div>
 
-            {selectedStudent && (
+            {selectedFaculty && (
                 <>
-                    <h3 className="leaves-subtitle">Existing Leaves</h3>
-                    {leaves.length === 0 ? (
-                        <p className="leaves-message">No leave records found.</p>
-                    ) : (
-                        <div className="leaves-list-container">
-                            {leaves.map((leave) => (
-                                <div key={leave._id} className="leaves-card">
-                                    <div>
-                                        <FontAwesomeIcon icon={faCalendarAlt} />
-                                        <span> {leave.from} to {leave.to}</span>
-                                    </div>
-                                    <p>Reason: {leave.reason}</p>
-                                     <div className="leaves-card-actions">
-                                        <button className="leaves-edit-btn" onClick={() => handleEdit(leave)}>
-                                            <FontAwesomeIcon icon={faEdit} /> Edit
-                                        </button>
-                                         <button className="leaves-delete-btn" onClick={handleDelete}>
-                                            <FontAwesomeIcon icon={faTrash} /> Delete
-                                        </button>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                    )}
-
-                     <h3 className="leaves-subtitle">{isEditing ? "Edit Leave" : "Add New Leave"}</h3>
-                    {message && <p className={message.startsWith("Leave added") ? "leaves-message" : "leaves-message error"}>{message}</p>}
-
+                    {/* Add/Edit Leave Form */}
+           <h3 className="leaves-subtitle">{isEditing ? "Edit Leave" : "Add New Leave"}</h3>
+           {/* Display messages */}
+                    {message && <p className={`leaves-message ${message.includes("Failed") ? "error" : ""}`}>{message}</p>}
                     <form className="leaves-form" onSubmit={handleSubmit}>
-                        <div className="leaves-form-row">
-                            <div className="leaves-form-group">
-                                <label htmlFor="from" className="leaves-label">From Date:</label>
-                                <input id="from" className="leaves-input" type="date" name="from" value={formData.from} onChange={handleChange} required />
-                            </div>
-                            <div className="leaves-form-group">
-                                <label htmlFor="to" className="leaves-label">To Date:</label>
-                                <input id="to" className="leaves-input" type="date" name="to" value={formData.to} onChange={handleChange} />
-                            </div>
+                    <div className="leaves-form-row">
+              <div className="leaves-form-group">
+                <label htmlFor="from">From Date:</label>
+                <input type="date" id="from" name="from" value={formData.from} onChange={handleChange} required />
+              </div>
+              <div className="leaves-form-group">
+                <label htmlFor="to">To Date:</label>
+                <input type="date" id="to" name="to" value={formData.to} onChange={handleChange} required/>
+              </div>
+            </div>
+            <div className="leaves-form-group">
+              <label htmlFor="reason">Reason:</label>
+              <textarea id="reason" name="reason" value={formData.reason} onChange={handleChange} required />
                         </div>
-                        <div className="leaves-form-group">
-                            <label htmlFor="reason" className="leaves-label">Reason:</label>
-                            <textarea id="reason" className="leaves-textarea" name="reason" value={formData.reason} onChange={handleChange} required />
-                        </div>
-
                         <div className="leaves-form-actions">
-                            <button className="leaves-submit-btn" type="submit">
-                                {isEditing ? <span><FontAwesomeIcon icon={faEdit} /> Update Leave</span> : <span><FontAwesomeIcon icon={faPlus} /> Add Leave</span>}
+              <button type="submit" className="leaves-submit-btn">
+                {isEditing ? (
+                   <> <FontAwesomeIcon icon={faEdit} />Update</>
+                ) : (
+                    <> <FontAwesomeIcon icon={faPlus} />Add Leave</>
+                )}
                             </button>
-                              {isEditing && (
+
+                            {/* Cancel Button (only during edit mode) */}
+                            {isEditing && (
                                 <button type="button" className="leaves-cancel-btn" onClick={handleCancelEdit}>
                                     Cancel
-                                </button>
+                 </button>
                             )}
                         </div>
+
                     </form>
                 </>
             )}
         </div>
     );
 };
+
 
 export default AddLeaveForm;

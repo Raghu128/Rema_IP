@@ -7,15 +7,16 @@ import { useNavigate } from "react-router-dom";
 const UpdateProjectFormPage = () => {
   const navigate = useNavigate();
   const { user } = useSelector((state) => state.user);
-
   const [projects, setProjects] = useState([]);
   const [selectedProject, setSelectedProject] = useState(null);
+  const today = new Date().toISOString().split("T")[0]; // Today's date
+
   const [formData, setFormData] = useState({
     faculty_id: user?.id || "",
     name: "",
     domain: "",
     sub_domain: "",
-    creation_date: "",
+    creation_date: today, // Set default to today
     end_date: "",
     team: [],
     lead_author: "",
@@ -27,20 +28,18 @@ const UpdateProjectFormPage = () => {
     paper_url: "",
     submission_url: "",
   });
+
   const [users, setUsers] = useState([]);
   const [message, setMessage] = useState("");
-
-  // New state for searching project selection and team members
   const [projectSearch, setProjectSearch] = useState("");
   const [teamSearch, setTeamSearch] = useState("");
 
   useEffect(() => {
     if (!user) {
-      navigate("/"); // Redirect to home if user is null
+      navigate("/");
     }
   }, [user, navigate]);
 
-  // Fetch projects for the logged-in user
   useEffect(() => {
     const fetchProjects = async () => {
       try {
@@ -50,15 +49,14 @@ const UpdateProjectFormPage = () => {
         setMessage("Failed to fetch projects");
       }
     };
-
     if (user?.id) fetchProjects();
   }, [user]);
 
-  // Fetch all users to populate the team members
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await axios.get("/api/v1/user");
+        const response = await axios.get(`/api/v1/user/${user?.id}`);
+        
         setUsers(response.data);
       } catch (error) {
         setMessage("Failed to fetch users");
@@ -66,9 +64,8 @@ const UpdateProjectFormPage = () => {
     };
 
     fetchUsers();
-  }, []);
+  }, [user]);
 
-  // Populate the form with selected project details
   useEffect(() => {
     if (selectedProject) {
       setFormData({
@@ -89,9 +86,10 @@ const UpdateProjectFormPage = () => {
         submission_url: selectedProject.submission_url || "",
       });
     } else {
-      resetForm();
+      resetForm(); // Reset if no project selected
     }
-  }, [selectedProject]);
+  }, [selectedProject, today]); // Add today to dependency array
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -131,23 +129,29 @@ const UpdateProjectFormPage = () => {
       lead_author: formData.lead_author,
     };
 
-    try {
-      const response = selectedProject
-        ? await axios.put(`/api/v1/projects/${selectedProject._id}`, submitData)
-        : await axios.post("/api/v1/projects", submitData);
+    if (window.confirm("Are you sure you want to delete this project?")) {
+      try {
 
-      setMessage(selectedProject ? "Project updated successfully" : "Project added successfully");
 
-      const updatedProjects = selectedProject
-        ? projects.map((proj) => (proj._id === response.data._id ? response.data : proj))
-        : [...projects, response.data];
+        const response = selectedProject
+          ? await axios.put(`/api/v1/projects/${selectedProject._id}`, submitData)
+          : await axios.post("/api/v1/projects", submitData);
 
-      setProjects(updatedProjects);
-      resetForm();
-      setSelectedProject(null);
-    } catch (error) {
-      setMessage("Failed to save project");
+        setMessage(selectedProject ? "Project updated successfully" : "Project added successfully");
+
+        const updatedProjects = selectedProject
+          ? projects.map((proj) => (proj._id === response.data._id ? response.data : proj))
+          : [...projects, response.data];
+
+        setProjects(updatedProjects);
+        resetForm();
+        setSelectedProject(null);
+      } catch (error) {
+        setMessage("Failed to save project");
+      }
     }
+
+
   };
 
   const handleDelete = async (projectId) => {
@@ -172,7 +176,7 @@ const UpdateProjectFormPage = () => {
       name: "",
       domain: "",
       sub_domain: "",
-      creation_date: "",
+      creation_date: today, // Ensure creation_date is reset to today
       end_date: "",
       team: [],
       lead_author: "",
@@ -185,6 +189,9 @@ const UpdateProjectFormPage = () => {
       submission_url: "",
     });
     setMessage("");
+    setProjectSearch(""); //added to clear the search
+    setTeamSearch(""); // added to clear the search
+
   };
 
   const handleProjectSelect = (project) => {
@@ -277,7 +284,7 @@ const UpdateProjectFormPage = () => {
             </div>
           </div>
           {/* Form Row 3: Creation & End Dates */}
-          <div className="form-row">
+          {/* <div className="form-row">
             <div className="form-group">
               <label htmlFor="creation_date">Creation Date:</label>
               <input
@@ -298,7 +305,7 @@ const UpdateProjectFormPage = () => {
                 onChange={handleChange}
               />
             </div>
-          </div>
+          </div> */}
           {/* Form Row 4: Venue */}
           <div className="form-row">
             <div className="form-group full-width">
@@ -399,6 +406,8 @@ const UpdateProjectFormPage = () => {
                     </label>
                   </div>
                 ))}
+
+                  <button onClick={() => navigate("/?tab=Add-User")}>Add user</button>
               </div>
             </div>
             <div className="form-group">
@@ -453,9 +462,9 @@ const UpdateProjectFormPage = () => {
                 Delete
               </button>
             )}
-            <button type="button" onClick={resetForm} className="editproject-reset">
+            {/* <button type="button" onClick={resetForm} className="editproject-reset">
               Reset all values
-            </button>
+            </button> */}
           </div>
         </form>
       </div>

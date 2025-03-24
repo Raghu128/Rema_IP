@@ -1,6 +1,6 @@
 .landingpage-dashboard {
   text-align: center;
-  padding: 20px;
+  padding: 0px;
 }
 
 .landingpage-header h1 {
@@ -12,16 +12,9 @@
   display: flex;
   gap: 20px;
   justify-content: center;
-  /* margin-top: 20px; */
 }
 
-.landingpage-notification {
-  width: 70%;
-}
 
-.landingpage-venue {
-  width: 30%;
-}
 
 @media (max-width: 988px) {
   .landingpage-content {

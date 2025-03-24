@@ -2,23 +2,22 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import "../../styles/Leaves/LeavesForFacultyPage.css";
-import { useNavigate } from "react-router-dom";
 import Loader from '../Loader';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEdit, faCalendarAlt, faUserGraduate, faFileAlt } from '@fortawesome/free-solid-svg-icons';
+import { faCalendarAlt, faUserGraduate, faFileAlt } from '@fortawesome/free-solid-svg-icons';
 
 const LeavesForFacultyPage = () => {
     const { user } = useSelector((state) => state.user);
     const [leaves, setLeaves] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
-    const navigate = useNavigate();
+    
 
     useEffect(() => {
         const fetchLeaves = async () => {
             setLoading(true);
             try {
-                const response = await axios.get(`/api/v1/leaves/faculty/${user?.id}`);
+                const response = await axios.get(`/api/v1/leaves/faculty/${user?.id}`);                
                 setLeaves(response.data);
             } catch (err) {
                 console.error(err);
@@ -50,7 +49,7 @@ const LeavesForFacultyPage = () => {
             rows.push(
                 <tr key={leave._id}>
                     {index === 0 && (
-                        <td rowSpan={group.leaves.length}><FontAwesomeIcon icon={faUserGraduate} /> {group.name}</td>
+                        <td rowSpan={group.leaves.length}><FontAwesomeIcon icon={faUserGraduate} /> {leave.user_id.name}</td>
                     )}
                     <td><FontAwesomeIcon icon={faCalendarAlt} /> {new Date(leave.from).toLocaleDateString()}</td>
                     <td><FontAwesomeIcon icon={faCalendarAlt} /> {new Date(leave.to).toLocaleDateString()}</td>
@@ -68,9 +67,7 @@ const LeavesForFacultyPage = () => {
                 <h2 className="leaves-title">
                    <FontAwesomeIcon icon={faFileAlt} className="leaves-title-icon"/> All Leaves for Your Students
                 </h2>
-                <button className="manage-leave-btn" onClick={() => navigate(`/manage-leaves`)}>
-                    <FontAwesomeIcon icon={faEdit} /> Manage
-                </button>
+               
             </div>
             {loading ? (
                 <p className="leaves-loading">Loading leaves...</p>

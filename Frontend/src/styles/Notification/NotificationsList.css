@@ -1,8 +1,8 @@
 /* Enhanced NotificationsList.css */
 .notification-container {
   padding: 20px;
-  width: 70%;
-  max-width: 900px;
+  width: 90%;
+  /* max-width: 900px; */
   background: #ffffff;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
   border-radius: 12px;
@@ -77,6 +77,9 @@
   text-align: left;
   border-bottom: 1px solid #ddd;
 }
+.notification-table td{
+  padding: 4px;
+}
 
 /* Table Header */
 .notification-table th {
@@ -116,6 +119,7 @@
   font-size: 18px;
   cursor: pointer;
   transition: transform 0.2s ease, color 0.2s ease;
+  align-self: center;
 }
 
 /* Highlight on hover with translation effect */
@@ -148,7 +152,7 @@
 
 .notification-delete-btn:hover {
   color: #b02a37;
-  transform: scale(1.2);
+  transform: scale(0.7);
 }
 
 /* Responsive Design */

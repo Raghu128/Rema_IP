@@ -141,6 +141,47 @@
   transform: scale(1.2);
 }
 
+/* Modal Styling */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.647);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+}
+
+.modal-content {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+  width: 300px;
+}
+
+.modal-content input {
+  width: 100%;
+  padding: 8px;
+  margin: 10px 0;
+}
+
+.modal-message {
+  color: green;
+}
+
+.modal-close {
+  margin-top: 10px;
+  padding: 5px 10px;
+  background: red;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
 
 
 /* Keyframe Animations */

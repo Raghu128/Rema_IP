@@ -7,7 +7,7 @@ import FinanceBudgetList from "../FinanceBudget/FinanceBudgetList";
 import MinutesOfMeeting from "../MinutesOfMeeting/MinutesOfMeeting";
 import Loader from '../Loader';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTasks, faBuilding, faLink, faCheckCircle, faCalendarAlt, faClock, faDollarSign, faComments, faTimes, faSearch } from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faEdit, faBuilding, faLink, faCheckCircle, faCalendarAlt, faClock, faDollarSign, faComments, faTimes, faSearch } from '@fortawesome/free-solid-svg-icons';
 
 
 const DisplaySponsors = () => {
@@ -57,7 +57,7 @@ const DisplaySponsors = () => {
                     className="display-sponsor-manage-btn"
                     onClick={() => navigate("/manage-sponsor")}
                 >
-                    Manage
+                    <FontAwesomeIcon icon={faEdit} /> Manage
                 </button>
             </div>
 

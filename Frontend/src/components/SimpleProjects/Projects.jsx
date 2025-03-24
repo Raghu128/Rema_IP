@@ -51,7 +51,7 @@ const Projects = ({ id }) => {
             <header className="projects-header">
                 <h1 className="projects-title">Projects</h1>
                 <button className="projects-edit-button" onClick={() => navigate('/update-project')}>
-                    <FontAwesomeIcon icon={faEdit} /> Edit
+                    <FontAwesomeIcon icon={faEdit} /> Manage
                 </button>
             </header>
 

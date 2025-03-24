@@ -32,7 +32,7 @@ function LoginPage() {
 
     return (
         <div className="loginpage-container">
-            <h1 className="loginpage-title"><FontAwesomeIcon icon={faUser} className="loginpage-icon"/> Login</h1>
+            <h1 className="loginpage-title"><FontAwesomeIcon icon={faUser} className="loginpage-icon" /> Login</h1>
             {loading && <RemaLoader />} {/* Display Loader when loading */}
             {!loading && (
                 <form className="loginpage-form" onSubmit={handleLogin}>
@@ -49,7 +49,7 @@ function LoginPage() {
                         />
                     </div>
                     <div className="loginpage-input-group">
-                         <label htmlFor="password"><FontAwesomeIcon icon={faLock} /></label>
+                        <label htmlFor="password"><FontAwesomeIcon icon={faLock} /></label>
                         <input
                             type="password"
                             id="password"
@@ -64,6 +64,10 @@ function LoginPage() {
                     <button type="submit" className="loginpage-button">
                         <FontAwesomeIcon icon={faSignInAlt} /> Login
                     </button>
+                    <p className="forgot-password">
+                        <a href="/forgot-password">Forgot Password?</a>
+                    </p>
+
                 </form>
             )}
         </div>

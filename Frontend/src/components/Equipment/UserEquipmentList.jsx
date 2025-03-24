@@ -45,7 +45,7 @@ const UserEquipmentList = () => {
                     <FontAwesomeIcon icon={faCogs} className="equipment-list-title-icon" /> Your Equipment
                 </h2>
                 <button onClick={() => navigate("/manage-equipment")} className="manage-equipment-btn">
-                    <FontAwesomeIcon icon={faPlus} /> / <FontAwesomeIcon icon={faEdit} /> Manage
+                    <FontAwesomeIcon icon={faEdit} /> Manage
                 </button>
             </div>
 

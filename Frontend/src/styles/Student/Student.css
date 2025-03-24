@@ -212,3 +212,40 @@
   margin-bottom: 20px;
   text-align: center;
 }
+
+/* Container for all committee members */
+.committee-members {
+  display: flex;
+  flex-direction: column; /* Arrange checkboxes vertically */
+  gap: 5px;             /* Add some space between checkboxes */
+}
+
+/* Each individual committee member label */
+.committee-member-label {
+    display: flex;      /* Ensure label and checkbox are aligned */
+    align-items: center; /* Vertically center content */
+    cursor: pointer;    /* Indicate that the label is clickable */    
+    user-select: none;
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+
+
+}
+
+.committee-member-label:hover {
+  background-color: #f0f0f0; /* Light gray background on hover */
+}
+
+
+/* Style the checkbox itself */
+.committee-member-label input[type="checkbox"] {
+  margin-right: 8px; /* Add space between checkbox and text */
+  cursor: pointer;
+}
+
+
+.committee-members input{
+  width: 1rem;
+}

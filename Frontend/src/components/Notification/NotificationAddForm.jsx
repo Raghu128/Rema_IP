@@ -13,15 +13,21 @@ const NotificationAddForm = () => {
     const navigate = useNavigate();
     const [searchQuery, setSearchQuery] = useState(""); // State for search query
 
+    const getTodayDate = () => {
+        const today = new Date();
+        return today.toISOString().split("T")[0]; // Formats date to YYYY-MM-DD
+    };
+    
     const [formData, setFormData] = useState({
         type: "",
         text: "",
-        creation_date: "",
+        creation_date: getTodayDate(), // Pre-fill with today's date
         due_date: "",
         priority: "low",
         added_by: user?.id || "",
         view: [],
     });
+    
 
     useEffect(() => {
         if (!user) {
@@ -129,7 +135,7 @@ const NotificationAddForm = () => {
                     <textarea id="text" name="text" value={formData.text} onChange={handleChange} required></textarea>
                 </div>
 
-                <div className="notification-form-row">
+                {/* <div className="notification-form-row">
                   <div className="notification-form-group">
                         <label htmlFor="creation_date">Creation Date:</label>
                         <input type="date" id="creation_date" name="creation_date" value={formData.creation_date} onChange={handleChange} required />
@@ -138,7 +144,7 @@ const NotificationAddForm = () => {
                         <label htmlFor="due_date">Due Date:</label>
                         <input type="date" id="due_date" name="due_date" value={formData.due_date} onChange={handleChange} />
                     </div>
-                </div>
+                </div> */}
                 <div className="notification-form-group">
                     <label>View Access:</label>
                     {/* Search Input */}

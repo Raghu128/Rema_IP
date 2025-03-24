@@ -38,6 +38,7 @@ const AddUserForm = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
+            
             const response = await axios.post("/api/v1/user/add", formData);
 
             setMessage(`User created successfully: ${formData.name}`);
@@ -48,9 +49,12 @@ const AddUserForm = () => {
                 email: "",
                 password: "",
             });
+            navigate("/update-supervisor");
         } catch (error) {
             console.error(error);
-            setMessage(error.response?.data?.message || "Failed to create user");
+            console.log(error.response);
+            
+            setMessage(error.response?.data || "Failed to create user");
         }
     };
 
@@ -116,7 +120,7 @@ const AddUserForm = () => {
                         />
                     </div>
                 </div>
-                <div className="add-user-form-row">
+                {/* <div className="add-user-form-row">
                     <div className="add-user-form-group">
                         <label htmlFor="status">
                             <FontAwesomeIcon icon={formData.status ? faCheck : faTimes} />  Status: Active
@@ -132,7 +136,7 @@ const AddUserForm = () => {
                             <span className="slider round"></span>
                         </label>
                     </div>
-                </div>
+                </div> */}
 
                 <button type="submit" className="add-user-submit-btn">
                     <FontAwesomeIcon icon={faUserPlus} /> Add User

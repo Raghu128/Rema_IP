@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
-import '../styles/AddOrEditProjectForm.css';
+import '../styles/SimpleProject/AddOrEditProjectForm.css';
 import { useNavigate } from "react-router-dom";
 
 const AddOrEditProjectForm = ({ selectedProject, onProjectSaved, onCancel }) => {

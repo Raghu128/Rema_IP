@@ -38,27 +38,7 @@
     font-size: 1.8rem;
 }
 
-/* Manage Button */
-.manage-leave-btn {
-    background-color: #2ecc71; /* Green */
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 1rem;
-    transition: background-color 0.3s ease;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
-     display: inline-flex;  /* Align icon and text */
-  align-items: center;
-  gap: 8px;
-}
 
-
-.manage-leave-btn:hover {
-  background-color: #27ae60;
-   box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-}
 
 /* Loading, Error, and No Data Messages */
 .leaves-loading,

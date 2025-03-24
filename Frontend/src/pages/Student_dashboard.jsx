@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React from "react";
+import { Link, useSearchParams } from "react-router-dom";
 import "../styles/FacultyDashboard.css";
 import { useSelector } from "react-redux";
 
@@ -11,10 +11,13 @@ import LandingPage from "../components/LandingPage";
 import StudentLeaves from "../components/Leaves/StudentLeaves";
 
 const StudentDashboard = () => {
-  const [currElement, setElement] = useState("");
+  const [searchParams, setSearchParams] = useSearchParams();
   const { user } = useSelector((state) => state.user);
 
-  // Function to render the current component based on selected option
+  // Get the tab from URL parameters (default to "Projects" if not provided)
+  const currElement = searchParams.get("tab");
+
+  // Function to render the correct component based on the URL parameter
   const renderComponent = () => {
     if (!user?.id) return <p>Loading... Please wait.</p>;
 
@@ -23,25 +26,27 @@ const StudentDashboard = () => {
       Venues: <VenueListComponent />,
       Notifications: <NotificationsList />,
       Equipment: <StudentEquipmentList />,
-      Leaves : <StudentLeaves/>
+      Leaves: <StudentLeaves />,
     };
 
     return componentMap[currElement] || <LandingPage />;
   };
 
+  // Function to update the URL when clicking a sidebar link
+  const handleNavigation = (tab) => {
+    setSearchParams({ tab });
+  };
 
   return (
     <div className="faculty-dashboard-container">
       {/* Sidebar */}
       <div className="faculty-sidebar">
         <ul className="faculty-sidebar-list">
-          {[
-            "Projects",
-            "Equipment",
-            "Leaves"
-          ].map((item) => (
+          {["Projects", "Equipment", "Leaves"].map((item) => (
             <li key={item}>
-              <Link onClick={() => setElement(item)}>{item}</Link>
+              <Link to={`?tab=${item}`} onClick={() => handleNavigation(item)}>
+                {item}
+              </Link>
             </li>
           ))}
         </ul>

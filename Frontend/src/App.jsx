@@ -19,6 +19,8 @@ import NotificationAddForm from "./components/Notification/NotificationAddForm";
 import AddLeaveForm from "./components/Leaves/LeavesForm";
 import StudentDashboard from "./pages/Student_dashboard";
 import RemaLoader from "./components/RemaLoader";
+import ForgotPassword from "./pages/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword";
 import './App.css';
 
 function AppContent() {
@@ -84,6 +86,8 @@ function AppContent() {
         <Route path="/manage-financebudget/:srp_id" element={<FinanceBudgetAddForm />} />
         <Route path="/manage-leaves" element={<AddLeaveForm />} />
         <Route path="/manage-notification" element={<NotificationAddForm />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </>

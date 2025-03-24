@@ -86,3 +86,34 @@ export async function signupUser({ name, email, password }) {
     throw error;
   }
 }
+
+
+// Send forgot password request
+export async function sendPasswordReset(email) {
+  const response = await fetch("/api/v1/user/forgot-password", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email }),
+  });
+
+  if (!response.ok) {
+      throw new Error("Failed to send reset email");
+  }
+
+  return await response.json();
+}
+
+// Reset password with token
+export async function resetPassword(token, newPassword) {
+  const response = await fetch("/api/v1/user/reset-password", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ token, newPassword }),
+  });
+
+  if (!response.ok) {
+      throw new Error("Failed to reset password");
+  }
+
+  return await response.json();
+}

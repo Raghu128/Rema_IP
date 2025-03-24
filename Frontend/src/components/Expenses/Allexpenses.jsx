@@ -55,7 +55,7 @@ const ExpensesList = () => {
                     <FontAwesomeIcon icon={faFileInvoiceDollar} className="expenses-list-title-icon" /> User Expenses
                 </h2>
                 <button onClick={() => navigate("/manage-expense")} className="manage-expense-btn">
-                <FontAwesomeIcon icon={faPlus} /> / <FontAwesomeIcon icon={faEdit} />  Manage
+                <FontAwesomeIcon icon={faEdit} /> Manage
                 </button>
             </div>
 

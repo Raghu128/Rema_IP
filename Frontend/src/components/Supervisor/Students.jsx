@@ -91,7 +91,7 @@ const Students = ({ id }) => {
             <div className="student-header">
                 <h1 className="student-title">Students</h1>
                 <button onClick={() => navigate("/update-supervisor")} className="student-edit-button">
-                    <FontAwesomeIcon icon={faEdit} /> Edit
+                    <FontAwesomeIcon icon={faEdit} /> Manage
                 </button>
             </div>
 

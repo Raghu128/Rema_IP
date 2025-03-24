@@ -3,11 +3,18 @@ import { useSelector } from "react-redux";
 import axios from "axios";
 import "../../styles/Leaves/StudentLeaves.css";
 import Loader from "../Loader";
+import { faEdit, faChalkboardTeacher} from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useNavigate } from "react-router-dom";
+
 
 const StudentLeaves = () => {
   const { user } = useSelector((state) => state.user);
   const [leaves, setLeaves] = useState([]);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
+  
+
 
   useEffect(() => {
     if (user?.id) {
@@ -20,6 +27,7 @@ const StudentLeaves = () => {
   const fetchLeaves = async (userId) => {
     setLoading(true);
     try {
+      
       const response = await axios.get(`/api/v1/leaves/${userId}`);
       const formattedLeaves = response.data.map((leave) => ({
         ...leave,
@@ -38,8 +46,12 @@ const StudentLeaves = () => {
 
   return (
     <div className="leaves-container">
-      <h2 className="leaves-title">My Leaves</h2>
-
+      <div className="st-leaves-header">
+        <h2 className="leaves-title">My Leaves</h2>
+        <button className="manage-leave-btn" onClick={() => navigate(`/manage-leaves`)}>
+          <FontAwesomeIcon icon={faEdit} /> Manage
+        </button>
+      </div>
       {loading ? (
         <p className="loading-message">Loading leaves...</p>
       ) : leaves.length === 0 ? (
@@ -48,6 +60,7 @@ const StudentLeaves = () => {
         <table className="leaves-table">
           <thead>
             <tr>
+              <th>Faculty</th>
               <th>From</th>
               <th>To</th>
               <th>Reason</th>
@@ -56,6 +69,7 @@ const StudentLeaves = () => {
           <tbody>
             {leaves.map((leave, index) => (
               <tr key={leave._id || `leave-${index}`}>
+                <td> <FontAwesomeIcon icon={faChalkboardTeacher} /> {leave.faculty_id.name}</td>
                 <td>{leave.from}</td>
                 <td>{leave.to}</td>
                 <td>{leave.reason}</td>

@@ -382,7 +382,7 @@ const AddSupervisorForm = () => {
     const [formData, setFormData] = useState({
         faculty_id: "",
         student_id: "",
-        joining: "",
+        joining: new Date().toISOString().split("T")[0],
         thesis_title: "",
         committee: [],
         stipend: "0",
@@ -394,33 +394,8 @@ const AddSupervisorForm = () => {
     const [supervisorList, setSupervisorList] = useState([]);
     const [message, setMessage] = useState("");
     const [sponsors, setSponsors] = useState([]);
-
-    useEffect(() => {
-        const fetchSponsors = async () => {
-            try {
-                if (user?.id) {
-                    const response = await axios.get(`/api/v1/sponsor-projects/${user.id}`);
-                    setSponsors(response.data);
-                }
-            } catch (error) {
-                console.error("Error fetching sponsors:", error);
-            }
-        };
-        fetchSponsors();
-    }, [user]);
-
-    const fetchSupervisor = async () => {
-        try {
-            const [usersRes, supervisorsRes] = await Promise.all([
-                axios.get("/api/v1/user"),
-                axios.get(`/api/v1/supervisors/${user.id}`),
-            ]);
-            setStudents(usersRes.data);
-            setSupervisorList(supervisorsRes.data);
-        } catch (error) {
-            console.error("Error fetching data:", error);
-        }
-    };
+    const [facultyMembers, setFacultyMembers] = useState([]);
+    
 
     useEffect(() => {
         if (!user) {
@@ -428,8 +403,33 @@ const AddSupervisorForm = () => {
         }
     }, [user, navigate]);
 
+    
+
+    const fetchAllData = async () => { // Combine API calls for efficiency
+    try {
+            const [usersRes, supervisorsRes, sponsorsRes] = await Promise.all([
+                axios.get("/api/v1/user"),
+                axios.get(`/api/v1/supervisors/${user.id}`), // Fetch supervisors for logged-in faculty
+                user?.id ? axios.get(`/api/v1/sponsor-projects/${user.id}`) : Promise.resolve([]), // Only fetch sponsors if user is logged in
+                axios.get("/api/v1/user") //fetch faculty
+            ]);
+            setStudents(usersRes.data);
+            setSupervisorList(supervisorsRes.data);
+            
+            setSponsors(sponsorsRes.data);
+                setFacultyMembers(usersRes.data.filter(fuser => fuser.role === 'faculty' && fuser._id !== user?.id));
+        } catch (error) {
+            console.error("Error fetching data:", error);
+            setMessage("Error fetching data. Please try again later.");
+
+        }
+    }
     useEffect(() => {
-        if (user?.id) fetchSupervisor();
+
+        if (user?.id) {
+            fetchAllData();
+        }
+
     }, [user]);
 
     useEffect(() => {
@@ -444,32 +444,35 @@ const AddSupervisorForm = () => {
     const handleStudentChange = (e) => {
         const selectedStudentId = e.target.value;
         const existingSupervisor = supervisorList.find((sup) => sup.student_id._id === selectedStudentId);
-
+    
         if (existingSupervisor) {
             const joiningDate = new Date(existingSupervisor.joining).toISOString().split("T")[0];
+            
+    
             setFormData({
                 faculty_id: user.id,
-                student_id: existingSupervisor.student_id._id, // Use the student's _id
+                student_id: existingSupervisor.student_id._id,
                 joining: joiningDate,
                 thesis_title: existingSupervisor.thesis_title,
-                committee: existingSupervisor.committee,
+                committee: existingSupervisor.committee.map(member => member._id), // Extract only faculty _id
                 stipend: existingSupervisor.stipend?.$numberDecimal || "0",
                 funding_source: existingSupervisor.funding_source,
-                srpId: existingSupervisor.srpId?._id || null, // Use srpId's _id
+                srpId: existingSupervisor.srpId?._id || null,
             });
         } else {
             setFormData({
                 faculty_id: user.id,
                 student_id: selectedStudentId,
-                joining: "",
+                joining:  new Date().toISOString().split("T")[0],
                 thesis_title: "",
-                committee: [],
+                committee: [], // Empty array to reset committee selection
                 stipend: "0",
                 funding_source: "",
                 srpId: null,
             });
         }
     };
+    
 
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
@@ -487,8 +490,9 @@ const AddSupervisorForm = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        
+        
         try {
-            // Find an existing supervisor entry by student_id._id
             const existingSupervisor = supervisorList.find((sup) => sup.student_id._id === formData.student_id);
             let response; // Declare response variable
             if (existingSupervisor) {
@@ -499,9 +503,7 @@ const AddSupervisorForm = () => {
                 setMessage("Supervisor added successfully");
             }
 
-            //Refetch supervisor is requird
-            await fetchSupervisor();
-
+            fetchAllData();
             // Reset form, but DO NOT reset faculty_id
             setFormData((prevData) => ({
                 ...prevData, // Keep the current faculty_id
@@ -548,6 +550,25 @@ const AddSupervisorForm = () => {
                 <div className="form-group">
                     <label htmlFor="thesis_title">Thesis Title:</label>
                     <input type="text" id="thesis_title" name="thesis_title" value={formData.thesis_title} onChange={handleChange} required />
+                </div>
+
+                <div>
+                <label>Committee Members:</label>
+            <div className="committee-members"> {/* Add appropriate styling */}
+                {facultyMembers.map((faculty) => (
+                <label key={faculty._id} className="committee-member-label"> {/* Add styling for each label */}
+                        <input
+    type="checkbox"
+    name="committee"
+    value={faculty._id}
+    checked={formData.committee.includes(faculty._id)} // Ensure checkbox is checked if faculty is in committee
+    onChange={handleChange}
+/>
+
+                        {faculty.name}
+                    </label>
+                    ))}
+                </div>
                 </div>
 
                 <div className="form-group">
