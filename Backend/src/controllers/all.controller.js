@@ -11,6 +11,9 @@ import { Expense } from "../models/expenseSchema.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import { Leave } from "../models/leaveSchema.js";
+import nodemailer from "nodemailer";
+
+
 
 
 
@@ -33,25 +36,26 @@ const checkIfFaculty = async (req, res, next) => {
   next(); // If the user is faculty, proceed to the next middleware/route handler
 };
 
-// Number of salt rounds for bcrypt
-const SALT_ROUNDS = 10;
+
 
 export async function handleUserSignup(req, res) {
   const { name, email, password, role } = req.body;
   const currentUser = req.user;
-  
+
   try {
-    // Check the current user's role
     if (currentUser.role === "faculty" && (role === "faculty" || role === "admin")) {
       return res.status(403).send("Faculty can only add students.");
     }
     if (currentUser.role !== "faculty" && currentUser.role !== "admin") {
-      return res.status(403).send("Student can not add any one");
+      return res.status(403).send("Student cannot add anyone.");
     }
 
-    // Hash the password before storing it in the database
-    const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
-    // Save the user with the hashed password and role
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return res.status(201).send("User already exists");
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
     await User.create({
       name,
       email,
@@ -68,19 +72,20 @@ export async function handleUserSignup(req, res) {
 
 
 
-export async function handleUserLogout(req, res) {  
+
+export async function handleUserLogout(req, res) {
   try {
-      const token = req.cookies.token || req.headers.authorization?.split(" ")[1];      
+    const token = req.cookies.token || req.headers.authorization?.split(" ")[1];
 
-      if (!token) {
-          return res.status(400).json({ message: "No token provided" });
-      }
+    if (!token) {
+      return res.status(400).json({ message: "No token provided" });
+    }
 
-      res.clearCookie("token"); 
+    res.clearCookie("token");
 
-      return res.status(200).json({ message: "Logged out successfully" });
+    return res.status(200).json({ message: "Logged out successfully" });
   } catch (error) {
-      handleError(res, error);
+    handleError(res, error);
   }
 }
 
@@ -89,21 +94,15 @@ export async function handleUserLogin(req, res) {
   const { email, password } = req.body;
 
   try {
-    // Find the user by email
-    const user = await User.findOne({ email });    
-    
-
+    const user = await User.findOne({ email });
     if (!user) {
       return res.status(401).json({ error: "Invalid Username or Password" });
     }
 
     let isPasswordValid;
-
     if (user.role === "admin") {
-      // Validate admin password directly with an environment variable
       isPasswordValid = password === process.env.ADMIN_PASSWORD;
     } else {
-      // Compare the entered password with the hashed password in the database for general users
       isPasswordValid = await bcrypt.compare(password, user.password);
     }
 
@@ -111,23 +110,22 @@ export async function handleUserLogin(req, res) {
       return res.status(401).json({ error: "Invalid Username or Password" });
     }
 
-    // Generate a JWT token
+    user.lastLogin = new Date();
+    await user.save();
+
     const token = jwt.sign(
-      { id: user._id, email: user.email, role: user.role }, // Payload
-      process.env.JWT_SECRET, // Secret key
-      { expiresIn: "7d" } // Token expiration
+      { id: user._id, email: user.email, role: user.role },
+      process.env.JWT_SECRET,
+      { expiresIn: "7d" }
     );
 
     res.cookie("token", token, {
-      httpOnly: true,       // Prevents access by JavaScript (protects against XSS attacks)
-      secure: process.env.NODE_ENV === "production", // Send only over HTTPS in production
-      sameSite: "strict",   // Prevents CSRF attacks
-      maxAge: 7 * 24 * 60 * 60 * 1000,      // Cookie expiration: 7 days
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+      maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
-    
-
-    // Send token as part of the response
     res.status(200).json({
       message: "Login successful",
       token,
@@ -136,6 +134,7 @@ export async function handleUserLogin(req, res) {
         name: user.name,
         email: user.email,
         role: user.role,
+        lastLogin: user.lastLogin,
       },
     });
   } catch (error) {
@@ -145,34 +144,27 @@ export async function handleUserLogin(req, res) {
 }
 
 
+
 export const checkSession = (req, res) => {
-  // Retrieve token from cookies or authorization header
   const token = req.cookies?.token || req.headers.authorization?.split(" ")[1];
 
-  // If no token is provided, respond with 401 Unauthorized
   if (!token) {
     return res.status(401).json({ message: "No token provided" });
   }
 
+
   try {
-    // Verify the JWT using the secret key
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-      
-    // Respond with the decoded user details
-    return res.status(200).json({ user: decoded });
+    res.status(200).json({ user: decoded });
   } catch (error) {
-    // Log the error for debugging
     console.error("Error validating token:", error);
 
-    // Handle different JWT verification errors
-    if (error.name === "TokenExpiredError") {
-      return res.status(401).json({ message: "Token has expired" });
-    } else if (error.name === "JsonWebTokenError") {
-      return res.status(401).json({ message: "Invalid token" });
-    } else {
-      // Generic error response for unexpected issues
-      return res.status(500).json({ message: "Failed to validate session" });
-    }
+    const message =
+      error.name === "TokenExpiredError"
+        ? "Token has expired"
+        : "Invalid token";
+
+    res.status(401).json({ message });
   }
 };
 
@@ -180,7 +172,8 @@ export const checkSession = (req, res) => {
 
 
 
-export const getUsers = async (req, res) => {  
+
+export const getUsers = async (req, res) => {
   try {
     const users = await User.find();
     res.status(200).json(users);
@@ -189,37 +182,206 @@ export const getUsers = async (req, res) => {
   }
 };
 
+export const getUsersByFacultyId = async (req, res) => {
+  const id = req.params.id;
+
+  try {
+    const users = await Supervisor.find({ faculty_id: id }).populate("student_id", "name email role");
+
+    // Extract only the student_id field
+    const students = users.map(user => user.student_id);
+
+    res.status(200).json(students);
+  } catch (error) {
+    handleError(res, error);
+  }
+};
+
+
+
 export const getUsersByid = async (req, res) => {
   const id = req.params.id;
-    
+
   try {
-    const user = await User.find({_id:id});
-    
+    const user = await User.find({ _id: id });
+
     res.status(200).json(user);
   } catch (error) {
     handleError(res, error);
   }
 };
 
+// Nodemailer setup (Use your email credentials)
+const transporter = nodemailer.createTransport({
+  service: "Gmail",
+  auth: {
+    user: process.env.YOUR_EMAIL,
+    pass: process.env.YOUR_EMAIL_PASS,
+  },
+  port: 465,
+  secure: true,
+});
+
+
 export const updateUser = async (req, res) => {
+
   try {
+    // Update user info
     const user = await User.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
     });
-    res.status(200).json(user);
+
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found." });
+    }
+
+    // Try sending an email
+    try {
+      await transporter.sendMail({
+        from: process.env.YOUR_EMAIL,
+        to: user.email,
+        subject: "Important: Your Profile Information Has Been Modified by Admin",
+        html: `
+            <p>Dear <strong>${user.name}</strong>,</p>
+            <p>We are notifying you that your account details were recently modified by an administrator.</p>
+            <p>If you authorized this change, no further action is required. However, if this update seems unexpected, please secure your account by resetting your password and contacting our support team.</p>
+            
+            <br/>
+            <p>Best regards,</p>
+            <p><strong>Rema Security Team</strong></p>
+        `,
+    });
+    
+    } catch (emailError) {
+      console.error("Error sending email:", emailError);
+    }
+
+    // Send updated user response
+    res.status(200).json({ message: "User updated successfully.", user });
   } catch (error) {
+    console.error("Error updating user:", error);
     handleError(res, error);
   }
 };
 
+
 export const deleteUser = async (req, res) => {
   try {
-    await User.findByIdAndDelete(req.params.id);
-    res.status(204).send();
+    const user = await User.findByIdAndDelete(req.params.id);
+    if (!user) {
+      return res.status(404).json({ message: "User not found." });
+    }
+
+    try {
+      await transporter.sendMail({
+        from: process.env.YOUR_EMAIL,
+        to: user.email,
+        subject: "Account Deletion Notification",
+        html: `
+            <p>Dear <strong>${user.name}</strong>,</p>
+            
+            <p>We regret to inform you that your account has been deleted by an administrator.</p>
+            <p>If you believe this was a mistake or have any concerns, please contact our support team immediately.</p>
+            
+            <br/>
+            <p>Best regards,</p>
+            <p><strong>Rema Security Team</strong></p>
+        `,
+      });
+    } catch (emailError) {
+      console.error("Error sending email:", emailError);
+    }
+
+    res.status(200).json({ message: "User successfully deleted." });
   } catch (error) {
-    handleError(res, error);
+    console.error("Error deleting user:", error);
+    res.status(500).json({ message: "An error occurred while deleting the user." });
   }
 };
+
+
+
+
+
+
+export const forgotPassword = async (req, res) => {
+  const { email } = req.body;
+
+  try {
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const resetToken = jwt.sign({ email }, process.env.JWT_SECRET, { expiresIn: "1h" });
+
+    // Store token directly in the database
+    user.resetToken = resetToken;
+    user.resetTokenExpiry = Date.now() + 3600000; // 1 hour expiry
+    await user.save();
+
+    // Frontend reset link
+    const resetLink = `${process.env.CORS_ORIGIN}/reset-password?token=${resetToken}`;
+
+    // Attempt to send email
+    try {
+      await transporter.sendMail({
+        from: process.env.YOUR_EMAIL,
+        to: user.email,
+        subject: "Password Reset Request",
+        html: `<p>Click <a href="${resetLink}">here</a> to reset your password.</p>`,
+      });
+
+      res.json({ message: "Password reset email sent." });
+    } catch (emailError) {
+      console.error("Error sending email:", emailError);
+      res.status(500).json({ message: "User found, but email could not be sent.", error: emailError.message });
+    }
+
+  } catch (error) {
+    console.error("Error processing forgot password request:", error);
+    res.status(500).json({ message: "Internal server error", error: error.message });
+  }
+};
+
+
+
+
+// **Reset Password Controller**
+
+export const resetPassword = async (req, res) => {
+  const { token, newPassword } = req.body;
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const user = await User.findOne({ email: decoded.email });
+
+    if (!user) {
+      return res.status(404).json({ message: "Invalid token or user not found" });
+    }
+
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    user.password = hashedPassword;
+    user.resetToken = null;
+    await user.save();
+
+    res.json({ message: "Password reset successfully" });
+  } catch (error) {
+    res.status(400).json({ message: "Invalid or expired token" });
+  }
+};
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -229,9 +391,10 @@ export const deleteUser = async (req, res) => {
 // GET Leave by ID
 export const getLeaveByid = async (req, res) => {
   const id = req.params.id;
-  try {    
+  try {
+
     // Using find() with an _id filter to match your user controller style
-    const leave = await Leave.find({ user: id });
+    const leave = await Leave.find({ user_id: id }).populate("faculty_id", "name");;
     res.status(200).json(leave);
   } catch (error) {
     handleError(res, error);
@@ -263,20 +426,15 @@ export const deleteLeave = async (req, res) => {
 
 
 export const fetchLeavesByfacultyId = async (req, res) => {
-  
+
   try {
     const { facultyId } = req.params;
 
-    // 1) Find all supervisor docs where faculty_id = facultyId
-    const supervisors = await Supervisor.find({ faculty_id: facultyId });
 
-    // 2) Extract the student IDs from those supervisor docs
-    const studentIds = supervisors.map((sup) => sup.student_id);
+    const leaves = await Leave.find({ faculty_id: facultyId })
+      .populate("user_id", "name email role");
 
-    // 3) Find all leaves for those students
-    //    Optionally, populate the user field to get user details (name, email, etc.)
-    const leaves = await Leave.find({ user: { $in: studentIds } })
-      .populate("user", "name email role");
+
 
     res.status(200).json(leaves);
   } catch (error) {
@@ -289,9 +447,10 @@ export const fetchLeavesByfacultyId = async (req, res) => {
 
 export const addLeave = async (req, res) => {
   try {
-    const { user, from, to, reason } = req.body;
+    const { faculty_id, user_id, from, to, reason } = req.body;
+
     // Create a new leave document with the provided data
-    const newLeave = new Leave({ user, from, to, reason });
+    const newLeave = new Leave({ user_id, faculty_id, from, to, reason });
     await newLeave.save();
 
     res.status(201).json({
@@ -325,7 +484,7 @@ export const addLeave = async (req, res) => {
 
 // SponsorProject Controller
 export const createSponsorProject = async (req, res) => {
-  try {    
+  try {
     const project = await SponsorProject.create(req.body);
     res.status(201).json(project);
   } catch (error) {
@@ -348,7 +507,7 @@ export const getSponsorProjectById = async (req, res) => {
     const { id } = req.params;
 
     const sponsorProjects = await SponsorProject.find({ faculty_id: id });
-    
+
     if (!sponsorProjects) {
       return res.status(404).json({ message: "Sponsor Project not found" });
     }
@@ -384,9 +543,9 @@ export const deleteSponsorProject = async (req, res) => {
 
 // Supervisor Controller
 export const createSupervisor = async (req, res) => {
-  try {    
+  try {
     const supervisor = await Supervisor.create(req.body);
-    
+
     res.status(201).json(supervisor);
   } catch (error) {
     handleError(res, error);
@@ -409,7 +568,7 @@ export const getSupervisorById = async (req, res) => {
       .populate("faculty_id", "name role ")
       .populate("student_id", "name role")
       .populate("committee", "name role");
-    
+
 
     if (!supervisor) {
       return res.status(404).json({ message: "Supervisor not found" });
@@ -447,9 +606,9 @@ export const deleteSupervisor = async (req, res) => {
 // Similarly, implement controllers for other schemas...
 // Example for Projects
 export const createProject = async (req, res) => {
-    
+
   try {
-    const project = await Project.create(req.body);    
+    const project = await Project.create(req.body);
     res.status(201).json(project);
   } catch (error) {
     handleError(res, error);
@@ -467,7 +626,7 @@ export const getProjects = async (req, res) => {
 
 export const getProjectById = async (req, res) => {
   const id = req.params.id;
-  
+
   try {
     const project = await Project.find({
       $or: [{ faculty_id: id }, { team: id }]
@@ -489,7 +648,7 @@ export const getProjectById = async (req, res) => {
 
 export const getProjectByStudentId = async (req, res) => {
   const id = req.params.id;
-  
+
   try {
     const project = await Project.find({
       team: { $in: [id] }
@@ -521,7 +680,7 @@ export const updateProject = async (req, res) => {
   }
 };
 
-export const deleteProject = async (req, res) => {  
+export const deleteProject = async (req, res) => {
   try {
     await Project.findByIdAndDelete(req.params.id);
     res.status(204).send();
@@ -534,7 +693,7 @@ export const deleteProject = async (req, res) => {
 
 export const createMinutesOfMeeting = async (req, res) => {
   try {
-    
+
     const minutes = await MinutesOfMeeting.create(req.body);
     res.status(201).json(minutes);
   } catch (error) {
@@ -542,7 +701,7 @@ export const createMinutesOfMeeting = async (req, res) => {
   }
 };
 export const getMinutesOfMeetingById = async (req, res) => {
-  const id = req.params.id;  
+  const id = req.params.id;
   try {
     // Find the Minutes of Meeting documents by pid and populate the added_by field with the user's name
     const meeting = await MinutesOfMeeting.find({ pid: id })
@@ -622,7 +781,7 @@ export const getVenueByIdList = async (req, res) => {
 
   try {
     // Find venues matching the given condition and populate the added_by field with the user's name
-    const venues = await VenueList.find({ 
+    const venues = await VenueList.find({
       $or: [{ added_by: venueIds }, { view: venueIds }]
     }).populate('added_by', 'name');
 
@@ -662,9 +821,9 @@ export const deleteVenueList = async (req, res) => {
 // import { Notification } from "../models/notification.model.js";
 
 export const createNotification = async (req, res) => {
-  
+
   try {
-    
+
     const notification = await Notification.create(req.body);
     res.status(201).json(notification);
   } catch (error) {
@@ -691,16 +850,16 @@ export const getNotificationById = async (req, res) => {
 
   try {
     // Find the notification by ID and populate the added_by field with the user's name
-    
+
     const notification = await Notification.find({
       $or: [{ added_by: id }, { view: id }]
     }).populate('added_by', 'name');
 
-    if (!notification ) {
+    if (!notification) {
       return res.status(404).json({ message: 'Notification not found' });
     }
-   
-    
+
+
     res.status(200).json({ message: 'Notification retrieved successfully', notification });
   } catch (error) {
     console.error('Error retrieving notification:', error);
@@ -737,24 +896,20 @@ export const deleteNotification = async (req, res) => {
 export const createEquipment = async (req, res) => {
   try {
     const { funding_by_srp_id, amount, name, date_of_purchase } = req.body;
-    
+
     // Validate required fields
     if (!funding_by_srp_id || !amount || !name) {
       return res.status(400).json({ message: "Missing required fields: funding_by_srp_id, amount, or name." });
-    }    
-    // Fetch the finance budget for the given SRP ID
-    const budget = await FinanceBudget.findOne({ srp_id: funding_by_srp_id });
-    
-    // Check if budget exists
-    if (!budget) {
-      return res.status(404).json({ message: "Budget not found for the given SRP ID." });
     }
-    
-    // Check if there is enough budget for equipment purchase
-    // if (diffMoney < 0) {
-    //   return res.status(400).json({ message: "Insufficient equipment budget." });
+    // Fetch the finance budget for the given SRP ID
+    // const budget = await FinanceBudget.findOne({ srp_id: funding_by_srp_id });
+
+    // // Check if budget exists
+    // if (!budget) {
+    //   return res.status(404).json({ message: "Budget not found for the given SRP ID." });
     // }
-    
+
+
     // Create the equipment
     const equipment = await Equipment.create(req.body);
 
@@ -790,36 +945,36 @@ export const getEquipments = async (req, res) => {
 };
 
 export const getEquipmentById = async (req, res) => {
-    const { id } = req.params;    
-    if (!id) {
-      return res.status(400).json({ message: 'Equipment ID is required' });
-    }
-  
-    try {
-      // Find the equipment by ID and populate references
-      const equipment = await Equipment.find({ownership : id}).populate("usingUser", "name");      
-  
-      if (!equipment) {
-        return res.status(404).json({ message: 'Equipment not found' });
-      }
-  
-      // Return the equipment details
-      res.status(200).json({ message: 'Equipment retrieved successfully', equipment });
-    } catch (error) {
-      console.error('Error retrieving equipment:', error);
-      res.status(500).json({ message: 'Failed to retrieve equipment' });
-    }
-}
-
-export const getEquipmentByUsingId = async (req, res) => {
-  const { id } = req.params;    
+  const { id } = req.params;
   if (!id) {
     return res.status(400).json({ message: 'Equipment ID is required' });
   }
 
-  try {    
+  try {
     // Find the equipment by ID and populate references
-    const equipment = await Equipment.find({usingUser : id}).populate("ownership", "name");      
+    const equipment = await Equipment.find({ ownership: id }).populate("usingUser", "name");
+
+    if (!equipment) {
+      return res.status(404).json({ message: 'Equipment not found' });
+    }
+
+    // Return the equipment details
+    res.status(200).json({ message: 'Equipment retrieved successfully', equipment });
+  } catch (error) {
+    console.error('Error retrieving equipment:', error);
+    res.status(500).json({ message: 'Failed to retrieve equipment' });
+  }
+}
+
+export const getEquipmentByUsingId = async (req, res) => {
+  const { id } = req.params;
+  if (!id) {
+    return res.status(400).json({ message: 'Equipment ID is required' });
+  }
+
+  try {
+    // Find the equipment by ID and populate references
+    const equipment = await Equipment.find({ usingUser: id }).populate("ownership", "name");
 
     if (!equipment) {
       return res.status(404).json({ message: 'Equipment not found' });
@@ -836,40 +991,40 @@ export const getEquipmentByUsingId = async (req, res) => {
 export const updateEquipment = async (req, res) => {
   try {
     const equipmentId = req.params.id;
-    
+
     // Fetch old equipment details
     const oldEquipment = await Equipment.findById(equipmentId);
     if (!oldEquipment) {
       return res.status(404).json({ message: "Equipment not found" });
     }
-    
+
     // const oldPrice = oldEquipment.amount;
     const newPrice = req.body.amount;
-    
+
     // Update the equipment details
     const updatedEquipment = await Equipment.findByIdAndUpdate(
       equipmentId,
       req.body,
       { new: true }
     );
-    
+
     // const priceDifference = oldPrice - newPrice;
-    
+
     // Update Expense (Set new amount for the existing expense)
-    
+
     const updatedExpense = await Expense.findOneAndUpdate(
       { srp_id: oldEquipment.funding_by_srp_id, item: oldEquipment.name },
       { $set: { amount: newPrice } },
       { new: true }
     );
-    
-    
+
+
     if (!updatedExpense) {
       return res.status(404).json({ message: "Expense record not found" });
     }
-    
+
     // Update FinanceBudget (Increase/Decrease the equipment budget)
-    
+
     // const updatedBudget = await FinanceBudget.findOneAndUpdate(
     //   { srp_id: oldEquipment.funding_by_srp_id },
     //   { $inc: { equipment: priceDifference } }, // Adjust equipment budget
@@ -933,7 +1088,7 @@ export const getFinanceBudgetById = async (req, res) => {
     // Step 1: Find all SponsorProjects associated with the given faculty ID
 
     const budgets = await FinanceBudget.find({ srp_id: id });
-    
+
     res.status(200).json({
       message: "Finance Budgets retrieved successfully",
       budgets
@@ -980,32 +1135,13 @@ export const createExpense = async (req, res) => {
     // Create the expense document
 
     // Find the budget for the given srp_id
-    const budget = await FinanceBudget.findOne({ srp_id });
+    // const budget = await FinanceBudget.findOne({ srp_id });
 
-    if (!budget) {
-      return res.status(404).json({ message: "Finance budget not found." });
-    }
-
-    // Access the correct budget field dynamically (e.g., "equipment" if head = "equipment")
-    // const currentAmount = budget[head]; // This dynamically accesses the field, e.g., budget.equipment
-    
-
-    // // Check if the amount exists and handle Decimal128 to number conversion
-    // const currentAmountAsNumber = currentAmount ? currentAmount.valueOf() : 0;  // Convert Decimal128 to number
-
-    // // Calculate the difference between the current amount and the expense amount
-    // const diffMoney = currentAmountAsNumber - amount;
-    
-
-    // if (diffMoney < 0) {
-    //   return res.status(400).json({ message: `Insufficient ${head} budget.` });
+    // if (!budget) {
+    //   return res.status(404).json({ message: "Finance budget not found." });
     // }
 
-    // // Deduct the amount from the corresponding budget field
-    // budget[head] = currentAmountAsNumber - amount;
 
-    // // Save the updated budget
-    // await budget.save();
     const expense = await Expense.create(req.body);
 
 
@@ -1032,7 +1168,7 @@ export const getExpenses = async (req, res) => {
 export const getExpenseById = async (req, res) => {
   try {
     const userId = req.params.id; // Assuming user ID is passed as a route parameter
-    
+
     // Find sponsor projects for the user
     const sponsorProjects = await SponsorProject.find({ faculty_id: userId });
 

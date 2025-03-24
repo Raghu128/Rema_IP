@@ -5,7 +5,8 @@ const userSchema = new Schema({
   role: { type: String, required: true, enum: ['btech', 'faculty', 'admin', 'intern','mtech','phd','projectstaff'] },
   status: { type: Boolean, default: true },
   email: { type: String, unique: true, required: true },
-  password: { type: String, required: true }
+  password: { type: String, required: true },
+  lastLogin: { type: Date }
 }, { timestamps: true });
 
 export const User = mongoose.model("User", userSchema);
