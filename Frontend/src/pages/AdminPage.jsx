@@ -207,7 +207,7 @@ function AdminPage() {
       );
       
       setMessage({ 
-        text: `Password reset for ${name}. New password: ${newPassword}`, 
+        text: `Password reset for ${name}`, 
         type: "success" 
       });
     } catch (err) {
@@ -233,6 +233,7 @@ function AdminPage() {
     
     try {
       setIsLoading(true);
+      setShowModal(false);
       await axios.put(`/api/v1/user/${editingUser._id}`, 
         {
           name: editingUser.name,
@@ -246,6 +247,7 @@ function AdminPage() {
       const res = await axios.get("/api/v1/user");
       setUsers(res.data);
       calculateStats(res.data);
+
       
       setMessage({ 
         text: "User updated successfully.", 
@@ -270,6 +272,90 @@ function AdminPage() {
 
   const renderDatabaseSchema = () => {
     const schemaData = [
+
+  {
+    name: "VenueList",
+    description: "Conference venue information and important dates",
+    schema: {
+      venue: { 
+        type: "String", 
+        required: true, 
+        description: "Name of the conference venue" 
+      },
+      year: { 
+        type: "Number", 
+        required: true, 
+        description: "Year of the conference" 
+      },
+      url: { 
+        type: "String", 
+        description: "URL to conference website" 
+      },
+      added_by: { 
+        type: "ObjectId (ref: User)", 
+        required: true, 
+        description: "User who added this venue" 
+      },
+      date: { 
+        type: "Date", 
+        description: "General conference date" 
+      },
+      abstract_submission: { 
+        type: "Date", 
+        description: "Abstract submission deadline" 
+      },
+      paper_submission: { 
+        type: "Date", 
+        description: "Full paper submission deadline" 
+      },
+      author_response: { 
+        type: "Date", 
+        description: "Author response period" 
+      },
+      meta_review: { 
+        type: "Date", 
+        description: "Meta review period" 
+      },
+      notification: { 
+        type: "Date", 
+        description: "Notification date for acceptance/rejection" 
+      },
+      commitment: { 
+        type: "Date", 
+        description: "Commitment deadline for authors" 
+      },
+      main_conference_start: { 
+        type: "Date", 
+        description: "Start date of main conference" 
+      },
+      main_conference_end: { 
+        type: "Date", 
+        description: "End date of main conference" 
+      },
+      location: { 
+        type: "String", 
+        description: "Physical location of the conference" 
+      },
+      time_zone: { 
+        type: "String", 
+        description: "Time zone for conference deadlines" 
+      },
+      view: { 
+        type: "[ObjectId] (ref: User)", 
+        description: "Users who have viewed this venue" 
+      },
+      createdAt: { 
+        type: "Date", 
+        default: "Date.now", 
+        description: "When this venue record was created" 
+      },
+      updatedAt: { 
+        type: "Date", 
+        default: "Date.now", 
+        description: "When this venue record was last updated" 
+      }
+    }
+  },
       {
         name: "Equipment",
         description: "Research equipment inventory and tracking",
@@ -944,131 +1030,7 @@ function AdminPage() {
       );
     }
 
-    if (schemaViewMode === "list") {
-      return (
-        <div className="schema-list-container">
-          {schemaData.map((collection) => (
-            <div 
-              key={collection.name} 
-              className={`schema-card ${expandedSchemas[collection.name] ? 'expanded' : ''}`}
-            >
-              <div 
-                className="schema-header" 
-                onClick={() => toggleSchema(collection.name)}
-              >
-                <div className="schema-title">
-                  <i className="fas fa-table"></i>
-                  <h3>{collection.name}</h3>
-                  <span className="schema-description">{collection.description}</span>
-                </div>
-                <span className="toggle-icon">
-                  {expandedSchemas[collection.name] ? '▼' : '►'}
-                </span>
-              </div>
-    
-              {expandedSchemas[collection.name] && (
-                <div className="schema-details">
-                  <div className="schema-attributes-header">
-                    <span className="attribute-field">Field</span>
-                    <span className="attribute-type">Type</span>
-                    <span className="attribute-required">Required</span>
-                    <span className="attribute-constraints">Constraints</span>
-                    <span className="attribute-description">Description</span>
-                  </div>
-                  {Object.entries(collection.schema).map(([field, details]) => (
-                    <div key={field} className="schema-attribute">
-                      <span className="attribute-field">{field}</span>
-                      <span className="attribute-type">{details.type}</span>
-                      <span className="attribute-required">
-                        {details.required ? (
-                          <span className="required-badge">Yes</span>
-                        ) : (
-                          <span className="optional-badge">No</span>
-                        )}
-                      </span>
-                      <span className="attribute-constraints">
-                        {details.enum ? (
-                          <span className="enum-values">
-                            {details.enum.join(", ")}
-                          </span>
-                        ) : details.default ? (
-                          <span className="default-value">
-                            default: {details.default.toString()}
-                          </span>
-                        ) : details.min !== undefined ? (
-                          <span className="min-value">
-                            min: {details.min}
-                          </span>
-                        ) : (
-                          "-"
-                        )}
-                      </span>
-                      <span className="attribute-description">
-                        {details.description || "-"}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-          ))}
-        </div>
-      );
-    } else {
-      // Card view implementation
-      return (
-        <div className="schema-card-container">
-          {schemaData.map((collection) => (
-            <div key={collection.name} className="schema-card-view">
-              <div className="schema-card-header">
-                <i className="fas fa-table"></i>
-                <h3>{collection.name}</h3>
-              </div>
-              <div className="schema-card-body">
-                <p className="schema-card-description">{collection.description}</p>
-                <div className="schema-card-stats">
-                  <span>
-                    <i className="fas fa-columns"></i> {Object.keys(collection.schema).length} fields
-                  </span>
-                  <span>
-                    <i className="fas fa-asterisk"></i> {
-                      Object.values(collection.schema).filter(f => f.required).length
-                    } required
-                  </span>
-                </div>
-              </div>
-              <div 
-                className="schema-card-footer"
-                onClick={() => toggleSchema(collection.name)}
-              >
-                {expandedSchemas[collection.name] ? 'Hide details' : 'View details'}
-              </div>
-
-              {expandedSchemas[collection.name] && (
-                <div className="schema-card-expanded">
-                  <ul>
-                    {Object.entries(collection.schema).map(([field, details]) => (
-                      <li key={field}>
-                        <strong>{field}</strong>: {details.type}
-                        {details.required && <span className="required-tag">required</span>}
-                        {details.enum && (
-                          <div className="enum-values">
-                            <span>Allowed values:</span> {details.enum.join(", ")}
-                          </div>
-                        )}
-                        {details.description && (
-                          <div className="field-description">{details.description}</div>
-                        )}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-            </div>
-          ))}
-        </div>
-      );
-    }
+   
   };
 
   // Authorization check
@@ -1133,7 +1095,7 @@ return (
       <div className="admin-page-nav-header">
         <div className="admin-page-org-logo">
           <i className="fas fa-flask admin-page-icon"></i>
-          <h2 className="admin-page-logo-text">Research Portal</h2>
+          <h2 className="admin-page-logo-text">Admin Portal</h2>
         </div>
         <div className="admin-page-nav-user-info">
           <div className="admin-page-user-avatar">
@@ -1165,17 +1127,8 @@ return (
           <div className="admin-page-nav-item-indicator"></div>
         </button>
         
-        <button className="admin-page-nav-item">
-          <i className="fas fa-chart-line admin-page-icon"></i>
-          <span className="admin-page-nav-text">Analytics</span>
-          <div className="admin-page-nav-item-indicator"></div>
-        </button>
         
-        <button className="admin-page-nav-item">
-          <i className="fas fa-cog admin-page-icon"></i>
-          <span className="admin-page-nav-text">Settings</span>
-          <div className="admin-page-nav-item-indicator"></div>
-        </button>
+        
       </div>
       
       <div className="admin-page-nav-footer">
@@ -1226,10 +1179,10 @@ return (
           )}
           
           <div className="admin-page-header-actions">
-            <button className="admin-page-btn-icon">
+            {/* <button className="admin-page-btn-icon">
               <i className="fas fa-bell admin-page-icon"></i>
               <span className="admin-page-notification-badge">3</span>
-            </button>
+            </button> */}
             
             <button className="admin-page-btn-icon">
               <i className="fas fa-question-circle admin-page-icon"></i>
@@ -1398,17 +1351,7 @@ return (
                   </select>
                 </div>
                 
-                <div className="admin-page-input-group">
-                  <label className="admin-page-label">Status <span className="admin-page-required">*</span></label>
-                  <select
-                    value={newUser.status}
-                    onChange={(e) => setNewUser({...newUser, status: e.target.value})}
-                    className="admin-page-select"
-                  >
-                    <option value="active">Active</option>
-                    <option value="inactive">Inactive</option>
-                  </select>
-                </div>
+               
                 
                 <div className="admin-page-input-group">
                   <label className="admin-page-label">Actions</label>
@@ -1691,14 +1634,14 @@ return (
                 </button>
               </div>
               
-              <div className="admin-page-search-container">
+              {/* <div className="admin-page-search-container">
                 <i className="fas fa-search admin-page-icon"></i>
                 <input
                   type="text"
                   placeholder="Search collections..."
                   className="admin-page-search-input"
                 />
-              </div>
+              </div> */}
             </div>
           </div>
           
@@ -1713,6 +1656,7 @@ return (
             <div className="admin-page-modal-header">
               <h3 className="admin-page-modal-title">
                 <i className="fas fa-user-edit admin-page-icon"></i>
+                
                 <span className="admin-page-modal-title-text">Edit User: {editingUser.name}</span>
               </h3>
               <button 
@@ -1814,708 +1758,7 @@ return (
   </div>
 );
 
-  return (
-    <div className="admin-dashboard">
-      <nav className="admin-nav">
-        <div className="nav-header">
-          <div className="org-logo">
-            <i className="fas fa-flask"></i>
-            <h2>Research Portal</h2>
-          </div>
-          <div className="nav-user-info">
-            <div className="user-avatar">
-              {user?.name?.[0]?.toUpperCase()}
-            </div>
-            <div className="user-details">
-              <span className="user-name">{user.name}</span>
-              <span className="user-role">{roleDisplayNames[user.role] || user.role}</span>
-            </div>
-          </div>
-        </div>
-        
-        <div className="nav-items">
-          <button 
-            className={`nav-item ${activeSection === "users" ? "active" : ""}`}
-            onClick={() => setActiveSection("users")}
-          >
-            <i className="fas fa-users-cog"></i>
-            <span>User Management</span>
-            <div className="nav-item-indicator"></div>
-          </button>
-          
-          <button 
-            className={`nav-item ${activeSection === "database" ? "active" : ""}`}
-            onClick={() => setActiveSection("database")}
-          >
-            <i className="fas fa-database"></i>
-            <span>Database Schema</span>
-            <div className="nav-item-indicator"></div>
-          </button>
-          
-          <button className="nav-item">
-            <i className="fas fa-chart-line"></i>
-            <span>Analytics</span>
-            <div className="nav-item-indicator"></div>
-          </button>
-          
-          <button className="nav-item">
-            <i className="fas fa-cog"></i>
-            <span>Settings</span>
-            <div className="nav-item-indicator"></div>
-          </button>
-        </div>
-        
-        <div className="nav-footer">
-          <button className="btn-logout">
-            <i className="fas fa-sign-out-alt"></i>
-            Logout
-          </button>
-        </div>
-      </nav>
-
-      {/* Main Content Area */}
-      <main className="admin-content">
-        {/* Header Section */}
-        <header className="content-header">
-          <div className="header-title">
-            <h1>
-              {activeSection === "users" ? (
-                <>
-                  <i className="fas fa-users"></i>
-                  User Management
-                </>
-              ) : (
-                <>
-                  <i className="fas fa-project-diagram"></i>
-                  Database Schema Explorer
-                </>
-              )}
-            </h1>
-            <p className="header-subtitle">
-              {activeSection === "users" 
-                ? "Manage all user accounts and permissions" 
-                : "Explore and understand the database structure"}
-            </p>
-          </div>
-          
-          <div className="header-controls">
-            {activeSection === "users" && (
-              <div className="search-container">
-                <i className="fas fa-search"></i>
-                <input
-                  type="text"
-                  placeholder="Search users by name, email or role..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="search-input"
-                />
-                {/* {searchQuery && (
-                  <button 
-                    className="clear-search"
-                    onClick={() => setSearchQuery("")}
-                  >
-                    <i className="fas fa-times"></i>
-                  </button>
-                )} */}
-              </div>
-            )}
-            
-            <div className="header-actions">
-              <button className="btn-icon">
-                <i className="fas fa-bell"></i>
-                <span className="notification-badge">3</span>
-              </button>
-              
-              <button className="btn-icon">
-                <i className="fas fa-question-circle"></i>
-              </button>
-            </div>
-          </div>
-        </header>
-
-        {/* Message Alert */}
-        {message.text && (
-          <div className={`alert ${message.type}`}>
-            <div className="alert-content">
-              <i className={`fas ${
-                message.type === "success" ? "fa-check-circle" : 
-                message.type === "error" ? "fa-exclamation-circle" : 
-                "fa-info-circle"
-              }`}></i>
-              <span>{message.text}</span>
-            </div>
-            <button 
-              className="alert-close"
-              onClick={() => setMessage({ text: "", type: "" })}
-            >
-              &times;
-            </button>
-          </div>
-        )}
-
-        {/* Loading Indicator */}
-        {isLoading && (
-          <div className="loading-overlay">
-            <div className="loading-spinner">
-              <i className="fas fa-spinner fa-spin"></i>
-              <span>Loading...</span>
-            </div>
-          </div>
-        )}
-
-        {/* User Management Section */}
-        {activeSection === "users" && (
-          <div className="user-management">
-            {/* Stats Cards */}
-            <div className="stats-container">
-              <div className="stat-card">
-                <div className="stat-icon total-users">
-                  <i className="fas fa-users"></i>
-                </div>
-                <div className="stat-info">
-                  <h3>Total Users</h3>
-                  <p>{stats.totalUsers}</p>
-                </div>
-              </div>
-              
-              <div className="stat-card">
-                <div className="stat-icon active-users">
-                  <i className="fas fa-user-check"></i>
-                </div>
-                <div className="stat-info">
-                  <h3>Active Users</h3>
-                  <p>{stats.activeUsers}</p>
-                </div>
-              </div>
-              
-              <div className="stat-card">
-                <div className="stat-icon inactive-users">
-                  <i className="fas fa-user-times"></i>
-                </div>
-                <div className="stat-info">
-                  <h3>Inactive Users</h3>
-                  <p>{stats.inactiveUsers}</p>
-                </div>
-              </div>
-              
-              <div className="stat-card">
-                <div className="stat-icon roles">
-                  <i className="fas fa-tags"></i>
-                </div>
-                <div className="stat-info">
-                  <h3>Roles Distribution</h3>
-                  <div className="role-tags">
-                    {Object.entries(stats.byRole).map(([role, count]) => (
-                      <span key={role} className="role-tag">
-                        {roleDisplayNames[role] || role}: {count}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Add User Card */}
-            <div className="card add-user-card">
-              <div className="card-header">
-                <i className="fas fa-user-plus"></i>
-                <h2>Create New User</h2>
-              </div>
-              
-              <div className="card-body">
-                <div className="form-grid">
-                  <div className="input-group">
-                    <label>Name <span className="required">*</span></label>
-                    <input
-                      type="text"
-                      placeholder="John Doe"
-                      value={newUser.name}
-                      onChange={(e) => setNewUser({...newUser, name: e.target.value})}
-                      className={!newUser.name ? "input-error" : ""}
-                    />
-                    {/* {!newUser.name && (
-                      <span className="error-message">Name is required</span>
-                    )} */}
-                  </div>
-                  
-                  <div className="input-group">
-                    <label>Email  <span className="required">*</span></label>
-                    <input
-                      type="email"
-                      placeholder="user@example.com"
-                      value={newUser.email}
-                      onChange={(e) => setNewUser({...newUser, email: e.target.value})}
-                      className={!newUser.email || !validateEmail(newUser.email) ? "input-error" : ""}
-                    />
-                    {!newUser.email ? (
-                      <span className="error-message"></span>
-                      // <div></div>
-                    ) : !validateEmail(newUser.email) && (
-                      <span className="error-message">invalid</span>
-                    )}
-                  </div>
-                  
-                  <div className="input-group">
-                    <label>Password <span className="required">*</span></label>
-                    <div className="password-input-container">
-                      <input
-                        type={passwordVisible ? "text" : "password"}
-                        placeholder="••••••••"
-                        value={newUser.password}
-                        onChange={(e) => setNewUser({...newUser, password: e.target.value})}
-                        className={!newUser.password ? "input-error" : ""}
-                      />
-                      {/* <button 
-                        className="password-toggle"
-                        onClick={() => setPasswordVisible(!passwordVisible)}
-                        title={passwordVisible ? "Hide password" : "Show password"}
-                      >
-                        <i className={`fas ${passwordVisible ? "fa-eye-slash" : "fa-eye"}`}></i>
-                      </button> */}
-                    </div>
-                    {/* {!newUser.password && (
-                      <span className="error-message">Password is required</span>
-                    )} */}
-                    <div className="password-strength">
-                      <span className={`strength-indicator ${
-                        newUser.password.length === 0 ? "" :
-                        newUser.password.length < 6 ? "weak" :
-                        newUser.password.length < 10 ? "medium" : "strong"
-                      }`}></span>
-                      <span className="strength-text">
-                        {newUser.password.length === 0 ? "" :
-                         newUser.password.length < 6 ? "Weak" :
-                         newUser.password.length < 10 ? "Medium" : "Strong"}
-                      </span>
-                    </div>
-                  </div>
-                  
-                  <div className="input-group">
-                    <label>Role <span className="required">*</span></label>
-                    <select
-                      value={newUser.role}
-                      onChange={(e) => setNewUser({...newUser, role: e.target.value})}
-                    >
-                      <option value="btech">BTech Student</option>
-                      <option value="mtech">MTech Student</option>
-                      <option value="phd">PhD Scholar</option>
-                      <option value="faculty">Faculty</option>
-                      <option value="admin">Administrator</option>
-                      <option value="intern">Intern</option>
-                      <option value="projectstaff">Project Staff</option>
-                    </select>
-                  </div>
-                  
-                  <div className="input-group">
-                    <label>Status <span className="required">*</span></label>
-                    <select
-                      value={newUser.status}
-                      onChange={(e) => setNewUser({...newUser, status: e.target.value})}
-                    >
-                      <option value="active">Active</option>
-                      <option value="inactive">Inactive</option>
-                    </select>
-                  </div>
-                  
-                  <div className="input-group">
-                    <label>Actions</label>
-                    <div className="action-buttons">
-                      <button 
-                        className="btn-secondary"
-                        onClick={() => setNewUser({ 
-                          name: "", 
-                          email: "", 
-                          password: "", 
-                          role: "btech", 
-                          status: "active" 
-                        })}
-                      >
-                        <i className="fas fa-undo"></i> Reset
-                      </button>
-                      <button 
-                        className="btn-generate"
-                        onClick={() => setNewUser({ 
-                          ...newUser, 
-                          password: generatePassword() 
-                        })}
-                      >
-                        <i className="fas fa-key"></i> Generate Password
-                      </button>
-                    </div>
-                  </div>
-                </div>
-                
-                <div className="form-actions">
-                  <button 
-                    className="btn-primary"
-                    onClick={handleAddUser}
-                    disabled={!newUser.name || !newUser.email || !newUser.password}
-                  >
-                    <i className="fas fa-user-plus"></i> Create User
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            {/* Users Table */}
-            <div className="card data-table">
-              <div className="table-header">
-                <h3 className="table-title">
-                  <i className="fas fa-table"></i>
-                  Registered Users ({filteredUsers.length})
-                </h3>
-                
-                <div className="table-controls">
-                  <div className="filter-tabs">
-                    <button 
-                      className={`filter-tab ${activeTab === "all" ? "active" : ""}`}
-                      onClick={() => setActiveTab("all")}
-                    >
-                      All ({stats.totalUsers})
-                    </button>
-                    <button 
-                      className={`filter-tab ${activeTab === "active" ? "active" : ""}`}
-                      onClick={() => setActiveTab("active")}
-                    >
-                      Active ({stats.activeUsers})
-                    </button>
-                    <button 
-                      className={`filter-tab ${activeTab === "inactive" ? "active" : ""}`}
-                      onClick={() => setActiveTab("inactive")}
-                    >
-                      Inactive ({stats.inactiveUsers})
-                    </button>
-                  </div>
-                  
-                  <button 
-                    className="btn-icon"
-                    onClick={() => {
-                      const fetchUsers = async () => {
-                        setIsLoading(true);
-                        try {
-                          const response = await axios.get("/api/v1/user");
-                          setUsers(response.data);
-                          calculateStats(response.data);
-                        } catch (err) {
-                          setMessage({ text: "Failed to refresh users.", type: "error" });
-                        } finally {
-                          setIsLoading(false);
-                        }
-                      };
-                      fetchUsers();
-                    }}
-                    title="Refresh"
-                  >
-                    <i className="fas fa-sync-alt"></i>
-                  </button>
-                </div>
-              </div>
-              
-              <div className="table-container">
-                <table className="responsive-table">
-                  <thead>
-                    <tr>
-                      <th className="sortable" onClick={() => handleSort("name")}>
-                        <div className="th-content">
-                          <span>Name</span>
-                          {sortConfig.key === "name" && (
-                            <i className={`fas fa-sort-${sortConfig.direction === "asc" ? "up" : "down"}`}></i>
-                          )}
-                        </div>
-                      </th>
-                      <th className="sortable" onClick={() => handleSort("email")}>
-                        <div className="th-content">
-                          <span>Email</span>
-                          {sortConfig.key === "email" && (
-                            <i className={`fas fa-sort-${sortConfig.direction === "asc" ? "up" : "down"}`}></i>
-                          )}
-                        </div>
-                      </th>
-                      <th className="sortable" onClick={() => handleSort("role")}>
-                        <div className="th-content">
-                          <span>Role</span>
-                          {sortConfig.key === "role" && (
-                            <i className={`fas fa-sort-${sortConfig.direction === "asc" ? "up" : "down"}`}></i>
-                          )}
-                        </div>
-                      </th>
-                      <th className="sortable" onClick={() => handleSort("status")}>
-                        <div className="th-content">
-                          <span>Status</span>
-                          {sortConfig.key === "status" && (
-                            <i className={`fas fa-sort-${sortConfig.direction === "asc" ? "up" : "down"}`}></i>
-                          )}
-                        </div>
-                      </th>
-                      <th className="sortable" onClick={() => handleSort("lastLogin")}>
-                        <div className="th-content">
-                          <span>Last Login</span>
-                          {sortConfig.key === "lastLogin" && (
-                            <i className={`fas fa-sort-${sortConfig.direction === "asc" ? "up" : "down"}`}></i>
-                          )}
-                        </div>
-                      </th>
-                      <th>Actions</th>
-                    </tr>
-                  </thead>
-                  
-                  <tbody>
-                    {currentUsers.length > 0 ? (
-                      currentUsers.map(user => (
-                        <tr key={user._id}>
-                          <td>
-                            <div className="user-info">
-                              <div className="user-avatar">
-                                {user.name[0].toUpperCase()}
-                              </div>
-                              <div className="user-details">
-                                <span className="user-name">{user.name}</span>
-                                <span className="user-id">ID: {user._id.substring(18)}</span>
-                              </div>
-                            </div>
-                          </td>
-                          <td>
-                            <a href={`mailto:${user.email}`} className="user-email">
-                              {user.email}
-                            </a>
-                          </td>
-                          <td>
-                            <span className={`role-badge ${user.role}`}>
-                              {roleDisplayNames[user.role] || user.role}
-                            </span>
-                          </td>
-                          <td>
-                            <span className={`status-badge ${user.status ? 'active' : 'inactive'}`}>
-                              <i className={`fas fa-circle ${user.status ? 'active' : 'inactive'}`}></i>
-                              {user.status ? "Active" : "Inactive"}
-                            </span>
-                          </td>
-                          <td>
-                            <span className={`last-login ${!user.lastLogin ? 'never' : ''}`}>
-                              {formatLastLogin(user.lastLogin)}
-                            </span>
-                          </td>
-                          <td>
-                            <div className="action-buttons">
-                              <button 
-                                className="btn-icon warning"
-                                onClick={() => openUpdateModal(user)}
-                                title="Edit"
-                              >
-                                <i className="fas fa-edit"></i>
-                              </button>
-                              <button 
-                                className="btn-icon danger"
-                                onClick={() => handleDeleteUser(user._id, user.name)}
-                                title="Delete"
-                              >
-                                <i className="fas fa-trash-alt"></i>
-                              </button>
-                              <button 
-                                className="btn-icon primary"
-                                onClick={() => handleResetPassword(user._id, user.name)}
-                                title="Reset Password"
-                              >
-                                <i className="fas fa-key"></i>
-                              </button>
-                            </div>
-                          </td>
-                        </tr>
-                      ))
-                    ) : (
-                      <tr className="no-results">
-                        <td colSpan="6">
-                          <div className="no-results-content">
-                            <i className="fas fa-user-slash"></i>
-                            <p>No users found matching your criteria</p>
-                            {searchQuery && (
-                              <button 
-                                className="btn-text"
-                                onClick={() => {
-                                  setSearchQuery("");
-                                  setActiveTab("all");
-                                }}
-                              >
-                                Clear search and filters
-                              </button>
-                            )}
-                          </div>
-                        </td>
-                      </tr>
-                    )}
-                  </tbody>
-                </table>
-              </div>
-              
-              <div className="table-footer">
-              <div className="pagination-controls">
-  <button 
-    className="btn-pagination" 
-    onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
-    disabled={currentPage === 1}
-  >
-    <i className="fas fa-chevron-left"></i>
-  </button>
-  <span>Page {currentPage} of {totalPages}</span>
-  <button 
-    className="btn-pagination"
-    onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
-    disabled={currentPage === totalPages || totalPages === 0}
-  >
-    <i className="fas fa-chevron-right"></i>
-  </button>
-</div>
-<div className="table-summary">
-  Showing {indexOfFirstUser + 1}-{Math.min(indexOfLastUser, sortedUsers.length)} of {sortedUsers.length} users
-</div>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* Database Schema Section */}
-        {activeSection === "database" && (
-          <div className="schema-explorer">
-            <div className="schema-header">
-              <div className="schema-title">
-                <h2>Database Structure</h2>
-                <p>Explore the collections and their fields in the database</p>
-              </div>
-              
-              <div className="schema-controls">
-                <div className="view-toggle">
-                  <button 
-                    className={schemaViewMode === "list" ? "active" : ""}
-                    onClick={() => setSchemaViewMode("list")}
-                  >
-                    <i className="fas fa-list"></i> List View
-                  </button>
-                  <button 
-                    className={schemaViewMode === "cards" ? "active" : ""}
-                    onClick={() => setSchemaViewMode("cards")}
-                  >
-                    <i className="fas fa-th-large"></i> Card View
-                  </button>
-                </div>
-                
-                <div className="search-container">
-                  <i className="fas fa-search"></i>
-                  <input
-                    type="text"
-                    placeholder="Search collections..."
-                    // Implement search functionality if needed
-                  />
-                </div>
-              </div>
-            </div>
-            
-            {renderDatabaseSchema()}
-          </div>
-        )}
-
-        {/* Edit User Modal */}
-        {showModal && editingUser && (
-          <div className="modal-overlay">
-            <div className="modal">
-              <div className="modal-header">
-                <h3>
-                  <i className="fas fa-user-edit"></i>
-                  Edit User: {editingUser.name}
-                </h3>
-                <button 
-                  className="btn-icon modal-close"
-                  onClick={() => setShowModal(false)}
-                >
-                  &times;
-                </button>
-              </div>
-              
-              <div className="modal-body">
-                <div className="input-group">
-                  <label>Full Name <span className="required">*</span></label>
-                  <input
-                    type="text"
-                    value={editingUser.name}
-                    onChange={(e) => setEditingUser({...editingUser, name: e.target.value})}
-                  />
-                </div>
-                
-                <div className="input-group">
-                  <label>Email Address <span className="required">*</span></label>
-                  <input
-                    type="email"
-                    value={editingUser.email}
-                    onChange={(e) => setEditingUser({...editingUser, email: e.target.value})}
-                  />
-                </div>
-                
-                <div className="input-group">
-                  <label>Role <span className="required">*</span></label>
-                  <select
-                    value={editingUser.role}
-                    onChange={(e) => setEditingUser({...editingUser, role: e.target.value})}
-                  >
-                    <option value="btech">BTech Student</option>
-                    <option value="mtech">MTech Student</option>
-                    <option value="phd">PhD Scholar</option>
-                    <option value="faculty">Faculty</option>
-                    <option value="admin">Administrator</option>
-                    <option value="intern">Intern</option>
-                    <option value="projectstaff">Project Staff</option>
-                  </select>
-                </div>
-                
-                <div className="input-group">
-                  <label>Status <span className="required">*</span></label>
-                  <select
-                    value={editingUser.status}
-                    onChange={(e) => setEditingUser({
-                      ...editingUser, 
-                      status: e.target.value
-                    })}
-                  >
-                    <option value="active">Active</option>
-                    <option value="inactive">Inactive</option>
-                  </select>
-                </div>
-                
-                <div className="modal-info">
-                  <p>
-                    <i className="fas fa-info-circle"></i>
-                    User ID: {editingUser._id}
-                  </p>
-                  <p>
-                    <i className="fas fa-calendar-alt"></i>
-                    Created: {new Date(editingUser.createdAt).toLocaleDateString()}
-                  </p>
-                  <p>
-                    <i className="fas fa-sync-alt"></i>
-                    Last updated: {editingUser.updatedAt ? 
-                      new Date(editingUser.updatedAt).toLocaleDateString() : "Never"}
-                  </p>
-                </div>
-              </div>
-              
-              <div className="modal-footer">
-                <button 
-                  className="btn-secondary"
-                  onClick={() => setShowModal(false)}
-                >
-                  Cancel
-                </button>
-                <button 
-                  className="btn-primary"
-                  onClick={handleUpdateUser}
-                >
-                  <i className="fas fa-save"></i> Save Changes
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
-      </main>
-    </div>
-  );
+ 
 }
 
 export default AdminPage;
