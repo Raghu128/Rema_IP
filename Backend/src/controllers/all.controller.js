@@ -38,39 +38,6 @@ const checkIfFaculty = async (req, res, next) => {
 
 
 
-export async function handleUserSignup(req, res) {
-  const { name, email, password, role } = req.body;
-  const currentUser = req.user;
-
-  try {
-    if (currentUser.role === "faculty" && (role === "faculty" || role === "admin")) {
-      return res.status(403).send("Faculty can only add students.");
-    }
-    if (currentUser.role !== "faculty" && currentUser.role !== "admin") {
-      return res.status(403).send("Student cannot add anyone.");
-    }
-
-    const existingUser = await User.findOne({ email });
-    if (existingUser) {
-      return res.status(201).send("User already exists");
-    }
-
-    const hashedPassword = await bcrypt.hash(password, 10);
-    await User.create({
-      name,
-      email,
-      password: hashedPassword,
-      role,
-    });
-
-    return res.status(201).send("User successfully created");
-  } catch (error) {
-    console.error("Error during signup:", error);
-    return res.status(500).send("Error during signup");
-  }
-}
-
-
 
 
 export async function handleUserLogout(req, res) {
@@ -302,6 +269,75 @@ export const deleteUser = async (req, res) => {
 
 
 
+export async function handleUserSignup(req, res) {
+  const { name, email, password, role } = req.body;
+  const currentUser = req.user;
+
+  try {
+    if (currentUser.role === "faculty" && (role === "faculty" || role === "admin")) {
+      return res.status(403).send("Faculty can only add students.");
+    }
+    if (currentUser.role !== "faculty" && currentUser.role !== "admin") {
+      return res.status(403).send("Student cannot add anyone.");
+    }
+
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return res.status(201).send("User already exists");
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const user = await User.create({
+      name,
+      email,
+      password: hashedPassword,
+      role,
+    });
+
+    try {
+      await transporter.sendMail({
+        from: process.env.YOUR_EMAIL,
+        to: user.email,
+        subject: "Your Account Has Been Created - Action Required",
+        html: `
+            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e0e0e0; border-radius: 8px;">
+            <div style="text-align: center; margin-bottom: 20px;">
+              <h1 style="color: #4361ee;">Welcome to Rema</h1>
+            </div>
+            
+            <p>Dear <strong>${user.name}</strong>,</p>
+            
+            <p>Your account has been successfully created with the following details:</p>
+            
+            <div style="background-color: #f8f9fa; padding: 15px; border-radius: 5px; margin: 15px 0;">
+              <p><strong>Email:</strong> ${user.email}</p>
+              <p><strong>Role:</strong> ${user.role}</p>
+            </div>
+            
+           <p>For security reasons, you need to set your own password before accessing the system. Please use the 'Forgot Password' option during login to establish your new password.</p>
+            
+            
+            <p style="color: #6c757d; font-size: 0.9em;">
+              <strong>Note:</strong> This link will expire in 24 hours. If you didn't request this, please ignore this email.
+            </p>
+            
+            <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #e0e0e0; color: #6c757d;">
+              <p>Best regards,</p>
+              <p><strong>Rema Security Team</strong></p>
+            </div>
+          </div>
+        `,
+      });
+    } catch (emailError) {
+      console.error("Error sending email:", emailError);
+    }
+
+    return res.status(201).send("User successfully created");
+  } catch (error) {
+    console.error("Error during signup:", error);
+    return res.status(500).send("Error during signup");
+  }
+}
 
 
 
