@@ -199,6 +199,8 @@ const NotificationAddForm = () => {
                             </div>
                         </div>
 
+                    </div>
+                        <div className="notification-add-form-info-container">
                         <div className="notification-add-form-group notification-add-form-full-width">
                             <label>Message Content</label>
                             <textarea 
@@ -227,7 +229,7 @@ const NotificationAddForm = () => {
                             </div>
                             {errors.due_date && <span className="notification-add-form-error-message">{errors.due_date}</span>}
                         </div>
-                    </div>
+                        </div>
                 </div>
 
                 <div className="notification-add-form-card">

@@ -127,8 +127,16 @@
 }
 
 /* Form Groups */
+.notification-add-form-info-container{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    gap: 5rem;
+}
 .notification-add-form-group {
     margin-bottom: 1.5rem;
+    width: 100%;
 }
 
 .notification-add-form-group label {
@@ -309,6 +317,10 @@
     border: 1px solid #eee;
     border-radius: 6px;
     padding: 0.5rem;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 3rem;
 }
 
 .notification-add-form-recipient-item {
@@ -317,8 +329,10 @@
     padding: 0.75rem;
     border-radius: 4px;
     transition: background-color 0.2s ease;
+    background-color: rgba(128, 128, 128, 0.201);
     cursor: pointer;
     position: relative;
+    width: 30%;
 }
 
 .notification-add-form-recipient-item:hover {
