@@ -1,14 +1,9 @@
-/* DisplaySponsors.css - FINAL, CORRECTED HOVER/WIDTH ISSUES */
-
-/* General Container Styles */
+/* Main Container */
 .display-sponsors-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-color: #f8f9fa;
-  padding: 30px;
-  border-radius: 15px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-  max-width: 1100px;
-  margin: 30px auto;
 }
 
 /* Header */
@@ -16,233 +11,414 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 25px;
-  padding-bottom: 15px;
-  border-bottom: 2px solid #dee2e6;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+  gap: 1rem;
 }
 
 .display-sponsors-title {
-  font-size: 2.2rem;
   color: #2c3e50;
   margin: 0;
-  font-weight: 600;
 }
 
-.display-sponsor-manage-btn {
-  background-color: #3498db;
-  color: white;
-  padding: 12px 24px;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 1rem;
-  transition: background-color 0.3s ease;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
-
-.display-sponsor-manage-btn:hover {
-  background-color: #2980b9;
+.display-sponsors-actions {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
 }
 
 /* Search Bar */
 .display-sponsors-search-bar {
-  display: flex;
-  align-items: center;
-  background-color: #fff;
-  padding: 12px 18px;
-  border-radius: 10px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.06);
-  margin-bottom: 30px;
-  transition: box-shadow 0.3s ease;
-}
-
-.display-sponsors-search-bar:focus-within {
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+  margin-bottom: 2rem;
+  position: relative;
+  max-width: 400px;
 }
 
 .display-sponsors-search-bar .search-icon {
-  color: #3498db;
-  margin-right: 12px;
-  font-size: 1.1rem;
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #7f8c8d;
 }
 
 .display-sponsors-search-bar input {
-  border: none;
-  outline: none;
+  width: 100%;
+  padding: 0.8rem 1rem 0.8rem 2.5rem;
+  border: 1px solid #dfe6e9;
+  border-radius: 8px;
   font-size: 1rem;
-  color: #495057;
-  flex-grow: 1;
-  background-color: transparent;
+  transition: all 0.2s;
 }
 
-/* Finance Budget Close Button */
-.finance-budget-container {
-  position: relative;
-  padding: 20px;
-  background-color: #fff;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  margin-bottom: 30px;
+.display-sponsors-search-bar input:focus {
+  outline: none;
+  border-color: #3498db;
+  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
 }
 
-.close-budget-btn {
-  position: absolute;
-  top: 15px;
-  right: 15px;
-  background: #e74c3c;
-  color: white;
-  border: none;
-  padding: 8px 14px;
+/* View Toggle Buttons */
+.view-toggle {
+  background: #f8f9fa;
+  border: 1px solid #dfe6e9;
+  padding: 0.5rem 1rem;
   border-radius: 6px;
   cursor: pointer;
-  font-size: 0.9rem;
-  transition: background-color 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.2s;
+}
+.display-sponsor-manage-btn{
+  padding: 0.5rem 1rem;
+  background: #4299e1;
+  border: none;
+  border-radius: 6px;
+  color: white;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
-.close-budget-btn:hover {
-  background-color: #c0392b;
+.view-toggle.active {
+  background: #3498db;
+  color: white;
+  border-color: #3498db;
 }
 
-/* --- Sponsor List and Cards (CRITICAL FIXES HERE) --- */
-.sponsor-list {
+.view-toggle:hover {
+  background: #e9f5fd;
+}
+
+.view-toggle.active:hover {
+  background: #2980b9;
+}
+
+/* Cards View */
+.sponsor-cards-container {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: 25px;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1rem;
 }
 
 .sponsor-card {
-  background-color: #fff;
-  border-radius: 12px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
-  padding: 25px;
-  display: flex;
-  flex-direction: column;
-  transition: box-shadow 0.2s ease; /*  Only transition the box-shadow */
-  /* Removed position: relative; */
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  padding: 1.5rem;
+  transition: transform 0.2s, box-shadow 0.2s;
+  border-left: 4px solid #3498db;
 }
 
-/* Hover effect - ONLY change the box-shadow */
 .sponsor-card:hover {
-  /* Removed transform: translateY(-5px); */
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+}
+
+.sponsor-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
 }
 
 .sponsor-title {
-  font-size: 1.5rem;
-  color: #34495e;
-  margin-bottom: 15px;
-  border-bottom: 2px solid #3498db;
-  padding-bottom: 10px;
+  margin: 0;
+  color: #2c3e50;
+  font-size: 1.2rem;
 }
 
-.sponsor-details p {
-  margin: 10px 0;
-  font-size: 1rem;
-  color: #555;
+.sponsor-status {
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.sponsor-status.active {
+  background: #d4edda;
+  color: #155724;
+}
+
+.sponsor-status.completed {
+  background: #f8d7da;
+  color: #721c24;
+}
+
+.sponsor-status.pending {
+  background: #fff3cd;
+  color: #856404;
+}
+
+.sponsor-details {
+  display: grid;
+  gap: 0.8rem;
+}
+
+.detail-row {
   display: flex;
   align-items: center;
+  gap: 0.8rem;
 }
 
-.sponsor-details .detail-icon {
-  margin-right: 10px;
-  color: #3498db;
+.detail-icon {
+  color: #7f8c8d;
+  width: 1rem;
+  text-align: center;
 }
 
-.sponsor-details a {
+.detail-label {
+  font-weight: 500;
+  color: #34495e;
+  min-width: 70px;
+}
+
+.detail-value {
+  color: #2d3436;
+}
+
+.link {
   color: #3498db;
   text-decoration: none;
-  transition: color 0.3s ease;
 }
 
-.sponsor-details a:hover {
+.link:hover {
   text-decoration: underline;
-  color: #2980b9;
 }
 
 .clickable-budget {
-  color: #3498db;
+  color: #27ae60;
   cursor: pointer;
-  text-decoration: none;
-  transition: color 0.3s;
+  font-weight: 500;
 }
 
 .clickable-budget:hover {
   text-decoration: underline;
-  color: #2980b9;
 }
 
-/* --- Notes Button and Overlay --- */
+.sponsor-card-footer {
+  margin-top: 1.5rem;
+  display: flex;
+  justify-content: flex-end;
+}
 
-/* Notes Button */
 .sponsor-notes-button {
-  background-color: #3498db;
-  color: white;
+  background: #e3f2fd;
+  color: #1976d2;
   border: none;
-  padding: 10px 18px;
-  border-radius: 8px;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
-  margin-top: 15px;
-  align-self: flex-end;
-  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  transition: background 0.2s;
 }
 
 .sponsor-notes-button:hover {
-  background-color: #2980b9;
+  background: #bbdefb;
 }
 
-/* Overlay for Notes */
+/* Table View */
+.sponsor-table-container {
+  margin-top: 1.5rem;
+  overflow-x: auto;
+}
+
+.sponsor-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.sponsor-table th,
+.sponsor-table td {
+  padding: 1rem;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+}
+
+.sponsor-table th {
+  background: #f8f9fa;
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+.sponsor-table tr:hover {
+  background: #f5f9ff;
+}
+
+.status-badge {
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.status-badge.active {
+  background: #d4edda;
+  color: #155724;
+}
+
+.status-badge.completed {
+  background: #f8d7da;
+  color: #721c24;
+}
+
+.status-badge.pending {
+  background: #fff3cd;
+  color: #856404;
+}
+
+.actions-cell {
+  white-space: nowrap;
+}
+
+.table-notes-button {
+  background: none;
+  border: 1px solid #dfe6e9;
+  color: #3498db;
+  padding: 0.4rem 0.8rem;
+  border-radius: 4px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  transition: all 0.2s;
+}
+
+.table-notes-button:hover {
+  background: #e3f2fd;
+}
+
+/* Notes Overlay */
 .sponsor-notes-overlay {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 1000;
+  padding: 1rem;
 }
 
-/* Content inside the overlay */
 .sponsor-notes-content {
-  background-color: white;
-  padding: 30px;
-  border-radius: 12px;
-  width: 80%;
-  max-width: 800px;
-  height: 60%;
-  position: relative;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  max-height: 80vh;
+  background: white;
+  border-radius: 8px;
+  height: 70%;
+  width: 70%;
+  padding: 2rem;
   overflow-y: auto;
+  position: relative;
 }
 
-/* Close button for the notes overlay */
 .sponsor-close-notes-button {
   position: absolute;
-  top: 15px;
-  right: 15px;
+  top: 1rem;
+  right: 1rem;
   background: none;
   border: none;
-  font-size: 2rem;
+  color: #7f8c8d;
   cursor: pointer;
-  color: #555;
-  transition: color 0.3s ease;
-  padding: 10px;
-  background-color: grey;
-  line-height: 1;
+  font-size: 2rem;
 }
 
 .sponsor-close-notes-button:hover {
-  color: #333;
+  color: #e74c3c;
 }
 
-/* No Sponsors Message */
-.no-sponsors-message {
+/* No Results */
+.no-results-message {
   text-align: center;
-  font-style: italic;
-  color: #777;
-  padding: 30px;
+  padding: 3rem;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.no-results-message p {
+  color: #7f8c8d;
+  margin-bottom: 1.5rem;
+}
+
+.add-sponsor-btn {
+  background: #3498db;
+  color: white;
+  border: none;
+  padding: 0.8rem 1.5rem;
+  border-radius: 6px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 500;
+  transition: background 0.2s;
+}
+
+.add-sponsor-btn:hover {
+  background: #2980b9;
+}
+
+/* Finance Budget Container */
+.finance-budget-container {
+  background: white;
+  border-radius: 8px;
+  padding: 2rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  position: relative;
+}
+
+.close-budget-btn {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: #f8f9fa;
+  border: 1px solid #dfe6e9;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.2s;
+}
+
+.close-budget-btn:hover {
+  background: #e9ecef;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .sponsor-cards-container {
+      grid-template-columns: 1fr;
+  }
+  
+  .display-sponsors-header {
+      flex-direction: column;
+      align-items: flex-start;
+  }
+  
+  .display-sponsors-actions {
+      width: 100%;
+      justify-content: space-between;
+  }
+  
+  .sponsor-table th,
+  .sponsor-table td {
+      padding: 0.75rem 0.5rem;
+      font-size: 0.9rem;
+  }
 }

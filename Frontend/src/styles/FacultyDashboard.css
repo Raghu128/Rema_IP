@@ -184,3 +184,184 @@
     padding: 15px;
   }
 }
+
+
+
+/* Faculty Dashboard Sidebar Styles */
+.faculty-sidebar {
+  width: 230px;
+  background: linear-gradient(135deg, #1a237e 0%, #283593 100%);
+  color: white;
+  height: 100vh;
+  position: sticky;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 2px 0 15px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar-header {
+  padding: 1.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.sidebar-header h3 {
+  margin: 0 0 1.5rem;
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #fff;
+}
+
+.faculty-user-profile {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  cursor: pointer;
+}
+
+.user-avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background-color: #4a6baf;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+.user-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.user-name {
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+
+.user-role {
+  font-size: 0.8rem;
+  opacity: 0.8;
+  margin-top: 0.1rem;
+}
+
+.faculty-sidebar-list {
+  list-style: none;
+  padding: 1rem 0;
+  margin: 0;
+  flex: 1;
+}
+
+.faculty-sidebar-list li {
+  margin: 0.25rem 0;
+}
+
+.faculty-sidebar-list li a {
+  display: flex;
+  align-items: center;
+  padding: 0.85rem 1.5rem;
+  color: rgba(255, 255, 255, 0.85);
+  text-decoration: none;
+  transition: all 0.2s ease;
+  font-size: 0.95rem;
+}
+
+.faculty-sidebar-list li a:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: white;
+}
+
+.faculty-sidebar-list li.active a {
+  background: rgba(74, 107, 175, 0.3);
+  color: white;
+  border-left: 4px solid #4a6baf;
+}
+
+.nav-icon {
+  margin-right: 0.85rem;
+  width: 20px;
+  text-align: center;
+  font-size: 1rem;
+}
+
+.sidebar-footer {
+  padding: 1rem 1.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.app-version {
+  text-align: center;
+}
+
+/* Responsive sidebar */
+@media (max-width: 768px) {
+  .faculty-sidebar {
+    width: 100%;
+    height: auto;
+    position: relative;
+  }
+  
+  .faculty-sidebar-list {
+    display: flex;
+    overflow-x: auto;
+    padding: 0.5rem;
+  }
+  
+  .faculty-sidebar-list li {
+    flex-shrink: 0;
+  }
+  
+  .faculty-sidebar-list li a {
+    padding: 0.75rem 1rem;
+  }
+  
+  .faculty-sidebar-list li.active a {
+    border-left: none;
+    border-bottom: 3px solid #4a6baf;
+  }
+  
+  .nav-text {
+    display: none;
+  }
+  
+  .nav-icon {
+    margin-right: 0;
+    font-size: 1.2rem;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 992px) {
+  .faculty-sidebar {
+    width: 80px;
+  }
+  
+  .sidebar-header h3, 
+  .user-info,
+  .nav-text {
+    display: none;
+  }
+  
+  .user-avatar {
+    width: 36px;
+    height: 36px;
+    margin: 0 auto;
+  }
+  
+  .faculty-sidebar-list li a {
+    justify-content: center;
+    padding: 1rem 0;
+  }
+  
+  .nav-icon {
+    margin-right: 0;
+    font-size: 1.2rem;
+  }
+}
+
+
+

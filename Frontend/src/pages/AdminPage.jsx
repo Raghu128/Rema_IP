@@ -1099,10 +1099,10 @@ return (
         </div>
         <div className="admin-page-nav-user-info">
           <div className="admin-page-user-avatar">
-            {user?.name?.[0]?.toUpperCase()}
+            A
           </div>
           <div className="admin-page-user-details">
-            <span className="admin-page-user-name">{user.name}</span>
+            <span className="admin-page-user-role">Admin</span>
             <span className="admin-page-user-role">{roleDisplayNames[user.role] || user.role}</span>
           </div>
         </div>
@@ -1131,12 +1131,6 @@ return (
         
       </div>
       
-      <div className="admin-page-nav-footer">
-        <button className="admin-page-btn-logout">
-          <i className="fas fa-sign-out-alt admin-page-icon"></i>
-          <span className="admin-page-logout-text">Logout</span>
-        </button>
-      </div>
     </nav>
 
     {/* Main Content Area */}

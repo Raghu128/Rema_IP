@@ -13,16 +13,26 @@
   gap: 20px;
   justify-content: center;
 }
+.notifications-main{
+  width: 80%;
+}
 
+.venues-compact{
+  width: 25%;
+}
 
-
-@media (max-width: 988px) {
+@media (max-width: 1400px) {
   .landingpage-content {
     flex-direction: column;
   }
-
+  .notifications-main{
+    width: 100%;
+  }
   .landingpage-notification {
     width: 100%;
+  }
+  .venues-compact{
+    width: 40%;
   }
 
   .landingpage-venue {

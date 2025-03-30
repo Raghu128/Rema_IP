@@ -2,6 +2,16 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import "../styles/FacultyDashboard.css";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+  faProjectDiagram,
+  faUserGraduate,
+  faHandshake,
+  faMoneyBillWave,
+  faLaptop,
+  faCalendarAlt,
+  faHome
+} from '@fortawesome/free-solid-svg-icons';
 
 import Projects from "../components/SimpleProjects/Projects";
 import Students from "../components/Supervisor/Students";
@@ -21,6 +31,15 @@ const FacultyDashboard = () => {
 
   // Get tab from URL params (default to "Projects" if not provided)
   const currElement = searchParams.get("tab");
+  const iconMap = {
+    Projects: faProjectDiagram,
+    Students: faUserGraduate,
+    Sponsor: faHandshake,
+    Expenses: faMoneyBillWave,
+    Equipment: faLaptop,
+    Leaves: faCalendarAlt,
+    Home: faHome
+  };
 
   // Function to render the current component based on selected tab
   const renderComponent = () => {
@@ -48,20 +67,41 @@ const FacultyDashboard = () => {
 
   return (
     <div className="faculty-dashboard-container">
-      {/* Sidebar */}
+      {/* Improved Sidebar */}
       <div className="faculty-sidebar">
+        <div className="sidebar-header">
+          <h3>Faculty DashBoard</h3>
+          <div className="faculty-user-profile" onClick={() => navigate('/')}>
+            <div className="user-avatar">
+              {user?.name?.charAt(0).toUpperCase()}
+            </div>
+            <div className="user-info">
+              {/* <span className="user-name">{user?.name}</span> */}
+              <span className="user-role">{user?.role}</span>
+            </div>
+          </div>
+        </div>
+        
         <ul className="faculty-sidebar-list">
           {["Projects", "Students", "Sponsor", "Expenses", "Equipment", "Leaves"].map((item) => (
-            <li key={item}>
+            <li 
+              key={item} 
+              className={currElement === item ? "active" : ""}
+            >
               <Link to={`?tab=${item}`} onClick={() => handleNavigation(item)}>
-                {item}
+                <FontAwesomeIcon icon={iconMap[item]} className="nav-icon" />
+                <span className="nav-text">{item}</span>
               </Link>
             </li>
           ))}
         </ul>
+        
+        <div className="sidebar-footer">
+          <div className="app-version">v1.0.0</div>
+        </div>
       </div>
 
-      {/* Main Content */}
+      {/* Main Content (unchanged) */}
       <div className="faculty-main-content">{renderComponent()}</div>
     </div>
   );

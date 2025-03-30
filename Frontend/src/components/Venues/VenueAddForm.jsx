@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
-import '../../styles/Venues/VenueAddForm.css'
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
-    faArrowLeft, faPlus, faEdit, faTrash, faSearch, faUser, faEnvelope, faCalendarAlt, faBell, faExclamationTriangle,
-    faGlobe, faMapMarkerAlt,faClock, faLink
-} from '@fortawesome/free-solid-svg-icons'; // Added icons
+  faArrowLeft, faPlus, faEdit, faTrash, faSearch, 
+  faUser, faCalendarAlt, faMapMarkerAlt, faClock, faLink
+} from '@fortawesome/free-solid-svg-icons';
+import '../../styles/Venues/VenueAddForm.css';
 
 const VenueAddForm = () => {
     const { user } = useSelector((state) => state.user);
@@ -48,7 +48,7 @@ const VenueAddForm = () => {
     useEffect(() => {
         const fetchUsers = async () => {
             try {
-                const response = await axios.get("/api/v1/user");
+                const response = await axios.get(`/api/v1/user/${user?.id}`);
                 setUsers(response.data);
             } catch (error) {
                 console.error("Error fetching users:", error);
@@ -126,126 +126,255 @@ const VenueAddForm = () => {
 
     return (
         <div className="venue-form-container">
-            <button className="venue-form-back-btn" onClick={() => navigate(-1)}>
-               <FontAwesomeIcon icon={faArrowLeft} /> Go Back
+          <div className="venue-form-header">
+            <button className="back-button" onClick={() => navigate(-1)}>
+              <FontAwesomeIcon icon={faArrowLeft} />
+              <span>Back</span>
             </button>
-            <h2 className="venue-form-title">{selectedVenue ? "Edit Venue" : "Add Venue"}</h2>
-            {message && <p className={message.startsWith("Venue added") ? "venue-form-message" : "venue-form-message error"}>{message}</p>}
-
-            <form className="venue-form" onSubmit={handleSubmit}>
-                <div className="venue-form-row">
-                    <div className="venue-form-group">
-                        <label htmlFor="venue"><FontAwesomeIcon icon={faCalendarAlt} /> Venue Name:</label>
-                        <input type="text" id="venue" name="venue" value={formData.venue} onChange={handleChange} required />
-                    </div>
-                    <div className="venue-form-group">
-                        <label htmlFor="year"><FontAwesomeIcon icon={faCalendarAlt} /> Year:</label>
-                        <input type="number" id="year" name="year" value={formData.year} onChange={handleChange} min="1900" />
-                    </div>
+            <h2 className="form-title">
+              {selectedVenue ? "Edit Conference Venue" : "Add New Conference Venue"}
+            </h2>
+          </div>
+    
+          {message && (
+            <div className={`alert-message ${message.startsWith("Venue added") ? "success" : "error"}`}>
+              {message}
+            </div>
+          )}
+    
+          <form className="venue-form" onSubmit={handleSubmit}>
+            <div className="form-section">
+              <h3 className="section-title">
+                <FontAwesomeIcon icon={faCalendarAlt} />
+                <span>Basic Information</span>
+              </h3>
+              <div className="form-grid">
+                <div className="form-group">
+                  <label>
+                    <FontAwesomeIcon icon={faCalendarAlt} />
+                    <span>Venue Name*</span>
+                  </label>
+                  <input 
+                    type="text" 
+                    name="venue" 
+                    value={formData.venue} 
+                    onChange={handleChange} 
+                    required 
+                    placeholder="e.g., ACM Conference" 
+                  />
                 </div>
-
-                <div className="venue-form-group">
-                    <label htmlFor="url"><FontAwesomeIcon icon={faLink} /> URL:</label> {/* Added URL icon */}
-                    <input type="url" id="url" name="url" value={formData.url} onChange={handleChange} />
+    
+                <div className="form-group">
+                  <label>
+                    <FontAwesomeIcon icon={faCalendarAlt} />
+                    <span>Year</span>
+                  </label>
+                  <input 
+                    type="number" 
+                    name="year" 
+                    value={formData.year} 
+                    onChange={handleChange} 
+                    min="1900" 
+                    placeholder="2023" 
+                  />
                 </div>
-
-                <div className="venue-form-row">
-                    <div className="venue-form-group">
-                        <label htmlFor="date"><FontAwesomeIcon icon={faCalendarAlt} /> Date:</label>
-                        <input type="date" id="date" name="date" value={formData.date} onChange={handleChange} />
-                    </div>
-                    <div className="venue-form-group">
-                        <label htmlFor="abstract_submission"><FontAwesomeIcon icon={faCalendarAlt} /> Abstract Submission:</label>
-                        <input type="date" id="abstract_submission" name="abstract_submission" value={formData.abstract_submission} onChange={handleChange} />
-                    </div>
+    
+                <div className="form-group">
+                  <label>
+                    <FontAwesomeIcon icon={faLink} />
+                    <span>Website URL</span>
+                  </label>
+                  <input 
+                    type="url" 
+                    name="url" 
+                    value={formData.url} 
+                    onChange={handleChange} 
+                    placeholder="https://conference.example.com" 
+                  />
                 </div>
-
-                <div className="venue-form-row">
-                    <div className="venue-form-group">
-                        <label htmlFor="paper_submission"><FontAwesomeIcon icon={faCalendarAlt} /> Paper Submission:</label>
-                        <input type="date" id="paper_submission" name="paper_submission" value={formData.paper_submission} onChange={handleChange} />
-                    </div>
-                    <div className="venue-form-group">
-                        <label htmlFor="author_response"><FontAwesomeIcon icon={faCalendarAlt} /> Author Response:</label>
-                        <input type="date" id="author_response" name="author_response" value={formData.author_response} onChange={handleChange} />
-                    </div>
+    
+                <div className="form-group">
+                  <label>
+                    <FontAwesomeIcon icon={faMapMarkerAlt} />
+                    <span>Location</span>
+                  </label>
+                  <input 
+                    type="text" 
+                    name="location" 
+                    value={formData.location} 
+                    onChange={handleChange} 
+                    placeholder="City, Country" 
+                  />
                 </div>
-
-                <div className="venue-form-row">
-                    <div className="venue-form-group">
-                        <label htmlFor="meta_review"><FontAwesomeIcon icon={faCalendarAlt} /> Meta Review:</label>
-                        <input type="date" id="meta_review" name="meta_review" value={formData.meta_review} onChange={handleChange} />
-                    </div>
-                    <div className="venue-form-group">
-                        <label htmlFor="notification"><FontAwesomeIcon icon={faCalendarAlt} /> Notification:</label>
-                        <input type="date" id="notification" name="notification" value={formData.notification} onChange={handleChange} />
-                    </div>
+    
+                <div className="form-group">
+                  <label>
+                    <FontAwesomeIcon icon={faClock} />
+                    <span>Time Zone</span>
+                  </label>
+                  <input 
+                    type="text" 
+                    name="time_zone" 
+                    value={formData.time_zone} 
+                    onChange={handleChange} 
+                    placeholder="UTC+5:30" 
+                  />
                 </div>
-
-                <div className="venue-form-row">
-                    <div className="venue-form-group">
-                        <label htmlFor="commitment"><FontAwesomeIcon icon={faCalendarAlt} /> Commitment:</label>
-                        <input type="date" id="commitment" name="commitment" value={formData.commitment} onChange={handleChange} />
-                    </div>
-                    <div className="venue-form-group">
-                        <label htmlFor="main_conference_start"><FontAwesomeIcon icon={faCalendarAlt} /> Conference Start:</label>
-                        <input type="date" id="main_conference_start" name="main_conference_start" value={formData.main_conference_start} onChange={handleChange} />
-                    </div>
+              </div>
+            </div>
+    
+            <div className="form-section">
+              <h3 className="section-title">
+                <FontAwesomeIcon icon={faCalendarAlt} />
+                <span>Important Dates</span>
+              </h3>
+              <div className="date-grid">
+                <div className="date-group">
+                  <label>Event Date</label>
+                  <input 
+                    type="date" 
+                    name="date" 
+                    value={formData.date} 
+                    onChange={handleChange} 
+                  />
                 </div>
-
-                <div className="venue-form-row">
-                    <div className="venue-form-group">
-                        <label htmlFor="main_conference_end"><FontAwesomeIcon icon={faCalendarAlt} /> Conference End:</label>
-                        <input type="date" id="main_conference_end" name="main_conference_end" value={formData.main_conference_end} onChange={handleChange} />
-                    </div>
-                    <div className="venue-form-group">
-                        <label htmlFor="location"><FontAwesomeIcon icon={faMapMarkerAlt} /> Location:</label>
-                        <input type="text" id="location" name="location" value={formData.location} onChange={handleChange} />
-                    </div>
+    
+                <div className="date-group">
+                  <label>Abstract Submission</label>
+                  <input 
+                    type="date" 
+                    name="abstract_submission" 
+                    value={formData.abstract_submission} 
+                    onChange={handleChange} 
+                  />
                 </div>
-
-                <div className="venue-form-row">
-                    <div className="venue-form-group">
-                        <label htmlFor="time_zone"><FontAwesomeIcon icon={faClock} /> Time Zone:</label>  {/* Added timezone icon */}
-                        <input type="text" id="time_zone" name="time_zone" value={formData.time_zone} onChange={handleChange} />
-                    </div>
-                    <div className="venue-form-group">
-                         <label><FontAwesomeIcon icon={faUser} /> View Access:</label>
-                        {/* Search Bar */}
-                        <div className="venue-search-container">
-                            <FontAwesomeIcon icon={faSearch} className="venue-search-icon" />
-                            <input
-                                type="text"
-                                placeholder="Search users..."
-                                value={searchQuery}
-                                onChange={(e) => setSearchQuery(e.target.value)}
-                                className="venue-search-input"
-                            />
-                        </div>
-
-                         {/* Checkbox List */}
-                        <div className="venue-form-checkbox-container">
-                            {filteredUsers.map((userItem) => (
-                                <label key={userItem._id} className="venue-form-checkbox-label">
-                                    <input
-                                        type="checkbox"
-                                        value={userItem._id}
-                                        checked={formData.view.includes(userItem._id)}
-                                        onChange={handleCheckboxChange}
-                                        className="venue-access-checkbox"
-                                    />
-                                    {userItem.name} ({userItem.email})
-                                </label>
-                            ))}
-                        </div>
-                    </div>
-               </div>
-                <button type="submit" className="venue-form-submit-btn">
-                    {selectedVenue ? <span><FontAwesomeIcon icon={faEdit} /> Update Venue</span> : <span><FontAwesomeIcon icon={faPlus} /> Add Venue</span>}
-                </button>
-            </form>
+    
+                <div className="date-group">
+                  <label>Paper Submission</label>
+                  <input 
+                    type="date" 
+                    name="paper_submission" 
+                    value={formData.paper_submission} 
+                    onChange={handleChange} 
+                  />
+                </div>
+    
+                <div className="date-group">
+                  <label>Author Response</label>
+                  <input 
+                    type="date" 
+                    name="author_response" 
+                    value={formData.author_response} 
+                    onChange={handleChange} 
+                  />
+                </div>
+    
+                <div className="date-group">
+                  <label>Meta Review</label>
+                  <input 
+                    type="date" 
+                    name="meta_review" 
+                    value={formData.meta_review} 
+                    onChange={handleChange} 
+                  />
+                </div>
+    
+                <div className="date-group">
+                  <label>Notification</label>
+                  <input 
+                    type="date" 
+                    name="notification" 
+                    value={formData.notification} 
+                    onChange={handleChange} 
+                  />
+                </div>
+    
+                <div className="date-group">
+                  <label>Commitment</label>
+                  <input 
+                    type="date" 
+                    name="commitment" 
+                    value={formData.commitment} 
+                    onChange={handleChange} 
+                  />
+                </div>
+    
+                <div className="date-group">
+                  <label>Conference Start</label>
+                  <input 
+                    type="date" 
+                    name="main_conference_start" 
+                    value={formData.main_conference_start} 
+                    onChange={handleChange} 
+                  />
+                </div>
+    
+                <div className="date-group">
+                  <label>Conference End</label>
+                  <input 
+                    type="date" 
+                    name="main_conference_end" 
+                    value={formData.main_conference_end} 
+                    onChange={handleChange} 
+                  />
+                </div>
+              </div>
+            </div>
+    
+            <div className="form-section">
+              <h3 className="section-title">
+                <FontAwesomeIcon icon={faUser} />
+                <span>Access Control</span>
+              </h3>
+              <div className="form-group">
+                <div className="search-container">
+                  <FontAwesomeIcon icon={faSearch} />
+                  <input
+                    type="text"
+                    placeholder="Search users..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                  />
+                </div>
+                <div className="checkbox-container">
+                  {filteredUsers.map((userItem) => (
+                    <label key={userItem._id} className="checkbox-label">
+                      <input
+                        type="checkbox"
+                        value={userItem._id}
+                        checked={formData.view.includes(userItem._id)}
+                        onChange={handleCheckboxChange}
+                      />
+                      <div className="checkmark"></div>
+                      <span className="user-info">
+                        <span className="user-name">{userItem.name}</span>
+                        <span className="user-email">{userItem.email}</span>
+                      </span>
+                    </label>
+                  ))}
+                </div>
+              </div>
+            </div>
+    
+            <div className="form-actions">
+              <button type="submit" className="submit-button">
+                {selectedVenue ? (
+                  <>
+                    <FontAwesomeIcon icon={faEdit} />
+                    <span>Update Venue</span>
+                  </>
+                ) : (
+                  <>
+                    <FontAwesomeIcon icon={faPlus} />
+                    <span>Add Venue</span>
+                  </>
+                )}
+              </button>
+            </div>
+          </form>
         </div>
-    );
+      );
+
 };
 
 export default VenueAddForm;

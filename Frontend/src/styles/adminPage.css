@@ -498,6 +498,9 @@
 .admin-page-search-container {
   position: relative;
   margin-right: 1rem;
+  display: flex;
+  height: 3rem;
+  width: 20rem;
 }
 
 .admin-page-search-container i {
@@ -510,12 +513,13 @@
 }
 
 .admin-page-search-input {
-  border: 1px solid var(--admin-page-gray-light);
   border-radius: var(--admin-page-border-radius);
   width: 280px;
   font-size: 0.9rem;
   transition: var(--admin-page-transition);
   background-color: #f8fafc;
+  padding-left: 2rem;
+  border: 2px solid var(--admin-page-info-color);
 }
 
 .admin-page-search-input:focus {
@@ -963,6 +967,9 @@
 .admin-page-btn-primary {
   background-color: var(--admin-page-primary-color);
   color: white;
+  height: 2rem;
+  border-radius: var(--admin-page-border-radius);
+  padding: 0.3rem;
   box-shadow: 0 2px 5px rgba(67, 97, 238, 0.3);
 }
 
@@ -981,8 +988,9 @@
 
 .admin-page-btn-secondary {
   background-color: white;
-  color: white;
-  border: 1px solid var(--admin-page-gray-light);
+  color: rgb(0, 0, 0);
+  border: none;
+  height: 2rem;
 }
 
 .admin-page-btn-secondary:hover {
@@ -991,15 +999,12 @@
 }
 
 .admin-page-btn-generate {
-  background-color: #fff7ed;
-  color: white;
-  border: 1px solid #fed7aa;
+  background-color: white;
+  color: rgb(236, 44, 44);
+  border: none;
 }
 
-.admin-page-btn-generate:hover {
-  background-color: #ffedd5;
-  border-color: #fdba74;
-}
+
 
 .admin-page-btn-text {
   background: none;
@@ -1088,6 +1093,7 @@
 
 .admin-page-filter-tab:hover {
   color: var(--admin-page-dark-color);
+  background-color: var(--admin-page-gray-color);
 }
 
 .admin-page-table-container {
@@ -1267,10 +1273,7 @@
   font-style: italic;
 }
 
-.admin-page-action-buttons {
-  display: flex;
-  gap: 0.5rem;
-}
+
 
 .admin-page-btn-icon {
   width: 34px;
@@ -1356,16 +1359,16 @@
 
 .admin-page-pagination-controls {
   display: flex;
-  align-items: center;
+  /* align-items: center; */
   gap: 0.75rem;
-  text-align: center;
+  /* text-align: bottom; */
 }
 
 .admin-page-btn-pagination {
   width: 1rem;
   height: 2rem;
   border-radius: var(--admin-page-border-radius);
-  border: 1px solid var(--admin-page-gray-light);
+  border: none;
   background-color: white;
   cursor: pointer;
   display: flex;
@@ -1379,11 +1382,11 @@
   opacity: 0.5;
   cursor: not-allowed;
 }
-
+/* 
 .admin-page-btn-pagination:hover:not(:disabled) {
   background-color: var(--admin-page-gray-light);
   border-color: var(--admin-page-gray-color);
-}
+} */
 
 .admin-page-table-summary {
   font-size: 0.875rem;
@@ -1442,6 +1445,7 @@
 }
 .admin-page-view-toggle-btn:hover{
   color: white;
+  background-color: var(--admin-page-gray-color);
 }
 
 .admin-page-view-toggle-btn i {
@@ -1449,7 +1453,6 @@
 }
 
 .admin-page-view-toggle-btn.admin-page-active {
-  background-color: white;
   color: var(--admin-page-primary-color);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }

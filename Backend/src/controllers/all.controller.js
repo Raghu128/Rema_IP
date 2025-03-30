@@ -67,11 +67,11 @@ export async function handleUserLogin(req, res) {
     }
 
     let isPasswordValid;
-    if (user.role === "admin") {
-      isPasswordValid = password === process.env.ADMIN_PASSWORD;
-    } else {
-      isPasswordValid = await bcrypt.compare(password, user.password);
-    }
+    // if (user.role === "admin") {
+    //   isPasswordValid = password === process.env.ADMIN_PASSWORD;
+    // } else {
+      // }
+        isPasswordValid = await bcrypt.compare(password, user.password);
 
     if (!isPasswordValid) {
       return res.status(401).json({ error: "Invalid Username or Password" });
@@ -81,7 +81,7 @@ export async function handleUserLogin(req, res) {
     await user.save();
 
     const token = jwt.sign(
-      { id: user._id, email: user.email, role: user.role },
+      { id: user._id, name : user.name, email: user.email, role: user.role },
       process.env.JWT_SECRET,
       { expiresIn: "7d" }
     );
@@ -149,6 +149,15 @@ export const getUsers = async (req, res) => {
   }
 };
 
+export const getfaculty = async (req, res) => {
+  try {
+    const users = await User.find({role : 'faculty'});
+    res.status(200).json(users);
+  } catch (error) {
+    handleError(res, error);
+  }
+};
+
 export const getUsersByFacultyId = async (req, res) => {
   const id = req.params.id;
 
@@ -185,7 +194,7 @@ const transporter = nodemailer.createTransport({
     user: process.env.YOUR_EMAIL,
     pass: process.env.YOUR_EMAIL_PASS,
   },
-  port: 465,
+  port: process.env.EMAIL_PORT,
   secure: true,
 });
 
@@ -229,6 +238,121 @@ export const updateUser = async (req, res) => {
   } catch (error) {
     console.error("Error updating user:", error);
     handleError(res, error);
+  }
+};
+
+export const updateUserProfile = async (req, res) => {
+  try {
+    const { name, currentPassword, newPassword } = req.body;
+    const userId = req.params.id;
+    
+    // Find the user
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found." });
+    }
+
+    // Track if we need to update the token
+    let shouldUpdateToken = false;
+    const updates = {};
+
+    // Update name if provided
+    if (name && name !== user.name) {
+      user.name = name;
+      updates.name = name;
+      shouldUpdateToken = true;
+    }
+
+    // Handle password change if new password is provided
+    if (newPassword) {
+      if (!currentPassword) {
+        return res.status(400).json({ message: "Current password is required to change password." });
+      }
+
+      // Verify current password
+      const isMatch = await bcrypt.compare(currentPassword, user.password);
+      if (!isMatch) {
+        return res.status(401).json({ message: "Current password is incorrect." });
+      }
+
+      // Validate new password strength
+      if (newPassword.length < 8) {
+        return res.status(400).json({ message: "Password must be at least 8 characters long." });
+      }
+
+      // Hash and update new password
+      user.password = await bcrypt.hash(newPassword, 10);
+      shouldUpdateToken = true; // Password changes should trigger token update
+    }
+
+    // Save updated user
+    const updatedUser = await user.save();
+
+    // Generate new token if needed
+    let newToken;
+    if (shouldUpdateToken) {
+      newToken = jwt.sign(
+        { 
+          id: updatedUser._id, 
+          name: updatedUser.name, 
+          email: updatedUser.email, 
+          role: updatedUser.role 
+        },
+        process.env.JWT_SECRET,
+        { expiresIn: "7d" }
+      );
+
+      // Set the new cookie
+      res.cookie("token", newToken, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "strict",
+        maxAge: 7 * 24 * 60 * 60 * 1000,
+      });
+    }
+
+    // Prepare response data
+    const userData = {
+      _id: updatedUser._id,
+      name: updatedUser.name,
+      email: updatedUser.email,
+      role: updatedUser.role,
+      createdAt: updatedUser.createdAt,
+      updatedAt: updatedUser.updatedAt
+    };
+
+    // Send notification email
+    try {
+      await transporter.sendMail({
+        from: process.env.EMAIL_FROM,
+        to: updatedUser.email,
+        subject: "Your Profile Has Been Updated",
+        html: `
+          <p>Dear ${updatedUser.name},</p>
+          <p>Your profile information has been successfully updated.</p>
+          ${newPassword ? `<p><strong>Security Notice:</strong> Your password has been changed. If you didn't make this change, please contact support immediately.</p>` : ''}
+          <br/>
+          <p>Best regards,</p>
+          <p>The ${process.env.APP_NAME} Team</p>
+        `
+      });
+    } catch (emailError) {
+      console.error("Failed to send notification email:", emailError);
+    }
+
+    res.status(200).json({
+      message: "Profile updated successfully",
+      user: userData,
+      token: shouldUpdateToken ? newToken : undefined,
+      tokenUpdated: shouldUpdateToken
+    });
+
+  } catch (error) {
+    console.error("Profile update error:", error);
+    res.status(500).json({ 
+      message: "An error occurred while updating your profile",
+      error: process.env.NODE_ENV === 'development' ? error.message : undefined
+    });
   }
 };
 
@@ -601,9 +725,9 @@ export const getSupervisorById = async (req, res) => {
   try {
     const { id } = req.params;
     const supervisor = await Supervisor.find({ faculty_id: id })
-      .populate("faculty_id", "name role ")
-      .populate("student_id", "name role")
-      .populate("committee", "name role");
+      .populate("faculty_id", "name role email")
+      .populate("student_id", "name role email")
+      .populate("committee", "name role email");
 
 
     if (!supervisor) {
@@ -950,19 +1074,19 @@ export const createEquipment = async (req, res) => {
     const equipment = await Equipment.create(req.body);
 
     // Create the corresponding expense record
-    const expense = await Expense.create({
-      srp_id: funding_by_srp_id,
-      item: name,
-      amount,
-      head: "Equipment",
-      payment_date: date_of_purchase,
-    });
+    // const expense = await Expense.create({
+    //   srp_id: funding_by_srp_id,
+    //   item: name,
+    //   amount,
+    //   head: "Equipment",
+    //   payment_date: date_of_purchase,
+    // });
 
     // Deduct the amount from the equipment budget and save
     // budget.equipment -= amount;
     // await budget.save();
 
-    res.status(201).json({ message: "Equipment and expense created successfully.", equipment, expense });
+    res.status(201).json({ message: "Equipment and expense created successfully.", equipment });
   } catch (error) {
     console.error("Error creating equipment:", error);
     res.status(500).json({ message: "Internal server error.", error: error.message });

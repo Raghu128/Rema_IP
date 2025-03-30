@@ -1,386 +1,15 @@
-// import React, { useState, useEffect } from "react";
-// import { useSelector } from "react-redux";
-// import axios from "axios";
-// import "../../styles/AddSupervisorForm.css";
-// import { useNavigate } from "react-router-dom";
-
-// const AddSupervisorForm = () => {
-//   const { user } = useSelector((state) => state.user);
-//   const navigate = useNavigate();
-
-//   const [formData, setFormData] = useState({
-//     faculty_id: "",
-//     student_id: "",
-//     joining: "",
-//     thesis_title: "",
-//     committee: [],  // This will hold an array of selected faculty IDs
-//     stipend: "0",
-//     funding_source: "",
-//     srpId: null,
-//   });
-
-//   const [students, setStudents] = useState([]);
-//   const [supervisors, setSupervisors] = useState([]); // Supervisors for SRP
-//   const [supervisorList, setSupervisorList] = useState([]); // All supervisors
-//   const [selectedSupervisor, setSelectedSupervisor] = useState(null);
-//   const [message, setMessage] = useState("");
-//   const [sponsors, setSponsor] = useState([]);
-
-
-//   // Fetch sponsors based on user.id
-//   useEffect(() => {
-//     const fetchSponsors = async () => {
-//       try {
-//         if (user?.id) {
-//           const response = await axios.get(`/api/v1/sponsor-projects/${user.id}`);
-//           setSponsor(response.data); // Store sponsors in state
-//           setMessage("");
-//         }
-//       } catch (error) {
-//         console.error("Error fetching sponsors:", error);
-//         setMessage("Failed to fetch sponsors");
-//       }
-//     };
-
-//     fetchSponsors();
-//   }, [user]);
-
-
-//   // Fetch students and supervisors on mount
-//   useEffect(() => {
-//     const fetchData = async () => {
-//       try {
-//         const [usersRes, supervisorsRes] = await Promise.all([
-//           axios.get("/api/v1/user"),
-//           axios.get(`/api/v1/supervisors/${user.id}`),
-//         ]);
-//         setStudents(usersRes.data);
-//         setSupervisorList(supervisorsRes.data);
-//       } catch (error) {
-//         console.error("Error fetching data:", error);
-//         setMessage("Failed to fetch data");
-//       }
-//     };
-
-//     if (user?.id) fetchData();
-//   }, [user]);
-
-//   useEffect(() => {
-//     if (user?.id) {
-//       setFormData((prevData) => ({
-//         ...prevData,
-//         faculty_id: user.id,
-//       }));
-//     }
-//   }, [user]);
-
-//   const handleSelectSupervisor = (supervisor) => {
-//     setSelectedSupervisor(supervisor);
-//     const joiningDate = new Date(supervisor.joining);
-//     const formattedJoiningDate = joiningDate.toISOString().split('T')[0]; // Convert to YYYY-MM-DD format
-//     console.log(supervisor.srpId);
-//     if (user?.id) {
-//       setFormData((prevData) => ({
-//         ...prevData,
-//         faculty_id: user.id,
-//       }));
-//     }
-
-//     setFormData({
-//       faculty_id: supervisor.faculty_id,
-//       student_id: supervisor.student_id,
-//       joining: formattedJoiningDate,
-//       thesis_title: supervisor.thesis_title,
-//       committee: supervisor.committee,
-//       stipend: supervisor.stipend?.$numberDecimal || 0,
-//       funding_source: supervisor.funding_source,
-//       srpId: supervisor.srpId,
-//     });
-//   };
-
-
-
-//   const handleChange = (e) => {
-//     const { name, value, type, checked } = e.target;
-
-//     if (type === "checkbox") {
-//       if (name === "committee") {
-//         setFormData({
-//           ...formData,
-//           committee: checked
-//             ? [...formData.committee, value]
-//             : formData.committee.filter((id) => id !== value),
-//         });
-//       }
-//     } else if (type === "number") {
-//       setFormData({
-//         ...formData,
-//         [name]: parseFloat(value), // Ensures that stipend is stored as a number
-//       });
-//     } else if (type === "date") {
-//       setFormData({
-//         ...formData,
-//         [name]: value, // Ensures date is stored as a string in the correct format
-//       });
-//     } else {
-//       setFormData({
-//         ...formData,
-//         [name]: value,
-//       });
-//     }
-//   };
-
-
-//   const handleSubmit = async (e) => {
-//     e.preventDefault();
-//     // console.log(formData);
-    
-
-//     try {
-//       if (selectedSupervisor) {
-//         // Update existing supervisor
-//         await axios.put(`/api/v1/supervisors/${selectedSupervisor._id}`, formData);
-//         setMessage("Supervisor updated successfully");
-//       } else {
-//         // Add new supervisor
-//         await axios.post("/api/v1/supervisors", formData);
-//         setMessage("Supervisor added successfully");
-//       }
-
-//       setFormData({
-//         faculty_id: "",
-//         student_id: "",
-//         joining: "",
-//         thesis_title: "",
-//         committee: [],
-//         stipend: "0",
-//         funding_source: "",
-//         srpId: null,
-//       });
-
-//       setSelectedSupervisor(null);
-
-//       // Refresh supervisor list
-//       const response = await axios.get(`/api/v1/supervisors/${user.id}`);
-//       setSupervisorList(response.data);
-//     } catch (error) {
-//       console.error("Error submitting form:", error);
-//       setMessage("Failed to submit form");
-//     }
-//   };
-
-//   const handleDeleteSupervisor = async (id) => {
-//     try {
-//       await axios.delete(`/api/v1/supervisors/${id}`);
-//       setMessage("Supervisor deleted successfully");
-//       setSupervisorList(supervisorList.filter((sup) => sup._id !== id));
-//     } catch (error) {
-//       console.error("Error deleting supervisor:", error);
-//       setMessage("Failed to delete supervisor");
-//     }
-//   };
-
-
-//   return (
-//     <div className="supervisor-form-container">
-//       <button onClick={() => navigate(-1)}>Go Back</button>
-//       <h2 className="supervisor-title">
-//         {selectedSupervisor ? "Update Supervisor" : "Add Supervisor"}
-//       </h2>
-//       {message && <p className="supervisor-message">{message}</p>}
-
-//       {/* List of Existing Supervisors */}
-//       <div className="supervisor-list">
-//         <h3>Existing Supervisors</h3>
-//         {supervisorList.length > 0 ? (
-//           <ul>
-//             {supervisorList.map((supervisor) => (
-//               <li key={supervisor._id} className="supervisor-item">
-//                 <p>
-//                  {supervisor.thesis_title}
-//                 </p>
-//                 <div className="supervisor-edit-container">
-//                 <button
-//                   className="supervisor-edit-button"
-//                   onClick={() => handleSelectSupervisor(supervisor)}
-//                 >
-//                   Edit
-//                 </button>
-//                 <button
-//                   className="supervisor-delete-button"
-//                   onClick={() => handleDeleteSupervisor(supervisor._id)}
-//                 >
-//                   Delete
-//                 </button>
-//                 </div>
-//               </li>
-//             ))}
-//           </ul>
-//         ) : (
-//           <p>No supervisors found</p>
-//         )}
-//       </div>
-
-//       {/* Add or Update Form */}
-//       <form className="supervisor-form" onSubmit={handleSubmit}>
-//         <div className="supervisor-field">
-//           <label htmlFor="student_id" className="supervisor-label">Student:</label>
-//           <select
-//             id="student_id"
-//             name="student_id"
-//             value={formData.student_id || ""}
-//             onChange={handleChange}
-//             required
-//             className="supervisor-select"
-//           >
-//             <option value="">Select a student</option>
-//             {students
-//               .filter((student) => student.role !== "faculty" && student.role !== "admin")
-//               .map((student) => (
-//                 <option key={student._id} value={student._id}>
-//                   {student.name} ({student.email})
-//                 </option>
-//               ))}
-//           </select>
-//         </div>
-
-//         <div className="supervisor-field">
-//           <label htmlFor="joining" className="supervisor-label">Joining Date:</label>
-//           <input
-//             type="date"
-//             id="joining"
-//             name="joining"
-//             value={formData.joining}
-//             onChange={handleChange}
-//             required
-//             className="supervisor-input"
-//           />
-//         </div>
-
-//         <div className="supervisor-field">
-//           <label htmlFor="thesis_title" className="supervisor-label">Thesis Title:</label>
-//           <input
-//             type="text"
-//             id="thesis_title"
-//             name="thesis_title"
-//             value={formData.thesis_title}
-//             onChange={handleChange}
-//             required
-//             className="supervisor-input"
-//           />
-//         </div>
-
-//         <div className="supervisor-field">
-//           <label className="supervisor-label">Committee (Faculty):</label>
-//           <div className="committee-checkboxes">
-//             {students
-//               .filter((faculty) => faculty.role === "faculty")
-//               .map((faculty) => (
-//                 <div key={faculty._id} className="committee-checkbox">
-//                   <input
-//                     type="checkbox"
-//                     id={`committee-${faculty._id}`}
-//                     name="committee"
-//                     value={faculty._id}
-//                     checked={formData.committee.includes(faculty._id)}
-//                     onChange={handleChange}
-//                   />
-//                   <label htmlFor={`committee-${faculty._id}`}>
-//                     {faculty.name} ({faculty.email})
-//                   </label>
-//                 </div>
-//               ))}
-//           </div>
-//         </div>
-
-//         <div className="supervisor-field">
-//           <label htmlFor="stipend" className="supervisor-label">Stipend:</label>
-//           <input
-//             type="number"
-//             id="stipend"
-//             name="stipend"
-//             value={formData.stipend}
-//             onChange={handleChange}
-//             min="0"
-//             className="supervisor-input"
-//           />
-//         </div>
-
-//         <div className="supervisor-field">
-//           <label htmlFor="funding_source" className="supervisor-label">Funding Source:</label>
-//           <input
-//             type="text"
-//             id="funding_source"
-//             name="funding_source"
-//             value={formData.funding_source}
-//             onChange={handleChange}
-//             className="supervisor-input"
-//           />
-//         </div>
-
-//         {/* <div className="supervisor-field">
-//           <label htmlFor="srpId" className="supervisor-label">Select SRP ID:</label>
-//           <select
-//             id="srpId"
-//             name="srpId"
-//             value={formData.srpId || ""}
-//             onChange={handleChange}
-//             className="supervisor-select"
-//           >
-//             <option value="">Select a Sponsor </option>
-//             {supervisors.map((project) => (
-//               <option key={project._id} value={project.srpId}>
-//                 {project.srpId} ({project.srpId})
-//               </option>
-//             ))}
-//           </select>
-//         </div> */}
-
-//         <div className="supervisor-field">
-//           <label htmlFor="srpId" className="supervisor-label">Select SRP ID:</label>
-//           <select
-//             id="srpId"
-//             name="srpId"
-//             value={formData.srpId || ""}
-//             onChange={handleChange}
-//             className="supervisor-select"
-//           >
-//             <option value="">Select a Sponsor</option>
-//             {sponsors.map((sponsor) => (
-//               <option key={sponsor._id} value={sponsor._id}>
-//                 {sponsor.agency}
-//               </option>
-//             ))}
-//           </select>
-//         </div>
-
-
-//         <button type="submit" className="supervisor-button">
-//           {selectedSupervisor ? "Update Supervisor" : "Add Supervisor"}
-//         </button>
-
-
-//       </form>
-//     </div>
-//   );
-// };
-
-// export default AddSupervisorForm;
-
-
-
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import axios from "axios";
-import "../../styles/AddSupervisorForm.css";
 import { useNavigate } from "react-router-dom";
+import "../../styles/AddSupervisorForm.css";
 
 const AddSupervisorForm = () => {
     const { user } = useSelector((state) => state.user);
     const navigate = useNavigate();
 
     const [formData, setFormData] = useState({
-        faculty_id: "",
+        faculty_id: user?._id || "",
         student_id: "",
         joining: new Date().toISOString().split("T")[0],
         thesis_title: "",
@@ -389,217 +18,299 @@ const AddSupervisorForm = () => {
         funding_source: "",
         srpId: null,
     });
-
-    const [students, setStudents] = useState([]);
-    const [supervisorList, setSupervisorList] = useState([]);
-    const [message, setMessage] = useState("");
-    const [sponsors, setSponsors] = useState([]);
+    const [facultySearch, setFacultySearch] = useState("");
+    const [supervisors, setSupervisors] = useState([]); 
     const [facultyMembers, setFacultyMembers] = useState([]);
-    
+    const [sponsors, setSponsors] = useState([]);
+    const [message, setMessage] = useState({ text: "", type: "" });
+    const [loading, setLoading] = useState(false);
+
+    // Extract all unique students from supervisors data
+    const students = Array.from(new Set(
+        supervisors.map(sup => sup.student_id)
+    ));
 
     useEffect(() => {
         if (!user) {
-            navigate("/"); // Redirect to home if user is null
+            navigate("/");
+        } else {
+            fetchData();
         }
     }, [user, navigate]);
 
-    
-
-    const fetchAllData = async () => { // Combine API calls for efficiency
-    try {
-            const [usersRes, supervisorsRes, sponsorsRes] = await Promise.all([
-                axios.get("/api/v1/user"),
-                axios.get(`/api/v1/supervisors/${user.id}`), // Fetch supervisors for logged-in faculty
-                user?.id ? axios.get(`/api/v1/sponsor-projects/${user.id}`) : Promise.resolve([]), // Only fetch sponsors if user is logged in
-                axios.get("/api/v1/user") //fetch faculty
+    const filteredFaculty = facultyMembers.filter(faculty => 
+        faculty.name.toLowerCase().includes(facultySearch.toLowerCase()) ||
+        faculty.email.toLowerCase().includes(facultySearch.toLowerCase())
+    );
+    const fetchData = async () => {
+        setLoading(true);
+        try {
+            const [supervisorsRes, facultyRes, sponsorsRes] = await Promise.all([
+                axios.get(`/api/v1/supervisors/${user?.id}`),
+                axios.get("/api/v1/user/faculty"),
+                axios.get(`/api/v1/sponsor-projects/${user?.id}`)
             ]);
-            setStudents(usersRes.data);
-            setSupervisorList(supervisorsRes.data);
-            
+
+            setSupervisors(supervisorsRes.data);
+            setFacultyMembers(facultyRes.data.filter(f => f._id !== user._id));
             setSponsors(sponsorsRes.data);
-                setFacultyMembers(usersRes.data.filter(fuser => fuser.role === 'faculty' && fuser._id !== user?.id));
+            setMessage({ text: "", type: "" });
+            
         } catch (error) {
             console.error("Error fetching data:", error);
-            setMessage("Error fetching data. Please try again later.");
-
+            setMessage({ 
+                text: "Error fetching data. Please try again later.", 
+                type: "error" 
+            });
+        } finally {
+            setLoading(false);
         }
-    }
-    useEffect(() => {
-
-        if (user?.id) {
-            fetchAllData();
-        }
-
-    }, [user]);
-
-    useEffect(() => {
-        if (user?.id) {
-            setFormData((prevData) => ({
-                ...prevData,
-                faculty_id: user.id,
-            }));
-        }
-    }, [user?.id]);
+    };
 
     const handleStudentChange = (e) => {
         const selectedStudentId = e.target.value;
-        const existingSupervisor = supervisorList.find((sup) => sup.student_id._id === selectedStudentId);
-    
+        const existingSupervisor = supervisors.find(sup => sup.student_id._id === selectedStudentId);
+
         if (existingSupervisor) {
-            const joiningDate = new Date(existingSupervisor.joining).toISOString().split("T")[0];
-            
-    
             setFormData({
-                faculty_id: user.id,
+                faculty_id: user._id,
                 student_id: existingSupervisor.student_id._id,
-                joining: joiningDate,
+                joining: new Date(existingSupervisor.joining).toISOString().split("T")[0],
                 thesis_title: existingSupervisor.thesis_title,
-                committee: existingSupervisor.committee.map(member => member._id), // Extract only faculty _id
+                committee: existingSupervisor.committee.map(member => member._id),
                 stipend: existingSupervisor.stipend?.$numberDecimal || "0",
                 funding_source: existingSupervisor.funding_source,
                 srpId: existingSupervisor.srpId?._id || null,
             });
         } else {
-            setFormData({
-                faculty_id: user.id,
+            setFormData(prev => ({
+                ...prev,
                 student_id: selectedStudentId,
-                joining:  new Date().toISOString().split("T")[0],
-                thesis_title: "",
-                committee: [], // Empty array to reset committee selection
-                stipend: "0",
-                funding_source: "",
-                srpId: null,
-            });
-        }
-    };
-    
-
-    const handleChange = (e) => {
-        const { name, value, type, checked } = e.target;
-        if (type === "checkbox" && name === "committee") {
-            setFormData({
-                ...formData,
-                committee: checked
-                    ? [...formData.committee, value]
-                    : formData.committee.filter((id) => id !== value),
-            });
-        } else {
-            setFormData({ ...formData, [name]: value });
-        }
-    };
-
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        
-        
-        try {
-            const existingSupervisor = supervisorList.find((sup) => sup.student_id._id === formData.student_id);
-            let response; // Declare response variable
-            if (existingSupervisor) {
-                response = await axios.put(`/api/v1/supervisors/${existingSupervisor._id}`, formData);
-                setMessage("Supervisor updated successfully");
-            } else {
-                response = await axios.post("/api/v1/supervisors", formData);
-                setMessage("Supervisor added successfully");
-            }
-
-            fetchAllData();
-            // Reset form, but DO NOT reset faculty_id
-            setFormData((prevData) => ({
-                ...prevData, // Keep the current faculty_id
-                student_id: "",
-                joining: "",
                 thesis_title: "",
                 committee: [],
                 stipend: "0",
                 funding_source: "",
                 srpId: null,
             }));
+        }
+    };
 
+    const handleChange = (e) => {
+        const { name, value, type, checked } = e.target;
+        
+        if (type === "checkbox" && name === "committee") {
+            setFormData(prev => ({
+                ...prev,
+                committee: checked
+                    ? [...prev.committee, value]
+                    : prev.committee.filter(id => id !== value)
+            }));
+        } else {
+            setFormData(prev => ({ ...prev, [name]: value }));
+        }
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        
+        try {
+            const existingSupervisor = supervisors.find(sup => sup.student_id._id === formData.student_id);
+            const url = existingSupervisor 
+                ? `/api/v1/supervisors/${existingSupervisor._id}`
+                : "/api/v1/supervisors";
+            
+            const method = existingSupervisor ? "put" : "post";
+            
+            await axios[method](url, formData);
+            
+            setMessage({
+                text: `Supervisor ${existingSupervisor ? "updated" : "added"} successfully`,
+                type: "success"
+            });
+            
+            fetchData();
+            
+            // Reset form but keep faculty_id
+            setFormData({
+                faculty_id: user._id,
+                student_id: "",
+                joining: new Date().toISOString().split("T")[0],
+                thesis_title: "",
+                committee: [],
+                stipend: "0",
+                funding_source: "",
+                srpId: null,
+            });
+            
         } catch (error) {
             console.error("Error submitting form:", error);
-            setMessage("Failed to submit form");
+            setMessage({
+                text: error.response?.data?.message || "Failed to submit form",
+                type: "error"
+            });
         }
     };
 
     return (
-        <div className="supervisor-form-container">
-            <button onClick={() => navigate(-1)} className="supervisor-back-btn">Go Back</button>
-            <h2 className="supervisor-title">{formData.student_id ? "Update Supervisor" : "Add Supervisor"}</h2>
-            {message && <p className="supervisor-message">{message}</p>}
-            <form className="supervisor-form" onSubmit={handleSubmit}>
-                <div className="form-group">
-                    <label htmlFor="student_id">Student:</label>
-                    <select id="student_id" name="student_id" value={formData.student_id} onChange={handleStudentChange} required>
-                        <option value="">Select a student</option>
-                        {students
-                            .filter((student) => student.role !== "faculty" && student.role !== "admin")
-                            .map((student) => (
-                                <option key={student._id} value={student._id}>
-                                    {student.name} ({student.email})
-                                </option>
-                            ))}
-                    </select>
+        <div className="supervisor-container">
+            <button onClick={() => navigate(-1)} className="supervisor-back-button">
+                &larr; Go Back
+            </button>
+            
+            <div className="supervisor-form-card">
+                <h2 className="supervisor-form-title">
+                    {formData.student_id ? "Update Supervision" : "Add New Supervision"}
+                </h2>
+                
+                {loading && <div className="supervisor-loading">Loading...</div>}
+                {message.text && (
+                    <div className={`supervisor-message supervisor-message-${message.type}`}>
+                        {message.text}
+                    </div>
+                )}
+                
+                <form onSubmit={handleSubmit} className="supervisor-form">
+                    <div className="supervisor-form-grid">
+                        {/* Student Selection */}
+                        <div className="supervisor-form-group">
+                            <label className="supervisor-label">Student</label>
+                            <select
+                                className="supervisor-select"
+                                name="student_id"
+                                value={formData.student_id}
+                                onChange={handleStudentChange}
+                                required
+                            >
+                                <option value="">Select a student</option>
+                                {students.map(student => (
+                                    <option key={student._id} value={student._id}>
+                                        {student.name} ({student.email})
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+                        
+                        {/* Joining Date */}
+                        <div className="supervisor-form-group">
+                            <label className="supervisor-label">Joining Date</label>
+                            <input
+                                className="supervisor-input"
+                                type="date"
+                                name="joining"
+                                value={formData.joining}
+                                onChange={handleChange}
+                                required
+                            />
+                        </div>
+                        
+                        {/* Thesis Title */}
+                        <div className="supervisor-form-group">
+                            <label className="supervisor-label">Thesis Title</label>
+                            <input
+                                className="supervisor-input"
+                                type="text"
+                                name="thesis_title"
+                                value={formData.thesis_title}
+                                onChange={handleChange}
+                                required
+                            />
+                        </div>
+                        
+                        {/* Committee Members */}
+                        <div className="supervisor-form-group supervisor-committee-group">
+                            <label className="supervisor-label">Committee Members</label>
+                            <div className="supervisor-search-container">
+                    <input
+                        type="text"
+                        placeholder="Search faculty..."
+                        value={facultySearch}
+                        onChange={(e) => setFacultySearch(e.target.value)}
+                        className="supervisor-search-input"
+                    />
                 </div>
-
-                <div className="form-group">
-                    <label htmlFor="joining">Joining Date:</label>
-                    <input type="date" id="joining" name="joining" value={formData.joining} onChange={handleChange} required />
+                
+                <div className="supervisor-committee-checkboxes">
+                    {filteredFaculty.length > 0 ? (
+                        filteredFaculty.map(faculty => (
+                            <div key={faculty._id} className="supervisor-checkbox-item">
+                                <input
+                                    type="checkbox"
+                                    id={`committee-${faculty._id}`}
+                                    name="committee"
+                                    value={faculty._id}
+                                    checked={formData.committee.includes(faculty._id)}
+                                    onChange={handleChange}
+                                    className="supervisor-checkbox"
+                                />
+                                <label htmlFor={`committee-${faculty._id}`} className="supervisor-checkbox-label">
+                                    {faculty.name} ({faculty.email})
+                                </label>
+                            </div>
+                        ))
+                    ) : (
+                        <div className="supervisor-no-results">
+                            No faculty members found
+                        </div>
+                    )}
                 </div>
-
-                <div className="form-group">
-                    <label htmlFor="thesis_title">Thesis Title:</label>
-                    <input type="text" id="thesis_title" name="thesis_title" value={formData.thesis_title} onChange={handleChange} required />
-                </div>
-
-                <div>
-                <label>Committee Members:</label>
-            <div className="committee-members"> {/* Add appropriate styling */}
-                {facultyMembers.map((faculty) => (
-                <label key={faculty._id} className="committee-member-label"> {/* Add styling for each label */}
-                        <input
-    type="checkbox"
-    name="committee"
-    value={faculty._id}
-    checked={formData.committee.includes(faculty._id)} // Ensure checkbox is checked if faculty is in committee
-    onChange={handleChange}
-/>
-
-                        {faculty.name}
-                    </label>
-                    ))}
-                </div>
-                </div>
-
-                <div className="form-group">
-                    <label htmlFor="stipend">Stipend:</label>
-                    <input type="number" id="stipend" name="stipend" value={formData.stipend} onChange={handleChange} />
-                </div>
-
-                <div className="form-group">
-                    <label htmlFor="funding_source">Funding Source:</label>
-                    <input type="text" id="funding_source" name="funding_source" value={formData.funding_source} onChange={handleChange} />
-                </div>
-
-                <div className="form-group">
-                    <label htmlFor="srpId">Select SRP ID:</label>
-                    <select
-                        id="srpId"
-                        name="srpId"
-                        value={formData.srpId || ""}
-                        onChange={handleChange}
+            </div>
+                        
+                        {/* Stipend */}
+                        <div className="supervisor-form-group">
+                            <label className="supervisor-label">Stipend (₹)</label>
+                            <input
+                                className="supervisor-input"
+                                type="number"
+                                name="stipend"
+                                value={formData.stipend}
+                                onChange={handleChange}
+                                min="0"
+                                step="0.01"
+                            />
+                        </div>
+                        
+                        {/* Funding Source */}
+                        <div className="supervisor-form-group">
+                            <label className="supervisor-label">Funding Source</label>
+                            <input
+                                className="supervisor-input"
+                                type="text"
+                                name="funding_source"
+                                value={formData.funding_source}
+                                onChange={handleChange}
+                            />
+                        </div>
+                        
+                        {/* SRP ID */}
+                        {sponsors.length > 0 && (
+                            <div className="supervisor-form-group">
+                                <label className="supervisor-label">Sponsored Research Project</label>
+                                <select
+                                    className="supervisor-select"
+                                    name="srpId"
+                                    value={formData.srpId || ""}
+                                    onChange={handleChange}
+                                >
+                                    <option value="">None</option>
+                                    {sponsors.map(sponsor => (
+                                        <option key={sponsor._id} value={sponsor._id}>
+                                            {sponsor.agency} ({sponsor.title})
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
+                        )}
+                    </div>
+                    
+                    <button 
+                        type="submit" 
+                        className="supervisor-submit-button" 
+                        disabled={loading}
                     >
-                        <option value="">Select a Sponsor</option>
-                        {sponsors.map((sponsor) => (
-                            <option key={sponsor._id} value={sponsor._id}>
-                                {sponsor.agency}
-                            </option>
-                        ))}
-                    </select>
-                </div>
-
-                <button type="submit" className="supervisor-submit-btn">{formData.student_id ? "Update Supervisor" : "Add Supervisor"}</button>
-            </form>
+                        {formData.student_id ? "Update Supervision" : "Add Supervision"}
+                    </button>
+                </form>
+            </div>
         </div>
     );
 };

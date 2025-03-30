@@ -1,211 +1,247 @@
-/* ---------- Global Styling ---------- */
-.supervisor-form-container {
-  max-width: 600px;
-  margin: 40px auto;
-  padding: 25px;
-  background: linear-gradient(135deg, #ffffff, #f9f9f9);
+/* Main Container */
+.supervisor-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Back Button */
+.supervisor-back-button {
+  background: none;
+  border: none;
+  color: #3498db;
+  font-size: 1rem;
+  cursor: pointer;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: color 0.2s;
+}
+
+.supervisor-back-button:hover {
+  color: #2980b9;
+}
+
+/* Form Card */
+.supervisor-form-card {
+  background: white;
   border-radius: 12px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-  font-family: "Poppins", sans-serif;
-  animation: fadeInSlide 0.8s ease-in-out;
-  position: relative;
-  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  padding: 2.5rem;
 }
 
-/* Form Entrance Animation */
-@keyframes fadeInSlide {
-  from {
-      opacity: 0;
-      transform: translateY(-30px);
-  }
-  to {
-      opacity: 1;
-      transform: translateY(0);
-  }
-}
-
-/* Title Animation */
-.supervisor-title {
-  text-align: center;
+/* Form Title */
+.supervisor-form-title {
+  color: #2c3e50;
+  margin-bottom: 1.5rem;
   font-size: 1.8rem;
   font-weight: 600;
-  color: #333;
-  margin-bottom: 20px;
-  position: relative;
-  animation: slideInTitle 0.8s ease-in-out;
+  border-bottom: 2px solid #f1f2f6;
+  padding-bottom: 1rem;
 }
 
-@keyframes slideInTitle {
-  from {
-      opacity: 0;
-      transform: translateY(-20px);
-  }
-  to {
-      opacity: 1;
-      transform: translateY(0);
-  }
-}
-
-/* Floating Background Animation */
-.supervisor-form-container::before {
-  content: "";
-  position: absolute;
-  top: -50px;
-  left: -50px;
-  width: 120px;
-  height: 120px;
-  background: rgba(0, 123, 255, 0.2);
-  border-radius: 50%;
-  z-index: 0;
-  animation: floating 5s infinite alternate ease-in-out;
-}
-
-.supervisor-form-container::after {
-  content: "";
-  position: absolute;
-  bottom: -50px;
-  right: -50px;
-  width: 120px;
-  height: 120px;
-  background: rgba(255, 165, 0, 0.2);
-  border-radius: 50%;
-  z-index: 0;
-  animation: floating 6s infinite alternate ease-in-out;
-}
-
-@keyframes floating {
-  from {
-      transform: translateY(-10px) translateX(-10px);
-  }
-  to {
-      transform: translateY(10px) translateX(10px);
-  }
-}
-
-/* Form Styling */
-.supervisor-form {
-  display: flex;
-  flex-direction: column;
-  position: relative;
-  z-index: 1;
-  gap: 0.8rem;
-}
-
-/* Label Styling */
-label {
-  font-weight: 500;
-  color: #555;
-  margin-bottom: 6px;
-  display: block;
-  font-size: 0.95rem;
-  transition: 0.3s ease-in-out;
-}
-
-/* Floating Label Effect */
-input:focus + label,
-select:focus + label {
-  transform: translateY(-20px);
-  font-size: 0.85rem;
-  color: #007bff;
-}
-
-/* Input Fields */
-input,
-select {
-  width: 100%;
-  padding: 10px;
-  border: 2px solid #ddd;
+/* Loading Indicator */
+.supervisor-loading {
+  padding: 1rem;
+  background: #f8f9fa;
   border-radius: 8px;
-  font-size: 1rem;
-  transition: all 0.3s ease-in-out;
-  background: #fff;
-  position: relative;
-}
-
-/* Glowing Effect on Focus */
-input:focus,
-select:focus {
-  border-color: #007bff;
-  box-shadow: 0 0 12px rgba(0, 123, 255, 0.4);
-  outline: none;
-  transform: scale(1.03);
-}
-
-/* Animated Submit Button */
-button {
-  margin-top: 15px;
-  padding: 12px;
-  background: linear-gradient(135deg, #007bff, #0056b3);
-  color: #fff;
-  border: none;
-  border-radius: 8px;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease-in-out;
-  box-shadow: 0 5px 15px rgba(0, 123, 255, 0.3);
-  position: relative;
-}
-
-/* Button Hover - 3D Bounce */
-button:hover {
-  background: linear-gradient(135deg, #0056b3, #003580);
-  transform: translateY(-3px);
-  box-shadow: 0 8px 20px rgba(0, 123, 255, 0.5);
-}
-
-/* Button Click Effect */
-button:active {
-  transform: scale(0.98);
-}
-
-/* Success/Error Message */
-.supervisor-message {
+  margin-bottom: 1.5rem;
   text-align: center;
-  font-weight: bold;
-  font-size: 1rem;
-  padding: 10px;
-  border-radius: 6px;
-  margin-top: 10px;
-  opacity: 0;
-  animation: fadeInMessage 0.5s ease-in-out forwards;
+  color: #7f8c8d;
 }
 
-@keyframes fadeInMessage {
-  from {
-      opacity: 0;
-      transform: translateY(-10px);
-  }
-  to {
-      opacity: 1;
-      transform: translateY(0);
-  }
+/* Messages */
+.supervisor-message {
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+  font-weight: 500;
 }
 
-.supervisor-message.success {
-  background: #d4edda;
+.supervisor-message-success {
+  background-color: #d4edda;
   color: #155724;
   border: 1px solid #c3e6cb;
 }
 
-.supervisor-message.error {
-  background: #f8d7da;
+.supervisor-message-error {
+  background-color: #f8d7da;
   color: #721c24;
   border: 1px solid #f5c6cb;
 }
 
-/* Responsive Design */
+/* Form Grid */
+.supervisor-form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+/* Form Groups */
+.supervisor-form-group {
+  margin-bottom: 1.2rem;
+}
+
+.supervisor-label {
+  display: block;
+  margin-bottom: 0.6rem;
+  font-weight: 500;
+  color: #34495e;
+  font-size: 0.95rem;
+}
+
+.supervisor-input,
+.supervisor-select {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  border: 1px solid #dfe6e9;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.supervisor-input:focus,
+.supervisor-select:focus {
+  outline: none;
+  border-color: #3498db;
+  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+}
+
+/* Committee Section */
+.supervisor-committee-group {
+  grid-column: span 2;
+}
+
+.supervisor-committee-checkboxes {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1rem;
+  background: #f9f9f9;
+  padding: 1.5rem;
+  border-radius: 8px;
+  border: 1px solid #eee;
+  max-height: 100px; 
+  overflow: scroll;
+  scrollbar-width: none; /* For Firefox */
+  scrollbar-color: #bdc3c7 #f1f1f1; /* For Firefox */
+}
+
+
+
+/* Scrollbar styling */
+.supervisor-committee-checkboxes::-webkit-scrollbar {
+  width: 8px;
+}
+
+.supervisor-committee-checkboxes::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+.supervisor-committee-checkboxes::-webkit-scrollbar-thumb {
+  background: #bdc3c7;
+  border-radius: 4px;
+}
+
+.supervisor-committee-checkboxes::-webkit-scrollbar-thumb:hover {
+  background: #95a5a6;
+}
+
+/* Ensure checkbox items don't overflow */
+.supervisor-checkbox-item {
+  min-width: 0; /* Prevent grid items from overflowing */
+  overflow: hidden; /* Hide any overflow */
+  white-space: nowrap; /* Keep text on one line */
+  text-overflow: ellipsis; /* Add ellipsis if text overflows */
+}
+
+.supervisor-checkbox-item {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.supervisor-checkbox {
+  width: 1.2rem;
+  height: 1.2rem;
+  accent-color: #3498db;
+}
+
+.supervisor-checkbox-label {
+  font-size: 0.95rem;
+  color: #2d3436;
+  cursor: pointer;
+}
+
+/* Submit Button */
+.supervisor-submit-button {
+  background-color: #3498db;
+  color: white;
+  border: none;
+  padding: 1rem 2rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  width: 100%;
+  max-width: 300px;
+  margin: 0 auto;
+  display: block;
+}
+
+.supervisor-submit-button:hover {
+  background-color: #2980b9;
+}
+
+.supervisor-submit-button:disabled {
+  background-color: #bdc3c7;
+  cursor: not-allowed;
+}
+
+/* Responsive Adjustments */
 @media (max-width: 768px) {
-  .supervisor-form-container {
-      width: 90%;
-      padding: 20px;
+  .supervisor-form-grid {
+      grid-template-columns: 1fr;
   }
+  
+  .supervisor-committee-group {
+      grid-column: span 1;
+  }
+  
+  .supervisor-form-card {
+      padding: 1.5rem;
+  }
+}
+/* Faculty Search */
+.supervisor-search-container {
+  margin-bottom: 1rem;
+}
 
-  .supervisor-title {
-      font-size: 1.5rem;
-  }
+.supervisor-search-input {
+  width: 40%;
+  padding: 0.8rem 1rem;
+  border: 1px solid #dfe6e9;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
 
-  button {
-      font-size: 0.95rem;
-  }
+.supervisor-search-input:focus {
+  outline: none;
+  border-color: #3498db;
+  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+}
+
+/* No results message */
+.supervisor-no-results {
+  padding: 1rem;
+  text-align: center;
+  color: #7f8c8d;
+  font-style: italic;
+  background: #f9f9f9;
+  border-radius: 8px;
 }

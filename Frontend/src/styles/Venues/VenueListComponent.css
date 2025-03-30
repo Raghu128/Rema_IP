@@ -1,69 +1,285 @@
-.venue-list-container {
-  width: 30%;
-  min-width: 350px;
-  max-width: 400px;
-  margin: 20px auto;
-  padding: 15px;
-  background: #69a3de8d;
-  border-radius: 10px;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.venue-list-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding-bottom: 10px;
-  border-bottom: 2px solid #ddd;
-}
-
-.venue-list-title {
-  font-size: 18px;
-  font-weight: bold;
-}
-
-.venue-table {
+/* Compact Venue List Styles */
+.compact-venue-list-container {
   width: 100%;
-  border-collapse: collapse;
+  min-width: 250px;
+  max-height: 80vh;
+  overflow-y: auto;
+  padding: 0.5rem;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #2c3e50;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  margin-top: 2rem;
 }
 
-.venue-table th,
-.venue-table td {
-  padding: 8px;
-  text-align: left;
-  font-size: 14px;
+.compact-venue-list-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #e0e3e7;
+  position: sticky;
+  top: 0;
+  background-color: #f8f9fa;
+  z-index: 1;
 }
 
-.venue-row {
-  border-bottom: 1px solid #ddd;
-  transition: all 0.3s ease-in-out;
+.compact-venue-list-title {
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.expand-btn,
-.collapse-btn {
-  padding: 4px 8px;
-  font-size: 12px;
-  background: #007bff;
+.compact-manage-venue-btn {
+  background: none;
+  border: none;
+  width: 3rem;
+  height: 2rem;
+  color: #3498db;
+  cursor: pointer;
+  padding: 0.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.compact-edit-icon {
+  font-size: 0.9rem;
+}
+
+/* No Venues Message */
+.compact-no-venues-message {
+  text-align: center;
+  padding: 0.5rem 0;
+}
+
+.compact-add-venue-btn {
+  width: 100%;
+  background-color: #3498db;
   color: white;
   border: none;
-  border-radius: 5px;
+  border-radius: 4px;
+  padding: 0.5rem;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.compact-add-venue-btn:hover {
+  background-color: #2980b9;
+}
+
+/* Venue Cards */
+.compact-venue-table-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.compact-venue-card {
+  background-color: white;
+  border-radius: 6px;
+  padding: 0.5rem;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.compact-venue-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+.compact-venue-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.compact-venue-name,
+.compact-venue-location {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.8rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.compact-venue-name {
+  font-weight: 500;
+  margin-bottom: 0.2rem;
+}
+
+.compact-venue-icon,
+.compact-location-icon {
+  color: #7f8c8d;
+  font-size: 0.7rem;
+  flex-shrink: 0;
+}
+
+.compact-expand-collapse-btn {
+  background: none;
+  border: none;
+  color: #3498db;
+  cursor: pointer;
+  padding: 0.1rem;
+  height: 1rem;
+  width: 2rem;
+  font-size: 0.8rem;
+}
+
+
+/* Venue Meta */
+.compact-venue-meta {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 0.3rem;
+  font-size: 0.75rem;
+}
+
+.compact-deadline {
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.compact-deadline.urgent {
+  color: #e74c3c;
+}
+
+.compact-deadline.warning {
+  color: #f39c12;
+}
+
+.compact-deadline.normal {
+  color: #27ae60;
+}
+
+.compact-added-by {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  color: #7f8c8d;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-left: 0.5rem;
+}
+
+.compact-user-icon {
+  font-size: 0.7rem;
+}
+
+/* Expanded Details */
+.compact-venue-details {
+  margin-top: 0.5rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid #eee;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.3rem;
+  font-size: 0.7rem;
+}
+
+.compact-detail-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.compact-detail-label {
+  color: #7f8c8d;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.compact-detail-value {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Scrollbar */
+.compact-venue-list-container::-webkit-scrollbar {
+  width: 6px;
+}
+
+.compact-venue-list-container::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 3px;
+}
+
+.compact-venue-list-container::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 3px;
+}
+
+.compact-venue-list-container::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
+/* URL Styles */
+.compact-url-item {
+  margin-top: 0.3rem;
+  display: flex;
+  align-items: center;
+}
+
+.compact-url-link {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  color: #3498db;
+  font-size: 0.7rem;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.compact-url-link:hover {
+  text-decoration: underline;
+}
+
+.compact-url-icon {
+  fill: currentColor;
+}
+
+.compact-url-text {
+  font-size: 0.7rem;
+  color: #7f8c8d;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   cursor: pointer;
 }
 
-.expand-btn:hover,
-.collapse-btn:hover {
-  background: #0056b3;
+.compact-url-button {
+  background: none;
+  border: none;
+  color: #3498db;
+  font-size: 0.7rem;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.2rem 0.4rem;
+  border-radius: 3px;
+  cursor: pointer;
 }
 
-.venue-details {
-  background: #e9ecef;
-  padding: 10px;
-  border-radius: 5px;
-  font-size: 12px;
+.compact-url-button:hover {
+  background-color: #f0f7ff;
 }
 
-.no-venues {
-  text-align: center;
-  font-size: 14px;
-  color: #777;
+.compact-url-domain {
+  font-size: 0.7rem;
+  color: #7f8c8d;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }

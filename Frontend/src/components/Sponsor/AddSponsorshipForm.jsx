@@ -1,16 +1,22 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
-import "../../styles/Sponsor/AddSponsorProjectForm.css"; // Make sure this path is correct
+import "../../styles/Sponsor/AddSponsorProjectForm.css";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowLeft, faPlus, faEdit, faTrash, faSearch } from '@fortawesome/free-solid-svg-icons';
+import { 
+  faArrowLeft, faPlus, faEdit, faTrash, faSearch,
+  faBuilding, faFileAlt, faLink, faCalendarAlt,
+  faClock, faMoneyBillWave, faComment, faUserTie
+} from '@fortawesome/free-solid-svg-icons';
+import Loader from '../Loader';
 
 const AddSponsorProjectForm = () => {
     const { user } = useSelector((state) => state.user);
     const navigate = useNavigate();
 
-    const initialFormState = {
+    // Initialize all state variables at the top
+    const [formData, setFormData] = useState({
         faculty_id: user ? user.id : "",
         agency: "",
         title: "",
@@ -20,13 +26,12 @@ const AddSponsorProjectForm = () => {
         duration: "",
         budget: "",
         remarks: "",
-    };
-
-    const [formData, setFormData] = useState(initialFormState);
+    });
     const [sponsors, setSponsors] = useState([]);
     const [selectedSponsor, setSelectedSponsor] = useState(null);
     const [message, setMessage] = useState("");
     const [searchQuery, setSearchQuery] = useState("");
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         if (!user) {
@@ -38,10 +43,13 @@ const AddSponsorProjectForm = () => {
         if (user && user.id) {
             const fetchSponsors = async () => {
                 try {
+                    setLoading(true);
                     const response = await axios.get(`/api/v1/sponsor-projects/${user.id}`);
                     setSponsors(response.data);
+                    setLoading(false);
                 } catch (error) {
                     console.error("Error fetching sponsors:", error);
+                    setLoading(false);
                 }
             };
             fetchSponsors();
@@ -82,6 +90,7 @@ const AddSponsorProjectForm = () => {
         };
 
         try {
+            setLoading(true);
             if (selectedSponsor) {
                 await axios.put(`/api/v1/sponsor-projects/${selectedSponsor._id}`, requestData);
                 setMessage("Sponsorship Project updated successfully!");
@@ -93,9 +102,11 @@ const AddSponsorProjectForm = () => {
             const response = await axios.get(`/api/v1/sponsor-projects/${user.id}`);
             setSponsors(response.data);
             resetForm();
+            setLoading(false);
         } catch (error) {
             console.error(error);
             setMessage("Failed to save sponsorship project");
+            setLoading(false);
         }
     };
 
@@ -103,119 +114,312 @@ const AddSponsorProjectForm = () => {
         if (!selectedSponsor) return;
 
         try {
+            setLoading(true);
             await axios.delete(`/api/v1/sponsor-projects/${selectedSponsor._id}`);
             setMessage("Sponsorship Project deleted successfully!");
 
             const response = await axios.get(`/api/v1/sponsor-projects/${user.id}`);
             setSponsors(response.data);
             resetForm();
+            setLoading(false);
         } catch (error) {
             console.error(error);
             setMessage("Failed to delete sponsorship project");
+            setLoading(false);
         }
     };
 
     const resetForm = () => {
         setSelectedSponsor(null);
-        setFormData(initialFormState);
+        setFormData({
+            faculty_id: user ? user.id : "",
+            agency: "",
+            title: "",
+            cfp_url: "",
+            status: "active",
+            start_date: "",
+            duration: "",
+            budget: "",
+            remarks: "",
+        });
     };
 
     const filteredSponsors = sponsors.filter((sponsor) =>
-        sponsor.title.toLowerCase().includes(searchQuery.toLowerCase())
+        sponsor.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        sponsor.agency.toLowerCase().includes(searchQuery.toLowerCase())
     );
 
+    if (loading) return <Loader />;
     return (
-        <div className="add-sponsor-container">
-            <button onClick={() => navigate(-1)} className="add-sponsor-back-btn">
-                <FontAwesomeIcon icon={faArrowLeft} /> Go Back
-            </button>
-            <h2 className="add-sponsor-title">
-                {selectedSponsor ? "Edit Sponsorship Project" : "Add Sponsorship Project"}
-            </h2>
-            {message && <p className="add-sponsor-message">{message}</p>}
-
-            {/* Search Existing Projects */}
-            <div className="add-sponsor-search-container">
-                <FontAwesomeIcon icon={faSearch} className="add-sponsor-search-icon" />
-                <input
-                    type="text"
-                    placeholder="Search existing projects..."
-                    className="add-sponsor-search-input"
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                />
-            </div>
-
-            <div className="add-sponsor-list">
-                <h3 className="add-sponsor-list-title">Existing Sponsorship Projects</h3>
-                <ul className="add-sponsor-project-list">
-                    {filteredSponsors.map((sponsor) => (
-                        <li key={sponsor._id} onClick={() => handleSelectSponsor(sponsor)} className="add-sponsor-project-item">
-                            {sponsor.title} - {sponsor.agency}
-                        </li>
-                    ))}
-                </ul>
-            </div>
-
-            <form onSubmit={handleSubmit} className="add-sponsor-form">
-                <div className="add-sponsor-form-row">
-                    <div className="add-sponsor-group">
-                        <label htmlFor="agency">Agency:</label>
-                        <input type="text" id="agency" name="agency" value={formData.agency} onChange={handleChange} required />
-                    </div>
-                    <div className="add-sponsor-group">
-                        <label htmlFor="title">Project Title:</label>
-                        <input type="text" id="title" name="title" value={formData.title} onChange={handleChange} required />
-                    </div>
-                </div>
-                <div className="add-sponsor-form-row">
-                    <div className="add-sponsor-group">
-                        <label htmlFor="cfp_url">CFP URL:</label>
-                        <input type="url" id="cfp_url" name="cfp_url" value={formData.cfp_url} onChange={handleChange} />
-                    </div>
-                    <div className="add-sponsor-group">
-                        <label htmlFor="status">Status:</label>
-                        <select id="status" name="status" value={formData.status} onChange={handleChange} required>
-                            <option value="active">Active</option>
-                            <option value="inactive">Inactive</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div className="add-sponsor-form-row">
-                    <div className="add-sponsor-group">
-                        <label htmlFor="start_date">Start Date:</label>
-                        <input type="date" id="start_date" name="start_date" value={formData.start_date} onChange={handleChange} required />
-                    </div>
-
-                    <div className="add-sponsor-group">
-                        <label htmlFor="duration">Duration (months):</label>
-                        <input type="number" id="duration" name="duration" value={formData.duration} onChange={handleChange} required min="1" />
-                    </div>
-                </div>
-
-                <div className="add-sponsor-form-row">
-                  <div className="add-sponsor-group">
-                      <label htmlFor="budget">Budget:</label>
-                      <input type="number" id="budget" name="budget" value={formData.budget} onChange={handleChange} required min="0" />
-                    </div>
-                    <div className="add-sponsor-group">
-                        <label htmlFor="remarks">Remarks:</label>
-                        <textarea id="remarks" name="remarks" value={formData.remarks} onChange={handleChange} />
-                    </div>
-                </div>
-
-                <div className="add-sponsor-actions">
-                    <button type="submit" className="add-sponsor-submit-btn">
-                        {selectedSponsor ? <span><FontAwesomeIcon icon={faEdit} /> Update Project</span> : <span><FontAwesomeIcon icon={faPlus} /> Add Project</span>}
-                    </button>
-                    {selectedSponsor && (
-                        <button type="button" className="add-sponsor-delete-btn" onClick={handleDelete}>
-                            <FontAwesomeIcon icon={faTrash} /> Delete Project
-                        </button>
+        <div className="sponsor-form-container">
+            <div className="sponsor-form-header">
+                <button onClick={() => navigate(-1)} className="sponsor-form-back-btn">
+                    <FontAwesomeIcon icon={faArrowLeft} /> Back to Dashboard
+                </button>
+                <div className="header-content">
+                    <h2 className="sponsor-form-title">
+                        <FontAwesomeIcon icon={faUserTie} className="title-icon" />
+                        {selectedSponsor ? "Edit Sponsorship Project" : "Create New Sponsorship Project"}
+                    </h2>
+                    {message && (
+                        <div className={`sponsor-form-message ${message.includes("success") ? "success" : "error"}`}>
+                            {message}
+                            <button onClick={() => setMessage("")} className="message-close">
+                                &times;
+                            </button>
+                        </div>
                     )}
                 </div>
-            </form>
+            </div>
+
+            <div className="sponsor-form-layout">
+                {/* Existing Projects Panel */}
+                <div className="sponsor-form-projects-panel">
+                    <div className="panel-card">
+                        <div className="projects-panel-header">
+                            <h3 className="panel-title">
+                                <FontAwesomeIcon icon={faFileAlt} /> Your Projects
+                            </h3>
+                            <div className="projects-search-container">
+                                <input
+                                    type="text"
+                                    placeholder="Search projects..."
+                                    value={searchQuery}
+                                    onChange={(e) => setSearchQuery(e.target.value)}
+                                />
+                                <FontAwesomeIcon icon={faSearch} className="projects-search-icon" />
+                            </div>
+                        </div>
+                        
+                        <div className="projects-list-container">
+                            {filteredSponsors.length > 0 ? (
+                                <ul className="projects-list">
+                                    {filteredSponsors.map((sponsor) => (
+                                        <li 
+                                            key={sponsor._id} 
+                                            onClick={() => handleSelectSponsor(sponsor)}
+                                            className={`project-item ${selectedSponsor?._id === sponsor._id ? "active" : ""}`}
+                                        >
+                                            <div className="project-header">
+                                                <h4 className="project-title">{sponsor.title}</h4>
+                                                <span className={`status-badge ${sponsor.status}`}>
+                                                    {sponsor.status}
+                                                </span>
+                                            </div>
+                                            <div className="project-agency">
+                                                <FontAwesomeIcon icon={faBuilding} /> {sponsor.agency}
+                                            </div>
+                                            {sponsor.start_date && (
+                                                <div className="project-date">
+                                                    <FontAwesomeIcon icon={faCalendarAlt} /> {new Date(sponsor.start_date).toLocaleDateString()}
+                                                </div>
+                                            )}
+                                        </li>
+                                    ))}
+                                </ul>
+                            ) : (
+                                <div className="projects-empty-state">
+                                    <div className="empty-icon">
+                                        <FontAwesomeIcon icon={faFileAlt} size="2x" />
+                                    </div>
+                                    <p>No projects found</p>
+                                    {searchQuery && (
+                                        <button 
+                                            onClick={() => setSearchQuery("")}
+                                            className="clear-search-btn"
+                                        >
+                                            Clear search
+                                        </button>
+                                    )}
+                                    
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                </div>
+
+                {/* Form Panel */}
+                <div className="sponsor-form-panel">
+                    <div className="form-card">
+                        <form onSubmit={handleSubmit}>
+                            {/* Project Details Section */}
+                            <div className="form-section">
+                                <div className="section-header">
+                                    <FontAwesomeIcon icon={faBuilding} className="section-icon" />
+                                    <h3 className="section-title">Project Details</h3>
+                                </div>
+                                <div className="form-grid">
+                                    <div className="form-group">
+                                        <label>
+                                            <FontAwesomeIcon icon={faBuilding} /> Agency Name
+                                        </label>
+                                        <div className="input-container">
+                                            <input 
+                                                type="text" 
+                                                name="agency" 
+                                                value={formData.agency} 
+                                                onChange={handleChange} 
+                                                required 
+                                                placeholder="e.g., DST, AICTE, etc."
+                                            />
+                                        </div>
+                                    </div>
+
+                                    <div className="form-group">
+                                        <label>
+                                            <FontAwesomeIcon icon={faFileAlt} /> Project Title
+                                        </label>
+                                        <div className="input-container">
+                                            <input 
+                                                type="text" 
+                                                name="title" 
+                                                value={formData.title} 
+                                                onChange={handleChange} 
+                                                required 
+                                                placeholder="Project title"
+                                            />
+                                        </div>
+                                    </div>
+
+                                    <div className="form-group">
+                                        <label>
+                                            <FontAwesomeIcon icon={faLink} /> CFP URL
+                                        </label>
+                                        <div className="input-container">
+                                            <input 
+                                                type="url" 
+                                                name="cfp_url" 
+                                                value={formData.cfp_url} 
+                                                onChange={handleChange} 
+                                                placeholder="https://example.com/cfp"
+                                            />
+                                        </div>
+                                    </div>
+
+                                    <div className="form-group">
+                                        <label>
+                                            <FontAwesomeIcon icon={faFileAlt} /> Status
+                                        </label>
+                                        <div className="input-container">
+                                            <select name="status" value={formData.status} onChange={handleChange} required>
+                                                <option value="active">Active</option>
+                                                <option value="inactive">Inactive</option>
+                                                <option value="completed">Completed</option>
+                                                <option value="proposed">Proposed</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Timeline Section */}
+                            <div className="form-section">
+                                <div className="section-header">
+                                    <FontAwesomeIcon icon={faCalendarAlt} className="section-icon" />
+                                    <h3 className="section-title">Timeline</h3>
+                                </div>
+                                <div className="form-grid">
+                                    <div className="form-group">
+                                        <label>
+                                            <FontAwesomeIcon icon={faCalendarAlt} /> Start Date
+                                        </label>
+                                        <div className="input-container">
+                                            <input 
+                                                type="date" 
+                                                name="start_date" 
+                                                value={formData.start_date} 
+                                                onChange={handleChange} 
+                                                required 
+                                            />
+                                        </div>
+                                    </div>
+
+                                    <div className="form-group">
+                                        <label>
+                                            <FontAwesomeIcon icon={faClock} /> Duration (months)
+                                        </label>
+                                        <div className="input-container">
+                                            <input 
+                                                type="number" 
+                                                name="duration" 
+                                                value={formData.duration} 
+                                                onChange={handleChange} 
+                                                required 
+                                                min="1"
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Financial Details Section */}
+                            <div className="form-section">
+                                <div className="section-header">
+                                    <FontAwesomeIcon icon={faMoneyBillWave} className="section-icon" />
+                                    <h3 className="section-title">Financial Details</h3>
+                                </div>
+                                <div className="form-group">
+                                    <label>
+                                        <FontAwesomeIcon icon={faMoneyBillWave} /> Budget (₹)
+                                    </label>
+                                    <div className="input-container with-prefix">
+                                        <span className="input-prefix">₹</span>
+                                        <input 
+                                            type="number" 
+                                            name="budget" 
+                                            value={formData.budget} 
+                                            onChange={handleChange} 
+                                            required 
+                                            min="0"
+                                            step="0.01"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Additional Information Section */}
+                            <div className="form-section">
+                                <div className="section-header">
+                                    <FontAwesomeIcon icon={faComment} className="section-icon" />
+                                    <h3 className="section-title">Additional Information</h3>
+                                </div>
+                                <div className="form-group">
+                                    <label>Remarks</label>
+                                    <div className="input-container">
+                                        <textarea 
+                                            name="remarks" 
+                                            value={formData.remarks} 
+                                            onChange={handleChange} 
+                                            rows="3"
+                                            placeholder="Any additional notes about the project..."
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Form Actions */}
+                            <div className="form-actions">
+                                {selectedSponsor && (
+                                    <button 
+                                        type="button" 
+                                        className="delete-btn"
+                                        onClick={handleDelete}
+                                    >
+                                        <FontAwesomeIcon icon={faTrash} /> Delete Project
+                                    </button>
+                                )}
+                                <button type="submit" className="submit-btn">
+                                    {selectedSponsor ? (
+                                        <><FontAwesomeIcon icon={faEdit} /> Update Project</>
+                                    ) : (
+                                        <><FontAwesomeIcon icon={faPlus} /> Create Project</>
+                                    )}
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
     );
 };

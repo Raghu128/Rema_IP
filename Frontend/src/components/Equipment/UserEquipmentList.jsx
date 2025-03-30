@@ -1,20 +1,23 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import axios from "axios";
-import "../../styles/Equipment/UserEquipmentList.css";
 import { useNavigate } from "react-router-dom";
 import Loader from '../Loader';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEdit, faPlus, faMapMarkerAlt, faCalendarAlt, faUser, faCogs } from '@fortawesome/free-solid-svg-icons';
-
+import {
+    faEdit, faPlus, faMapMarkerAlt,
+    faCalendarAlt, faUser, faCogs,
+    faTable, faThLarge, faRupeeSign
+} from '@fortawesome/free-solid-svg-icons';
+import '../../styles/Equipment/UserEquipmentList.css'
 
 const UserEquipmentList = () => {
     const { user } = useSelector((state) => state.user);
     const [equipment, setEquipment] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
+    const [viewMode, setViewMode] = useState('table');
     const navigate = useNavigate();
-
 
     useEffect(() => {
         if (!user) return;
@@ -33,48 +36,114 @@ const UserEquipmentList = () => {
         fetchEquipment();
     }, [user]);
 
-    if (!user?.id) return <p className="equipment-list-message">Please log in to view your equipment.</p>;
+    if (!user?.id) return <p className="equipment-message">Please log in to view your equipment.</p>;
     if (loading) return <Loader />;
-    if (error) return <p className="equipment-list-message">{error}</p>;
-
+    if (error) return <p className="equipment-message equipment-error">{error}</p>;
 
     return (
-        <div className="equipment-list-container">
-            <div className="equipment-list-header">
-                <h2 className="equipment-list-title">
-                    <FontAwesomeIcon icon={faCogs} className="equipment-list-title-icon" /> Your Equipment
+        <div className="equipment-container">
+            <div className="equipment-header">
+                <h2 className="equipment-title">
+                    <FontAwesomeIcon icon={faCogs} className="equipment-title-icon" /> Your Equipment
                 </h2>
-                <button onClick={() => navigate("/manage-equipment")} className="manage-equipment-btn">
-                    <FontAwesomeIcon icon={faEdit} /> Manage
-                </button>
+                <div className="equipment-actions">
+                    <button
+                        onClick={() => setViewMode('card')}
+                        className={`expenses-view-toggle ${viewMode === 'card' ? 'active' : ''}`}
+                    >
+                        <FontAwesomeIcon icon={faThLarge} /> Card
+                    </button>
+                    <button
+                        onClick={() => setViewMode('table')}
+                        className={`expenses-view-toggle ${viewMode === 'table' ? 'active' : ''}`}
+                    >
+                        <FontAwesomeIcon icon={faTable} /> Table
+                    </button>
+                    <button
+                        onClick={() => navigate("/manage-equipment")}
+                        className="expenses-manage-btn"
+                    >
+                        <FontAwesomeIcon icon={faEdit} /> Manage
+                    </button>
+                </div>
             </div>
 
-
-            {!loading && equipment.length > 0 ? (
-                <table className="equipment-table">
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Price (₹)</th>
-                            <th>Location</th>
-                            <th>Added On</th>
-                            <th>User</th>
-                        </tr>
-                    </thead>
-                    <tbody>
+            {equipment.length > 0 ? (
+                viewMode === 'table' ? (
+                    <div className="equipment-table-container">
+                        <table className="equipment-table">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Price</th>
+                                    <th>Location</th>
+                                    <th>Added On</th>
+                                    <th>User</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {equipment.map((item) => (
+                                    <tr key={item._id} className="equipment-table-row">
+                                        <td className="equipment-table-cell" data-label="Name">
+                                            {item.name}
+                                        </td>
+                                        <td className="equipment-table-cell equipment-price" data-label="Price">
+                                            <FontAwesomeIcon icon={faRupeeSign} />
+                                            {parseFloat(item.amount.$numberDecimal).toFixed(2)}
+                                        </td>
+                                        <td className="equipment-table-cell equipment-location" data-label="Location">
+                                            <FontAwesomeIcon icon={faMapMarkerAlt} /> {item.location}
+                                        </td>
+                                        <td className="equipment-table-cell equipment-date" data-label="Added On">
+                                            <FontAwesomeIcon icon={faCalendarAlt} /> {new Date(item.createdAt).toLocaleDateString()}
+                                        </td>
+                                        <td className="equipment-table-cell equipment-user" data-label="User">
+                                            <FontAwesomeIcon icon={faUser} /> {item.usingUser._id === user?.id ? "You" : item.usingUser.name}
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+                ) : (
+                    <div className="equipment-cards-container">
                         {equipment.map((item) => (
-                            <tr key={item._id}>
-                                <td>{item.name}</td>
-                                <td>₹{parseFloat(item.amount.$numberDecimal).toFixed(2)}</td>
-                                <td><FontAwesomeIcon icon={faMapMarkerAlt} /> {item.location}</td>
-                                <td><FontAwesomeIcon icon={faCalendarAlt} /> {new Date(item.createdAt).toLocaleDateString()}</td>
-                                <td><FontAwesomeIcon icon={faUser} /> {item.usingUser.name}</td>
-                            </tr>
+                            <div key={item._id} className="equipment-card">
+                                <div className="equipment-card-header">
+                                    <h3 className="equipment-name">{item.name}</h3>
+                                    <div className="equipment-price">
+                                        <FontAwesomeIcon icon={faRupeeSign} />
+                                        {parseFloat(item.amount.$numberDecimal).toFixed(2)}
+                                    </div>
+                                </div>
+                                <div className="equipment-card-body">
+                                    <div className="equipment-detail">
+                                        <FontAwesomeIcon icon={faMapMarkerAlt} className="equipment-detail-icon" />
+                                        <span>{item.location}</span>
+                                    </div>
+                                    <div className="equipment-detail">
+                                        <FontAwesomeIcon icon={faCalendarAlt} className="equipment-detail-icon" />
+                                        <span>{new Date(item.createdAt).toLocaleDateString()}</span>
+                                    </div>
+                                    <div className="equipment-detail">
+                                        <FontAwesomeIcon icon={faUser} className="equipment-detail-icon" />
+                                        <span>{item.usingUser._id === user?.id ? "You" : item.usingUser.name}</span>
+                                    </div>
+                                </div>
+                            </div>
                         ))}
-                    </tbody>
-                </table>
+                    </div>
+                )
             ) : (
-                <p className="equipment-list-message">No equipment found.</p>
+                <div className="equipment-empty-state">
+                    <p className="equipment-message">No equipment found.</p>
+                    <button
+                        onClick={() => navigate("/manage-equipment")}
+                        className="equipment-add-btn"
+                    >
+                        <FontAwesomeIcon icon={faPlus} /> Add New Equipment
+                    </button>
+                </div>
             )}
         </div>
     );

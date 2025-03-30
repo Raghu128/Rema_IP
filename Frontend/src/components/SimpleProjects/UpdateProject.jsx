@@ -1,22 +1,29 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
-import "../../styles/SimpleProject/AddOrEditProjectForm.css";
 import { useNavigate } from "react-router-dom";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { 
+  faArrowLeft, faSave, faTrashAlt, faPlus, 
+  faSearch, faUser, faCalendarAlt, faLink,
+  faFileAlt, faMapMarkerAlt, faFlagCheckered,
+  faUsers, faFlask, faLayerGroup
+} from '@fortawesome/free-solid-svg-icons';
+import "../../styles/SimpleProject/AddOrEditProjectForm.css";
 
 const UpdateProjectFormPage = () => {
   const navigate = useNavigate();
   const { user } = useSelector((state) => state.user);
   const [projects, setProjects] = useState([]);
   const [selectedProject, setSelectedProject] = useState(null);
-  const today = new Date().toISOString().split("T")[0]; // Today's date
+  const today = new Date().toISOString().split("T")[0];
 
   const [formData, setFormData] = useState({
     faculty_id: user?.id || "",
     name: "",
     domain: "",
     sub_domain: "",
-    creation_date: today, // Set default to today
+    creation_date: today,
     end_date: "",
     team: [],
     lead_author: "",
@@ -35,35 +42,23 @@ const UpdateProjectFormPage = () => {
   const [teamSearch, setTeamSearch] = useState("");
 
   useEffect(() => {
-    if (!user) {
-      navigate("/");
-    }
+    if (!user) navigate("/");
   }, [user, navigate]);
 
   useEffect(() => {
-    const fetchProjects = async () => {
+    const fetchData = async () => {
       try {
-        const response = await axios.get(`/api/v1/projects/${user.id}`);
-        setProjects(response.data);
+        const [projectsRes, usersRes] = await Promise.all([
+          axios.get(`/api/v1/projects/${user.id}`),
+          axios.get(`/api/v1/user/${user?.id}`)
+        ]);
+        setProjects(projectsRes.data);
+        setUsers(usersRes.data);
       } catch (error) {
-        setMessage("Failed to fetch projects");
+        setMessage("Failed to fetch data");
       }
     };
-    if (user?.id) fetchProjects();
-  }, [user]);
-
-  useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        const response = await axios.get(`/api/v1/user/${user?.id}`);
-        
-        setUsers(response.data);
-      } catch (error) {
-        setMessage("Failed to fetch users");
-      }
-    };
-
-    fetchUsers();
+    if (user?.id) fetchData();
   }, [user]);
 
   useEffect(() => {
@@ -73,7 +68,7 @@ const UpdateProjectFormPage = () => {
         name: selectedProject.name || "",
         domain: selectedProject.domain || "",
         sub_domain: selectedProject.sub_domain || "",
-        creation_date: selectedProject.creation_date?.split("T")[0] || "",
+        creation_date: selectedProject.creation_date?.split("T")[0] || today,
         end_date: selectedProject.end_date?.split("T")[0] || "",
         team: selectedProject.team.map((member) => member._id) || [],
         lead_author: selectedProject.lead_author?._id || "",
@@ -85,11 +80,8 @@ const UpdateProjectFormPage = () => {
         paper_url: selectedProject.paper_url || "",
         submission_url: selectedProject.submission_url || "",
       });
-    } else {
-      resetForm(); // Reset if no project selected
     }
-  }, [selectedProject, today]); // Add today to dependency array
-
+  }, [selectedProject, today]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -102,81 +94,57 @@ const UpdateProjectFormPage = () => {
       ? [...formData.team, value]
       : formData.team.filter((memberId) => memberId !== value);
 
-    setFormData({ ...formData, team: updatedTeam });
-
-    // Automatically set lead author to the first selected team member if not already set
-    if (updatedTeam.length > 0 && !formData.lead_author) {
-      setFormData((prevData) => ({ ...prevData, lead_author: updatedTeam[0] }));
-    }
+    setFormData({ 
+      ...formData, 
+      team: updatedTeam,
+      lead_author: updatedTeam.length > 0 && !updatedTeam.includes(formData.lead_author) 
+        ? updatedTeam[0] 
+        : formData.lead_author
+    });
   };
-
-  useEffect(() => {
-    if (user?.id) {
-      setFormData((prevState) => ({
-        ...prevState,
-        faculty_id: user.id,
-      }));
-    }
-  }, [user?.id]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!window.confirm("Are you sure?")) return;
 
-    const submitData = {
-      ...formData,
-      faculty_id: user.id,
-      team: formData.team,
-      lead_author: formData.lead_author,
-    };
+    try {
+      const submitData = { ...formData, faculty_id: user.id };
+      const response = selectedProject
+        ? await axios.put(`/api/v1/projects/${selectedProject._id}`, submitData)
+        : await axios.post("/api/v1/projects", submitData);
 
-    if (window.confirm("Are you sure you want to delete this project?")) {
-      try {
-
-
-        const response = selectedProject
-          ? await axios.put(`/api/v1/projects/${selectedProject._id}`, submitData)
-          : await axios.post("/api/v1/projects", submitData);
-
-        setMessage(selectedProject ? "Project updated successfully" : "Project added successfully");
-
-        const updatedProjects = selectedProject
-          ? projects.map((proj) => (proj._id === response.data._id ? response.data : proj))
-          : [...projects, response.data];
-
-        setProjects(updatedProjects);
-        resetForm();
-        setSelectedProject(null);
-      } catch (error) {
-        setMessage("Failed to save project");
-      }
+      setMessage(selectedProject ? "Project updated!" : "Project created!");
+      setProjects(selectedProject
+        ? projects.map(p => p._id === response.data._id ? response.data : p)
+        : [...projects, response.data]
+      );
+      resetForm();
+    } catch (error) {
+      setMessage("Failed to save project");
     }
-
-
   };
 
   const handleDelete = async (projectId) => {
-    if (window.confirm("Are you sure you want to delete this project?")) {
-      try {
-        await axios.delete(`/api/v1/projects/${projectId}`);
-        setMessage("Project deleted successfully");
-        setProjects((prevProjects) => prevProjects.filter((proj) => proj._id !== projectId));
-        if (selectedProject && selectedProject._id === projectId) {
-          setSelectedProject(null);
-          resetForm();
-        }
-      } catch (error) {
-        setMessage("Failed to delete project");
-      }
+    if (!window.confirm("Delete this project?")) return;
+    
+    try {
+      await axios.delete(`/api/v1/projects/${projectId}`);
+      setProjects(projects.filter(p => p._id !== projectId));
+      if (selectedProject?._id === projectId) resetForm();
+      setMessage("Project deleted");
+    } catch (error) {
+      setMessage("Failed to delete project");
     }
   };
 
   const resetForm = () => {
+    setSelectedProject(null);
     setFormData({
       faculty_id: user?.id || "",
       name: "",
       domain: "",
       sub_domain: "",
-      creation_date: today, // Ensure creation_date is reset to today
+      creation_date: today,
       end_date: "",
       team: [],
       lead_author: "",
@@ -188,285 +156,348 @@ const UpdateProjectFormPage = () => {
       paper_url: "",
       submission_url: "",
     });
-    setMessage("");
-    setProjectSearch(""); //added to clear the search
-    setTeamSearch(""); // added to clear the search
-
+    setProjectSearch("");
+    setTeamSearch("");
   };
 
-  const handleProjectSelect = (project) => {
-    setSelectedProject(project);
-  };
-
-  // Filter projects list for selection search
-  const filteredProjectSelection = projects.filter((project) =>
-    project.name.toLowerCase().includes(projectSearch.toLowerCase())
+  const filteredProjects = projects.filter(p => 
+    p.name.toLowerCase().includes(projectSearch.toLowerCase()) ||
+    p.domain.toLowerCase().includes(projectSearch.toLowerCase())
   );
 
-  // Filter users list for team checkboxes (view access)
-  const filteredUsers = users.filter((userItem) =>
-    userItem.name.toLowerCase().includes(teamSearch.toLowerCase())
+  const filteredUsers = users.filter(u => 
+    u.name.toLowerCase().includes(teamSearch.toLowerCase())
   );
 
   return (
-    <div className="editproject-container">
-      <button onClick={() => navigate(-1)} className="go-back-btn">Go Back</button>
-      <h2 className="editproject-title">{selectedProject ? "Edit Project" : "Add Project"}</h2>
+    <div className="projectAddForm-container">
+      <div className="projectAddForm-header">
+        <button onClick={() => navigate(-1)} className="projectAddForm-back-button">
+          <FontAwesomeIcon icon={faArrowLeft} /> Back
+        </button>
+        <h2 className="projectAddForm-title">
+          {/* <FontAwesomeIcon icon={selectedProject ? faEdit : faPlus} /> */}
+          {selectedProject ? "Edit Project" : "Create Project"}
+        </h2>
+      </div>
 
-      <div className="editproject-form-page">
-        {message && <p className="editproject-message">{message}</p>}
+      {message && (
+        <div className={`projectAddForm-message ${message.includes("Failed") ? "error" : "success"}`}>
+          {message}
+          <button onClick={() => setMessage("")} className="projectAddForm-message-close">&times;</button>
+        </div>
+      )}
 
-        {/* Project Selection with search and scrollable container */}
-        {!selectedProject && (
-          <div className="project-selection">
-            <h3>Select a project to edit</h3>
-            <div className="project-search-box">
+      <div className="projectAddForm-layout">
+        {/* Projects List Panel */}
+        <div className="projectAddForm-projects-panel">
+          <div className="projectAddForm-panel-header">
+            <h3 className="projectAddForm-panel-title"><FontAwesomeIcon icon={faFileAlt} /> Your Projects</h3>
+            <div className="projectAddForm-search-container">
               <input
                 type="text"
                 placeholder="Search projects..."
                 value={projectSearch}
                 onChange={(e) => setProjectSearch(e.target.value)}
-                className="project-search-input"
               />
-              {/* <button className="project-search-btn">Search</button> */}
-            </div>
-            <div className="project-list-scroll">
-              <ul className="editproject-all-project">
-                {filteredProjectSelection.map((project) => (
-                  <li key={project._id}>
-                    <button type="button" onClick={() => handleProjectSelect(project)}>
-                      {project.name}
-                    </button>
-                  </li>
-                ))}
-              </ul>
+              <FontAwesomeIcon icon={faSearch} className="projectAddForm-search-icon" />
             </div>
           </div>
-        )}
 
-        <form onSubmit={handleSubmit} className="editproject-form">
-          {/* Form Row 1: Project Name */}
-          <div className="form-row">
-            <div className="form-group">
-              <label htmlFor="name">Project Name:</label>
-              <input
-                type="text"
-                id="name"
-                name="name"
-                value={formData.name}
-                onChange={handleChange}
-                required
-              />
-            </div>
-          </div>
-          {/* Form Row 2: Domain & Sub-domain */}
-          <div className="form-row">
-            <div className="form-group">
-              <label htmlFor="domain">Domain:</label>
-              <input
-                type="text"
-                id="domain"
-                name="domain"
-                value={formData.domain}
-                onChange={handleChange}
-                required
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="sub_domain">Sub-domain:</label>
-              <input
-                type="text"
-                id="sub_domain"
-                name="sub_domain"
-                value={formData.sub_domain}
-                onChange={handleChange}
-              />
-            </div>
-          </div>
-          {/* Form Row 3: Creation & End Dates */}
-          {/* <div className="form-row">
-            <div className="form-group">
-              <label htmlFor="creation_date">Creation Date:</label>
-              <input
-                type="date"
-                id="creation_date"
-                name="creation_date"
-                value={formData.creation_date}
-                onChange={handleChange}
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="end_date">End Date:</label>
-              <input
-                type="date"
-                id="end_date"
-                name="end_date"
-                value={formData.end_date}
-                onChange={handleChange}
-              />
-            </div>
-          </div> */}
-          {/* Form Row 4: Venue */}
-          <div className="form-row">
-            <div className="form-group full-width">
-              <label htmlFor="venue">Venue:</label>
-              <input
-                type="text"
-                id="venue"
-                name="venue"
-                value={formData.venue}
-                onChange={handleChange}
-              />
-            </div>
-          </div>
-          {/* Form Row 5: Date of Submission & Next Deadline */}
-          <div className="form-row">
-            <div className="form-group">
-              <label htmlFor="date_of_submission">Date of Submission:</label>
-              <input
-                type="date"
-                id="date_of_submission"
-                name="date_of_submission"
-                value={formData.date_of_submission}
-                onChange={handleChange}
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="next_deadline">Next Deadline:</label>
-              <input
-                type="date"
-                id="next_deadline"
-                name="next_deadline"
-                value={formData.next_deadline}
-                onChange={handleChange}
-              />
-            </div>
-          </div>
-          {/* Form Row 6: Remarks */}
-          <div className="form-row">
-            <div className="form-group full-width">
-              <label htmlFor="remarks">Remarks:</label>
-              <textarea
-                id="remarks"
-                name="remarks"
-                value={formData.remarks}
-                onChange={handleChange}
-              ></textarea>
-            </div>
-          </div>
-          {/* Form Row 7: Paper URL & Submission URL */}
-          <div className="form-row">
-            <div className="form-group">
-              <label htmlFor="paper_url">Paper URL:</label>
-              <input
-                type="url"
-                id="paper_url"
-                name="paper_url"
-                value={formData.paper_url}
-                onChange={handleChange}
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="submission_url">Submission URL:</label>
-              <input
-                type="url"
-                id="submission_url"
-                name="submission_url"
-                value={formData.submission_url}
-                onChange={handleChange}
-              />
-            </div>
-          </div>
-          {/* Form Row 8: Team Members & Lead Author */}
-          <div className="form-row">
-            <div className="form-group full-width">
-              <label>Team Members:</label>
-              <div className="team-search-box">
-                <input
-                  type="text"
-                  placeholder="Search team members..."
-                  value={teamSearch}
-                  onChange={(e) => setTeamSearch(e.target.value)}
-                  className="team-search-input"
-                />
-                {/* <button className="team-search-btn">Search</button> */}
-              </div>
-              <div className="editproject-team-checkbox scrollable">
-                {filteredUsers.map((userItem) => (
-                  <div key={userItem._id} className="checkbox-item">
-                    <input
-                      type="checkbox"
-                      id={`teamMember_${userItem._id}`}
-                      value={userItem._id}
-                      checked={formData.team.includes(userItem._id)}
-                      onChange={handleTeamChange}
-                    />
-                    <label htmlFor={`teamMember_${userItem._id}`}>
-                      {userItem.name} ({userItem.role})
-                    </label>
+          <div className="projectAddForm-projects-list">
+            {filteredProjects.length > 0 ? (
+              filteredProjects.map(project => (
+                <div 
+                  key={project._id}
+                  className={`projectAddForm-project-item ${selectedProject?._id === project._id ? "active" : ""}`}
+                  onClick={() => setSelectedProject(project)}
+                >
+                  <div className="projectAddForm-project-name">{project.name}</div>
+                  <div className="projectAddForm-project-meta">
+                    <span className={`projectAddForm-status-badge ${project.status}`}>
+                      {project.status}
+                    </span>
+                    <span><FontAwesomeIcon icon={faFlask} /> {project.domain}</span>
+                    {project.creation_date && (
+                      <span><FontAwesomeIcon icon={faCalendarAlt} /> {new Date(project.creation_date).toLocaleDateString()}</span>
+                    )}
                   </div>
-                ))}
+                </div>
+              ))
+            ) : (
+              <div className="projectAddForm-empty-state">
+                <FontAwesomeIcon icon={faFileAlt} size="2x" className="projectAddForm-empty-icon" />
+                <p>No projects found</p>
+                {projectSearch && (
+                  <button 
+                    onClick={() => setProjectSearch("")}
+                    className="projectAddForm-clear-search-button"
+                  >
+                    Clear search
+                  </button>
+                )}
+              </div>
+            )}
+          </div>
+        </div>
 
-                  <button onClick={() => navigate("/?tab=Add-User")}>Add user</button>
+        {/* Form Panel */}
+        <div className="projectAddForm-form-panel">
+          <form onSubmit={handleSubmit} className="projectAddForm-form">
+            {/* Basic Information Section */}
+            <div className="projectAddForm-form-section">
+              <div className="projectAddForm-section-header">
+                <FontAwesomeIcon icon={faFileAlt} className="projectAddForm-section-icon" />
+                <h3 className="projectAddForm-section-title">Basic Information</h3>
+              </div>
+              <div className="projectAddForm-form-grid">
+                <div className="projectAddForm-form-group">
+                  <label className="projectAddForm-label"><FontAwesomeIcon icon={faFileAlt} /> Project Name*</label>
+                  <input
+                    type="text"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleChange}
+                    required
+                    className="projectAddForm-input"
+                  />
+                </div>
+                <div className="projectAddForm-form-group">
+                  <label className="projectAddForm-label"><FontAwesomeIcon icon={faFlask} /> Domain*</label>
+                  <input
+                    type="text"
+                    name="domain"
+                    value={formData.domain}
+                    onChange={handleChange}
+                    required
+                    className="projectAddForm-input"
+                  />
+                </div>
+                <div className="projectAddForm-form-group">
+                  <label className="projectAddForm-label"><FontAwesomeIcon icon={faLayerGroup} /> Sub-domain</label>
+                  <input
+                    type="text"
+                    name="sub_domain"
+                    value={formData.sub_domain}
+                    onChange={handleChange}
+                    className="projectAddForm-input"
+                  />
+                </div>
+                <div className="projectAddForm-form-group">
+                  <label className="projectAddForm-label"><FontAwesomeIcon icon={faMapMarkerAlt} /> Venue</label>
+                  <input
+                    type="text"
+                    name="venue"
+                    value={formData.venue}
+                    onChange={handleChange}
+                    className="projectAddForm-input"
+                  />
+                </div>
               </div>
             </div>
-            <div className="form-group">
-              <label htmlFor="lead_author">Lead Author:</label>
-              <select
-                id="lead_author"
-                name="lead_author"
-                value={formData.lead_author}
-                onChange={handleChange}
-              >
-                <option value="">Select Lead Author</option>
-                {formData.team.map((teamMemberId) => {
-                  const teamMember = users.find(
-                    (userItem) => userItem._id === teamMemberId
-                  );
-                  return (
-                    <option key={teamMemberId} value={teamMemberId}>
-                      {teamMember?.name}
-                    </option>
-                  );
-                })}
-              </select>
+
+            {/* Dates Section */}
+            <div className="projectAddForm-form-section">
+              <div className="projectAddForm-section-header">
+                <FontAwesomeIcon icon={faCalendarAlt} className="projectAddForm-section-icon" />
+                <h3 className="projectAddForm-section-title">Dates</h3>
+              </div>
+              <div className="projectAddForm-form-grid">
+                <div className="projectAddForm-form-group">
+                  <label className="projectAddForm-label">Creation Date</label>
+                  <input
+                    type="date"
+                    name="creation_date"
+                    value={formData.creation_date}
+                    onChange={handleChange}
+                    className="projectAddForm-input"
+                  />
+                </div>
+                <div className="projectAddForm-form-group">
+                  <label className="projectAddForm-label">Submission Date</label>
+                  <input
+                    type="date"
+                    name="date_of_submission"
+                    value={formData.date_of_submission}
+                    onChange={handleChange}
+                    className="projectAddForm-input"
+                  />
+                </div>
+                <div className="projectAddForm-form-group">
+                  <label className="projectAddForm-label">Next Deadline</label>
+                  <input
+                    type="date"
+                    name="next_deadline"
+                    value={formData.next_deadline}
+                    onChange={handleChange}
+                    className="projectAddForm-input"
+                  />
+                </div>
+                <div className="projectAddForm-form-group">
+                  <label className="projectAddForm-label">End Date</label>
+                  <input
+                    type="date"
+                    name="end_date"
+                    value={formData.end_date}
+                    onChange={handleChange}
+                    className="projectAddForm-input"
+                  />
+                </div>
+              </div>
             </div>
-          </div>
-          {/* Form Row 9: Status */}
-          <div className="form-row">
-            <div className="form-group full-width">
-              <label htmlFor="status">Status:</label>
-              <select
-                id="status"
-                name="status"
-                value={formData.status}
-                onChange={handleChange}
-              >
-                <option value="ongoing">Ongoing</option>
-                <option value="completed">Completed</option>
-                <option value="cancelled">Cancelled</option>
-              </select>
+
+            {/* Links Section */}
+            <div className="projectAddForm-form-section">
+              <div className="projectAddForm-section-header">
+                <FontAwesomeIcon icon={faLink} className="projectAddForm-section-icon" />
+                <h3 className="projectAddForm-section-title">Links</h3>
+              </div>
+              <div className="projectAddForm-form-grid">
+                <div className="projectAddForm-form-group">
+                  <label className="projectAddForm-label">Paper URL</label>
+                  <input
+                    type="url"
+                    name="paper_url"
+                    value={formData.paper_url}
+                    onChange={handleChange}
+                    className="projectAddForm-input"
+                  />
+                </div>
+                <div className="projectAddForm-form-group">
+                  <label className="projectAddForm-label">Submission URL</label>
+                  <input
+                    type="url"
+                    name="submission_url"
+                    value={formData.submission_url}
+                    onChange={handleChange}
+                    className="projectAddForm-input"
+                  />
+                </div>
+              </div>
             </div>
-          </div>
-          {/* Buttons */}
-          <div className="form-actions">
-            <button type="submit" className="editproject-submit">
-              {selectedProject ? "Update Project" : "Add Project"}
-            </button>
-            {selectedProject && (
-              <button
-                type="button"
-                onClick={() => handleDelete(selectedProject._id)}
-                className="editproject-reset"
-              >
-                Delete
+
+            {/* Team Section */}
+            <div className="projectAddForm-form-section">
+              <div className="projectAddForm-section-header">
+                <FontAwesomeIcon icon={faUsers} className="projectAddForm-section-icon" />
+                <h3 className="projectAddForm-section-title">Team</h3>
+              </div>
+              <div className="projectAddForm-form-group">
+                <div className="projectAddForm-search-container">
+                  <input
+                    type="text"
+                    placeholder="Search team members..."
+                    value={teamSearch}
+                    onChange={(e) => setTeamSearch(e.target.value)}
+                    className="projectAddForm-search-input"
+                  />
+                  <FontAwesomeIcon icon={faSearch} className="projectAddForm-search-icon" />
+                </div>
+                <div className="projectAddForm-team-members-list">
+                  {filteredUsers.length > 0 ? (
+                    filteredUsers.map(user => (
+                      <label key={user._id} className="projectAddForm-team-member-checkbox">
+                        <input
+                          type="checkbox"
+                          value={user._id}
+                          checked={formData.team.includes(user._id)}
+                          onChange={handleTeamChange}
+                          className="projectAddForm-checkbox-input"
+                        />
+                        <span className="projectAddForm-checkmark"></span>
+                        <span className="projectAddForm-member-name">{user.name}</span>
+                        <span className="projectAddForm-member-role">{user.role}</span>
+                      </label>
+                    ))
+                  ) : (
+                    <>
+                    <div className="projectAddForm-empty-state">
+                      No members found
+                    </div>
+                    <button className="projectAddForm-add-new-user" onClick={() => navigate("/?tab=Add-User")}>Add user</button></>
+                  )}
+                </div>
+              </div>
+              <div className="projectAddForm-form-group">
+                <label className="projectAddForm-label">Lead Author</label>
+                <select
+                  name="lead_author"
+                  value={formData.lead_author}
+                  onChange={handleChange}
+                  disabled={formData.team.length === 0}
+                  className="projectAddForm-select"
+                >
+                  <option value="">Select lead author</option>
+                  {formData.team.map(memberId => {
+                    const member = users.find(u => u._id === memberId);
+                    return member ? (
+                      <option key={memberId} value={memberId}>
+                        {member.name}
+                      </option>
+                    ) : null;
+                  })}
+                </select>
+              </div>
+            </div>
+
+            {/* Status & Remarks Section */}
+            <div className="projectAddForm-form-section">
+              <div className="projectAddForm-section-header">
+                <FontAwesomeIcon icon={faFlagCheckered} className="projectAddForm-section-icon" />
+                <h3 className="projectAddForm-section-title">Status & Remarks</h3>
+              </div>
+              <div className="projectAddForm-form-grid">
+                <div className="projectAddForm-form-group">
+                  <label className="projectAddForm-label">Status</label>
+                  <select
+                    name="status"
+                    value={formData.status}
+                    onChange={handleChange}
+                    className="projectAddForm-select"
+                  >
+                    <option value="ongoing">Ongoing</option>
+                    <option value="completed">Completed</option>
+                    <option value="cancelled">Cancelled</option>
+                  </select>
+                </div>
+                <div className="projectAddForm-form-group projectAddForm-full-width">
+                  <label className="projectAddForm-label">Remarks</label>
+                  <textarea
+                    name="remarks"
+                    value={formData.remarks}
+                    onChange={handleChange}
+                    className="projectAddForm-textarea"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div className="projectAddForm-form-actions">
+              <button type="submit" className="projectAddForm-submit-button">
+                <FontAwesomeIcon icon={faSave} /> 
+                {selectedProject ? "Update Project" : "Create Project"}
               </button>
-            )}
-            {/* <button type="button" onClick={resetForm} className="editproject-reset">
-              Reset all values
-            </button> */}
-          </div>
-        </form>
+              {selectedProject && (
+                <button
+                  type="button"
+                  onClick={() => handleDelete(selectedProject._id)}
+                  className="projectAddForm-delete-button"
+                >
+                  <FontAwesomeIcon icon={faTrashAlt} /> Delete
+                </button>
+              )}
+              {selectedProject && (
+                <button
+                  type="button"
+                  onClick={resetForm}
+                  className="projectAddForm-cancel-button"
+                >
+                  Cancel
+                </button>
+              )}
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   );

@@ -1,25 +1,43 @@
 import React from "react";
-import { Link, useSearchParams } from "react-router-dom";
 import "../styles/FacultyDashboard.css";
 import { useSelector } from "react-redux";
-
+import { useNavigate } from "react-router-dom";
 import StudentProjects from "../components/SimpleProjects/StudentProject";
 import StudentEquipmentList from "../components/Equipment/StudentEquipment";
 import NotificationsList from "../components/Notification/NotificationsList";
 import VenueListComponent from "../components/Venues/VenueListComponent";
 import LandingPage from "../components/LandingPage";
 import StudentLeaves from "../components/Leaves/StudentLeaves";
+import { Link, useSearchParams } from "react-router-dom";
+import "../styles/FacultyDashboard.css";
+
+// Icons
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+  faProjectDiagram,
+  faLaptop,
+  faCalendarAlt,
+  faHome,
+  faUserGraduate
+} from '@fortawesome/free-solid-svg-icons';
 
 const StudentDashboard = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const { user } = useSelector((state) => state.user);
-
-  // Get the tab from URL parameters (default to "Projects" if not provided)
   const currElement = searchParams.get("tab");
+  const navigate = useNavigate();
 
-  // Function to render the correct component based on the URL parameter
+
+  // Icon mapping for each tab
+  const iconMap = {
+    Projects: faProjectDiagram,
+    Equipment: faLaptop,
+    Leaves: faCalendarAlt,
+    Home: faHome
+  };
+
   const renderComponent = () => {
-    if (!user?.id) return <p>Loading... Please wait.</p>;
+    if (!user?.id) return <p className="loading-text">Loading... Please wait.</p>;
 
     const componentMap = {
       Projects: <StudentProjects id={user.id} />,
@@ -32,28 +50,53 @@ const StudentDashboard = () => {
     return componentMap[currElement] || <LandingPage />;
   };
 
-  // Function to update the URL when clicking a sidebar link
   const handleNavigation = (tab) => {
     setSearchParams({ tab });
   };
 
   return (
     <div className="faculty-dashboard-container">
-      {/* Sidebar */}
-      <div className="faculty-sidebar">
+      {/* Enhanced Sidebar */}
+      <div className="faculty-sidebar" >
+        <div className="sidebar-header" onClick={() => navigate('/')}>
+          <div className="faculty-user-profile">
+            <div className="user-avatar">
+              {user?.name?.charAt(0).toUpperCase()}
+            </div>
+            
+          <div className="app-logo">
+            {/* <FontAwesomeIcon icon={faUserGraduate} className="logo-icon" /> */}
+            <span>Student Portal</span>
+          </div>
+          </div>
+        </div>
+        
         <ul className="faculty-sidebar-list">
           {["Projects", "Equipment", "Leaves"].map((item) => (
-            <li key={item}>
+            <li 
+              key={item} 
+              className={currElement === item ? "active" : ""}
+            >
               <Link to={`?tab=${item}`} onClick={() => handleNavigation(item)}>
-                {item}
+                <FontAwesomeIcon icon={iconMap[item]} className="nav-icon" />
+                <span className="nav-text">{item}</span>
               </Link>
             </li>
           ))}
         </ul>
+        
+        <div className="sidebar-footer">
+          <div className="quick-links">
+            <a href="/help" className="help-link">Help Center</a>
+            <a href="/feedback" className="feedback-link">Give Feedback</a>
+          </div>
+        </div>
       </div>
 
       {/* Main Content */}
-      <div className="faculty-main-content">{renderComponent()}</div>
+      <div className="faculty-main-content">
+        {renderComponent()}
+      </div>
     </div>
   );
 };

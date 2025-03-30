@@ -1,119 +1,424 @@
-/* LeavesForFacultyPage.css */
-
-/* Main Container */
+/* Base Styles */
 .leaves-container {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-color: #f8f9fa;
-  padding: 30px;
-  border-radius: 15px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  max-width: 1000px;
-  margin: 30px auto;
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 1.5rem;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.08);
 }
 
-/* Header Section */
+/* Header Styles */
 .leaves-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 25px;
-    padding-bottom: 15px;
-    border-bottom: 2px solid #dee2e6;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+    gap: 1rem;
 }
 
-/* Title */
 .leaves-title {
-  font-size: 2.2rem;
-  color: #2c3e50;
-  margin: 0;
-  font-weight: 600;
-  display: flex;         /* Use flexbox to align icon and text */
-  align-items: center;   /* Vertically center */
-  gap: 10px;            /* Space between icon and text */
+    font-size: 1.8rem;
+    color: #2c3e50;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
 }
 
 .leaves-title-icon {
-    color: #3498db; /* Example color - adjust as needed */
-    margin-right: 8px; /* Space between icon and title text */
-    font-size: 1.8rem;
+    color: #4a6baf;
 }
 
-
-
-/* Loading, Error, and No Data Messages */
-.leaves-loading,
-.leaves-error,
-.leaves-no-data {
-  text-align: center;
-  padding: 20px;
-  font-style: italic;
-  color: #777;
+.leaves-view-toggle {
+    display: flex;
+    gap: 0.5rem;
 }
 
-.leaves-error {
-    color: #dc3545;
-    background-color: #f8d7da;
-    border: 1px solid #f5c6cb;
+.view-toggle-btn {
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    background: #f8f9fa;
+    border: 1px solid #dee2e6;
+    color: #495057;
+}
+
+.view-toggle-btn.active {
+    background: #4a6baf;
+    color: white;
+    border-color: #3a5a9f;
+}
+
+.view-toggle-btn:hover {
+    background: #e9ecef;
+}
+
+.view-toggle-btn.active:hover {
+    background: #3a5a9f;
+}
+
+/* Empty State */
+.leaves-empty-state {
+    text-align: center;
+    padding: 3rem;
+    background: #f8f9fa;
     border-radius: 8px;
-    padding: 15px;
-    margin-bottom: 20px;
 }
 
-/* --- TABLE STYLES (CORRECTED) --- */
+.leaves-message {
+    color: #6c757d;
+    font-size: 1.1rem;
+}
+
+.leaves-message.leaves-error {
+    color: #dc3545;
+}
+
+/* Table View */
+.leaves-table-container {
+    width: 100%;
+    overflow-x: auto;
+}
+
 .leaves-table {
     width: 100%;
-    border-collapse: collapse; /* Important for consistent borders */
-    margin-top: 20px;
-    background-color: white;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-    border-radius: 12px;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+    background: white;
+    border-radius: 8px;
     overflow: hidden;
-    display: table; /* CRUCIAL: Ensure table display */
 }
 
 .leaves-table th,
 .leaves-table td {
-    padding: 15px 20px;
+    padding: 1rem;
     text-align: left;
     border-bottom: 1px solid #e9ecef;
-    display: table-cell; /* CRUCIAL: Ensure table-cell display */
-}
-
-.leaves-table thead {
-  display: table-header-group; /* CRUCIAL: Ensure thead is displayed correctly */
 }
 
 .leaves-table th {
-    background-color: #f5f7fa;
+    background: #f8f9fa;
     font-weight: 600;
-    color: #444;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-     position: sticky;  /*  Make headers sticky */
-    top: 0;           /*  Stick to the top */
-    z-index: 2;        /*  Ensure they're above the content */
-    /* Add a subtle shadow to the sticky header */
-    box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.1);
+    color: #495057;
+    position: sticky;
+    top: 0;
 }
 
-.leaves-table tbody {
-    display: table-row-group; /* CRUCIAL: display as table-row-group */
-}
-.leaves-table tr {
-    display: table-row; /* CRUCIAL: Ensure table-row display */
+.leaves-table tr:hover {
+    background-color: #f8f9fa;
 }
 
-
-.leaves-table tbody tr:nth-child(even) {
-    background-color: #f8f9fa; /* Zebra striping */
+.student-cell {
+    vertical-align: middle;
 }
 
-.leaves-table tbody tr:hover {
-    background-color: #f0f3ff; /* Highlight on hover */
+.student-info {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
 }
 
-.leaves-table td:first-child {
-    display: table-cell; /*  CRUCIAL:  Keep this as table-cell */
-    align-items: center;  /* Vertically center icon */
-    gap: 8px;              /* Space between icon and text */
+.student-name {
+    font-weight: 500;
+    color: #2c3e50;
+}
+
+.student-email {
+    font-size: 0.8rem;
+    color: #6c757d;
+}
+
+.leave-dates {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.date-separator {
+    color: #6c757d;
+    font-size: 0.8rem;
+    text-align: center;
+}
+
+.leave-duration {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #495057;
+}
+
+.leave-reason {
+    max-width: 300px;
+    white-space: normal;
+    word-break: break-word;
+}
+
+.status-badge {
+    padding: 0.25rem 0.5rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+.status-badge.approved {
+    background: #d4edda;
+    color: #155724;
+}
+
+.status-badge.pending {
+    background: #fff3bf;
+    color: #5f3f00;
+}
+
+.status-badge.rejected {
+    background: #f8d7da;
+    color: #721c24;
+}
+/* Card View - Improved Alignment */
+.leaves-cards-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 1.5rem;
+}
+
+.student-leave-card {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    border: 1px solid #e9ecef;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.student-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 1.25rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    gap: 1rem;
+}
+
+.student-info {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    flex: 1;
+}
+
+.student-avatar {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: #e9ecef;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #4a6baf;
+    flex-shrink: 0;
+}
+
+.student-text-info {
+    flex: 1;
+    min-width: 0; /* Prevent overflow */
+}
+
+.student-name {
+    font-size: 1rem;
+    color: #2c3e50;
+    margin: 0;
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.student-email {
+    font-size: 0.8rem;
+    color: #6c757d;
+    margin: 0.25rem 0 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.leave-count {
+    font-size: 0.8rem;
+    color: #4a6baf;
+    margin-top: 0.5rem;
+    display: inline-block;
+    background: #f0f4ff;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+}
+
+.expand-icon {
+    transition: transform 0.2s ease;
+    color: #6c757d;
+    margin-left: auto;
+    flex-shrink: 0;
+}
+
+.expand-icon.expanded {
+    transform: rotate(180deg);
+}
+
+.leave-details {
+    border-top: 1px solid #e9ecef;
+    padding: 0;
+}
+
+.leave-item {
+    padding: 1.25rem;
+    border-bottom: 1px solid #f1f3f5;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.leave-item:last-child {
+    border-bottom: none;
+}
+
+.leave-dates {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+}
+
+.date-separator {
+    color: #6c757d;
+}
+
+.leave-duration {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+    color: #495057;
+}
+
+.leave-meta {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.leave-reason {
+    color: #495057;
+    line-height: 1.5;
+    font-size: 0.9rem;
+}
+
+/* Status badge alignment fix */
+.status-badge {
+    margin-left: auto;
+}
+
+/* Responsive Adjustments for Cards */
+@media (max-width: 768px) {
+    .leaves-cards-container {
+        grid-template-columns: 1fr;
+    }
+    
+    .student-card-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.75rem;
+    }
+    
+    .student-info {
+        width: 100%;
+    }
+    
+    .expand-icon {
+        position: absolute;
+        right: 1.25rem;
+        top: 1.25rem;
+    }
+    
+    .leave-meta {
+        gap: 0.75rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .leave-dates {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.25rem;
+    }
+    
+    .date-separator {
+        display: none;
+    }
+}
+
+/* Search Styles */
+.leaves-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.search-container {
+    position: relative;
+    flex: 1;
+    min-width: 250px;
+    max-width: 400px;
+}
+
+.search-icon {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #6c757d;
+}
+
+.search-input {
+    width: 100%;
+    padding: 0.5rem 1rem 0.5rem 2.5rem;
+    border-radius: 5px;
+    border: 1px solid #dee2e6;
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: #4a6baf;
+    box-shadow: 0 0 0 2px rgba(74, 107, 175, 0.2);
+}
+
+/* Responsive adjustments for search */
+@media (max-width: 768px) {
+    .leaves-controls {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 1rem;
+    }
+    
+    .search-container {
+        max-width: 100%;
+    }
+    
+    .leaves-view-toggle {
+        width: 100%;
+        justify-content: flex-end;
+    }
 }

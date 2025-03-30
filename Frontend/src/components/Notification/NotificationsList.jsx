@@ -1,8 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import "../../styles/Notification/NotificationsList.css";
+import { 
+  FiBell, 
+  FiTrash2, 
+  FiClock, 
+  FiAlertTriangle,
+  FiFlag,
+  FiAlertCircle,
+  FiInfo
+} from "react-icons/fi";
+import {FaEdit} from "react-icons/fa";
 import Loader from "../Loader";
+import "../../styles/Notification/NotificationsList.css";
+import { use } from "react";
 
 const NotificationsList = () => {
   const { user } = useSelector((state) => state.user);
@@ -23,16 +34,16 @@ const NotificationsList = () => {
         if (!response.ok) {
           throw new Error(`Error: ${response.status} ${response.statusText}`);
         }
-        const data = (await response.json()).notification;
+        const data = await response.json();
+        const notificationsData = data.notification || [];
 
-        // Map notifications to include added_by_name from populated object (if available)
-        const updatedNotifications = data.map((notif) => {
+        const updatedNotifications = notificationsData.map((notif) => {
           const addedByName =
             notif.added_by && typeof notif.added_by === "object"
               ? notif.added_by._id === user.id
-                ? "Self"
-                : notif.added_by.name
-              : "Unknown User";
+                ? "You"
+                : notif.added_by.name || "Unknown"
+              : "System";
           return { ...notif, added_by_name: addedByName };
         });
 
@@ -48,22 +59,26 @@ const NotificationsList = () => {
     fetchNotifications();
   }, [user]);
 
-  // Helper function: check if notification is expired based on due_date
-  const isExpired = (dueDate) => new Date(dueDate) < new Date();
+  const isExpired = (dueDate) => {
+    if (!dueDate) return false;
+    return new Date(dueDate) < new Date();
+  };
 
-  // Delete notification if allowed
   const deleteNotification = async (id, added_by) => {
+    if (!id) return;
+
     if (
       added_by &&
       typeof added_by === "object" &&
       added_by._id !== user?.id
     ) {
-      alert("You cannot delete this");
+      alert("You can only delete your own notifications");
       return;
     } else if (typeof added_by === "string" && added_by !== user?.id) {
-      alert("You cannot delete this");
+      alert("You can only delete your own notifications");
       return;
     }
+
     const confirmDelete = window.confirm(
       "Are you sure you want to delete this notification?"
     );
@@ -87,85 +102,164 @@ const NotificationsList = () => {
   };
 
   const getTypeIcon = (type) => {
-    switch (type?.toLowerCase()) {
+    switch ((type || "").toLowerCase()) {
       case "todo":
-        return "📝";
+        return <span>📝 Todo</span>;
       case "reminder":
-        return "⏰";
+        return <span>⏰ Reminder</span>;
       case "deadline":
-        return "📅";
+        return <span>📅 Deadline</span>;
       default:
-        return "📌";
+        return <span>📌 General</span>;
     }
   };
 
-  const getPriorityClass = (priority) => {
-    switch (priority?.toLowerCase()) {
+  const getPriorityIcon = (priority) => {
+    switch ((priority || "").toLowerCase()) {
       case "high":
-        return "priority-high";
+        return <FiAlertCircle className="priority-icon high" />;
       case "medium":
-        return "priority-medium";
+        return <FiFlag className="priority-icon medium" />;
       case "low":
-        return "priority-low";
+        return <FiInfo className="priority-icon low" />;
       default:
-        return "";
+        return <FiInfo className="priority-icon" />;
     }
   };
-  
+
+  const getPriorityColor = (priority) => {
+    switch ((priority || "").toLowerCase()) {
+      case "high":
+        return "#ffebee";
+      case "medium":
+        return "#fff8e1";
+      case "low":
+        return "#e8f5e9";
+      default:
+        return "#ffffff";
+    }
+  };
 
   if (loading) {
     return <Loader />;
   }
+  
+
 
   return (
-    <div className="notification-container">
-      <div className="notification-top-container">
-                <h2 id="notification-title">📢 Notifications</h2>
-      <button className="notification-add-btn" onClick={() => navigate("/manage-notification")}>
-        ➕  
-      </button>
+    <div className="notifications-dashboard">
+      <div className="notifications-header">
+        <div className="header-title">
+          <FiBell className="header-icon" />
+          <h1>Notifications</h1>
+          <span className="badge">{notifications.length}</span>
+        </div>
+        <button 
+          className="add-button"
+          onClick={() => navigate("/manage-notification")}
+        >
+          <FaEdit /> Manage
+        </button>
       </div>
-      
 
-      {error && <p className="notification-error">{error}</p>}
+      {error && (
+        <div className="error-alert">
+          <FiAlertTriangle /> {error}
+        </div>
+      )}
+
       {!loading && !error && notifications.length === 0 && (
-        <p className="notification-message">No notifications available.</p>
+        <div className="empty-state">
+          <div className="empty-icon">
+            <FiBell />
+          </div>
+          <h3>No notifications yet</h3>
+          <p>Create your first notification to get started</p>
+          
+        </div>
       )}
 
       {!loading && !error && notifications.length > 0 && (
-        <table className="notification-table">
-          <thead>
-            <tr>
-              <th>Type</th>
-              <th>Text</th>
-              <th>Due Date</th>
-              <th>Added By</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {notifications.map((notif) => {
-              const expired = isExpired(notif.due_date);
-              return (
-                <tr key={notif._id} className={`${getPriorityClass(notif.priority)} ${expired ? "expired" : ""}`}>
-                  <td>{getTypeIcon(notif.type)}</td>
-                  {/* <td>{getPriorityIcon(notif.priority)}</td> */}
-                  <td>{notif.text}</td>
-                  <td>{new Date(notif.due_date).toLocaleDateString()}</td>
-                  <td>{notif.added_by_name}</td>
-                  <td>
-                    <button
-                      className="notification-delete-btn"
-                      onClick={() => deleteNotification(notif._id, notif.added_by)}
-                    >
-                      🗑️
-                    </button>
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
+        <div className="notifications-table-container">
+          <table className="notifications-table">
+            <thead>
+              <tr>
+                <th>Type</th>
+                <th>Message</th>
+                <th>Due Date</th>
+                <th>Priority</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {notifications.map((notif) => {
+                const expired = isExpired(notif.due_date);
+                const priority = notif.priority || "";
+                
+                return (
+                  <tr 
+                    key={notif._id} 
+                    className={`notification-row ${expired ? 'expired' : ''}`}
+                    style={{ 
+                      backgroundColor: expired ? '#fafafa' : getPriorityColor(priority),
+                      borderLeft: `4px solid ${
+                        expired ? '#e0e0e0' : 
+                        priority.toLowerCase() === 'high' ? '#ef233c' :
+                        priority.toLowerCase() === 'medium' ? '#ff9800' :
+                        '#4caf50'
+                      }`
+                    }}
+                  >
+                    <td className="type-cell">
+                      <div className="type-badge">
+                        {getTypeIcon(notif.type)}
+                      </div>
+                    </td>
+                    <td className="message-cell">
+                      <div className="message-content">
+                        <p className="message-text">{notif.text || "No message"}</p>
+                        <span className="added-by">Added by: {notif.added_by_name}</span>
+                      </div>
+                    </td>
+                    <td className="date-cell">
+                      <div className="date-content">
+                        <FiClock className={`date-icon ${expired ? 'expired-icon' : ''}`} />
+                        <span className={expired ? 'expired-text' : ''}>
+                          {notif.due_date ? 
+                            new Date(notif.due_date).toLocaleDateString('en-US', {
+                              year: 'numeric',
+                              month: 'short',
+                              day: 'numeric',
+                              hour: '2-digit',
+                              minute: '2-digit'
+                            }) : 
+                            'No date'
+                          }
+                        </span>
+                        {expired && <span className="expired-indicator"></span>}
+                      </div>
+                    </td>
+                    <td className="priority-cell">
+                      <div className="priority-indicator">
+                        {getPriorityIcon(priority)}
+                      </div>
+                    </td>
+                    <td className="actions-cell">
+                      <button
+                        className="delete-buttons"
+                        onClick={() => deleteNotification(notif._id, notif.added_by)}
+                        title="Delete notification"
+                        disabled={loading}
+                      >
+                        <FiTrash2 />
+                      </button>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
       )}
     </div>
   );

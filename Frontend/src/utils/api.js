@@ -59,7 +59,7 @@ export async function checkSession() {
     const response = await axios.get("/api/v1/user/check-session", {
       withCredentials: true, // Ensure cookies are sent with the request
     });
-        
+    
     return response.data; 
   } catch (error) {
     throw new Error(error.response?.data?.message || "Session validation failed");

@@ -3,8 +3,8 @@ import axios from "axios";
 import "../../styles/FinanceBudget/FinanceBudgetList.css";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus, faEdit, faUser } from '@fortawesome/free-solid-svg-icons'; // Import FontAwesome icons and user
-import Loader from '../Loader'
+import { faPlus, faEdit, faUser, faFileInvoiceDollar } from '@fortawesome/free-solid-svg-icons';
+import Loader from '../Loader';
 
 const FinanceBudgetList = ({ srp_id }) => {
     const [financeBudgets, setFinanceBudgets] = useState([]);
@@ -57,76 +57,153 @@ const FinanceBudgetList = ({ srp_id }) => {
         }
     );
 
+    const formatCurrency = (value) => {
+        return new Intl.NumberFormat('en-IN', {
+            style: 'currency',
+            currency: 'INR',
+            minimumFractionDigits: 2
+        }).format(value);
+    };
+
     return (
         <div className="financebudgetlist-container">
             <div className="financebudgetlist-header">
-                <h2 className="financebudgetlist-title">
-                    <FontAwesomeIcon icon={faUser} className="financebudgetlist-title-icon" /> Finance Budgets
-                </h2>
-                <button className="financebudgetlist-add-edit-btn" onClick={() => navigate(`/manage-financebudget/${srp_id}`)}>
-                    <FontAwesomeIcon icon={faPlus} /> / <FontAwesomeIcon icon={faEdit} />
+                <div className="financebudgetlist-title-container">
+                    <FontAwesomeIcon icon={faFileInvoiceDollar} className="financebudgetlist-title-icon" />
+                    <h2 className="financebudgetlist-title">Project Budget</h2>
+                </div>
+                <button 
+                    className="financebudgetlist-add-edit-btn" 
+                    onClick={() => navigate(`/manage-financebudget/${srp_id}`)}
+                >
+                    <FontAwesomeIcon icon={faEdit} /> Manage 
                 </button>
             </div>
+            
             {loading && <Loader />}
-            {error && <p className="financebudgetlist-error">{error}</p>}
-            {!loading && financeBudgets.length === 0 && (
-                <p className="financebudgetlist-no-data">No finance budgets found.</p>
+            
+            {error && (
+                <div className="financebudgetlist-error">
+                    <p>{error}</p>
+                </div>
             )}
+            
+            {!loading && financeBudgets.length === 0 && (
+                <div className="financebudgetlist-empty-state">
+                    <p>No budget data available</p>
+                    <button 
+                        className="financebudgetlist-add-btn"
+                        onClick={() => navigate(`/manage-financebudget/${srp_id}`)}
+                    >
+                        <FontAwesomeIcon icon={faPlus} /> Add Budget
+                    </button>
+                </div>
+            )}
+            
             {financeBudgets.length > 0 && (
-                <div className="financebudgetlist-table-wrapper">
-                    <table className="financebudgetlist-table">
-                        <thead>
-                            <tr>
-                                <th>Year</th>
-                                <th>Manpower</th>
-                                <th>Equipment</th>
-                                <th>Travel</th>
-                                <th>Expenses</th>
-                                <th>Outsourcing</th>
-                                <th>Contingency</th>
-                                <th>Consumable</th>
-                                <th>Others</th>
-                                <th>Overhead</th>
-                                <th>GST</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {financeBudgets.map((budget) => (
-                                <tr key={budget._id}>
-                                    <td>{budget.year}</td>
-                                    <td>{budget.manpower?.$numberDecimal || "N/A"}</td>
-                                    <td>{budget.equipment?.$numberDecimal || "N/A"}</td>
-                                    <td>{budget.travel?.$numberDecimal || "N/A"}</td>
-                                    <td>{budget.expenses?.$numberDecimal || "N/A"}</td>
-                                    <td>{budget.outsourcing?.$numberDecimal || "N/A"}</td>
-                                    <td>{budget.contingency?.$numberDecimal || "N/A"}</td>
-                                    <td>{budget.consumable?.$numberDecimal || "N/A"}</td>
-                                    <td>{budget.others?.$numberDecimal || "N/A"}</td>
-                                    <td>{budget.overhead?.$numberDecimal || "N/A"}</td>
-                                    <td>{budget.gst?.$numberDecimal || "N/A"}</td>
-                                     <td className={budget.status === 'Approved' ? 'status-approved' : (budget.status === 'Rejected' ? 'status-rejected' : 'status-pending')}>
-                                      {budget.status}
-                                  </td>
-                                </tr>
-                            ))}
-                            {/* Total Row */}
-                            <tr className="total-row">
-                                <td><strong>Total</strong></td>
-                                <td><strong>{total.manpower.toFixed(2)}</strong></td>
-                                <td><strong>{total.equipment.toFixed(2)}</strong></td>
-                                <td><strong>{total.travel.toFixed(2)}</strong></td>
-                                <td><strong>{total.expenses.toFixed(2)}</strong></td>
-                                <td><strong>{total.outsourcing.toFixed(2)}</strong></td>
-                                <td><strong>{total.contingency.toFixed(2)}</strong></td>
-                                <td><strong>{total.consumable.toFixed(2)}</strong></td>
-                                <td><strong>{total.others.toFixed(2)}</strong></td>
-                                <td><strong>{total.overhead.toFixed(2)}</strong></td>
-                                <td><strong>{total.gst.toFixed(2)}</strong></td>
-                                <td></td>
-                            </tr>
-                        </tbody>
-                    </table>
+                <div className="financebudgetlist-content">
+                    <div className="financebudgetlist-table-container">
+                        <div className="financebudgetlist-table-scroll">
+                            <table className="financebudgetlist-table">
+                                <thead>
+                                    <tr>
+                                        <th>Year</th>
+                                        <th>Manpower</th>
+                                        <th>Equipment</th>
+                                        <th>Travel</th>
+                                        <th>Expenses</th>
+                                        <th>Outsourcing</th>
+                                        <th>Contingency</th>
+                                        <th>Consumable</th>
+                                        <th>Others</th>
+                                        <th>Overhead</th>
+                                        <th>GST</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {financeBudgets.map((budget) => (
+                                        <tr key={budget._id}>
+                                            <td>{budget.year}</td>
+                                            <td>{formatCurrency(parseFloat(budget.manpower?.$numberDecimal || 0))}</td>
+                                            <td>{formatCurrency(parseFloat(budget.equipment?.$numberDecimal || 0))}</td>
+                                            <td>{formatCurrency(parseFloat(budget.travel?.$numberDecimal || 0))}</td>
+                                            <td>{formatCurrency(parseFloat(budget.expenses?.$numberDecimal || 0))}</td>
+                                            <td>{formatCurrency(parseFloat(budget.outsourcing?.$numberDecimal || 0))}</td>
+                                            <td>{formatCurrency(parseFloat(budget.contingency?.$numberDecimal || 0))}</td>
+                                            <td>{formatCurrency(parseFloat(budget.consumable?.$numberDecimal || 0))}</td>
+                                            <td>{formatCurrency(parseFloat(budget.others?.$numberDecimal || 0))}</td>
+                                            <td>{formatCurrency(parseFloat(budget.overhead?.$numberDecimal || 0))}</td>
+                                            <td>{formatCurrency(parseFloat(budget.gst?.$numberDecimal || 0))}</td>
+                                            <td>
+                                                <span className={`status-badge ${budget.status.toLowerCase()}`}>
+                                                    {budget.status}
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                                <tfoot>
+                                    <tr className="financebudgetlist-total-row">
+                                        <td><strong>Total</strong></td>
+                                        <td><strong>{formatCurrency(total.manpower)}</strong></td>
+                                        <td><strong>{formatCurrency(total.equipment)}</strong></td>
+                                        <td><strong>{formatCurrency(total.travel)}</strong></td>
+                                        <td><strong>{formatCurrency(total.expenses)}</strong></td>
+                                        <td><strong>{formatCurrency(total.outsourcing)}</strong></td>
+                                        <td><strong>{formatCurrency(total.contingency)}</strong></td>
+                                        <td><strong>{formatCurrency(total.consumable)}</strong></td>
+                                        <td><strong>{formatCurrency(total.others)}</strong></td>
+                                        <td><strong>{formatCurrency(total.overhead)}</strong></td>
+                                        <td><strong>{formatCurrency(total.gst)}</strong></td>
+                                        <td></td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <div className="financebudgetlist-summary">
+                        <div className="financebudgetlist-summary-card">
+                            <h3>Budget Summary</h3>
+                            <div className="summary-row">
+                                <span>Subtotal:</span>
+                                <span>{formatCurrency(
+                                    total.manpower + 
+                                    total.equipment + 
+                                    total.travel + 
+                                    total.expenses + 
+                                    total.outsourcing + 
+                                    total.contingency + 
+                                    total.consumable + 
+                                    total.others
+                                )}</span>
+                            </div>
+                            <div className="summary-row">
+                                <span>Overhead:</span>
+                                <span>{formatCurrency(total.overhead)}</span>
+                            </div>
+                            <div className="summary-row">
+                                <span>GST:</span>
+                                <span>{formatCurrency(total.gst)}</span>
+                            </div>
+                            <div className="summary-row total">
+                                <span>Grand Total:</span>
+                                <span>{formatCurrency(
+                                    total.manpower + 
+                                    total.equipment + 
+                                    total.travel + 
+                                    total.expenses + 
+                                    total.outsourcing + 
+                                    total.contingency + 
+                                    total.consumable + 
+                                    total.others + 
+                                    total.overhead + 
+                                    total.gst
+                                )}</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             )}
         </div>

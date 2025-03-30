@@ -1,72 +1,252 @@
-.mom-container {
-    width: 100%;
-    height: 100%;
-    padding: 10px;
-    background: #fff;
-    border-radius: 10px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+/* Main Container */
+.meeting-notes-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  background-color: #f8f9fa;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
 }
-.messages-list {
-    flex: 1;
-    overflow-y: auto;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    background: #f9f9f9;
-    max-height: 400px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    scrollbar-width: none;
-  }
-  
-  .message-group {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-  }
-  
-  .date-separator {
-    text-align: center;
-    font-size: 14px;
-    font-weight: bold;
-    color: #555;
-    background: #e0e0e0;
-    padding: 5px 10px;
-    margin: 10px 0;
-    border-radius: 10px;
-    width: fit-content;
-    align-self: center;
-  }
-  
-  .message-item {
-    display: flex;
-    flex-direction: column;
-    max-width: 70%;
-    padding: 8px 12px;
-    border-radius: 8px;
-    word-wrap: break-word;
-  }
-  
-  .sent {
-    align-self: flex-end;
-    background-color: #e0e5ff;
-  }
-  
-  .received {
-    align-self: flex-start;
-    background-color: #98a7f5;
-  }
-  
-  .message-time {
-    display: flex;
-    justify-content: end;
-    font-size: 12px;
-    color: #777;
-    margin-top: 3px;
-  }
-  
 
-  
+/* Header */
+.meeting-notes-header {
+  padding: 20px;
+  background-color: #ffffff;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.meeting-notes-header h2 {
+  margin: 0;
+  color: #2c3e50;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.meeting-notes-subtitle {
+  margin: 4px 0 0;
+  color: #7f8c8d;
+  font-size: 0.85rem;
+}
+
+/* Messages List */
+.meeting-notes-list {
+  flex: 1;
+  padding: 16px;
+  overflow-y: auto;
+  background-color: #f8f9fa;
+}
+
+.meeting-notes-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: #7f8c8d;
+}
+
+.meeting-notes-spinner {
+  border: 3px solid rgba(0, 0, 0, 0.1);
+  border-radius: 50%;
+  border-top: 3px solid #3498db;
+  width: 30px;
+  height: 30px;
+  animation: spin 1s linear infinite;
+  margin-bottom: 10px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.meeting-notes-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: #7f8c8d;
+  text-align: center;
+}
+
+.meeting-notes-empty img {
+  width: 120px;
+  margin-bottom: 16px;
+  opacity: 0.6;
+}
+
+/* Message Group */
+.meeting-notes-group {
+  margin-bottom: 24px;
+}
+
+.meeting-notes-date {
+  display: flex;
+  align-items: center;
+  margin: 16px 0;
+  color: #7f8c8d;
+  font-size: 0.8rem;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+.meeting-notes-date::before,
+.meeting-notes-date::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background-color: #e9ecef;
+  margin: 0 10px;
+}
+
+/* Message Item */
+.meeting-notes-item {
+  display: flex;
+  margin-bottom: 12px;
+}
+
+.meeting-notes-sent {
+  justify-content: flex-end;
+}
+
+.meeting-notes-received {
+  justify-content: flex-start;
+}
+
+.meeting-notes-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: #3498db;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  margin-right: 10px;
+  flex-shrink: 0;
+  text-transform: uppercase;
+}
+
+.meeting-notes-content-wrapper {
+  max-width: 70%;
+}
+
+.meeting-notes-sender {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 4px;
+}
+
+.meeting-notes-content {
+  position: relative;
+  padding: 12px 16px;
+  border-radius: 12px;
+  line-height: 1.4;
+  word-break: break-word;
+}
+
+.meeting-notes-sent .meeting-notes-content {
+  background-color: #3498db;
+  color: white;
+  border-top-right-radius: 4px;
+}
+
+.meeting-notes-received .meeting-notes-content {
+  background-color: white;
+  color: #2c3e50;
+  border-top-left-radius: 4px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.meeting-notes-text {
+  white-space: pre-wrap;
+  margin: 0;
+  word-break: break-word;
+}
+
+.meeting-notes-time {
+  display: flex;
+  align-items: center;
+  font-size: 0.7rem;
+  margin-top: 6px;
+  opacity: 0.8;
+}
+
+.meeting-notes-sent .meeting-notes-time {
+  color: rgba(255, 255, 255, 0.8);
+  justify-content: flex-end;
+}
+
+.meeting-notes-received .meeting-notes-time {
+  color: #7f8c8d;
+}
+
+.meeting-notes-time svg {
+  margin-right: 4px;
+}
+
+/* Input Area */
+.meeting-notes-input-container {
+  padding: 16px;
+  background-color: white;
+  border-top: 1px solid #e9ecef;
+}
+
+.meeting-notes-input {
+  display: flex;
+  align-items: flex-end;
+  background-color: #f8f9fa;
+  border-radius: 24px;
+  padding: 8px 12px;
+}
+
+.meeting-notes-textarea {
+  flex: 1;
+  border: none;
+  background: transparent;
+  resize: none;
+  outline: none;
+  font-family: inherit;
+  font-size: 0.95rem;
+  padding: 8px 12px;
+  max-height: 120px;
+  line-height: 1.4;
+  white-space: pre-wrap;
+  min-height: 40px;
+}
+
+.meeting-notes-send-button {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #3498db;
+  color: white;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-left: 8px;
+}
+
+.meeting-notes-send-button:disabled {
+  background-color: #bdc3c7;
+  cursor: not-allowed;
+}
+
+.meeting-notes-send-button:not(:disabled):hover {
+  background-color: #2980b9;
+  transform: translateY(-1px);
+}
+
+.meeting-notes-hint {
+  font-size: 0.7rem;
+  color: #95a5a6;
+  margin: 6px 0 0 12px;
+}

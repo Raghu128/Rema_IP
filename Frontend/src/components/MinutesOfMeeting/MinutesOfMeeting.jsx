@@ -2,7 +2,8 @@ import React, { useEffect, useState, useRef } from "react";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import "../../styles/MinutesOfMeeting/MinutesOfMeeting.css";
-import Loader from '../Loader'
+import Loader from '../Loader';
+import { PaperPlaneRight, Clock } from 'phosphor-react';
 
 const MinutesOfMeeting = ({ projectId }) => {
   const { user } = useSelector((state) => state.user);
@@ -66,7 +67,8 @@ const MinutesOfMeeting = ({ projectId }) => {
   };
 
   const handleKeyDown = (e) => {
-    if (e.key === "Enter") {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
       handleAddMessage();
     }
   };
@@ -90,6 +92,15 @@ const MinutesOfMeeting = ({ projectId }) => {
     }
   };
 
+  const renderMessageText = (text) => {
+    return text.split('\n').map((line, i) => (
+      <React.Fragment key={i}>
+        {line}
+        {i < text.split('\n').length - 1 && <br />}
+      </React.Fragment>
+    ));
+  };
+
   const groupMessagesByDate = () => {
     return messages.reduce((acc, msg) => {
       const dateKey = formatDate(msg.date);
@@ -103,33 +114,53 @@ const MinutesOfMeeting = ({ projectId }) => {
 
   const groupedMessages = groupMessagesByDate();
 
-  if(loading) return <Loader/>;
+  if (loading) return <Loader />;
 
   return (
-    <div className="mom-container">
-      <h2>Notes</h2>
+    <div className="meeting-notes-container">
+      <div className="meeting-notes-header">
+        <h2>Meeting Notes</h2>
+        <p className="meeting-notes-subtitle">All discussions and decisions in one place</p>
+      </div>
 
-      {/* Messages List */}
-      <div className="messages-list" ref={messagesContainerRef}>
+      <div className="meeting-notes-list" ref={messagesContainerRef}>
         {loading ? (
-          <p className="loading-message">Loading messages...</p>
+          <div className="meeting-notes-loading">
+            <div className="meeting-notes-spinner"></div>
+            <p>Loading messages...</p>
+          </div>
         ) : messages.length === 0 ? (
-          <p>No messages yet.</p>
+          <div className="meeting-notes-empty">
+            <img src="/images/empty-notes.svg" alt="No messages" />
+            <p>No notes yet. Start the conversation!</p>
+          </div>
         ) : (
           Object.entries(groupedMessages).map(([date, msgs]) => (
-            <div key={date} className="message-group">
-              <div className="date-separator">{date}</div>
+            <div key={date} className="meeting-notes-group">
+              <div className="meeting-notes-date">
+                <span>{date}</span>
+              </div>
               {msgs.map((msg) => {
                 const isCurrentUser = msg.added_by?._id === user.id;
                 const senderName = msg.added_by?.name || "Unknown User";
                 return (
-                  <div key={msg._id} className={`message-item ${isCurrentUser ? "sent" : "received"}`}>
-                    <div className="message-content">
-                      {!isCurrentUser && <strong>{senderName}</strong>}
-                      <p>{msg.text}</p>
-                      <span className="message-time">
-                        {new Date(msg.date).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
-                      </span>
+                  <div key={msg._id} className={`meeting-notes-item ${isCurrentUser ? "meeting-notes-sent" : "meeting-notes-received"}`}>
+                    {!isCurrentUser && (
+                      <div className="meeting-notes-avatar">
+                        {senderName.charAt(0).toUpperCase()}
+                      </div>
+                    )}
+                    <div className="meeting-notes-content-wrapper">
+                      {!isCurrentUser && <div className="meeting-notes-sender">{senderName}</div>}
+                      <div className="meeting-notes-content">
+                        <p className="meeting-notes-text">{renderMessageText(msg.text)}</p>
+                        <div className="meeting-notes-time">
+                          <Clock size={12} weight="fill" />
+                          <span>
+                            {new Date(msg.date).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+                          </span>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 );
@@ -139,16 +170,26 @@ const MinutesOfMeeting = ({ projectId }) => {
         )}
       </div>
 
-      {/* Input Field */}
-      <div className="message-input">
-        <input
-          type="text"
-          placeholder={posting ? "Sending..." : "Type a message..."}
-          value={newMessage}
-          onChange={(e) => setNewMessage(e.target.value)}
-          onKeyDown={handleKeyDown}
-          disabled={posting}
-        />
+      <div className="meeting-notes-input-container">
+        <div className="meeting-notes-input">
+          <textarea
+            placeholder={posting ? "Sending..." : "Type your note here..."}
+            value={newMessage}
+            onChange={(e) => setNewMessage(e.target.value)}
+            onKeyDown={handleKeyDown}
+            disabled={posting}
+            rows="1"
+            className="meeting-notes-textarea"
+          />
+          <button 
+            onClick={handleAddMessage} 
+            disabled={posting || !newMessage.trim()}
+            className="meeting-notes-send-button"
+          >
+            <PaperPlaneRight size={20} weight="fill" />
+          </button>
+        </div>
+        <p className="meeting-notes-hint">Press Enter to send, Shift+Enter for new line</p>
       </div>
     </div>
   );

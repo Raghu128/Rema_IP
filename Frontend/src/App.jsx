@@ -32,8 +32,10 @@ function AppContent() {
   useEffect(() => {
     const fetchSession = async () => {
       setLoading(true); // ✅ Show loading before API call
+      
       try {
         const user = await checkSession();
+        
         if (user) {
           dispatch(setUser(user));
         } else {

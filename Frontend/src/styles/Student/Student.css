@@ -1,251 +1,509 @@
-/* Student.css - With Role Filter */
-
-/* General Container Styles */
+/* Base Styles */
 .student-container {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-color: #f8f9fa;
-  padding: 30px;
-  border-radius: 15px;
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
-  max-width: 1100px;
-  margin: 30px auto;
-  overflow-x: auto;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1.5rem;
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  color: #2d3748;
 }
 
-/* Header Section */
 .student-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 25px;
-  padding-bottom: 15px;
-  border-bottom: 2px solid #dee2e6;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+  gap: 1rem;
 }
 
 .student-title {
-  font-size: 2.4rem;
-  color: #2c3e50;
+  font-size: 1.8rem;
+  font-weight: 700;
   margin: 0;
-  font-weight: 600;
+  color: #1a202c;
 }
 
-.student-edit-button {
-  background: linear-gradient(to right, #007bff, #0056b3);
-  color: white;
-  border: none;
-  padding: 12px 22px;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  font-size: 1.1rem;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
-}
-
-.student-edit-button:hover {
-  background: linear-gradient(to right, #0056b3, #003366);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
-
-/* Search Bar */
-.student-search-container {
+.student-actions {
   display: flex;
+  gap: 0.75rem;
   align-items: center;
-  background-color: #fff;
-  padding: 12px 18px;
-  border-radius: 10px;
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
-  margin-bottom: 30px;
-  transition: box-shadow 0.3s ease;
 }
 
-.student-search-container:focus-within {
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-}
-
-.student-search-icon {
-  color: #4a90e2;
-  margin-right: 12px;
-  font-size: 1.2rem;
-}
-
-.student-search-input {
-  border: none;
-  outline: none;
-  font-size: 1.1rem;
-  color: #333;
-  flex-grow: 1;
-  background-color: transparent;
-  margin-right: 10px; /* Add margin-right */
-}
-
-/* Role Filter Select */
-.student-role-select {
-  padding: 10px 15px;
-  border: 1px solid #ced4da;
-  border-radius: 8px;
-  font-size: 1rem;
-  color: #495057;
-  background-color: #fff;
-  cursor: pointer;
-  appearance: none; /* Remove default dropdown arrow */
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
-  margin-right: 10px;
-}
-
-.student-role-select:focus {
-  border-color: #80bdff;
-  outline: none;
-  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
-}
-
-.student-filter-icon {
-  color: #6c757d; /* Gray color for the filter icon */
-  margin-left: auto; /* Push icon to the right */
-  font-size: 1.2rem;
-}
-
-/* Table Container */
-.student-table-container {
-  overflow-x: auto;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-  border-radius: 8px;
-  overflow: hidden;
-}
-
-/* Role Sections */
-.student-role-section {
-  margin-bottom: 40px;
-}
-
-.student-role-title {
-  font-size: 1.9rem;
-  color: #3498db;
-  margin-bottom: 20px;
-  border-bottom: 3px solid #3498db;
-  padding-bottom: 10px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
+.view-toggle {
+  padding: 0.5rem 1rem;
+  background: #f7fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  color: #4a5568;
   font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
-/* Table Styles */
-.student-table {
+.view-toggle.active {
+  background: #4299e1;
+  color: white;
+  border-color: #4299e1;
+}
+
+.view-toggle:hover {
+  background: #ebf8ff;
+}
+
+.view-toggle.active:hover {
+  background: #3182ce;
+}
+
+.edit-button {
+  padding: 0.5rem 1rem;
+  background: #4299e1;
+  border: none;
+  border-radius: 6px;
+  color: white;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.edit-button:hover {
+  background: #3182ce;
+  transform: translateY(-1px);
+}
+
+/* Controls */
+.student-controls {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.search-container, .filter-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  /* padding: 0 1rem; */
+  flex: 1;
+  min-width: 250px;
+  height: 50px;
+}
+
+.search-container svg, .filter-container svg {
+  color: #718096;
+  margin-right: 0.5rem;
+}
+
+.search-container input, .filter-container select {
   width: 100%;
-  border-collapse: collapse;
-  background-color: white;
+  padding: 0.75rem 0;
+  border: none;
+  background: transparent;
+  font-size: 0.95rem;
+  outline: none;
 }
 
-.student-table th,
-.student-table td {
-  padding: 16px 20px;
-  text-align: left;
-  border-bottom: 1px solid #e9ecef;
+.filter-container select {
+  appearance: none;
+  padding-right: 1.5rem;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23718096' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right center;
+  background-size: 12px;
+  margin-left: 1rem;
+  padding-left: 1.2rem;
 }
 
-.student-table th {
-  background-color: #f5f7fa;
-  font-weight: 600;
-  color: #444;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+/* Card View */
+.student-cards-container {
+  margin-top: 1rem;
 }
 
-.student-table tbody tr:nth-child(even) {
-  background-color: #f8f9fa;
+.role-section {
+  margin-bottom: 2rem;
 }
 
-.student-table tbody tr:hover {
-  background-color: #f0f3ff;
+.role-title {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 1.2rem;
+  color: #2d3748;
+  margin: 0 0 1rem 0;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #e2e8f0;
 }
 
-/* Project List */
-.student-project-list {
+.role-title svg {
+  color: #4299e1;
+}
+
+.student-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1rem;
+}
+
+.student-card {
+  background: white;
+  border-radius: 8px;
+  padding: 1.25rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e2e8f0;
+  transition: all 0.2s ease;
+}
+
+.student-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+}
+
+.student-info h3 {
+  margin: 0 0 0.25rem 0;
+  font-size: 1.1rem;
+  color: #2d3748;
+}
+
+.student-email {
+  margin: 0;
+  font-size: 0.85rem;
+  color: #718096;
+}
+
+.student-projects {
+  margin-top: 1rem;
+}
+
+.student-projects h4 {
+  margin: 0 0 0.5rem 0;
+  font-size: 0.9rem;
+  color: #4a5568;
+}
+
+.student-projects ul {
   list-style: none;
   padding: 0;
   margin: 0;
 }
 
-.student-project-item {
-  margin-bottom: 10px;
-  padding: 12px 18px;
-  border-radius: 8px;
-  background-color: #f0f8ff;
-  border-left: 5px solid #3498db;
+.project-item {
+  padding: 0.75rem 0;
+  border-bottom: 1px solid #edf2f7;
+}
+
+.project-item:last-child {
+  border-bottom: none;
+}
+
+.project-title {
   display: flex;
-  flex-direction: column;
-  gap: 6px;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
-}
-
-.student-project-item:hover {
-  transform: translateX(3px);
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.12);
-}
-
-.student-project-item span {
-  display: block;
-}
-
-.student-project-item span:first-child {
+  align-items: center;
+  gap: 0.5rem;
   font-weight: 500;
-  color: #333;
 }
 
-/* No Data Message */
-.student-no-data {
-  text-align: center;
-  font-style: italic;
-  color: #777;
-  padding: 30px;
+.project-title svg {
+  color: #718096;
+  font-size: 0.8rem;
 }
 
-/* Error Message */
-.student-error {
-  color: #721c24;
-  background-color: #f8d7da;
-  border: 1px solid #f5c6cb;
-  padding: 15px;
-  border-radius: 8px;
-  margin-bottom: 20px;
-  text-align: center;
-}
-
-/* Container for all committee members */
-.committee-members {
+.project-stipend {
   display: flex;
-  flex-direction: column; /* Arrange checkboxes vertically */
-  gap: 5px;             /* Add some space between checkboxes */
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.25rem;
+  font-size: 0.85rem;
+  color: #38a169;
 }
 
-/* Each individual committee member label */
-.committee-member-label {
-    display: flex;      /* Ensure label and checkbox are aligned */
-    align-items: center; /* Vertically center content */
-    cursor: pointer;    /* Indicate that the label is clickable */    
-    user-select: none;
-  padding: 8px 12px;
-  border: 1px solid #ccc;
+.project-stipend svg {
+  font-size: 0.8rem;
+}
+
+/* Table View */
+.student-table-container {
+  margin-top: 1rem;
+  overflow-x: auto;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  background: white;
+  border: 1px solid #e2e8f0;
+}
+
+.student-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.student-table th {
+  background: #f7fafc;
+  padding: 1rem;
+  text-align: left;
+  font-weight: 600;
+  color: #4a5568;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.student-table td {
+  padding: 1rem;
+  border-bottom: 1px solid #edf2f7;
+  vertical-align: top;
+}
+
+.student-table tr:hover {
+  background: #f8fafc;
+}
+
+.role-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.25rem 0.5rem;
+  background: #ebf8ff;
   border-radius: 4px;
-  transition: background-color 0.3s ease;
-
-
+  color: #3182ce;
+  font-size: 0.85rem;
 }
 
-.committee-member-label:hover {
-  background-color: #f0f0f0; /* Light gray background on hover */
+.role-badge svg {
+  font-size: 0.8rem;
 }
 
-
-/* Style the checkbox itself */
-.committee-member-label input[type="checkbox"] {
-  margin-right: 8px; /* Add space between checkbox and text */
-  cursor: pointer;
+.project-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
+.project-title svg {
+  color: #718096;
+  font-size: 0.8rem;
+}
 
-.committee-members input{
-  width: 1rem;
+.stipend-amount {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #38a169;
+  font-weight: 500;
+}
+
+.stipend-amount svg {
+  font-size: 0.8rem;
+}
+
+/* No Results */
+.no-results {
+  padding: 2rem;
+  text-align: center;
+  color: #718096;
+  font-style: italic;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e2e8f0;
+}
+
+/* Committee Styles */
+.committee-members {
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.committee-members ul {
+  list-style-type: none;
+  padding-left: 1.5rem;
+  margin: 0.3rem 0 0 0;
+}
+
+.committee-members li {
+  position: relative;
+  margin-bottom: 0.2rem;
+}
+
+.committee-members li::before {
+  content: "•";
+  position: absolute;
+  left: -1rem;
+  color: #3498db;
+}
+
+.committee-icon {
+  color: #7f8c8d;
+  margin-right: 0.3rem;
+}
+
+.no-committee {
+  color: #95a5a6;
+  font-style: italic;
+}
+/* Card View Committee */
+.student-card .project-committee {
+  margin-top: 0.75rem;
+  padding: 0.75rem;
+  background-color: #f8f9fa;
+  border-radius: 6px;
+  border-left: 3px solid #3498db;
+  transition: all 0.2s ease;
+}
+
+.student-card .project-committee:hover {
+  background-color: #f1f8fe;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.student-card .committee-members {
+  margin-top: 0.5rem;
+}
+
+.student-card .committee-members ul {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+}
+
+.student-card .committee-members li {
+  padding: 0.35rem 0.5rem;
+  margin-bottom: 0.25rem;
+  background-color: white;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  font-size: 0.85rem;
+}
+
+.student-card .committee-members li:before {
+  content: "•";
+  color: #3498db;
+  font-weight: bold;
+  margin-right: 0.5rem;
+}
+
+/* Table View Committee */
+.student-table td .committee-container {
+  position: relative;
+}
+
+.student-table td .committee-members {
+  max-height: 150px;
+  overflow-y: auto;
+  padding: 0.5rem;
+  background-color: #f8f9fa;
+  border-radius: 6px;
+  border: 1px solid #e9ecef;
+}
+
+.student-table td .committee-members ul {
+  list-style: none;
+  padding-left: 1.25rem;
+  margin: 0;
+}
+
+.student-table td .committee-members li {
+  padding: 0.3rem 0;
+  position: relative;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+.student-table td .committee-members li:before {
+  content: "";
+  position: absolute;
+  left: -1rem;
+  top: 0.7rem;
+  width: 6px;
+  height: 6px;
+  background-color: #3498db;
+  border-radius: 50%;
+}
+
+.student-table td .committee-members::-webkit-scrollbar {
+  width: 6px;
+}
+
+.student-table td .committee-members::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 3px;
+}
+
+.student-table td .committee-members::-webkit-scrollbar-thumb {
+  background-color: #a0b4c0;
+  border-radius: 3px;
+}
+
+.student-table td .committee-members::-webkit-scrollbar-thumb:hover {
+  background-color: #7f9db1;
+}
+
+/* Common Styles */
+.committee-icon {
+  color: #3498db;
+  margin-right: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.no-committee {
+  color: #95a5a6;
+  font-style: italic;
+  font-size: 0.9rem;
+  display: inline-block;
+  padding: 0.25rem 0.5rem;
+  background-color: #f8f9fa;
+  border-radius: 4px;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .student-card .project-committee {
+    padding: 0.6rem;
+  }
+  
+  .student-table td .committee-members {
+    max-height: 100px;
+  }
+}
+/* Responsive Design */
+@media (max-width: 768px) {
+  .student-container {
+      padding: 1rem;
+  }
+  
+  .student-header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1rem;
+  }
+  
+  .student-actions {
+      width: 100%;
+      justify-content: space-between;
+  }
+  
+  .student-controls {
+      flex-direction: column;
+      gap: 0.75rem;
+  }
+  
+  .search-container, .filter-container {
+      min-width: 100%;
+  }
+  
+  .student-cards {
+      grid-template-columns: 1fr;
+  }
+  
+  .student-table th, 
+  .student-table td {
+      padding: 0.75rem 0.5rem;
+      font-size: 0.85rem;
+  }
 }
