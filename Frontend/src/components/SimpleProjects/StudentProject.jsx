@@ -6,11 +6,12 @@ import "../../styles/SimpleProject/Projects.css";
 import Loader from '../Loader';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { 
-  faSearch, faChevronDown, faChevronUp, 
+  faEdit, faSearch, faChevronDown, faChevronUp, 
   faStickyNote, faTimes, faCode, faSitemap, 
-  faUserTie, faUsers, faMapMarkerAlt, faCalendarAlt, 
-  faCalendarCheck, faCalendarDay, faCalendarPlus, 
-  faFileAlt, faLink, faFlagCheckered, faTable, faThLarge
+  faUserTie, faUsers, faMapMarkerAlt, faCalendarPlus, 
+  faCalendarCheck, faCalendarDay, faCalendarAlt, 
+  faFileAlt, faLink, faFlagCheckered, faTable, faThLarge,
+  faPlus, faChartLine, faTasks
 } from '@fortawesome/free-solid-svg-icons';
 
 const StudentProjects = ({ id }) => {
@@ -19,9 +20,15 @@ const StudentProjects = ({ id }) => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [searchQuery, setSearchQuery] = useState("");
+    const [statusFilter, setStatusFilter] = useState("All Status");
     const [expandedProject, setExpandedProject] = useState(null);
     const [showNotes, setShowNotes] = useState(null);
-    const [viewMode, setViewMode] = useState('table'); // 'cards' or 'table'
+    const [viewMode, setViewMode] = useState('table');
+    const [stats, setStats] = useState({
+        total: 0,
+        active: 0,
+        completed: 0
+    });
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -31,6 +38,13 @@ const StudentProjects = ({ id }) => {
                 const response = await axios.get(`/api/v1/projects/student/${id}`);
                 setProjectData(response.data);
                 setFilteredProjects(response.data);
+                
+                // Calculate project statistics
+                const total = response.data.length;
+                const active = response.data.filter(p => p.status === 'ongoing').length;
+                const completed = response.data.filter(p => p.status === 'completed').length;
+                setStats({ total, active, completed });
+                
                 setLoading(false);
             } catch (err) {
                 setError("Error fetching project data from backend");
@@ -43,125 +57,220 @@ const StudentProjects = ({ id }) => {
 
     useEffect(() => {
         if (projectData) {
-            const filtered = projectData.filter((project) =>
-                project.name.toLowerCase().includes(searchQuery.toLowerCase())
-            );
+            let filtered = [...projectData];
+            
+            // Apply search filter
+            if (searchQuery) {
+                filtered = filtered.filter((project) =>
+                    project.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                    (project.domain && project.domain.toLowerCase().includes(searchQuery.toLowerCase())) ||
+                    (project.faculty_id?.name && project.faculty_id.name.toLowerCase().includes(searchQuery.toLowerCase()))
+                );
+            }
+            
+            // Apply status filter
+            if (statusFilter !== "All Status") {
+                filtered = filtered.filter((project) => 
+                    statusFilter === "Active" ? project.status === "ongoing" : project.status === "completed"
+                );
+            }
+            
             setFilteredProjects(filtered);
         }
-    }, [searchQuery, projectData]);
+    }, [searchQuery, statusFilter, projectData]);
 
     if (loading) return <Loader />;
-    if (error) return <div className="error-message">{error}</div>;
+    if (error) return <div className="projects-error-message">{error}</div>;
 
     return (
         <div className="projects-container">
             <header className="projects-header">
-                <h1 className="projects-title">My Projects</h1>
+                <div className="projects-header-left">
+                    <h1 className="projects-title">
+                        <FontAwesomeIcon icon={faTasks} className="projects-title-icon" /> 
+                        My Projects
+                    </h1>
+                    <div className="projects-stats">
+                        <div className="projects-stat-card">
+                            <FontAwesomeIcon icon={faChartLine} className="projects-stat-icon projects-total" />
+                            <div>
+                                <span className="projects-stat-number">{stats.total}</span>
+                                <span className="projects-stat-label">Total Projects</span>
+                            </div>
+                        </div>
+                        <div className="projects-stat-card">
+                            <FontAwesomeIcon icon={faChartLine} className="projects-stat-icon projects-active" />
+                            <div>
+                                <span className="projects-stat-number">{stats.active}</span>
+                                <span className="projects-stat-label">Active</span>
+                            </div>
+                        </div>
+                        <div className="projects-stat-card">
+                            <FontAwesomeIcon icon={faChartLine} className="projects-stat-icon projects-completed" />
+                            <div>
+                                <span className="projects-stat-number">{stats.completed}</span>
+                                <span className="projects-stat-label">Completed</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div className="projects-actions">
-                    <button 
-                        className={`view-toggle-button ${viewMode === 'cards' ? 'active' : ''}`}
-                        onClick={() => setViewMode('cards')}
-                    >
-                        <FontAwesomeIcon icon={faThLarge} /> Cards
-                    </button>
-                    <button 
-                        className={`view-toggle-button ${viewMode === 'table' ? 'active' : ''}`}
-                        onClick={() => setViewMode('table')}
-                    >
-                        <FontAwesomeIcon icon={faTable} /> Table
-                    </button>
+                    <div className="projects-view-toggle-group">
+                        <button 
+                            className={`projects-view-toggle-button ${viewMode === 'cards' ? 'projects-active' : ''}`}
+                            onClick={() => setViewMode('cards')}
+                        >
+                            <FontAwesomeIcon icon={faThLarge} /> Cards
+                        </button>
+                        <button 
+                            className={`projects-view-toggle-button ${viewMode === 'table' ? 'projects-active' : ''}`}
+                            onClick={() => setViewMode('table')}
+                        >
+                            <FontAwesomeIcon icon={faTable} /> Table
+                        </button>
+                    </div>
                 </div>
             </header>
 
-            <div className="projects-search">
-                <FontAwesomeIcon icon={faSearch} className="projects-search-icon" />
-                <input
-                    type="text"
-                    placeholder="Search projects..."
-                    className="projects-search-input"
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                />
+            <div className="projects-search-container">
+                <div className="projects-search">
+                    <FontAwesomeIcon icon={faSearch} className="projects-search-icon" />
+                    <input
+                        type="text"
+                        placeholder="Search projects by name, domain, or supervisor..."
+                        className="projects-search-input"
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                    />
+                </div>
+                <div className="projects-filter">
+                    <select 
+                        className="projects-filter-select"
+                        value={statusFilter}
+                        onChange={(e) => setStatusFilter(e.target.value)}
+                    >
+                        <option value="All Status">All Status</option>
+                        <option value="Active">Active</option>
+                        <option value="Completed">Completed</option>
+                    </select>
+                </div>
             </div>
 
             {viewMode === 'cards' ? (
                 <div className="projects-grid">
                     {filteredProjects && filteredProjects.length > 0 ? (
                         filteredProjects.map((project, index) => (
-                            <div key={project._id} className={`project-card ${expandedProject === index ? 'expanded' : ''}`}>
-                                <div className="project-card-header">
-                                    <h2 className="project-card-title">{project.name}</h2>
-                                    <div className="project-card-supervisor">
-                                        <FontAwesomeIcon icon={faUserTie} /> Supervisor: {project.faculty_id?.name || "Unknown"}
+                            <div key={project._id} className={`projects-card ${expandedProject === index ? 'projects-expanded' : ''}`}>
+                                <div className="projects-card-header">
+                                    <div className="projects-card-badge">
+                                        <span className={`projects-status ${project.status.toLowerCase()}`}>
+                                            {project.status}
+                                        </span>
+                                        {project.priority && (
+                                            <span className="projects-priority">
+                                                Priority: {project.priority}
+                                            </span>
+                                        )}
                                     </div>
-                                    <span className={`project-status ${project.status.toLowerCase()}`}>
-                                        {project.status}
-                                    </span>
+                                    <h2 className="projects-card-title">{project.name}</h2>
+                                    <p className="projects-card-subtitle">
+                                        <FontAwesomeIcon icon={faUserTie} /> Supervisor: {project.faculty_id?.name || "Unknown"}
+                                    </p>
                                 </div>
 
-                                <div className="project-card-body">
-                                    <div className="project-card-meta">
-                                        <p><FontAwesomeIcon icon={faCode} /> <span className="meta-label">Domain:</span> {project.domain}</p>
-                                        <p><FontAwesomeIcon icon={faSitemap} /> <span className="meta-label">Sub-domain:</span> {project.sub_domain}</p>
-                                        <p><FontAwesomeIcon icon={faUsers} /> <span className="meta-label">Team:</span> {project.team ? project.team.map(member => member.name).join(', ') : 'None'}</p>
+                                <div className="projects-card-body">
+                                    <div className="projects-card-meta">
+                                        <div className="projects-meta-item">
+                                            <FontAwesomeIcon icon={faCode} />
+                                            <span>{project.domain}</span>
+                                        </div>
+                                        <div className="projects-meta-item">
+                                            <FontAwesomeIcon icon={faSitemap} />
+                                            <span>{project.sub_domain}</span>
+                                        </div>
+                                        <div className="projects-meta-item">
+                                            <FontAwesomeIcon icon={faUsers} />
+                                            <span>{project.team?.length || 0} members</span>
+                                        </div>
                                     </div>
                                     {expandedProject === index && (
-                                        <div className="project-card-details">
-                                            <hr className="project-divider" />
-                                            <div className="details-grid">
-                                                <div>
-                                                    <p><FontAwesomeIcon icon={faMapMarkerAlt} /> <span className="meta-label">Venue:</span> {project.venue || "N/A"}</p>
-                                                    <p><FontAwesomeIcon icon={faCalendarAlt} /> <span className="meta-label">Created:</span> {new Date(project.creation_date).toLocaleDateString()}</p>
-                                                </div>
-                                                <div>
-                                                    <p><FontAwesomeIcon icon={faCalendarCheck} /> <span className="meta-label">End Date:</span> {project.end_date ? new Date(project.end_date).toLocaleDateString() : "N/A"}</p>
-                                                    <p><FontAwesomeIcon icon={faCalendarDay} /> <span className="meta-label">Submission:</span> {project.date_of_submission ? new Date(project.date_of_submission).toLocaleDateString() : "N/A"}</p>
-                                                    <p><FontAwesomeIcon icon={faCalendarPlus} /> <span className="meta-label">Deadline:</span> {project.next_deadline ? new Date(project.next_deadline).toLocaleDateString() : "N/A"}</p>
+                                        <div className="projects-card-details">
+                                            <div className="projects-details-section">
+                                                <h4>Project Timeline</h4>
+                                                <div className="projects-timeline">
+                                                    <div className="projects-timeline-item">
+                                                        <span>Start Date</span>
+                                                        <span>{new Date(project.creation_date).toLocaleDateString()}</span>
+                                                    </div>
+                                                    <div className="projects-timeline-item">
+                                                        <span>Next Deadline</span>
+                                                        <span>{project.next_deadline ? new Date(project.next_deadline).toLocaleDateString() : "N/A"}</span>
+                                                    </div>
+                                                    <div className="projects-timeline-item">
+                                                        <span>End Date</span>
+                                                        <span>{project.end_date ? new Date(project.end_date).toLocaleDateString() : "N/A"}</span>
+                                                    </div>
                                                 </div>
                                             </div>
-                                            <div className="project-links">
-                                                {project.paper_url && (
-                                                    <a href={project.paper_url} target="_blank" rel="noopener noreferrer" className="project-link">
-                                                        <FontAwesomeIcon icon={faLink} /> View Paper
-                                                    </a>
-                                                )}
-                                                {project.submission_url && (
-                                                    <a href={project.submission_url} target="_blank" rel="noopener noreferrer" className="project-link">
-                                                        <FontAwesomeIcon icon={faLink} /> View Submission
-                                                    </a>
-                                                )}
+                                            <div className="projects-details-section">
+                                                <h4>Resources</h4>
+                                                <div className="projects-links">
+                                                    {project.paper_url && (
+                                                        <a href={project.paper_url} target="_blank" rel="noopener noreferrer" className="projects-link">
+                                                            <FontAwesomeIcon icon={faLink} /> Research Paper
+                                                        </a>
+                                                    )}
+                                                    {project.submission_url && (
+                                                        <a href={project.submission_url} target="_blank" rel="noopener noreferrer" className="projects-link">
+                                                            <FontAwesomeIcon icon={faLink} /> Submission
+                                                        </a>
+                                                    )}
+                                                </div>
                                             </div>
                                             {project.remarks && (
-                                                <div className="project-remarks">
-                                                    <FontAwesomeIcon icon={faFileAlt} />
-                                                    <p>{project.remarks}</p>
+                                                <div className="projects-details-section">
+                                                    <h4>Notes</h4>
+                                                    <div className="projects-remarks">
+                                                        <p>{project.remarks}</p>
+                                                    </div>
                                                 </div>
                                             )}
                                         </div>
                                     )}
                                 </div>
 
-                                <footer className="project-card-actions">
+                                <footer className="projects-card-actions">
                                     <button 
-                                        className="project-card-notes-button" 
+                                        className="projects-card-notes-button" 
                                         onClick={() => setShowNotes(showNotes === index ? null : index)}
                                         aria-label="View notes"
                                     >
-                                        <FontAwesomeIcon icon={faStickyNote} /> 
+                                        <FontAwesomeIcon icon={faStickyNote} /> Minutes
                                     </button>
-                                    
-                                    <button 
-                                        className="project-card-toggle-button" 
-                                        onClick={() => setExpandedProject(expandedProject === index ? null : index)}
-                                        aria-label={expandedProject === index ? "Collapse details" : "Expand details"}
-                                    >
-                                        {expandedProject === index ? <FontAwesomeIcon icon={faChevronUp} /> : <FontAwesomeIcon icon={faChevronDown} />}
-                                    </button>
+                                    <div className="projects-action-buttons">
+                                        <button 
+                                            className="projects-card-toggle-button" 
+                                            onClick={() => setExpandedProject(expandedProject === index ? null : index)}
+                                            aria-label={expandedProject === index ? "Collapse details" : "Expand details"}
+                                        >
+                                            {expandedProject === index ? (
+                                                <FontAwesomeIcon icon={faChevronUp} /> 
+                                            ) : (
+                                                <FontAwesomeIcon icon={faChevronDown} /> 
+                                            )}
+                                            Details
+                                        </button>
+                                    </div>
                                 </footer>
                             </div>
                         ))
                     ) : (
-                        <div className="no-data">No project data found.</div>
+                        <div className="projects-no-projects">
+                            <div className="projects-no-projects-content">
+                                <h3>No projects found</h3>
+                                <p>Try adjusting your search or contact your supervisor</p>
+                            </div>
+                        </div>
                     )}
                 </div>
             ) : (
@@ -173,8 +282,8 @@ const StudentProjects = ({ id }) => {
                                 <th>Supervisor</th>
                                 <th>Domain</th>
                                 <th>Status</th>
-                                <th>Team Size</th>
-                                <th>Created</th>
+                                <th>Team</th>
+                                <th>Timeline</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -182,38 +291,66 @@ const StudentProjects = ({ id }) => {
                             {filteredProjects && filteredProjects.length > 0 ? (
                                 filteredProjects.map((project, index) => (
                                     <React.Fragment key={project._id}>
-                                        <tr className="project-table-row">
+                                        <tr className="projects-table-row">
                                             <td>
-                                                <div className="project-name-cell">
-                                                    {project.name}
-                                                </div>
-                                            </td>
-                                            <td>{project.faculty_id?.name || "Unknown"}</td>
-                                            <td>
-                                                <div className="domain-cell">
-                                                    <span className="domain">{project.domain}</span>
-                                                    {project.sub_domain && (
-                                                        <span className="sub-domain">{project.sub_domain}</span>
+                                                <div className="projects-name-cell">
+                                                    <div className="projects-name">{project.name}</div>
+                                                    {project.priority && (
+                                                        <span className="projects-priority-badge">
+                                                            {project.priority}
+                                                        </span>
                                                     )}
                                                 </div>
                                             </td>
                                             <td>
-                                                <span className={`status-badge ${project.status.toLowerCase()}`}>
+                                                <div className="projects-lead-cell">
+                                                    <FontAwesomeIcon icon={faUserTie} />
+                                                    <span>{project.faculty_id?.name || "Unknown"}</span>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div className="projects-domain-cell">
+                                                    <span className="projects-domain">{project.domain}</span>
+                                                    {project.sub_domain && (
+                                                        <span className="projects-sub-domain">{project.sub_domain}</span>
+                                                    )}
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <span className={`projects-status-badge ${project.status.toLowerCase()}`}>
                                                     {project.status}
                                                 </span>
                                             </td>
-                                            <td>{project.team ? project.team.length : 0}</td>
-                                            <td>{new Date(project.creation_date).toLocaleDateString()}</td>
                                             <td>
-                                                <div className="table-actions">
+                                                <div className="projects-team-cell">
+                                                    <FontAwesomeIcon icon={faUsers} />
+                                                    <span>{project.team?.length || 0} members</span>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div className="projects-timeline-cell">
+                                                    <div>
+                                                        <FontAwesomeIcon icon={faCalendarAlt} />
+                                                        <span>{new Date(project.creation_date).toLocaleDateString()}</span>
+                                                    </div>
+                                                    {project.next_deadline && (
+                                                        <div>
+                                                            <FontAwesomeIcon icon={faCalendarPlus} />
+                                                            <span>{new Date(project.next_deadline).toLocaleDateString()}</span>
+                                                        </div>
+                                                    )}
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div className="projects-table-actions">
                                                     <button 
-                                                        className="table-notes-button"
+                                                        className="projects-table-notes-button"
                                                         onClick={() => setShowNotes(showNotes === index ? null : index)}
                                                     >
                                                         <FontAwesomeIcon icon={faStickyNote} />
                                                     </button>
                                                     <button 
-                                                        className="table-expand-button"
+                                                        className="projects-table-expand-button"
                                                         onClick={() => setExpandedProject(expandedProject === index ? null : index)}
                                                     >
                                                         {expandedProject === index ? (
@@ -226,26 +363,40 @@ const StudentProjects = ({ id }) => {
                                             </td>
                                         </tr>
                                         {expandedProject === index && (
-                                            <tr className="project-table-details">
+                                            <tr className="projects-table-details">
                                                 <td colSpan="7">
-                                                    <div className="table-details-content">
-                                                        <div className="details-section">
+                                                    <div className="projects-table-details-content">
+                                                        <div className="projects-details-section">
                                                             <h4>Team Members</h4>
-                                                            <p>{project.team ? project.team.map(member => member.name).join(', ') : 'None'}</p>
+                                                            <div className="projects-team-members">
+                                                                {project.team ? (
+                                                                    project.team.map(member => (
+                                                                        <span key={member._id} className="projects-team-member">
+                                                                            {member.name}
+                                                                        </span>
+                                                                    ))
+                                                                ) : 'None'}
+                                                            </div>
                                                         </div>
-                                                        <div className="details-section">
-                                                            <h4>Additional Information</h4>
-                                                            <p><strong>Venue:</strong> {project.venue || "N/A"}</p>
-                                                            <p><strong>Submission Date:</strong> {project.date_of_submission ? new Date(project.date_of_submission).toLocaleDateString() : "N/A"}</p>
-                                                            <p><strong>End Date:</strong> {project.end_date ? new Date(project.end_date).toLocaleDateString() : "N/A"}</p>
-                                                            <p><strong>Next Deadline:</strong> {project.next_deadline ? new Date(project.next_deadline).toLocaleDateString() : "N/A"}</p>
+                                                        <div className="projects-details-section">
+                                                            <h4>Project Details</h4>
+                                                            <div className="projects-details-grid">
+                                                                <div>
+                                                                    <p><strong>Venue:</strong> {project.venue || "N/A"}</p>
+                                                                    <p><strong>Submission Date:</strong> {project.date_of_submission ? new Date(project.date_of_submission).toLocaleDateString() : "N/A"}</p>
+                                                                </div>
+                                                                <div>
+                                                                    <p><strong>End Date:</strong> {project.end_date ? new Date(project.end_date).toLocaleDateString() : "N/A"}</p>
+                                                                    <p><strong>Remarks:</strong> {project.remarks || "None"}</p>
+                                                                </div>
+                                                            </div>
                                                         </div>
-                                                        <div className="details-section">
-                                                            <h4>Links</h4>
-                                                            <div className="table-links">
+                                                        <div className="projects-details-section">
+                                                            <h4>Resources</h4>
+                                                            <div className="projects-table-links">
                                                                 {project.paper_url && (
                                                                     <a href={project.paper_url} target="_blank" rel="noopener noreferrer">
-                                                                        <FontAwesomeIcon icon={faLink} /> Paper
+                                                                        <FontAwesomeIcon icon={faLink} /> Research Paper
                                                                     </a>
                                                                 )}
                                                                 {project.submission_url && (
@@ -255,12 +406,6 @@ const StudentProjects = ({ id }) => {
                                                                 )}
                                                             </div>
                                                         </div>
-                                                        {project.remarks && (
-                                                            <div className="details-section">
-                                                                <h4>Remarks</h4>
-                                                                <p>{project.remarks}</p>
-                                                            </div>
-                                                        )}
                                                     </div>
                                                 </td>
                                             </tr>
@@ -269,7 +414,11 @@ const StudentProjects = ({ id }) => {
                                 ))
                             ) : (
                                 <tr>
-                                    <td colSpan="7" className="no-data">No project data found.</td>
+                                    <td colSpan="7">
+                                        <div className="projects-no-projects-table">
+                                            <h3>No projects match your search</h3>
+                                        </div>
+                                    </td>
                                 </tr>
                             )}
                         </tbody>
@@ -280,10 +429,10 @@ const StudentProjects = ({ id }) => {
             {/* Notes Modal (overlay) */}
             {filteredProjects && filteredProjects.map((project, index) => (
                 showNotes === index && (
-                    <div key={project._id} className="project-notes-overlay">
-                        <div className="project-notes-content">
+                    <div key={project._id} className="projects-notes-overlay">
+                        <div className="projects-notes-content">
                             <button 
-                                className="project-close-notes-button" 
+                                className="projects-close-notes-button" 
                                 onClick={() => setShowNotes(null)}
                                 aria-label="Close notes"
                             >

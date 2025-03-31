@@ -1,75 +1,127 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { setUser } from "../redux/slices/userSlice";
 import { loginUser } from "../utils/api";
-import '../styles/loginPage.css';
-import RemaLoader from '../components/RemaLoader'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser, faLock, faSignInAlt } from '@fortawesome/free-solid-svg-icons';
+import { 
+  faUser, faLock, faSignInAlt, 
+  faEnvelope, faEye, faEyeSlash 
+} from '@fortawesome/free-solid-svg-icons';
+import RemaLoader from '../components/RemaLoader';
+import '../styles/LoginPage.css';
 
 function LoginPage() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
-    const [loading, setLoading] = useState(false); // Loading state
+    const [loading, setLoading] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
     const dispatch = useDispatch();
 
     const handleLogin = async (e) => {
         e.preventDefault();
-        setLoading(true); // Start loading
-        setError("");    // Clear any previous errors
+        setLoading(true);
+        setError("");
 
         try {
             const user = await loginUser({ email, password });
             dispatch(setUser(user));
-            window.location.href = "/"; // Redirect after successful login
+            window.location.href = "/";
         } catch (err) {
-            setError("Invalid credentials");
+            setError(err.response?.data?.message || "Invalid credentials. Please try again.");
         } finally {
-            setLoading(false); // Stop loading, regardless of success/failure
+            setLoading(false);
         }
     };
 
     return (
-        <div className="loginpage-container">
-            <h1 className="loginpage-title"><FontAwesomeIcon icon={faUser} className="loginpage-icon" /> Login</h1>
-            {loading && <RemaLoader />} {/* Display Loader when loading */}
-            {!loading && (
-                <form className="loginpage-form" onSubmit={handleLogin}>
-                    <div className="loginpage-input-group">
-                        <label htmlFor="email"><FontAwesomeIcon icon={faUser} /></label>
-                        <input
-                            type="email"
-                            id="email"
-                            placeholder="Email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            required
-                            className="loginpage-input"
-                        />
+        <div className="loginPage-container">
+            <div className="loginPage-card">
+                <div className="loginPage-header">
+                    <div className="loginPage-logo">
+                        <FontAwesomeIcon icon={faUser} className="loginPage-logo-icon" />
                     </div>
-                    <div className="loginpage-input-group">
-                        <label htmlFor="password"><FontAwesomeIcon icon={faLock} /></label>
-                        <input
-                            type="password"
-                            id="password"
-                            placeholder="Password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            required
-                            className="loginpage-input"
-                        />
-                    </div>
-                    {error && <p className="loginpage-error">{error}</p>}
-                    <button type="submit" className="loginpage-button">
-                        <FontAwesomeIcon icon={faSignInAlt} /> Login
-                    </button>
-                    <p className="forgot-password">
-                        <a href="/forgot-password">Forgot Password?</a>
-                    </p>
+                    <h1 className="loginPage-title">Welcome Back</h1>
+                    <p className="loginPage-subtitle">Sign in to your account</p>
+                </div>
 
-                </form>
-            )}
+                {loading ? (
+                    <div className="loginPage-loader">
+                        <RemaLoader />
+                    </div>
+                ) : (
+                    <form className="loginPage-form" onSubmit={handleLogin}>
+                        {error && (
+                            <div className="loginPage-error">
+                                {error}
+                            </div>
+                        )}
+
+                        <div className="loginPage-input-group">
+                            <label htmlFor="email" className="loginPage-input-label">
+                                Email Address
+                            </label>
+                            <div className="loginPage-input-wrapper">
+                                <FontAwesomeIcon icon={faEnvelope} className="loginPage-input-icon" />
+                                <input
+                                    type="email"
+                                    id="email"
+                                    placeholder="your.email@example.com"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    required
+                                    className="loginPage-input"
+                                    disabled={loading}
+                                />
+                            </div>
+                        </div>
+
+                        <div className="loginPage-input-group">
+                            <label htmlFor="password" className="loginPage-input-label">
+                                Password
+                            </label>
+                            <div className="loginPage-input-wrapper">
+                                <FontAwesomeIcon icon={faLock} className="loginPage-input-icon" />
+                                <input
+                                    type={showPassword ? "text" : "password"}
+                                    id="password"
+                                    placeholder="Enter your password"
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
+                                    required
+                                    className="loginPage-input"
+                                    disabled={loading}
+                                />
+                                <FontAwesomeIcon 
+                                    icon={showPassword ? faEyeSlash : faEye} 
+                                    className="loginPage-password-toggle"
+                                    onClick={() => setShowPassword(!showPassword)}
+                                />
+                            </div>
+                        </div>
+
+                        <div className="loginPage-options">
+                            <div className="loginPage-remember">
+                                <input type="checkbox" id="remember" className="loginPage-checkbox" />
+                                <label htmlFor="remember">Remember me</label>
+                            </div>
+                            <a href="/forgot-password" className="loginPage-forgot-password">
+                                Forgot password?
+                            </a>
+                        </div>
+
+                        <button 
+                            type="submit" 
+                            className="loginPage-button"
+                            disabled={loading || !email || !password}
+                        >
+                            <FontAwesomeIcon icon={faSignInAlt} className="loginPage-button-icon" />
+                            Sign In
+                        </button>
+
+                    </form>
+                )}
+            </div>
         </div>
     );
 }

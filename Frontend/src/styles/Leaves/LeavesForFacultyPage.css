@@ -1,424 +1,534 @@
-/* Base Styles */
-.leaves-container {
-    max-width: 1200px;
-    margin: 2rem auto;
-    padding: 1.5rem;
-    background: #fff;
-    border-radius: 10px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.08);
-}
-
-/* Header Styles */
-.leaves-header {
+/* Leaves Container */
+.leaves-content-container {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #333;
+    padding: 20px;
+    width: 1300px;
+    margin: 0 auto;
+    border: 1px solid black;
+    border-radius: 5px ;
+  }
+  
+  /* Header Styles */
+  .leaves-header {
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 2rem;
-    flex-wrap: wrap;
-    gap: 1rem;
-}
-
-.leaves-title {
-    font-size: 1.8rem;
+    margin-bottom: 30px;
+    gap: 20px;
+  }
+  
+  .leaves-header-left {
+    flex: 1;
+    min-width: 300px;
+  }
+  
+  .leaves-title {
+    display: flex;
+    align-items: center;
+    font-size: 2rem;
     color: #2c3e50;
+    margin-bottom: 20px;
+  }
+  
+  .leaves-title-icon {
+    margin-right: 15px;
+    color: #3498db;
+  }
+  
+  /* Stats Container */
+  .leaves-stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-top: 20px;
+  }
+  
+  .leaves-stat-card {
+    flex: 1;
+    min-width: 120px;
+    background: white;
+    border-radius: 10px;
+    padding: 15px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
     display: flex;
     align-items: center;
-    gap: 0.75rem;
-}
-
-.leaves-title-icon {
-    color: #4a6baf;
-}
-
-.leaves-view-toggle {
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  
+  .leaves-stat-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+  }
+  
+  .leaves-stat-icon {
+    font-size: 1.5rem;
+    margin-right: 15px;
+    color: #fff;
+    background: #3498db;
+    padding: 12px;
+    border-radius: 50%;
+  }
+  
+  .leaves-stat-content {
     display: flex;
-    gap: 0.5rem;
-}
-
-.view-toggle-btn {
-    padding: 0.5rem 1rem;
-    border-radius: 5px;
-    font-weight: 500;
+    flex-direction: column;
+  }
+  
+  .leaves-stat-number {
+    font-size: 1.5rem;
+    font-weight: bold;
+    line-height: 1;
+  }
+  
+  .leaves-stat-label {
+    font-size: 0.8rem;
+    opacity: 0.8;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  
+  /* Actions */
+  .leaves-actions {
     display: flex;
+    gap: 15px;
     align-items: center;
-    gap: 0.5rem;
-    transition: all 0.2s ease;
-    cursor: pointer;
-    background: #f8f9fa;
-    border: 1px solid #dee2e6;
-    color: #495057;
-}
-
-.view-toggle-btn.active {
-    background: #4a6baf;
-    color: white;
-    border-color: #3a5a9f;
-}
-
-.view-toggle-btn:hover {
-    background: #e9ecef;
-}
-
-.view-toggle-btn.active:hover {
-    background: #3a5a9f;
-}
-
-/* Empty State */
-.leaves-empty-state {
-    text-align: center;
-    padding: 3rem;
-    background: #f8f9fa;
+  }
+  
+  .leaves-view-toggle-group {
+    display: flex;
+    background: #f5f7fa;
     border-radius: 8px;
-}
-
-.leaves-message {
-    color: #6c757d;
-    font-size: 1.1rem;
-}
-
-.leaves-message.leaves-error {
-    color: #dc3545;
-}
-
-/* Table View */
-.leaves-table-container {
+    overflow: hidden;
+  }
+  
+  .leaves-view-toggle {
+    padding: 10px 15px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #7f8c8d;
+  }
+  
+  .leaves-view-toggle.leaves-active {
+    background: #3498db;
+    color: white;
+  }
+  
+  /* Controls */
+  .leaves-controls {
+    margin-bottom: 30px;
+  }
+  
+  .leaves-search-container {
+    position: relative;
+    max-width: 600px;
+  }
+  
+  .leaves-search-icon {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #7f8c8d;
+  }
+  
+  .leaves-search-input {
     width: 100%;
+    padding: 12px 15px 12px 45px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: border 0.2s;
+  }
+  
+  .leaves-search-input:focus {
+    outline: none;
+    border-color: #3498db;
+    box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+  }
+  
+  /* Table View */
+  .leaves-table-container {
     overflow-x: auto;
-}
-
-.leaves-table {
+    margin-top: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  }
+  
+  .leaves-table {
     width: 100%;
     border-collapse: collapse;
-    font-size: 0.9rem;
     background: white;
-    border-radius: 8px;
-    overflow: hidden;
-}
-
-.leaves-table th,
-.leaves-table td {
-    padding: 1rem;
+  }
+  
+  .leaves-table th {
+    background: #f8fafc;
+    color: #64748b;
+    font-weight: 500;
     text-align: left;
-    border-bottom: 1px solid #e9ecef;
-}
-
-.leaves-table th {
-    background: #f8f9fa;
-    font-weight: 600;
-    color: #495057;
-    position: sticky;
-    top: 0;
-}
-
-.leaves-table tr:hover {
-    background-color: #f8f9fa;
-}
-
-.student-cell {
+    padding: 15px;
+    border-bottom: 1px solid #e2e8f0;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    letter-spacing: 0.5px;
+  }
+  
+  .leaves-table td {
+    padding: 15px;
+    border-bottom: 1px solid #e2e8f0;
     vertical-align: middle;
-}
-
-.student-info {
+  }
+  
+  .leaves-table tr:last-child td {
+    border-bottom: none;
+  }
+  
+  .leaves-table-row:hover {
+    background: #f8fafc;
+  }
+  
+  .leaves-student-cell {
+    width: 250px;
+  }
+  
+  .leaves-student-info {
     display: flex;
     align-items: center;
-    gap: 0.75rem;
-}
-
-.student-name {
-    font-weight: 500;
-    color: #2c3e50;
-}
-
-.student-email {
-    font-size: 0.8rem;
-    color: #6c757d;
-}
-
-.leave-dates {
-    display: flex;
-    flex-direction: column;
-    gap: 0.25rem;
-}
-
-.date-separator {
-    color: #6c757d;
-    font-size: 0.8rem;
-    text-align: center;
-}
-
-.leave-duration {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    color: #495057;
-}
-
-.leave-reason {
-    max-width: 300px;
-    white-space: normal;
-    word-break: break-word;
-}
-
-.status-badge {
-    padding: 0.25rem 0.5rem;
-    border-radius: 20px;
-    font-size: 0.8rem;
-    font-weight: 500;
-}
-
-.status-badge.approved {
-    background: #d4edda;
-    color: #155724;
-}
-
-.status-badge.pending {
-    background: #fff3bf;
-    color: #5f3f00;
-}
-
-.status-badge.rejected {
-    background: #f8d7da;
-    color: #721c24;
-}
-/* Card View - Improved Alignment */
-.leaves-cards-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-    gap: 1.5rem;
-}
-
-.student-leave-card {
-    background: white;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-    border: 1px solid #e9ecef;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-}
-
-.student-card-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    padding: 1.25rem;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
-    gap: 1rem;
-}
-
-.student-info {
-    display: flex;
-    align-items: flex-start;
-    gap: 1rem;
-    flex: 1;
-}
-
-.student-avatar {
-    width: 42px;
-    height: 42px;
+    gap: 15px;
+  }
+  
+  .leaves-student-avatar {
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
-    background: #e9ecef;
+    background: #e0f2fe;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #4a6baf;
-    flex-shrink: 0;
-}
-
-.student-text-info {
-    flex: 1;
-    min-width: 0; /* Prevent overflow */
-}
-
-.student-name {
-    font-size: 1rem;
+    color: #0369a1;
+  }
+  
+  .leaves-student-name {
+    font-weight: 500;
     color: #2c3e50;
-    margin: 0;
-    font-weight: 600;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.student-email {
-    font-size: 0.8rem;
-    color: #6c757d;
-    margin: 0.25rem 0 0;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.leave-count {
-    font-size: 0.8rem;
-    color: #4a6baf;
-    margin-top: 0.5rem;
-    display: inline-block;
-    background: #f0f4ff;
-    padding: 0.25rem 0.5rem;
-    border-radius: 4px;
-}
-
-.expand-icon {
-    transition: transform 0.2s ease;
-    color: #6c757d;
-    margin-left: auto;
-    flex-shrink: 0;
-}
-
-.expand-icon.expanded {
-    transform: rotate(180deg);
-}
-
-.leave-details {
-    border-top: 1px solid #e9ecef;
-    padding: 0;
-}
-
-.leave-item {
-    padding: 1.25rem;
-    border-bottom: 1px solid #f1f3f5;
+    margin-bottom: 3px;
+  }
+  
+  .leaves-student-email {
+    font-size: 0.85rem;
+    color: #7f8c8d;
     display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-}
-
-.leave-item:last-child {
-    border-bottom: none;
-}
-
-.leave-dates {
+    align-items: center;
+    gap: 5px;
+  }
+  
+  .leaves-dates-cell {
+    min-width: 200px;
+  }
+  
+  .leaves-dates {
     display: flex;
     flex-direction: row;
-    align-items: center;
-    gap: 0.75rem;
-    flex-wrap: wrap;
-}
-
-.date-separator {
-    color: #6c757d;
-}
-
-.leave-duration {
+    gap: 5px;
+  }
+  
+  .leaves-date-separator {
+    color: #94a3b8;
+    font-size: 0.8rem;
+    text-align: center;
+  }
+  
+  .leaves-duration-cell {
+    min-width: 100px;
+  }
+  
+  .leaves-duration {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
-    font-size: 0.85rem;
-    color: #495057;
-}
-
-.leave-meta {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    flex-wrap: wrap;
-}
-
-.leave-reason {
-    color: #495057;
-    line-height: 1.5;
-    font-size: 0.9rem;
-}
-
-/* Status badge alignment fix */
-.status-badge {
-    margin-left: auto;
-}
-
-/* Responsive Adjustments for Cards */
-@media (max-width: 768px) {
-    .leaves-cards-container {
-        grid-template-columns: 1fr;
-    }
-    
-    .student-card-header {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 0.75rem;
-    }
-    
-    .student-info {
-        width: 100%;
-    }
-    
-    .expand-icon {
-        position: absolute;
-        right: 1.25rem;
-        top: 1.25rem;
-    }
-    
-    .leave-meta {
-        gap: 0.75rem;
-    }
-}
-
-@media (max-width: 480px) {
-    .leave-dates {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 0.25rem;
-    }
-    
-    .date-separator {
-        display: none;
-    }
-}
-
-/* Search Styles */
-.leaves-controls {
+    gap: 8px;
+    font-weight: 500;
+  }
+  
+  .leaves-reason-cell {
+    max-width: 300px;
+  }
+  
+  .leaves-status-cell {
+    min-width: 100px;
+  }
+  
+  .leaves-status-badge {
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    text-transform: capitalize;
+  }
+  
+  .leaves-status-badge.approved {
+    background: #d1fae5;
+    color: #065f46;
+  }
+  
+  .leaves-status-badge.pending {
+    background: #fef3c7;
+    color: #92400e;
+  }
+  
+  .leaves-status-badge.rejected {
+    background: #fee2e2;
+    color: #b91c1c;
+  }
+  
+  /* Cards View */
+  .leaves-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+  }
+  
+  .leaves-student-card {
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  
+  .leaves-student-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  }
+  
+  .leaves-student-header {
+    padding: 20px;
+    background: linear-gradient(135deg, #f5f7fa 0%, #e4e8eb 100%);
+    border-bottom: 1px solid #eee;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 100%;
-    gap: 1rem;
-    flex-wrap: wrap;
-}
-
-.search-container {
-    position: relative;
+    cursor: pointer;
+  }
+  
+  .leaves-student-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
     flex: 1;
-    min-width: 250px;
-    max-width: 400px;
-}
-
-.search-icon {
-    position: absolute;
-    left: 12px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: #6c757d;
-}
-
-.search-input {
-    width: 100%;
-    padding: 0.5rem 1rem 0.5rem 2.5rem;
-    border-radius: 5px;
-    border: 1px solid #dee2e6;
+  }
+  
+  .leaves-student-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: #e0f2fe;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #0369a1;
+    font-size: 1.2rem;
+  }
+  
+  .leaves-student-name {
+    margin: 0;
+    font-size: 1.1rem;
+    color: #2c3e50;
+  }
+  
+  .leaves-student-email {
+    font-size: 0.85rem;
+    color: #7f8c8d;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin-top: 3px;
+  }
+  
+  .leaves-student-meta {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+  }
+  
+  .leaves-count-badge {
+    background: #e0f2fe;
+    color: #0369a1;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 500;
+  }
+  
+  .leaves-expand-icon {
+    color: #94a3b8;
+    transition: transform 0.2s;
+  }
+  
+  .leaves-list {
+    padding: 15px;
+  }
+  
+  .leaves-item {
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #000000;
+  }
+  
+  .leaves-item:last-child {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+  }
+  
+  .leaves-item-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  
+  .leaves-dates {
+    display: flex;
+    align-items: center;
+    gap: 10px;
     font-size: 0.9rem;
-    transition: all 0.2s ease;
-}
-
-.search-input:focus {
-    outline: none;
-    border-color: #4a6baf;
-    box-shadow: 0 0 0 2px rgba(74, 107, 175, 0.2);
-}
-
-/* Responsive adjustments for search */
-@media (max-width: 768px) {
-    .leaves-controls {
-        flex-direction: column;
-        align-items: stretch;
-        gap: 1rem;
+    color: #4a5568;
+  }
+  
+  .leaves-date-separator {
+    color: #94a3b8;
+  }
+  
+  .leaves-item-body {
+    display: grid;
+    gap: 10px;
+  }
+  
+  .leaves-duration {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.9rem;
+    color: #4a5568;
+  }
+  
+  .leaves-reason {
+    font-size: 0.9rem;
+    color: #4a5568;
+    line-height: 1.5;
+  }
+  
+  /* Empty State */
+  .leaves-empty-state {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 300px;
+    text-align: center;
+    background: #f9f9f9;
+    border-radius: 10px;
+    padding: 40px;
+    margin: 30px 0;
+  }
+  
+  .leaves-empty-content {
+    max-width: 400px;
+  }
+  
+  .leaves-empty-icon {
+    font-size: 3rem;
+    color: #bdc3c7;
+    margin-bottom: 20px;
+  }
+  
+  .leaves-empty-state h3 {
+    color: #7f8c8d;
+    margin-bottom: 10px;
+  }
+  
+  .leaves-empty-state p {
+    color: #95a5a6;
+    margin-bottom: 20px;
+  }
+  
+  /* Messages */
+  .leaves-message {
+    padding: 20px;
+    text-align: center;
+    color: #7f8c8d;
+  }
+  
+  .leaves-error {
+    color: #e74c3c;
+    background: #fee2e2;
+    border-radius: 8px;
+  }
+  
+  /* Responsive Adjustments */
+  @media (max-width: 1200px) {
+    .leaves-cards-grid {
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .leaves-header {
+      flex-direction: column;
+      align-items: flex-start;
     }
     
-    .search-container {
-        max-width: 100%;
+    .leaves-actions {
+      width: 100%;
+      justify-content: space-between;
     }
     
-    .leaves-view-toggle {
-        width: 100%;
-        justify-content: flex-end;
+    .leaves-stats {
+      gap: 10px;
     }
-}
+    
+    .leaves-stat-card {
+      min-width: calc(50% - 10px);
+    }
+  }
+  
+  @media (max-width: 576px) {
+    .leaves-stat-card {
+      min-width: 100%;
+    }
+    
+    .leaves-cards-grid {
+      grid-template-columns: 1fr;
+    }
+    
+    .leaves-table th, 
+    .leaves-table td {
+      padding: 10px;
+      font-size: 0.85rem;
+    }
+    
+    .leaves-student-info {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 5px;
+    }
+    
+    .leaves-student-avatar {
+      display: none;
+    }
+    
+    .leaves-dates {
+      flex-direction: column;
+      gap: 2px;
+    }
+    
+    .leaves-date-separator {
+      display: none;
+    }
+  }

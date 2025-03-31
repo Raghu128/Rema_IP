@@ -407,7 +407,17 @@ export async function handleUserSignup(req, res) {
 
     const existingUser = await User.findOne({ email });
     if (existingUser) {
-      return res.status(201).send("User already exists");
+      return res.status(200).json({
+        success: true,
+        message: "User already exists",
+        user: {
+          id: existingUser._id,
+          name: existingUser.name,
+          email: existingUser.email,
+          role: existingUser.role,
+          createdAt: existingUser.createdAt
+        }
+      });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -418,45 +428,55 @@ export async function handleUserSignup(req, res) {
       role,
     });
 
-    try {
-      await transporter.sendMail({
-        from: process.env.YOUR_EMAIL,
-        to: user.email,
-        subject: "Your Account Has Been Created - Action Required",
-        html: `
-            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e0e0e0; border-radius: 8px;">
-            <div style="text-align: center; margin-bottom: 20px;">
-              <h1 style="color: #4361ee;">Welcome to Rema</h1>
-            </div>
+    // try {
+    //   await transporter.sendMail({
+    //     from: process.env.YOUR_EMAIL,
+    //     to: user.email,
+    //     subject: "Your Account Has Been Created - Action Required",
+    //     html: `
+    //         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e0e0e0; border-radius: 8px;">
+    //         <div style="text-align: center; margin-bottom: 20px;">
+    //           <h1 style="color: #4361ee;">Welcome to Rema</h1>
+    //         </div>
             
-            <p>Dear <strong>${user.name}</strong>,</p>
+    //         <p>Dear <strong>${user.name}</strong>,</p>
             
-            <p>Your account has been successfully created with the following details:</p>
+    //         <p>Your account has been successfully created with the following details:</p>
             
-            <div style="background-color: #f8f9fa; padding: 15px; border-radius: 5px; margin: 15px 0;">
-              <p><strong>Email:</strong> ${user.email}</p>
-              <p><strong>Role:</strong> ${user.role}</p>
-            </div>
+    //         <div style="background-color: #f8f9fa; padding: 15px; border-radius: 5px; margin: 15px 0;">
+    //           <p><strong>Email:</strong> ${user.email}</p>
+    //           <p><strong>Role:</strong> ${user.role}</p>
+    //         </div>
             
-           <p>For security reasons, you need to set your own password before accessing the system. Please use the 'Forgot Password' option during login to establish your new password.</p>
+    //        <p>For security reasons, you need to set your own password before accessing the system. Please use the 'Forgot Password' option during login to establish your new password.</p>
             
             
-            <p style="color: #6c757d; font-size: 0.9em;">
-              <strong>Note:</strong> This link will expire in 24 hours. If you didn't request this, please ignore this email.
-            </p>
+    //         <p style="color: #6c757d; font-size: 0.9em;">
+    //           <strong>Note:</strong> This link will expire in 24 hours. If you didn't request this, please ignore this email.
+    //         </p>
             
-            <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #e0e0e0; color: #6c757d;">
-              <p>Best regards,</p>
-              <p><strong>Rema Security Team</strong></p>
-            </div>
-          </div>
-        `,
-      });
-    } catch (emailError) {
-      console.error("Error sending email:", emailError);
-    }
+    //         <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #e0e0e0; color: #6c757d;">
+    //           <p>Best regards,</p>
+    //           <p><strong>Rema Security Team</strong></p>
+    //         </div>
+    //       </div>
+    //     `,
+    //   });
+    // } catch (emailError) {
+    //   console.error("Error sending email:", emailError);
+    // }
 
-    return res.status(201).send("User successfully created");
+    return res.status(201).json({
+      success: true,
+      message: "User successfully created",
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+        createdAt: user.createdAt
+      }
+    });
   } catch (error) {
     console.error("Error during signup:", error);
     return res.status(500).send("Error during signup");
@@ -704,9 +724,80 @@ export const deleteSponsorProject = async (req, res) => {
 // Supervisor Controller
 export const createSupervisor = async (req, res) => {
   try {
+    const { faculty_id, student_id } = req.body;
+    
+    // Fetch faculty and student details
+    const [faculty, student] = await Promise.all([
+      User.findById(faculty_id),
+      User.findById(student_id)
+    ]);
+    
+
+    if (!faculty || !student) {
+      return res.status(404).json({
+        success: false,
+        message: 'Faculty or student not found'
+      });
+    }
+
+    // Check if this supervision relationship already exists
+    const existingSupervision = await Supervisor.findOne({
+      faculty_id,
+      student_id
+    });
+
+    if (existingSupervision) {
+      return res.status(409).json({
+        success: false,
+        message: 'This supervision relationship already exists'
+      });
+    }
+
+    // Create the supervision record
     const supervisor = await Supervisor.create(req.body);
 
-    res.status(201).json(supervisor);
+    try {
+      // Send email to student
+      await transporter.sendMail({
+        from: process.env.YOUR_EMAIL,
+        to: student.email,
+        subject: `You've been added under ${faculty.name}'s supervision`,
+        html: `
+          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e0e0e0; border-radius: 8px;">
+            <div style="text-align: center; margin-bottom: 20px;">
+              <h2 style="color: #4361ee;">Supervision Assignment Notification</h2>
+            </div>
+            
+            <p>Dear <strong>${student.name} </strong>,</p>
+            
+            <p>You have been added under the supervision of <strong>${faculty.name} (${faculty.email})</strong> with the following details:</p>
+            
+            <div style="background-color: #f8f9fa; padding: 15px; border-radius: 5px; margin: 15px 0;">
+              <p><strong>Thesis Title:</strong> ${supervisor.thesis_title}</p>
+              <p><strong>Joining Date:</strong> ${new Date(supervisor.joining).toDateString()}</p>
+              ${supervisor.stipend > 0 ? `<p><strong>Stipend:</strong> ₹${supervisor.stipend}</p>` : ''}
+            </div>
+            
+            <p>Please contact your supervisor for further guidance and next steps.</p>
+            
+            <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #e0e0e0; color: #6c757d;">
+              <p>Best regards,</p>
+              <p><strong>Research Management Team</strong></p>
+            </div>
+          </div>
+        `
+      });
+    } catch (emailError) {
+      console.error("Error sending notification email:", emailError);
+      // Don't fail the request if email fails
+    }
+
+    res.status(201).json({
+      success: true,
+      message: 'Supervision record created successfully',
+      data: supervisor
+    });
+
   } catch (error) {
     handleError(res, error);
   }
@@ -733,6 +824,7 @@ export const getSupervisorById = async (req, res) => {
     if (!supervisor) {
       return res.status(404).json({ message: "Supervisor not found" });
     }
+    
 
     res.status(200).json(supervisor);
   } catch (error) {
@@ -868,7 +960,7 @@ export const getMinutesOfMeetingById = async (req, res) => {
       .populate('added_by', 'name');
 
     // Check if any meeting exists
-    if (!meeting || meeting.length === 0) {
+    if (!meeting ) {
       return res.status(404).json({ message: 'Minutes of Meeting not found' });
     }
 

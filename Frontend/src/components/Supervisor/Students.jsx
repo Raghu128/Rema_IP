@@ -6,7 +6,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { 
   faEdit, faSearch, faUserGraduate, faUserTie, 
   faBookOpen, faFilter, faTable, faThLarge,
-  faRupeeSign, faIdCard, faUsers
+  faRupeeSign, faIdCard, faUsers, faPlus,
+  faChartBar, faUserCircle, faGraduationCap,
+  faChalkboardTeacher, faUniversity, faLaptopCode, faUserShield
 } from '@fortawesome/free-solid-svg-icons';
 import "../../styles/Student/Student.css";
 
@@ -18,9 +20,17 @@ const Students = ({ id }) => {
     const [searchQuery, setSearchQuery] = useState("");
     const [selectedRole, setSelectedRole] = useState("all");
     const [viewMode, setViewMode] = useState('table');
+    const [stats, setStats] = useState({
+        total: 0,
+        btech: 0,
+        mtech: 0,
+        phd: 0,
+        faculty: 0,
+        intern: 0,
+        projectstaff: 0
+    });
     const navigate = useNavigate();
     
-
     useEffect(() => {
         const fetchSupervisors = async () => {
             try {
@@ -29,9 +39,20 @@ const Students = ({ id }) => {
                 const supervisors = response.data;
 
                 const roleBasedStudents = {};
+                let stats = {
+                    total: 0,
+                    btech: 0,
+                    mtech: 0,
+                    phd: 0,
+                    faculty: 0,
+                    intern: 0,
+                    projectstaff: 0
+                };
+
                 supervisors.forEach((supervisor) => {
                     const student = supervisor.student_id;
                     const role = student.role || "Unknown Role";
+                    
                     if (!roleBasedStudents[role]) {
                         roleBasedStudents[role] = {};
                     }
@@ -43,6 +64,8 @@ const Students = ({ id }) => {
                             email: student.email,
                             projects: [],
                         };
+                        stats.total++;
+                        if (role in stats) stats[role]++;
                     }
                     roleBasedStudents[role][student._id].projects.push({
                         thesis_title: supervisor.thesis_title,
@@ -50,6 +73,8 @@ const Students = ({ id }) => {
                             ? parseFloat(supervisor.stipend.$numberDecimal).toFixed(2)
                             : null,
                         committee: supervisor.committee || [],
+                        joining: supervisor.joining,
+                        status: supervisor.status || 'Active'
                     });
                 });
 
@@ -60,6 +85,7 @@ const Students = ({ id }) => {
 
                 setSupervisorData(roleBasedStudentsArray);
                 setFilteredSupervisorData(roleBasedStudentsArray);
+                setStats(stats);
             } catch (err) {
                 console.error("Error fetching supervisors:", err);
                 setError("Error fetching supervisor data from backend");
@@ -70,7 +96,6 @@ const Students = ({ id }) => {
 
         fetchSupervisors();
     }, [id]);
-
     useEffect(() => {
         if (supervisorData) {
             let filteredData = {};
@@ -78,7 +103,10 @@ const Students = ({ id }) => {
                 if (selectedRole === "all" || role === selectedRole) {
                     const filteredStudents = supervisorData[role].filter((student) =>
                         student.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                        student.email.toLowerCase().includes(searchQuery.toLowerCase())
+                        student.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                        student.projects.some(proj => 
+                            proj.thesis_title.toLowerCase().includes(searchQuery.toLowerCase())
+                        )
                     );
                     if (filteredStudents.length > 0) {
                         filteredData[role] = filteredStudents;
@@ -91,11 +119,11 @@ const Students = ({ id }) => {
 
     const getRoleIcon = (role) => {
         switch (role) {
-            case 'btech': return <FontAwesomeIcon icon={faUserGraduate} />;
+            case 'btech': return <FontAwesomeIcon icon={faGraduationCap} />;
             case 'mtech': return <FontAwesomeIcon icon={faUserGraduate} />;
             case 'phd': return <FontAwesomeIcon icon={faUserTie} />;
-            case 'faculty': return <FontAwesomeIcon icon={faUserTie} />;
-            default: return <FontAwesomeIcon icon={faIdCard} />;
+            case 'faculty': return <FontAwesomeIcon icon={faChalkboardTeacher} />;
+            default: return <FontAwesomeIcon icon={faUserCircle} />;
         }
     };
 
@@ -104,9 +132,20 @@ const Students = ({ id }) => {
             case 'btech': return 'B.Tech Students';
             case 'mtech': return 'M.Tech Students';
             case 'phd': return 'PhD Scholars';
-            case 'faculty': return 'Faculty';
+            case 'faculty': return 'Faculty Members';
             default: return `${role.charAt(0).toUpperCase() + role.slice(1)} Students`;
         }
+    };
+
+    const getStatusBadge = (status) => {
+        let className = "status-badge ";
+        switch (status.toLowerCase()) {
+            case 'active': className += "active"; break;
+            case 'completed': className += "completed"; break;
+            case 'graduated': className += "graduated"; break;
+            default: className += "inactive";
+        }
+        return <span className={className}>{status}</span>;
     };
 
     const renderCommittee = (committee) => {
@@ -116,16 +155,27 @@ const Students = ({ id }) => {
         
         return (
             <div className="committee-members">
-                <FontAwesomeIcon icon={faUsers} className="committee-icon" />
-                <ul>
-                    {committee.map((member, idx) => (
-                        <li key={idx}>
-                            {member.name} ({member.email || member.role})
-                        </li>
-                    ))}
-                </ul>
+                <div className="committee-icon-container">
+                    <FontAwesomeIcon icon={faUsers} className="committee-icon" />
+                    <span>{committee.length} members</span>
+                </div>
+                <div className="committee-tooltip">
+                    <ul>
+                        {committee.map((member, idx) => (
+                            <li key={idx}>
+                                <strong>{member.name}</strong> ({member.role || 'Member'})
+                            </li>
+                        ))}
+                    </ul>
+                </div>
             </div>
         );
+    };
+
+    const formatDate = (dateString) => {        
+        if (!dateString) return "N/A";
+        const options = { year: 'numeric', month: 'short', day: 'numeric' };
+        return new Date(dateString).toLocaleDateString(undefined, options);
     };
 
     if (loading) return <Loader />;
@@ -133,45 +183,105 @@ const Students = ({ id }) => {
 
     return (
         <div className="student-container">
-            <div className="student-header">
-                <h1 className="student-title">Students</h1>
-                <div className="student-actions">
+        <div className="student-header">
+            <div className="student-header-left">
+                <h1 className="student-title">
+                    <FontAwesomeIcon icon={faUniversity} className="student-title-icon" />
+                    Student Supervision
+                </h1>
+                <div className="student-stats-container">
+                    <div className="student-stat-card student-total">
+                        <FontAwesomeIcon icon={faChartBar} className="student-stat-icon" />
+                        <div className="student-stat-content">
+                            <span className="student-stat-number">{stats.total}</span>
+                            <span className="student-stat-label">Total</span>
+                        </div>
+                    </div>
+                    <div className="student-stat-card student-btech">
+                        <FontAwesomeIcon icon={faGraduationCap} className="student-stat-icon" />
+                        <div className="student-stat-content">
+                            <span className="student-stat-number">{stats.btech}</span>
+                            <span className="student-stat-label">B.Tech</span>
+                        </div>
+                    </div>
+                    <div className="student-stat-card student-mtech">
+                        <FontAwesomeIcon icon={faUserGraduate} className="student-stat-icon" />
+                        <div className="student-stat-content">
+                            <span className="student-stat-number">{stats.mtech}</span>
+                            <span className="student-stat-label">M.Tech</span>
+                        </div>
+                    </div>
+                    <div className="student-stat-card student-phd">
+                        <FontAwesomeIcon icon={faUserTie} className="student-stat-icon" />
+                        <div className="student-stat-content">
+                            <span className="student-stat-number">{stats.phd}</span>
+                            <span className="student-stat-label">PhD</span>
+                        </div>
+                    </div>
+                    <div className="student-stat-card student-faculty">
+                        <FontAwesomeIcon icon={faChalkboardTeacher} className="student-stat-icon" />
+                        <div className="student-stat-content">
+                            <span className="student-stat-number">{stats.faculty}</span>
+                            <span className="student-stat-label">Faculty</span>
+                        </div>
+                    </div>
+                    <div className="student-stat-card student-intern">
+                        <FontAwesomeIcon icon={faLaptopCode} className="student-stat-icon" />
+                        <div className="student-stat-content">
+                            <span className="student-stat-number">{stats.intern}</span>
+                            <span className="student-stat-label">Interns</span>
+                        </div>
+                    </div>
+                    <div className="student-stat-card student-projectstaff">
+                        <FontAwesomeIcon icon={faUserShield} className="student-stat-icon" />
+                        <div className="student-stat-content">
+                            <span className="student-stat-number">{stats.projectstaff}</span>
+                            <span className="student-stat-label">Staff</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div className="student-actions">
+                <div className="student-view-toggle-group">
                     <button 
-                        className={`view-toggle ${viewMode === 'cards' ? 'active' : ''}`}
+                        className={`student-view-toggle ${viewMode === 'cards' ? 'student-active' : ''}`}
                         onClick={() => setViewMode('cards')}
                     >
                         <FontAwesomeIcon icon={faThLarge} /> Cards
                     </button>
                     <button 
-                        className={`view-toggle ${viewMode === 'table' ? 'active' : ''}`}
+                        className={`student-view-toggle ${viewMode === 'table' ? 'student-active' : ''}`}
                         onClick={() => setViewMode('table')}
                     >
                         <FontAwesomeIcon icon={faTable} /> Table
                     </button>
-                    <button 
-                        onClick={() => navigate("/update-supervisor")} 
-                        className="edit-button"
-                    >
-                        <FontAwesomeIcon icon={faEdit} /> Manage
-                    </button>
                 </div>
+                <button 
+                    onClick={() => navigate("/update-supervisor")} 
+                    className="student-add-button"
+                >
+                    <FontAwesomeIcon icon={faEdit} /> Manage
+                </button>
             </div>
+        </div>
 
             <div className="student-controls">
-                <div className="search-container">
-                    <FontAwesomeIcon icon={faSearch} />
+                <div className="student-search-container">
+                    <FontAwesomeIcon icon={faSearch} className="student-search-icon" />
                     <input
                         type="text"
-                        placeholder="Search students by name or email..."
+                        placeholder="Search students by name, email, or thesis..."
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
+                        className="student-search-input"
                     />
                 </div>
-                <div className="filter-container">
-                    <FontAwesomeIcon icon={faFilter} />
+                <div className="student-filter-container">
+                    <FontAwesomeIcon icon={faFilter} className="filter-icon" />
                     <select
                         value={selectedRole}
                         onChange={(e) => setSelectedRole(e.target.value)}
+                        className="role-select"
                     >
                         <option value="all">All Roles</option>
                         {supervisorData && Object.keys(supervisorData).map((role) => (
@@ -185,40 +295,70 @@ const Students = ({ id }) => {
 
             {filteredSupervisorData && Object.keys(filteredSupervisorData).length === 0 ? (
                 <div className="no-results">
-                    No students found matching your criteria
+                    <div className="no-results-content">
+                        <FontAwesomeIcon icon={faUserGraduate} className="no-results-icon" />
+                        <h3>No students found</h3>
+                        <p>Try adjusting your search or add a new student</p>
+                        <button 
+                            className="add-student-button"
+                            onClick={() => navigate("/update-supervisor")}
+                        >
+                            <FontAwesomeIcon icon={faPlus} /> Add Student
+                        </button>
+                    </div>
                 </div>
             ) : viewMode === 'cards' ? (
                 <div className="student-cards-container">
                     {Object.keys(filteredSupervisorData).map((role) => (
                         <div key={role} className="role-section">
                             <h2 className="role-title">
-                                {getRoleIcon(role)}
-                                <span>{getRoleLabel(role)}</span>
+                                <span className="role-icon">{getRoleIcon(role)}</span>
+                                <span className="role-label">{getRoleLabel(role)}</span>
+                                <span className="role-count">{filteredSupervisorData[role].length}</span>
                             </h2>
-                            <div className="student-cards">
+                            <div className="student-cards-grid">
                                 {filteredSupervisorData[role].map((student) => (
                                     <div key={student.id} className="student-card">
-                                        <div className="student-info">
-                                            <h3>{student.name}</h3>
-                                            <p className="student-email">{student.email}</p>
+                                        <div className="student-header">
+                                            <div className="student-avatar">
+                                                {getRoleIcon(student.role)}
+                                            </div>
+                                            <div className="student-info">
+                                                <h3 className="student-name">{student.name}</h3>
+                                                <p className="student-email">{student.email}</p>
+                                                <div className="student-meta">
+                                                    <span className="student-role">
+                                                        {getRoleLabel(student.role).replace('Students', '').replace('Scholars', '').trim()}
+                                                    </span>
+                                                </div>
+                                            </div>
                                         </div>
                                         <div className="student-projects">
+                                            <h4 className="projects-title">Projects/Thesis</h4>
                                             {student.projects.map((proj, index) => (
-                                                <div key={index} className="project-item">
-                                                    <div className="project-header">
-                                                        <h4>
+                                                <div key={index} className="student-project-item">
+                                                    <div className="student-project-header">
+                                                        <h5 className="student-project-title">
                                                             <FontAwesomeIcon icon={faBookOpen} />
-                                                            {proj.thesis_title}
-                                                        </h4>
-                                                        {proj.stipend && (
-                                                            <div className="project-stipend">
-                                                                <FontAwesomeIcon icon={faRupeeSign} />
-                                                                <span>{proj.stipend}</span>
-                                                            </div>
-                                                        )}
+                                                            <span>{proj.thesis_title}</span>
+                                                        </h5>
+                                                        <div className="student-project-meta">
+                                                            {proj.stipend && (
+                                                                <div className="student-project-stipend">
+                                                                    <FontAwesomeIcon icon={faRupeeSign} />
+                                                                    <span>{proj.stipend}</span>
+                                                                </div>
+                                                            )}
+                                                            {getStatusBadge(proj.status)}
+                                                        </div>
                                                     </div>
-                                                    <div className="project-committee">
-                                                        {renderCommittee(proj.committee)}
+                                                    <div className="student-project-details">
+                                                        <div className="student-project-date">
+                                                            <span>Started: {formatDate(proj.joining)}</span>
+                                                        </div>
+                                                        <div className="student-project-committee">
+                                                            {renderCommittee(proj.committee)}
+                                                        </div>
                                                     </div>
                                                 </div>
                                             ))}
@@ -234,47 +374,63 @@ const Students = ({ id }) => {
                     <table className="student-table">
                         <thead>
                             <tr>
-                                <th>Name</th>
-                                <th>Email</th>
+                                <th>Student</th>
                                 <th>Role</th>
                                 <th>Project/Thesis</th>
+                                <th>Status</th>
                                 <th>Stipend</th>
                                 <th>Committee</th>
+                                <th>Start Date</th>
                             </tr>
                         </thead>
                         <tbody>
                             {Object.keys(filteredSupervisorData).map((role) => (
                                 filteredSupervisorData[role].map((student) => (
                                     student.projects.map((proj, index) => (
-                                        <tr key={`${student.id}-${index}`}>
+                                        <tr key={`${student.id}-${index}`} className="student-row">
                                             {index === 0 ? (
                                                 <>
-                                                    <td rowSpan={student.projects.length}>{student.name}</td>
-                                                    <td rowSpan={student.projects.length}>{student.email}</td>
-                                                    <td rowSpan={student.projects.length}>
-                                                        <span className="role-badge">
-                                                            {getRoleIcon(role)}
-                                                            {getRoleLabel(role)}
-                                                        </span>
+                                                    <td className="student-cell" rowSpan={student.projects.length}>
+                                                        <div className="student-info-table">
+                                                            <div className="student-avatar-table">
+                                                                {getRoleIcon(student.role)}
+                                                            </div>
+                                                            <div>
+                                                                <div className="student-name-table">{student.name}</div>
+                                                                <div className="student-email-table">{student.email}</div>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td className="role-cell" rowSpan={student.projects.length}>
+                                                        <div className="role-badge">
+                                                            {getRoleIcon(student.role)}
+                                                            <span>{getRoleLabel(student.role).replace('Students', '').replace('Scholars', '').trim()}</span>
+                                                        </div>
                                                     </td>
                                                 </>
                                             ) : null}
-                                            <td>
-                                                <div className="project-title">
+                                            <td className="student-project-cell">
+                                                <div className="student-project-title-table">
                                                     <FontAwesomeIcon icon={faBookOpen} />
                                                     <span>{proj.thesis_title}</span>
                                                 </div>
                                             </td>
-                                            <td>
+                                            <td className="status-cell">
+                                                {getStatusBadge(proj.status)}
+                                            </td>
+                                            <td className="stipend-cell">
                                                 {proj.stipend ? (
-                                                    <div className="stipend-amount">
+                                                    <div className="stipend-amount-table">
                                                         <FontAwesomeIcon icon={faRupeeSign} />
                                                         <span>{proj.stipend}</span>
                                                     </div>
                                                 ) : 'N/A'}
                                             </td>
-                                            <td>
+                                            <td className="committee-cell">
                                                 {renderCommittee(proj.committee)}
+                                            </td>
+                                            <td className="date-cell">
+                                                {formatDate(proj.joining)}
                                             </td>
                                         </tr>
                                     ))

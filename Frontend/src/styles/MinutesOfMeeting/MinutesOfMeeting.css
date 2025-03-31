@@ -36,6 +36,7 @@
   padding: 16px;
   overflow-y: auto;
   background-color: #f8f9fa;
+  scrollbar-width: none;
 }
 
 .meeting-notes-loading {

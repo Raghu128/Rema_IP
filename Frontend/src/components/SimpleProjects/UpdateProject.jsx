@@ -17,6 +17,7 @@ const UpdateProjectFormPage = () => {
   const [projects, setProjects] = useState([]);
   const [selectedProject, setSelectedProject] = useState(null);
   const today = new Date().toISOString().split("T")[0];
+  const [loading, setLoading] = useState(false);
 
   const [formData, setFormData] = useState({
     faculty_id: user?.id || "",
@@ -47,6 +48,7 @@ const UpdateProjectFormPage = () => {
 
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true);
       try {
         const [projectsRes, usersRes] = await Promise.all([
           axios.get(`/api/v1/projects/${user.id}`),
@@ -57,6 +59,7 @@ const UpdateProjectFormPage = () => {
       } catch (error) {
         setMessage("Failed to fetch data");
       }
+      setLoading(false);
     };
     if (user?.id) fetchData();
   }, [user]);
@@ -227,7 +230,7 @@ const UpdateProjectFormPage = () => {
             ) : (
               <div className="projectAddForm-empty-state">
                 <FontAwesomeIcon icon={faFileAlt} size="2x" className="projectAddForm-empty-icon" />
-                <p>No projects found</p>
+                {loading ? <p>Fetching Project ....</p> : <p>No projects found</p>}
                 {projectSearch && (
                   <button 
                     onClick={() => setProjectSearch("")}
