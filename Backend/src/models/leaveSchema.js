@@ -32,4 +32,21 @@ const leaveSchema = new Schema(
     { timestamps: true }
 );
 
+
+leaveSchema.index({ user_id: 1 }); // All leaves by user
+leaveSchema.index({ faculty_id: 1 }); // Leaves to approve
+leaveSchema.index({ 
+  from: 1, 
+  to: 1 
+}); // Date range queries
+leaveSchema.index({ 
+  user_id: 1, 
+  from: -1 
+}); // User's leave history
+leaveSchema.index({ 
+  faculty_id: 1, 
+  status: 1 
+}); // Pending approvals
+
+
 export const Leave = mongoose.model("Leave", leaveSchema);

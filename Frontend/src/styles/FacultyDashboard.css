@@ -170,23 +170,6 @@
   background: #f39c12;
 }
 
-/* Responsive Sidebar Adjustments */
-@media (max-width: 768px) {
-  .faculty-sidebar {
-    width: 220px;
-  }
-
-  .faculty-sidebar:hover {
-    width: 240px;
-  }
-
-  .faculty-main-content {
-    margin: 10px;
-    padding: 15px;
-  }
-}
-
-
 
 /* Faculty Dashboard Sidebar Styles */
 .faculty-sidebar {
@@ -336,7 +319,7 @@
   }
 }
 
-@media (min-width: 769px) and (max-width: 992px) {
+@media (min-width: 0px) and (max-width: 992px) {
   .faculty-sidebar {
     width: 80px;
   }
@@ -346,21 +329,25 @@
   .nav-text {
     display: none;
   }
+  .user-info span {
+    display: none;
+  }
   
   .user-avatar {
     width: 36px;
     height: 36px;
     margin: 0 auto;
+    border: 3px solid red;
   }
   
   .faculty-sidebar-list li a {
     justify-content: center;
-    padding: 1rem 0;
+    padding: 10px 0;
   }
   
   .nav-icon {
     margin-right: 0;
-    font-size: 1.2rem;
+    font-size: 10px;
   }
 }
 

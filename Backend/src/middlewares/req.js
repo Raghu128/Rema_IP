@@ -17,7 +17,7 @@ export const authenticateToken = async (req, res, next) => {
       return res.status(401).send("User not found");
     }
 
-    req.user = user; // Attach user details to the request
+    req.user = user; 
     next();
   } catch (error) {
     return res.status(403).send("Invalid token");

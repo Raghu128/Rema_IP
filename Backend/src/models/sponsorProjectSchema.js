@@ -12,4 +12,20 @@ const sponsorProjectSchema = new Schema({
   remarks: { type: String }
 }, { timestamps: true });
 
+sponsorProjectSchema.index({ faculty_id: 1 }); // PI's projects
+sponsorProjectSchema.index({ agency: 1 }); // Projects by funding agency
+sponsorProjectSchema.index({ status: 1 }); // Active/inactive projects
+sponsorProjectSchema.index({ 
+  start_date: -1 
+}); // Recent projects first
+sponsorProjectSchema.index({ 
+  title: 'text',
+  agency: 'text',
+  remarks: 'text'
+}); // Full-text project search
+sponsorProjectSchema.index({ 
+  faculty_id: 1, 
+  status: 1 
+}); // PI's active projects
+
 export const SponsorProject = mongoose.model("SponsorProject", sponsorProjectSchema);

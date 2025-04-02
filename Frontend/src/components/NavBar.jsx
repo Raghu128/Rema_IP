@@ -1,12 +1,23 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { setUser, clearUser } from "../redux/slices/userSlice";
+import { toggleTheme } from "../redux/slices/themeSlice"; // Import the theme action
 import { checkSession } from "../utils/api";
-import { FiUser, FiLogOut, FiX, FiChevronDown, FiCheck, FiHome} from "react-icons/fi";
+import { 
+  FiUser, 
+  FiLogOut, 
+  FiX, 
+  FiChevronDown, 
+  FiCheck, 
+  FiHome,
+  FiSun,
+  FiMoon 
+} from "react-icons/fi";
 import "../styles/NavBar.css";
 
 const Navbar = () => {
   const { user } = useSelector((state) => state.user);
+  const currentTheme = useSelector((state) => state.theme.currentTheme); // Get current theme
   const dispatch = useDispatch();
   const [showProfileModal, setShowProfileModal] = useState(false);
   const [profileForm, setProfileForm] = useState({
@@ -18,7 +29,12 @@ const Navbar = () => {
   const [message, setMessage] = useState({ text: "", type: "" });
   const [showDropdown, setShowDropdown] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [isUpdating, setIsUpdating] = useState(false); // New state for loader
+  const [isUpdating, setIsUpdating] = useState(false);
+
+  // Apply theme class to body when theme changes
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', currentTheme);
+  }, [currentTheme]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -150,6 +166,18 @@ const Navbar = () => {
             )}
           </div>
         )}
+
+<button 
+          className="topbar-theme-toggle"
+          onClick={() => dispatch(toggleTheme())}
+          aria-label={`Switch to ${currentTheme === 'dark' ? 'light' : 'dark'} mode`}
+        >
+          {currentTheme === 'dark' ? (
+            <FiSun className="topbar-theme-icon" />
+          ) : (
+            <FiMoon className="topbar-theme-icon" />
+          )}
+        </button>
       </div>
 
       {showProfileModal && (

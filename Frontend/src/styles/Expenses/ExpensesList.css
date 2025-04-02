@@ -372,6 +372,9 @@
 .expenses-project-table-row:hover {
   background: #f8fafc;
 }
+.expense-date-icon {
+  margin-right: 10px;
+}
 
 .expenses-project-amount {
   font-weight: 500;
@@ -477,7 +480,7 @@
 
 .expenses-project-summary-item {
   display: flex;
-  justify-content: space-between;
+  gap: 10px;
   align-items: center;
   font-size: 0.9rem;
 }

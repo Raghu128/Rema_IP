@@ -10,4 +10,18 @@ const notificationSchema = new Schema({
   view: { type: [Schema.Types.ObjectId], ref: "User" } // Array of User IDs
 }, { timestamps: true });
 
+notificationSchema.index({ added_by: 1 }); // Notifications by creator
+notificationSchema.index({ view: 1 }); // Notifications viewed by user
+notificationSchema.index({ 
+  due_date: 1 
+}); // Upcoming deadlines
+notificationSchema.index({ 
+  priority: 1, 
+  creation_date: -1 
+}); // High priority recent notifications
+notificationSchema.index({ 
+  type: 1, 
+  creation_date: -1 
+}); // Notification type filtering
+
 export const Notification = mongoose.model("Notification", notificationSchema);

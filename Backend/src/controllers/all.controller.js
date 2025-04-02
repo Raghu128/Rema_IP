@@ -1147,44 +1147,28 @@ export const deleteNotification = async (req, res) => {
 
 export const createEquipment = async (req, res) => {
   try {
-    const { funding_by_srp_id, amount, name, date_of_purchase } = req.body;
+    let { funding_by_srp_id, amount, name, date_of_purchase } = req.body;
 
     // Validate required fields
-    if (!funding_by_srp_id || !amount || !name) {
-      return res.status(400).json({ message: "Missing required fields: funding_by_srp_id, amount, or name." });
+    if (!amount || !name) {
+      return res.status(400).json({ message: "Missing required fields: amount or name." });
     }
-    // Fetch the finance budget for the given SRP ID
-    // const budget = await FinanceBudget.findOne({ srp_id: funding_by_srp_id });
 
-    // // Check if budget exists
-    // if (!budget) {
-    //   return res.status(404).json({ message: "Budget not found for the given SRP ID." });
-    // }
-
+    // Ensure funding_by_srp_id is a valid ObjectId or null
+    if (!funding_by_srp_id || funding_by_srp_id.trim() === "") {
+      funding_by_srp_id = null; // Set it to null if empty
+    }
 
     // Create the equipment
-    const equipment = await Equipment.create(req.body);
+    const equipment = new Equipment({ ...req.body, funding_by_srp_id });
+    await equipment.save();
 
-    // Create the corresponding expense record
-    // const expense = await Expense.create({
-    //   srp_id: funding_by_srp_id,
-    //   item: name,
-    //   amount,
-    //   head: "Equipment",
-    //   payment_date: date_of_purchase,
-    // });
-
-    // Deduct the amount from the equipment budget and save
-    // budget.equipment -= amount;
-    // await budget.save();
-
-    res.status(201).json({ message: "Equipment and expense created successfully.", equipment });
+    res.status(201).json({ message: "Equipment created successfully.", equipment });
   } catch (error) {
     console.error("Error creating equipment:", error);
     res.status(500).json({ message: "Internal server error.", error: error.message });
   }
 };
-
 
 
 export const getEquipments = async (req, res) => {
@@ -1204,7 +1188,11 @@ export const getEquipmentById = async (req, res) => {
 
   try {
     // Find the equipment by ID and populate references
-    const equipment = await Equipment.find({ ownership: id }).populate("usingUser", "name");
+    const equipment = await Equipment.find({ ownership: id }).populate([
+      { path: "usingUser", select: "name email" },
+      { path: "funding_by_srp_id", select: "agency" }
+    ]);
+    
 
     if (!equipment) {
       return res.status(404).json({ message: 'Equipment not found' });
@@ -1250,47 +1238,22 @@ export const updateEquipment = async (req, res) => {
       return res.status(404).json({ message: "Equipment not found" });
     }
 
-    // const oldPrice = oldEquipment.amount;
-    const newPrice = req.body.amount;
+    // Ensure funding_by_srp_id is a valid ObjectId or null
+    if (req.body.funding_by_srp_id === "" || !req.body.funding_by_srp_id) {
+      req.body.funding_by_srp_id = null;
+    }
 
     // Update the equipment details
     const updatedEquipment = await Equipment.findByIdAndUpdate(
       equipmentId,
       req.body,
-      { new: true }
+      { new: true, runValidators: true } // Ensure validation rules are applied
     );
 
-    // const priceDifference = oldPrice - newPrice;
-
-    // Update Expense (Set new amount for the existing expense)
-
-    const updatedExpense = await Expense.findOneAndUpdate(
-      { srp_id: oldEquipment.funding_by_srp_id, item: oldEquipment.name },
-      { $set: { amount: newPrice } },
-      { new: true }
-    );
-
-
-    if (!updatedExpense) {
-      return res.status(404).json({ message: "Expense record not found" });
-    }
-
-    // Update FinanceBudget (Increase/Decrease the equipment budget)
-
-    // const updatedBudget = await FinanceBudget.findOneAndUpdate(
-    //   { srp_id: oldEquipment.funding_by_srp_id },
-    //   { $inc: { equipment: priceDifference } }, // Adjust equipment budget
-    //   { new: true }
-    // );
-
-    // if (!updatedBudget) {
-    //   return res.status(404).json({ message: "Finance budget record not found" });
-    // }
-
-    res.status(200).json(updatedEquipment);
+    res.status(200).json({ message: "Equipment updated successfully", updatedEquipment });
   } catch (error) {
     console.error("Error updating equipment:", error);
-    res.status(500).json({ message: "Failed to update equipment" });
+    res.status(500).json({ message: "Failed to update equipment", error: error.message });
   }
 };
 

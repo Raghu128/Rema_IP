@@ -234,7 +234,7 @@ const ExpensesList = () => {
                                                 {expenses.map((expense) => (
                                                     <tr key={expense._id} className="expenses-project-table-row">
                                                         <td>
-                                                            <FontAwesomeIcon icon={faCalendarDay} />
+                                                            <FontAwesomeIcon icon={faCalendarDay} className="expense-date-icon" />
                                                             {new Date(expense.payment_date).toLocaleDateString()}
                                                         </td>
                                                         <td>{expense.item}</td>
@@ -275,7 +275,7 @@ const ExpensesList = () => {
                                                 <div className="expenses-project-expense-details">
                                                     <div className="expenses-project-expense-detail">
                                                         <FontAwesomeIcon icon={faCalendarDay} />
-                                                        <span>{new Date(expense.date).toLocaleDateString()}</span>
+                                                        <span>{new Date(expense.payment_date).toLocaleDateString()}</span>
                                                     </div>
                                                     <div className="expenses-project-expense-detail">
                                                         <FontAwesomeIcon icon={faTags} />

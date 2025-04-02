@@ -18,4 +18,27 @@ const projectSchema = new Schema({
   submission_url: { type: String }
 }, { timestamps: true });
 
+projectSchema.index({ faculty_id: 1 }); // PI's projects
+projectSchema.index({ team: 1 }); // User's project involvement
+projectSchema.index({ status: 1 }); // Project status filter
+projectSchema.index({ 
+  creation_date: -1 
+}); // New projects first
+projectSchema.index({ 
+  domain: 1, 
+  sub_domain: 1 
+}); // Research area filtering
+projectSchema.index({ 
+  next_deadline: 1 
+}); // Upcoming deadlines
+projectSchema.index({ 
+  lead_author: 1, 
+  status: 1 
+}); // Lead author's active projects
+projectSchema.index({ 
+  name: 'text',
+  domain: 'text',
+  remarks: 'text'
+}); // Full-text project search
+
 export const Project = mongoose.model("Project", projectSchema);

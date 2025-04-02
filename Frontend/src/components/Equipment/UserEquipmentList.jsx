@@ -119,6 +119,7 @@ const UserEquipmentList = () => {
                             <thead>
                                 <tr>
                                     <th>Equipment Name</th>
+                                    <th>Funded By</th>
                                     <th>Value</th>
                                     <th>Location</th>
                                     <th>Added On</th>
@@ -130,6 +131,9 @@ const UserEquipmentList = () => {
                                     <tr key={item._id} className="equipment-table-row">
                                         <td className="equipment-table-name">
                                             {item.name}
+                                        </td>
+                                        <td className="equipment-table-name">
+                                            {item.funding_by_srp_id ? item.funding_by_srp_id?.agency : "self"}
                                         </td>
                                         <td className="equipment-table-name">
                                             {/* <FontAwesomeIcon icon={faRupeeSign} /> */}

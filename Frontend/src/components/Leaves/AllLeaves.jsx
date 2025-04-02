@@ -32,6 +32,7 @@ const LeavesForFacultyPage = () => {
         totalLeaves: 0,
         avgLeaveDuration: 0
     });
+    
 
     useEffect(() => {
         const fetchLeaves = async () => {
@@ -42,7 +43,8 @@ const LeavesForFacultyPage = () => {
                 
                 // Calculate statistics
                 const grouped = response.data.reduce((acc, leave) => {
-                    const studentId = leave.user?._id || "unknown";
+                    
+                    const studentId = leave.user_id?._id || "unknown";
                     if (!acc[studentId]) {
                         acc[studentId] = { leaves: [] };
                     }
@@ -77,11 +79,11 @@ const LeavesForFacultyPage = () => {
     }, [user]);
 
     const groupedLeaves = leaves.reduce((acc, leave) => {
-        const studentId = leave.user?._id || "unknown";
+        const studentId = leave.user_id?._id || "unknown";
         if (!acc[studentId]) {
             acc[studentId] = { 
-                name: leave.user?.name || "Unknown", 
-                email: leave.user?.email || "",
+                name: leave.user_id?.name || "Unknown", 
+                email: leave.user_id?.email || "",
                 leaves: [] 
             };
         }

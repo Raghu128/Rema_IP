@@ -5,8 +5,8 @@ const router = express.Router();
 
 // Define routes for equipment CRUD
 router.get('/used/:id', getEquipmentByUsingId);
-router.post('/', createEquipment);
 router.get('/:id', getEquipmentById);
+router.post('/', createEquipment);
 router.put('/:id', updateEquipment);
 router.delete('/:id', deleteEquipment);
 

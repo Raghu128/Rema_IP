@@ -17,4 +17,35 @@ const financeBudgetSchema = new Schema({
   status: { type: String, default: "pending", enum: ['approved', 'pending', 'rejected'] }
 }, { timestamps: true });
 
+
+// Create indexes
+financeBudgetSchema.index({ srp_id: 1 }); // All budgets for a project
+financeBudgetSchema.index({ year: -1 }); // Recent years first
+financeBudgetSchema.index({ status: 1 }); // Filter by approval status
+financeBudgetSchema.index({ 
+  srp_id: 1, 
+  year: -1 
+}, { unique: true }); // Unique project-year combination
+
+// Budget analysis indexes
+financeBudgetSchema.index({ 
+  srp_id: 1,
+  status: 1,
+  year: -1
+}); // Approved budgets for projects
+
+financeBudgetSchema.index({
+  year: 1,
+  status: 1
+}); // Yearly budget approvals
+
+// Financial summary indexes
+financeBudgetSchema.index({
+  createdAt: -1
+}); // Newest budgets first
+
+financeBudgetSchema.index({
+  updatedAt: -1
+}); // Recently modified budgets
+
 export const FinanceBudget = mongoose.model("FinanceBudget", financeBudgetSchema);

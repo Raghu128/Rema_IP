@@ -35,7 +35,6 @@ const EquipmentAddForm = () => {
         remarks: "",
     });
 
-    console.log(formData);
 
 
     useEffect(() => {
@@ -84,11 +83,14 @@ const EquipmentAddForm = () => {
         setSelectedEquipment(equipment);
         setFormData({
             ...equipment,
+            funding_by_srp_id: equipment.funding_by_srp_id?._id || equipment.funding_by_srp_id || "", // Ensure correct selection
+            usingUser: equipment.usingUser?._id || equipment.usingUser || "",
             date_of_purchase: equipment.date_of_purchase
                 ? new Date(equipment.date_of_purchase).toISOString().split("T")[0]
                 : "",
         });
     };
+    
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -249,7 +251,7 @@ const EquipmentAddForm = () => {
                                         value={formData.funding_by_srp_id} 
                                         onChange={handleChange} 
                                         className="expenses-form-select"
-                                        required
+                                        // required
                                     >
                                         <option value="">Select Sponsor Project</option>
                                         {sponsorProjects.map(project => (

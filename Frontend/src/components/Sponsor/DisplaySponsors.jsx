@@ -11,7 +11,7 @@ import {
   faCheckCircle, faCalendarAlt, faClock, 
   faDollarSign, faComments, faTimes, 
   faSearch, faTable, faThLarge, faFileContract,
-  faChartLine, faUserTie, faHandshake
+  faChartLine, faUserTie, faHandshake,faRupeeSign
 } from '@fortawesome/free-solid-svg-icons';
 import "../../styles/Sponsor/DisplaySponsors.css";
 
@@ -72,9 +72,9 @@ const DisplaySponsors = () => {
 
     const formatCurrency = (amount) => {
         return new Intl.NumberFormat('en-IN', {
-            style: 'currency',
-            currency: 'INR',
-            minimumFractionDigits: 2
+            // style: 'currency',
+            // currency: 'INR',
+            // minimumFractionDigits: 2
         }).format(amount);
     };
 
@@ -233,6 +233,7 @@ const DisplaySponsors = () => {
                                             <div className="sponsor-detail-row">
                                                 <FontAwesomeIcon icon={faDollarSign} className="sponsor-detail-icon" />
                                                 <div className="sponsor-detail-content">
+                                                    
                                                     <span className="sponsor-detail-label">Total Budget</span>
                                                     <span 
                                                         className="sponsor-detail-value sponsor-clickable"
@@ -259,7 +260,7 @@ const DisplaySponsors = () => {
                                                 </div>
                                             )}
                                         </div>
-                                        <div className="sponsor-card-footer">
+                                        {/* <div className="sponsor-card-footer">
                                             <button
                                                 className={`sponsor-notes-btn ${showNotes === sponsor._id ? 'sponsor-active' : ''}`}
                                                 onClick={() => setShowNotes(showNotes === sponsor._id ? null : sponsor._id)}
@@ -267,7 +268,7 @@ const DisplaySponsors = () => {
                                             >
                                                 <FontAwesomeIcon icon={faComments} /> Minutes
                                             </button>
-                                        </div>
+                                        </div> */}
                                     </div>
                                 ))}
                             </div>
@@ -278,12 +279,11 @@ const DisplaySponsors = () => {
                                         <tr>
                                             <th>Project Title</th>
                                             <th>Agency</th>
-                                            <th>Contact</th>
                                             <th>Status</th>
                                             <th>Start Date</th>
                                             <th>Duration</th>
                                             <th>Budget</th>
-                                            <th>Actions</th>
+                                            {/* <th>Actions</th> */}
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -291,7 +291,6 @@ const DisplaySponsors = () => {
                                             <tr key={sponsor._id} className="sponsor-table-row">
                                                 <td className="sponsor-table-title">{sponsor.title}</td>
                                                 <td>{sponsor.agency}</td>
-                                                <td>{sponsor.contact_person || 'N/A'}</td>
                                                 <td>
                                                     <span className={`sponsor-status-badge ${sponsor.status.toLowerCase()}`}>
                                                         {sponsor.status}
@@ -305,7 +304,7 @@ const DisplaySponsors = () => {
                                                 >
                                                     {formatCurrency(parseFloat(sponsor.budget.$numberDecimal))}
                                                 </td>
-                                                <td className="sponsor-actions-cell">
+                                                {/* <td className="sponsor-actions-cell">
                                                     <button
                                                         className={`sponsor-table-notes-btn ${showNotes === sponsor._id ? 'sponsor-active' : ''}`}
                                                         onClick={() => setShowNotes(showNotes === sponsor._id ? null : sponsor._id)}
@@ -313,7 +312,7 @@ const DisplaySponsors = () => {
                                                     >
                                                         <FontAwesomeIcon icon={faComments} />
                                                     </button>
-                                                </td>
+                                                </td> */}
                                             </tr>
                                         ))}
                                     </tbody>
