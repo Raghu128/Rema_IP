@@ -28,6 +28,11 @@ const leaveSchema = new Schema(
             type: Boolean,
             default: true,
         },
+        status: {
+            type: String,
+            enum: ['pending', 'approved', 'declined'],
+            default: 'pending'
+          }
     },
     { timestamps: true }
 );

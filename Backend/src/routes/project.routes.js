@@ -7,6 +7,7 @@ const router = express.Router();
 router.post('/', createProject);
 router.get('/student/:id', getProjectByStudentId);
 router.get('/:id', getProjectById);
+// router.get('/:id/new-notes-count', getNewNotesCount);
 router.put('/:id', updateProject);
 router.delete('/:id', deleteProject);
 

@@ -1,5 +1,5 @@
 import express from 'express';
-import { handleUserSignup, handleUserLogin, getUsers, getUsersByFacultyId, updateUser, deleteUser, checkSession, forgotPassword, resetPassword, updateUserProfile, getfaculty} from '../controllers/all.controller.js';
+import { handleUserSignup, handleUserLogin, getUsers, getUsersByFacultyId, updateUser, deleteUser,getStudentRelatedUsers, checkSession, forgotPassword, resetPassword, updateUserProfile, getfaculty} from '../controllers/all.controller.js';
 import { authenticateToken } from '../middlewares/req.js';
 
 const router = express.Router();
@@ -9,6 +9,7 @@ const router = express.Router();
 
 router.get('/', getUsers);
 router.get('/faculty',authenticateToken, getfaculty);
+router.get('/studentConnection/:id', getStudentRelatedUsers);
 router.get('/check-session', checkSession);
 router.get('/:id', authenticateToken, getUsersByFacultyId);
 router.post('/login', handleUserLogin);

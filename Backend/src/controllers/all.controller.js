@@ -142,6 +142,7 @@ export const checkSession = (req, res) => {
 
 export const getUsers = async (req, res) => {
   try {
+    
     const users = await User.find();
     res.status(200).json(users);
   } catch (error) {
@@ -158,9 +159,52 @@ export const getfaculty = async (req, res) => {
   }
 };
 
+
+export const getStudentRelatedUsers = async (req, res) => {
+  const { id } = req.params;
+  const studentId = id;
+  
+  try {
+    // 1. Get all supervisors of the student
+    const supervisors = await Supervisor.find({ student_id: studentId }).select('faculty_id');
+    const supervisorIds = supervisors.map(sup => sup.faculty_id.toString());
+
+    // 2. Get all projects that include the student
+    const projects = await Project.find({ team: studentId }).select('team');
+
+    // 3. Extract all user IDs from project teams
+    const teamMemberIds = new Set();
+    projects.forEach(project => {
+      project.team.forEach(userId => teamMemberIds.add(userId.toString()));
+    });
+
+    // 4. Combine supervisor IDs and team member IDs
+    const userIds = new Set([...supervisorIds, ...teamMemberIds]);
+
+    // 5. Fetch user info for these IDs
+    const users = await User.find({ _id: { $in: Array.from(userIds) } })
+      .select('_id name email role');
+
+    // 6. Rename _id to id
+    const formattedUsers = users.map(user => ({
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      role: user.role
+    }));
+
+    res.status(200).json(formattedUsers);
+  } catch (err) {
+    console.error('Error fetching related users:', err);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
+
+
 export const getUsersByFacultyId = async (req, res) => {
   const id = req.params.id;
-
+  
   try {
     const users = await Supervisor.find({ faculty_id: id }).populate("student_id", "name email role");
 
@@ -624,6 +668,100 @@ export const fetchLeavesByfacultyId = async (req, res) => {
 
 
 
+export const fetchUsersOnLeaveCurrentMonth = async (req, res) => {
+  try {
+    const facultyId = req.params.facultyId || req.query.facultyId;
+
+    if (!facultyId) {
+      return res.status(400).json({ message: "facultyId is required" });
+    }
+
+    const now = new Date();
+    const firstDayOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+    const firstDayOfNextMonth = new Date(now.getFullYear(), now.getMonth() + 1, 1);
+
+    const leaves = await Leave.find({
+      faculty_id: facultyId,
+      status: 'approved',
+      from: {
+        $gte: firstDayOfMonth,
+        $lt: firstDayOfNextMonth
+      }
+    })
+    .populate('user_id', 'name email')
+    .sort({ from: 1 });
+    
+
+    const usersOnLeave = leaves.map(leave => ({
+      user: leave.user_id,
+      leave_id: leave._id,
+      from: leave.from,
+      to: leave.to,
+      reason: leave.reason,
+      days: Math.ceil((new Date(leave.to) - new Date(leave.from)) / (1000 * 60 * 60 * 24)) + 1
+    }));
+
+    res.status(200).json({
+      month: now.toLocaleString('default', { month: 'long', year: 'numeric' }),
+      total_users_on_leave: usersOnLeave.length,
+      users: usersOnLeave
+    });
+
+  } catch (error) {
+    console.error('Error fetching users on leave:', error);
+    res.status(500).json({ 
+      message: 'Failed to fetch users on leave',
+      error: process.env.NODE_ENV === 'development' ? error.message : undefined
+    });
+  }
+};
+
+
+
+export const updateLeaveStatus = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { status } = req.body;
+    
+    // Validate status
+    const validStatuses = ['pending', 'approved', 'declined'];
+    if (!validStatuses.includes(status)) {
+      return res.status(400).json({ 
+        success: false,
+        message: 'Invalid status. Must be one of: pending, approved, declined'
+      });
+    }
+
+    // Update leave
+    const updatedLeave = await Leave.findByIdAndUpdate(
+      id,
+      { status },
+      { new: true, runValidators: true }
+    );
+
+    if (!updatedLeave) {
+      return res.status(404).json({
+        success: false,
+        message: 'Leave not found'
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      data: updatedLeave
+    });
+
+  } catch (error) {
+    console.error('Error updating leave status:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Server error',
+      error: error.message
+    });
+  }
+};
+
+
 
 export const addLeave = async (req, res) => {
   try {
@@ -812,27 +950,73 @@ export const getSupervisors = async (req, res) => {
   }
 };
 
+
 export const getSupervisorById = async (req, res) => {
   try {
     const { id } = req.params;
-    const supervisor = await Supervisor.find({ faculty_id: id })
+    
+    // Get all supervisors matching the faculty_id
+    const supervisors = await Supervisor.find({ faculty_id: id })
       .populate("faculty_id", "name role email")
       .populate("student_id", "name role email")
       .populate("committee", "name role email");
 
-
-    if (!supervisor) {
+    if (!supervisors || supervisors.length === 0) {
       return res.status(404).json({ message: "Supervisor not found" });
     }
-    
 
-    res.status(200).json(supervisor);
+    // Process each supervisor document
+    const result = await Promise.all(supervisors.map(async (supervisor) => {
+      // Convert to plain object
+      const supervisorObj = supervisor.toObject();
+      
+      // Handle student_id - ensure it's treated as a single object
+      let student = supervisorObj.student_id;
+      
+      // If student_id is an array, take the first one
+      if (Array.isArray(student)) {
+        student = student[0];
+        supervisorObj.student_id = student; // Update to single object
+      }
+
+      const studentId = student?._id;
+
+      // Find projects where:
+      // 1. Student is in team or is lead author
+      // 2. AND the project's faculty_id matches the requested faculty ID
+      const studentProjects = studentId ? await Project.find({
+        $and: [
+          {
+            $or: [
+              { team: studentId },
+              { lead_author: studentId }
+            ]
+          },
+          { faculty_id: id } // Only projects for this faculty member
+        ]
+      })
+      .populate('team', 'name email')
+      .populate('lead_author', 'name email')
+      .populate('faculty_id', 'name email') : [];
+
+      // Attach projects to the student object
+      if (student) {
+        student.projects = studentProjects || [];
+      }
+
+      return supervisorObj;
+    }));
+
+    // Always return an array, even if there's only one supervisor
+    res.status(200).json(result);
   } catch (error) {
     console.error("Error fetching supervisor:", error);
-    res.status(500).json({ message: "Internal server error", error: error.message });
+    res.status(500).json({ 
+      message: "Internal server error", 
+      error: error.message 
+    });
   }
 };
-
 
 
 export const updateSupervisor = async (req, res) => {
@@ -941,7 +1125,7 @@ export const deleteProject = async (req, res) => {
   }
 };
 
-
+// MinutesOfMeeting functions
 
 export const createMinutesOfMeeting = async (req, res) => {
   try {
@@ -952,6 +1136,27 @@ export const createMinutesOfMeeting = async (req, res) => {
     handleError(res, error);
   }
 };
+
+// routes/projectRoutes.js
+export const getNewNotesCount = async (req, res) => {
+  try {
+    const projects = await Project.find({ faculty_id: req.params.id });
+    const counts = {};
+    
+    await Promise.all(projects.map(async project => {
+      const count = await MinutesOfMeeting.countDocuments({
+        pid: project._id,
+        createdAt: { $gt: project.lastViewedNotes }
+      });
+      counts[project._id] = count;
+    }));
+    
+    res.json(counts);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
 export const getMinutesOfMeetingById = async (req, res) => {
   const id = req.params.id;
   try {
