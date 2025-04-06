@@ -8,6 +8,46 @@
   border: 2px solid rgba(128, 128, 128, 0.261);
 }
 
+
+/* Create Project Button Styles */
+.projects-create-project-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 20px;
+  background-color: #4a6cf7; /* Primary blue color */
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 5px rgba(74, 108, 247, 0.2);
+  margin-top: 15px;
+}
+
+.projects-create-project-button:hover {
+  background-color: #3a5ce4; /* Slightly darker on hover */
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(74, 108, 247, 0.3);
+}
+
+.projects-create-project-button:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 3px rgba(74, 108, 247, 0.3);
+}
+
+.projects-create-project-button svg {
+  font-size: 12px;
+  transition: transform 0.3s ease;
+}
+
+.projects-create-project-button:hover svg {
+  transform: scale(1.1);
+}
+
 /* Header Styles */
 .projects-header {
   display: flex;
@@ -670,12 +710,14 @@
 .projects-notes-overlay {
   position: fixed;
   top: 0;
-  left: 0;
+  /* left: 0; */
   right: 0;
   bottom: 0;
+  width: 20%;
   background: rgba(0, 0, 0, 0.5);
   display: flex;
-  justify-content: center;
+  justify-content: right;
+  padding-right: 1rem;
   align-items: center;
   z-index: 1000;
 }
@@ -685,8 +727,8 @@
 .projects-notes-content {
   background: white;
   border-radius: 8px;
-  height: 80%;
-  width: 70%;
+  height: 85%;
+  width: 95%;
   padding: 2rem;
   position: relative;
   display: flex;

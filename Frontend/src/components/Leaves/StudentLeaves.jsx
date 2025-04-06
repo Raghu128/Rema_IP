@@ -64,6 +64,7 @@ const StudentLeaves = () => {
               <th>From</th>
               <th>To</th>
               <th>Reason</th>
+              <th>Status</th>
             </tr>
           </thead>
           <tbody>
@@ -73,6 +74,7 @@ const StudentLeaves = () => {
                 <td>{leave.from}</td>
                 <td>{leave.to}</td>
                 <td>{leave.reason}</td>
+                <td className="student-leave">{leave.status}</td>
               </tr>
             ))}
           </tbody>

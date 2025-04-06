@@ -21,6 +21,13 @@
   width: 25%;
 }
 
+.dashboard-section-right {
+  display: flex;
+  flex-direction: column;
+  height: 60vh;
+  justify-content: space-between;
+}
+
 @media (max-width: 1400px) {
   .landingpage-content {
     flex-direction: column;

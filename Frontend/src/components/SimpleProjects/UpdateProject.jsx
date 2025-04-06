@@ -287,11 +287,23 @@ const UpdateProjectFormPage = () => {
                   />
                 </div>
                 <div className="projectAddForm-form-group">
-                  <label className="projectAddForm-label"><FontAwesomeIcon icon={faMapMarkerAlt} /> Venue</label>
+                  <label className="projectAddForm-label">Creation Date</label>
                   <input
-                    type="text"
-                    name="venue"
-                    value={formData.venue}
+                    type="date"
+                    name="creation_date"
+                    value={formData.creation_date}
+                    onChange={handleChange}
+                    className="projectAddForm-input"
+                    max={new Date().toISOString().split('T')[0]} 
+                    required
+                  />
+                </div>
+                <div className="projectAddForm-form-group">
+                  <label className="projectAddForm-label">End Date</label>
+                  <input
+                    type="date"
+                    name="end_date"
+                    value={formData.end_date}
                     onChange={handleChange}
                     className="projectAddForm-input"
                   />
@@ -303,19 +315,20 @@ const UpdateProjectFormPage = () => {
             <div className="projectAddForm-form-section">
               <div className="projectAddForm-section-header">
                 <FontAwesomeIcon icon={faCalendarAlt} className="projectAddForm-section-icon" />
-                <h3 className="projectAddForm-section-title">Dates</h3>
+                <h3 className="projectAddForm-section-title">Paper Submission</h3>
               </div>
               <div className="projectAddForm-form-grid">
-                <div className="projectAddForm-form-group">
-                  <label className="projectAddForm-label">Creation Date</label>
+              <div className="projectAddForm-form-group">
+                  <label className="projectAddForm-label"><FontAwesomeIcon icon={faMapMarkerAlt} /> Venue</label>
                   <input
-                    type="date"
-                    name="creation_date"
-                    value={formData.creation_date}
+                    type="text"
+                    name="venue"
+                    value={formData.venue}
                     onChange={handleChange}
                     className="projectAddForm-input"
                   />
                 </div>
+                
                 <div className="projectAddForm-form-group">
                   <label className="projectAddForm-label">Submission Date</label>
                   <input
@@ -337,25 +350,19 @@ const UpdateProjectFormPage = () => {
                   />
                 </div>
                 <div className="projectAddForm-form-group">
-                  <label className="projectAddForm-label">End Date</label>
-                  <input
-                    type="date"
-                    name="end_date"
-                    value={formData.end_date}
+                  <label className="projectAddForm-label">Status</label>
+                  <select
+                    name="status"
+                    value={formData.status}
                     onChange={handleChange}
-                    className="projectAddForm-input"
-                  />
+                    className="projectAddForm-select"
+                  >
+                    <option value="ongoing">Ongoing</option>
+                    <option value="completed">Completed</option>
+                    <option value="cancelled">Cancelled</option>
+                    <option value="under-review">Under Review</option>
+                  </select>
                 </div>
-              </div>
-            </div>
-
-            {/* Links Section */}
-            <div className="projectAddForm-form-section">
-              <div className="projectAddForm-section-header">
-                <FontAwesomeIcon icon={faLink} className="projectAddForm-section-icon" />
-                <h3 className="projectAddForm-section-title">Links</h3>
-              </div>
-              <div className="projectAddForm-form-grid">
                 <div className="projectAddForm-form-group">
                   <label className="projectAddForm-label">Paper URL</label>
                   <input
@@ -376,9 +383,21 @@ const UpdateProjectFormPage = () => {
                     className="projectAddForm-input"
                   />
                 </div>
+                <div className="projectAddForm-form-group projectAddForm-full-width">
+                  <label className="projectAddForm-label">Remarks</label>
+                  <textarea
+                    name="remarks"
+                    value={formData.remarks}
+                    onChange={handleChange}
+                    className="projectAddForm-textarea"
+                  />
+                </div>
+                
+                
               </div>
             </div>
 
+          
             {/* Team Section */}
             <div className="projectAddForm-form-section">
               <div className="projectAddForm-section-header">
@@ -443,37 +462,7 @@ const UpdateProjectFormPage = () => {
               </div>
             </div>
 
-            {/* Status & Remarks Section */}
-            <div className="projectAddForm-form-section">
-              <div className="projectAddForm-section-header">
-                <FontAwesomeIcon icon={faFlagCheckered} className="projectAddForm-section-icon" />
-                <h3 className="projectAddForm-section-title">Status & Remarks</h3>
-              </div>
-              <div className="projectAddForm-form-grid">
-                <div className="projectAddForm-form-group">
-                  <label className="projectAddForm-label">Status</label>
-                  <select
-                    name="status"
-                    value={formData.status}
-                    onChange={handleChange}
-                    className="projectAddForm-select"
-                  >
-                    <option value="ongoing">Ongoing</option>
-                    <option value="completed">Completed</option>
-                    <option value="cancelled">Cancelled</option>
-                  </select>
-                </div>
-                <div className="projectAddForm-form-group projectAddForm-full-width">
-                  <label className="projectAddForm-label">Remarks</label>
-                  <textarea
-                    name="remarks"
-                    value={formData.remarks}
-                    onChange={handleChange}
-                    className="projectAddForm-textarea"
-                  />
-                </div>
-              </div>
-            </div>
+           
 
             <div className="projectAddForm-form-actions">
               <button type="submit" className="projectAddForm-submit-button">

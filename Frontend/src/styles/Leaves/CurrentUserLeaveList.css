@@ -1,0 +1,105 @@
+/* CurrentUserLeaveList.css */
+.currentUserLeave-container {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    width: 100%;
+    padding: 0.8rem;
+    background-color: #f9f9f9;
+    border-radius: 6px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    overflow: scroll;
+    max-height: 40vh;
+  }
+  
+  .currentUserLeave-title {
+    color: #2c3e50;
+    margin-bottom: 0.6rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    border-bottom: 1px solid #3498db;
+    padding-bottom: 0.4rem;
+  }
+  
+  .currentUserLeave-summary {
+    margin-bottom: 0.6rem;
+    font-size: 0.8rem;
+    color: #34495e;
+  }
+  
+  .currentUserLeave-count {
+    font-weight: bold;
+    color: #e74c3c;
+  }
+  
+  .currentUserLeave-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .currentUserLeave-item {
+    background-color: white;
+    padding: 0.6rem;
+    margin-bottom: 0.6rem;
+    border-radius: 4px;
+    box-shadow: 0 0.5px 1px rgba(0, 0, 0, 0.1);
+    font-size: 0.75rem;
+    line-height: 1.3;
+  }
+  
+  .currentUserLeave-user {
+    margin-bottom: 0.3rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+  
+  .currentUserLeave-name {
+    font-weight: 500;
+    color: #2c3e50;
+  }
+  
+  .currentUserLeave-email {
+    color: #7f8c8d;
+    font-size: 0.7rem;
+  }
+  
+  .currentUserLeave-dates {
+    margin: 0.3rem 0;
+    color: #3498db;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.2rem;
+  }
+  
+  .currentUserLeave-days {
+    color: #e74c3c;
+    font-weight: 500;
+    font-size: 0.7rem;
+  }
+  
+  .currentUserLeave-reason {
+    color: #34495e;
+    font-style: italic;
+    font-size: 0.7rem;
+  }
+  
+  .currentUserLeave-reasonText {
+    color: #16a085;
+  }
+  
+  .currentUserLeave-loading,
+  .currentUserLeave-empty {
+    text-align: center;
+    padding: 0.6rem;
+    color: #7f8c8d;
+    font-size: 0.8rem;
+  }
+  
+  .currentUserLeave-error {
+    text-align: center;
+    padding: 0.6rem;
+    color: #e74c3c;
+    font-weight: 500;
+    font-size: 0.8rem;
+  }

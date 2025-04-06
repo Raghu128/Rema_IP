@@ -2,7 +2,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import NotificationsList from "./Notification/NotificationsList";
 import VenueListComponent from "./Venues/VenueListComponent";
-import { FiBell, FiMapPin } from "react-icons/fi";
+import CurrentUserLeaveList from "./Leaves/CurrentUserLeaveList";
 import "../styles/LandingPage.css";
 
 const LandingPage = () => {
@@ -18,24 +18,21 @@ const LandingPage = () => {
       <div className="landingpage-content">
         {/* Main Notifications Section - Takes 70% width on larger screens */}
         <section className="dashboard-section notifications-main">
-          {/* <div className="section-header">
-            <FiBell className="section-icon notification-icon" />
-            <h2>Your Notifications</h2>
-          </div> */}
           <div className="section-content">
             <NotificationsList />
           </div>
         </section>
 
         {/* Compact Venues Section - Takes 30% width on larger screens */}
-        <section className="dashboard-section venues-compact">
-          {/* <div className="section-header">
-            <FiMapPin className="section-icon venue-icon" />
-            <h2>Related Venues</h2>
-          </div> */}
+        <section className="dashboard-section-right venues-compact">
           <div className="section-content">
             <VenueListComponent compact={true} />
+
+            {/* ✅ Conditionally render leave list if user is faculty */}
           </div>
+            <div className="currentMonthLeave">
+            {user?.role === "faculty" && <CurrentUserLeaveList />}
+            </div>
         </section>
       </div>
     </div>

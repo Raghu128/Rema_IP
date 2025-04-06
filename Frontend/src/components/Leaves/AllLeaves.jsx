@@ -3,19 +3,19 @@ import { useSelector } from "react-redux";
 import axios from "axios";
 import Loader from '../Loader';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { 
-  faCalendarAlt, 
-  faUserGraduate, 
-  faFileAlt,
-  faTable,
-  faThLarge,
-  faClock,
-  faSearch,
-  faChevronDown,
-  faChevronUp,
-  faUserCircle,
-  faEnvelope,
-  faListAlt
+import {
+    faCalendarAlt,
+    faUserGraduate,
+    faFileAlt,
+    faTable,
+    faThLarge,
+    faClock,
+    faSearch,
+    faChevronDown,
+    faChevronUp,
+    faUserCircle,
+    faEnvelope,
+    faListAlt
 } from '@fortawesome/free-solid-svg-icons';
 import "../../styles/Leaves/LeavesForFacultyPage.css";
 
@@ -32,18 +32,17 @@ const LeavesForFacultyPage = () => {
         totalLeaves: 0,
         avgLeaveDuration: 0
     });
-    
 
     useEffect(() => {
         const fetchLeaves = async () => {
             setLoading(true);
             try {
-                const response = await axios.get(`/api/v1/leaves/faculty/${user?.id}`);                
+                const response = await axios.get(`/api/v1/leaves/faculty/${user?.id}`);
                 setLeaves(response.data);
-                
+
                 // Calculate statistics
                 const grouped = response.data.reduce((acc, leave) => {
-                    
+
                     const studentId = leave.user_id?._id || "unknown";
                     if (!acc[studentId]) {
                         acc[studentId] = { leaves: [] };
@@ -51,13 +50,13 @@ const LeavesForFacultyPage = () => {
                     acc[studentId].leaves.push(leave);
                     return acc;
                 }, {});
-                
+
                 const totalStudents = Object.keys(grouped).length;
                 const totalLeaves = response.data.length;
                 const totalDays = response.data.reduce((sum, leave) => {
                     return sum + calculateLeaveDays(leave.from, leave.to);
                 }, 0);
-                
+
                 setStats({
                     totalStudents,
                     totalLeaves,
@@ -81,10 +80,10 @@ const LeavesForFacultyPage = () => {
     const groupedLeaves = leaves.reduce((acc, leave) => {
         const studentId = leave.user_id?._id || "unknown";
         if (!acc[studentId]) {
-            acc[studentId] = { 
-                name: leave.user_id?.name || "Unknown", 
+            acc[studentId] = {
+                name: leave.user_id?.name || "Unknown",
                 email: leave.user_id?.email || "",
-                leaves: [] 
+                leaves: []
             };
         }
         acc[studentId].leaves.push(leave);
@@ -118,6 +117,72 @@ const LeavesForFacultyPage = () => {
         });
     };
 
+
+    const handleStatusChange = async (leaveId, newStatus) => {
+        try {
+            setLoading(true);
+            await axios.put(`/api/v1/leaves/faculty/${leaveId}`, { status: newStatus });
+
+            // Update local state
+            setLeaves(leaves.map(leave =>
+                leave._id === leaveId ? { ...leave, status: newStatus } : leave
+            ));
+        } catch (err) {
+            console.error("Error updating leave status:", err);
+            setError("Failed to update leave status");
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const StatusDropdown = ({ currentStatus, onChange }) => {
+        const [isOpen, setIsOpen] = useState(false);
+        const isPending = currentStatus === 'pending';
+
+        const statusOptions = [
+            // { value: 'pending', label: 'Pending', color: 'orange' },
+            { value: 'approved', label: 'Approved', color: 'green' },
+            { value: 'declined', label: 'Declined', color: 'red' }
+        ];
+
+        const currentOption = statusOptions.find(opt => opt.value === currentStatus) || statusOptions[0];
+
+        return (
+            <div className="status-dropdown-container">
+                <button
+                    className={`status-dropdown-toggle status-${currentStatus}`}
+                    onClick={() => setIsOpen(!isOpen)}
+                    disabled={!isPending}
+                >
+                    <span className="status-dot" style={{ backgroundColor: currentOption.color }} />
+                    {currentOption.label}
+                    <FontAwesomeIcon
+                        icon={isOpen ? faChevronUp : faChevronDown}
+                        className="status-dropdown-arrow"
+                    />
+                </button>
+
+                {isOpen  && (
+                    <div className="status-dropdown-menu">
+                        {statusOptions.map(option => (
+                            <button
+                                key={option.value}
+                                className={`status-dropdown-item ${currentStatus === option.value ? 'active' : ''}`}
+                                onClick={() => {
+                                    onChange(option.value);
+                                    setIsOpen(false);
+                                }}
+                            >
+                                <span className="status-dot" style={{ backgroundColor: option.color }} />
+                                {option.label}
+                            </button>
+                        ))}
+                    </div>
+                )}
+            </div>
+        );
+    };
+
     if (loading) return <Loader />;
     if (!user?.id) return <p className="leaves-message">Please log in to view leaves.</p>;
     if (error) return <p className="leaves-message leaves-error">{error}</p>;
@@ -127,7 +192,7 @@ const LeavesForFacultyPage = () => {
             <div className="leaves-header">
                 <div className="leaves-header-left">
                     <h1 className="leaves-title">
-                        <FontAwesomeIcon icon={faListAlt} className="leaves-title-icon" /> 
+                        <FontAwesomeIcon icon={faListAlt} className="leaves-title-icon" />
                         Student Leaves
                     </h1>
                     <div className="leaves-stats">
@@ -156,13 +221,13 @@ const LeavesForFacultyPage = () => {
                 </div>
                 <div className="leaves-actions">
                     <div className="leaves-view-toggle-group">
-                        <button 
+                        <button
                             className={`leaves-view-toggle ${viewMode === 'card' ? 'leaves-active' : ''}`}
                             onClick={() => setViewMode('card')}
                         >
                             <FontAwesomeIcon icon={faThLarge} /> Cards
                         </button>
-                        <button 
+                        <button
                             className={`leaves-view-toggle ${viewMode === 'table' ? 'leaves-active' : ''}`}
                             onClick={() => setViewMode('table')}
                         >
@@ -202,6 +267,7 @@ const LeavesForFacultyPage = () => {
                                 <th>Leave Period</th>
                                 <th>Duration</th>
                                 <th>Reason</th>
+                                <th>Status</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -238,6 +304,13 @@ const LeavesForFacultyPage = () => {
                                             </div>
                                         </td>
                                         <td className="leaves-reason-cell">{leave.reason}</td>
+                                        <td className="leaves-status-cell">
+                                            <StatusDropdown
+                                                currentStatus={leave.status}
+                                                onChange={(newStatus) => handleStatusChange(leave._id, newStatus)}
+                                                
+                                            />
+                                        </td>
                                     </tr>
                                 ))
                             ))}
@@ -248,8 +321,8 @@ const LeavesForFacultyPage = () => {
                 <div className="leaves-cards-grid">
                     {filteredGroupedLeaves.map(([studentId, group]) => (
                         <div key={studentId} className="leaves-student-card">
-                            <div 
-                                className="leaves-student-header" 
+                            <div
+                                className="leaves-student-header"
                                 onClick={() => toggleStudentExpand(studentId)}
                             >
                                 <div className="leaves-student-info">
@@ -268,13 +341,13 @@ const LeavesForFacultyPage = () => {
                                     <span className="leaves-count-badge">
                                         {group.leaves.length} Leave{group.leaves.length !== 1 ? 's' : ''}
                                     </span>
-                                    <FontAwesomeIcon 
-                                        icon={expandedStudent === studentId ? faChevronUp : faChevronDown} 
+                                    <FontAwesomeIcon
+                                        icon={expandedStudent === studentId ? faChevronUp : faChevronDown}
                                         className="leaves-expand-icon"
                                     />
                                 </div>
                             </div>
-                            
+
                             {expandedStudent === studentId && (
                                 <div className="leaves-list">
                                     {group.leaves.map(leave => (
@@ -285,7 +358,7 @@ const LeavesForFacultyPage = () => {
                                                     <span className="leaves-date-separator">to</span>
                                                     <span>{formatDate(leave.to)}</span>
                                                 </div>
-                            
+
                                             </div>
                                             <div className="leaves-item-body">
                                                 <div className="leaves-duration">
@@ -295,6 +368,12 @@ const LeavesForFacultyPage = () => {
                                                 <div className="leaves-reason">
                                                     <p>{leave.reason}</p>
                                                 </div>
+                                                    <div className="leaves-status">
+                                                        <StatusDropdown
+                                                            currentStatus={leave.status}
+                                                            onChange={(newStatus) => handleStatusChange(leave._id, newStatus)}
+                                                        />
+                                                    </div>
                                             </div>
                                         </div>
                                     ))}

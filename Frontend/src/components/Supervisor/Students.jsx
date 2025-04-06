@@ -3,12 +3,12 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Loader from '../Loader';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { 
-  faEdit, faSearch, faUserGraduate, faUserTie, 
-  faBookOpen, faFilter, faTable, faThLarge,
-  faRupeeSign, faIdCard, faUsers, faPlus,
-  faChartBar, faUserCircle, faGraduationCap,
-  faChalkboardTeacher, faUniversity, faLaptopCode, faUserShield
+import {
+    faEdit, faSearch, faUserGraduate, faUserTie,
+    faBookOpen, faFilter, faTable, faThLarge,
+    faRupeeSign, faChevronUp, faUsers, faPlus,
+    faChartBar, faUserCircle, faGraduationCap,
+    faChalkboardTeacher, faUniversity, faLaptopCode,faChevronDown, faUserShield
 } from '@fortawesome/free-solid-svg-icons';
 import "../../styles/Student/Student.css";
 
@@ -30,7 +30,17 @@ const Students = ({ id }) => {
         projectstaff: 0
     });
     const navigate = useNavigate();
+
+    const [expandedProjects, setExpandedProjects] = useState({});
+
+    const toggleProjectExpansion = (studentId, projectIndex) => {
+        setExpandedProjects(prev => ({
+            ...prev,
+            [`${studentId}-${projectIndex}`]: !prev[`${studentId}-${projectIndex}`]
+        }));
+    };
     
+
     useEffect(() => {
         const fetchSupervisors = async () => {
             try {
@@ -52,7 +62,7 @@ const Students = ({ id }) => {
                 supervisors.forEach((supervisor) => {
                     const student = supervisor.student_id;
                     const role = student.role || "Unknown Role";
-                    
+
                     if (!roleBasedStudents[role]) {
                         roleBasedStudents[role] = {};
                     }
@@ -63,6 +73,7 @@ const Students = ({ id }) => {
                             role: student.role,
                             email: student.email,
                             projects: [],
+                            
                         };
                         stats.total++;
                         if (role in stats) stats[role]++;
@@ -74,7 +85,8 @@ const Students = ({ id }) => {
                             : null,
                         committee: supervisor.committee || [],
                         joining: supervisor.joining,
-                        status: supervisor.status || 'Active'
+                        status: supervisor.status || 'Active',
+                        workingProjects: supervisor.student_id.projects
                     });
                 });
 
@@ -96,6 +108,7 @@ const Students = ({ id }) => {
 
         fetchSupervisors();
     }, [id]);
+
     useEffect(() => {
         if (supervisorData) {
             let filteredData = {};
@@ -104,7 +117,7 @@ const Students = ({ id }) => {
                     const filteredStudents = supervisorData[role].filter((student) =>
                         student.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
                         student.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                        student.projects.some(proj => 
+                        student.projects.some(proj =>
                             proj.thesis_title.toLowerCase().includes(searchQuery.toLowerCase())
                         )
                     );
@@ -152,7 +165,7 @@ const Students = ({ id }) => {
         if (!committee || committee.length === 0) {
             return <span className="no-committee">No committee members</span>;
         }
-        
+
         return (
             <div className="committee-members">
                 <div className="committee-icon-container">
@@ -171,8 +184,29 @@ const Students = ({ id }) => {
             </div>
         );
     };
+    const ProjectDropdown = ({ projects }) => {
+        if (!projects || projects.length === 0) {
+          return <span className="working-pro-no-projects">No projects</span>;
+        }
+      
+        return (
+          <div className="working-pro-hover-container">
+            <div className="working-pro-hover-trigger">
+              <FontAwesomeIcon icon={faBookOpen} />
+              <span>{projects.length}</span>
+            </div>
+            <div className="working-pro-hover-content">
+              {projects.map((project, index) => (
+                <div key={index} className="working-pro-hover-item" onClick={() => navigate(`/?tab=Projects&search=${project.name}`)}>
+                  {project.name || "Untitled Project"}
+                </div>
+              ))}
+            </div>
+          </div>
+        );
+      };
 
-    const formatDate = (dateString) => {        
+    const formatDate = (dateString) => {
         if (!dateString) return "N/A";
         const options = { year: 'numeric', month: 'short', day: 'numeric' };
         return new Date(dateString).toLocaleDateString(undefined, options);
@@ -181,89 +215,90 @@ const Students = ({ id }) => {
     if (loading) return <Loader />;
     if (error) return <div className="error-message">{error}</div>;
 
+
     return (
         <div className="student-container">
-        <div className="student-header">
-            <div className="student-header-left">
-                <h1 className="student-title">
-                    <FontAwesomeIcon icon={faUniversity} className="student-title-icon" />
-                    Student Supervision
-                </h1>
-                <div className="student-stats-container">
-                    <div className="student-stat-card student-total">
-                        <FontAwesomeIcon icon={faChartBar} className="student-stat-icon" />
-                        <div className="student-stat-content">
-                            <span className="student-stat-number">{stats.total}</span>
-                            <span className="student-stat-label">Total</span>
+            <div className="student-header">
+                <div className="student-header-left">
+                    <h1 className="student-title">
+                        <FontAwesomeIcon icon={faUniversity} className="student-title-icon" />
+                        Student Supervision
+                    </h1>
+                    <div className="student-stats-container">
+                        <div className="student-stat-card student-total">
+                            <FontAwesomeIcon icon={faChartBar} className="student-stat-icon" />
+                            <div className="student-stat-content">
+                                <span className="student-stat-number">{stats.total}</span>
+                                <span className="student-stat-label">Total</span>
+                            </div>
                         </div>
-                    </div>
-                    <div className="student-stat-card student-btech">
-                        <FontAwesomeIcon icon={faGraduationCap} className="student-stat-icon" />
-                        <div className="student-stat-content">
-                            <span className="student-stat-number">{stats.btech}</span>
-                            <span className="student-stat-label">B.Tech</span>
+                        <div className="student-stat-card student-btech">
+                            <FontAwesomeIcon icon={faGraduationCap} className="student-stat-icon" />
+                            <div className="student-stat-content">
+                                <span className="student-stat-number">{stats.btech}</span>
+                                <span className="student-stat-label">B.Tech</span>
+                            </div>
                         </div>
-                    </div>
-                    <div className="student-stat-card student-mtech">
-                        <FontAwesomeIcon icon={faUserGraduate} className="student-stat-icon" />
-                        <div className="student-stat-content">
-                            <span className="student-stat-number">{stats.mtech}</span>
-                            <span className="student-stat-label">M.Tech</span>
+                        <div className="student-stat-card student-mtech">
+                            <FontAwesomeIcon icon={faUserGraduate} className="student-stat-icon" />
+                            <div className="student-stat-content">
+                                <span className="student-stat-number">{stats.mtech}</span>
+                                <span className="student-stat-label">M.Tech</span>
+                            </div>
                         </div>
-                    </div>
-                    <div className="student-stat-card student-phd">
-                        <FontAwesomeIcon icon={faUserTie} className="student-stat-icon" />
-                        <div className="student-stat-content">
-                            <span className="student-stat-number">{stats.phd}</span>
-                            <span className="student-stat-label">PhD</span>
+                        <div className="student-stat-card student-phd">
+                            <FontAwesomeIcon icon={faUserTie} className="student-stat-icon" />
+                            <div className="student-stat-content">
+                                <span className="student-stat-number">{stats.phd}</span>
+                                <span className="student-stat-label">PhD</span>
+                            </div>
                         </div>
-                    </div>
-                    <div className="student-stat-card student-faculty">
-                        <FontAwesomeIcon icon={faChalkboardTeacher} className="student-stat-icon" />
-                        <div className="student-stat-content">
-                            <span className="student-stat-number">{stats.faculty}</span>
-                            <span className="student-stat-label">Faculty</span>
+                        <div className="student-stat-card student-faculty">
+                            <FontAwesomeIcon icon={faChalkboardTeacher} className="student-stat-icon" />
+                            <div className="student-stat-content">
+                                <span className="student-stat-number">{stats.faculty}</span>
+                                <span className="student-stat-label">Faculty</span>
+                            </div>
                         </div>
-                    </div>
-                    <div className="student-stat-card student-intern">
-                        <FontAwesomeIcon icon={faLaptopCode} className="student-stat-icon" />
-                        <div className="student-stat-content">
-                            <span className="student-stat-number">{stats.intern}</span>
-                            <span className="student-stat-label">Interns</span>
+                        <div className="student-stat-card student-intern">
+                            <FontAwesomeIcon icon={faLaptopCode} className="student-stat-icon" />
+                            <div className="student-stat-content">
+                                <span className="student-stat-number">{stats.intern}</span>
+                                <span className="student-stat-label">Interns</span>
+                            </div>
                         </div>
-                    </div>
-                    <div className="student-stat-card student-projectstaff">
-                        <FontAwesomeIcon icon={faUserShield} className="student-stat-icon" />
-                        <div className="student-stat-content">
-                            <span className="student-stat-number">{stats.projectstaff}</span>
-                            <span className="student-stat-label">Staff</span>
+                        <div className="student-stat-card student-projectstaff">
+                            <FontAwesomeIcon icon={faUserShield} className="student-stat-icon" />
+                            <div className="student-stat-content">
+                                <span className="student-stat-number">{stats.projectstaff}</span>
+                                <span className="student-stat-label">Staff</span>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div className="student-actions">
-                <div className="student-view-toggle-group">
-                    <button 
-                        className={`student-view-toggle ${viewMode === 'cards' ? 'student-active' : ''}`}
-                        onClick={() => setViewMode('cards')}
+                <div className="student-actions">
+                    <div className="student-view-toggle-group">
+                        <button
+                            className={`student-view-toggle ${viewMode === 'cards' ? 'student-active' : ''}`}
+                            onClick={() => setViewMode('cards')}
+                        >
+                            <FontAwesomeIcon icon={faThLarge} /> Cards
+                        </button>
+                        <button
+                            className={`student-view-toggle ${viewMode === 'table' ? 'student-active' : ''}`}
+                            onClick={() => setViewMode('table')}
+                        >
+                            <FontAwesomeIcon icon={faTable} /> Table
+                        </button>
+                    </div>
+                    <button
+                        onClick={() => navigate("/update-supervisor")}
+                        className="student-add-button"
                     >
-                        <FontAwesomeIcon icon={faThLarge} /> Cards
-                    </button>
-                    <button 
-                        className={`student-view-toggle ${viewMode === 'table' ? 'student-active' : ''}`}
-                        onClick={() => setViewMode('table')}
-                    >
-                        <FontAwesomeIcon icon={faTable} /> Table
+                        <FontAwesomeIcon icon={faEdit} /> Manage
                     </button>
                 </div>
-                <button 
-                    onClick={() => navigate("/update-supervisor")} 
-                    className="student-add-button"
-                >
-                    <FontAwesomeIcon icon={faEdit} /> Manage
-                </button>
             </div>
-        </div>
 
             <div className="student-controls">
                 <div className="student-search-container">
@@ -299,7 +334,7 @@ const Students = ({ id }) => {
                         <FontAwesomeIcon icon={faUserGraduate} className="no-results-icon" />
                         <h3>No students found</h3>
                         <p>Try adjusting your search or add a new student</p>
-                        <button 
+                        <button
                             className="add-student-button"
                             onClick={() => navigate("/update-supervisor")}
                         >
@@ -334,7 +369,7 @@ const Students = ({ id }) => {
                                             </div>
                                         </div>
                                         <div className="student-projects">
-                                            <h4 className="projects-title">Projects/Thesis</h4>
+                                            <h4 className="projects-title">Title</h4>
                                             {student.projects.map((proj, index) => (
                                                 <div key={index} className="student-project-item">
                                                     <div className="student-project-header">
@@ -360,12 +395,16 @@ const Students = ({ id }) => {
                                                             {renderCommittee(proj.committee)}
                                                         </div>
                                                     </div>
+                                                    <div className="student-project-working-projects">
+    <ProjectDropdown projects={proj.workingProjects} />
+  </div>
                                                 </div>
                                             ))}
                                         </div>
                                     </div>
                                 ))}
                             </div>
+                            
                         </div>
                     ))}
                 </div>
@@ -376,7 +415,8 @@ const Students = ({ id }) => {
                             <tr>
                                 <th>Student</th>
                                 <th>Role</th>
-                                <th>Project/Thesis</th>
+                                <th>Projects</th>
+                                <th>Title</th>
                                 <th>Status</th>
                                 <th>Stipend</th>
                                 <th>Committee</th>
@@ -401,12 +441,17 @@ const Students = ({ id }) => {
                                                             </div>
                                                         </div>
                                                     </td>
+                                                    
                                                     <td className="role-cell" rowSpan={student.projects.length}>
                                                         <div className="role-badge">
                                                             {getRoleIcon(student.role)}
                                                             <span>{getRoleLabel(student.role).replace('Students', '').replace('Scholars', '').trim()}</span>
                                                         </div>
                                                     </td>
+                                                    <td className="projects-cell">
+  <ProjectDropdown projects={student.projects.flatMap(p => p.workingProjects)} />
+</td>
+                                                   
                                                 </>
                                             ) : null}
                                             <td className="student-project-cell">
@@ -415,6 +460,7 @@ const Students = ({ id }) => {
                                                     <span>{proj.thesis_title}</span>
                                                 </div>
                                             </td>
+                                            
                                             <td className="status-cell">
                                                 {getStatusBadge(proj.status)}
                                             </td>

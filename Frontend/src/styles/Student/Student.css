@@ -293,7 +293,7 @@
 .student-card {
   background: white;
   border-radius: 10px;
-  overflow: hidden;
+  /* overflow: hidden; */
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
   transition: transform 0.2s, box-shadow 0.2s;
 }
@@ -515,10 +515,11 @@
 
 /* Table View */
 .student-table-container {
-  overflow-x: auto;
+  /* overflow-x: auto; */
   margin-top: 20px;
   border-radius: 10px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+
 }
 
 .student-table {
@@ -666,5 +667,102 @@
   
   .student-avatar-table {
     display: none;
+  }
+}
+
+
+/* Hover-based Project Display */
+.working-pro-hover-container {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.working-pro-hover-trigger {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  background-color: #f5f7fa;
+  border-radius: 4px;
+  font-size: 14px;
+  color: #2c3e50;
+  transition: background-color 0.2s;
+  background-color: #f8fafc;
+
+}
+
+.working-pro-hover-trigger:hover {
+  background-color: #e1e5eb;
+}
+
+.working-pro-hover-trigger svg {
+  color: #5c6bc0;
+}
+
+.working-pro-hover-content {
+  position: absolute;
+  bottom: 58%;
+  left: 20%; 
+  transform: translateX(-50%);
+  width: max-content;
+  max-width: 300px;
+  background: white;
+  border: 1px solid #e0e6ed;
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  padding: 8px 0;
+  z-index: 1000000;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.2s ease;
+  margin-bottom: 10px;  
+  max-height: 180px;
+  overflow: scroll;
+  scrollbar-width: none;
+}
+
+.working-pro-hover-container:hover .working-pro-hover-content {
+  opacity: 1;
+  visibility: visible;
+}
+
+.working-pro-hover-item {
+  padding: 6px 16px;
+  font-size: 13px;
+  color: #34495e;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+
+
+.working-pro-no-projects {
+  color: #95a5a6;
+  font-style: italic;
+  font-size: 13px;
+}
+
+/* Tooltip arrow */
+.working-pro-hover-content::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 6px;
+  border-style: solid;
+  border-color: white transparent transparent transparent;
+  filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.1));
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .working-pro-hover-content {
+    left: 0;
+    transform: none;
+    width: 100%;
+    max-width: none;
   }
 }

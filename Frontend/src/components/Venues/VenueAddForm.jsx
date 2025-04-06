@@ -48,7 +48,11 @@ const VenueAddForm = () => {
     useEffect(() => {
         const fetchUsers = async () => {
             try {
-                const response = await axios.get(`/api/v1/user/${user?.id}`);
+              let response = {};
+                
+              if(user.role === "faculty") response = await axios.get(`/api/v1/user/${user?.id}`);
+              else response = await axios.get(`/api/v1/user/studentConnection/${user?.id}`);
+              
                 setUsers(response.data);
             } catch (error) {
                 console.error("Error fetching users:", error);

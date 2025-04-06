@@ -100,7 +100,7 @@
     display: flex;
     background: #f5f7fa;
     border-radius: 8px;
-    overflow: hidden;
+    /* overflow: hidden; */
   }
   
   .leaves-view-toggle {
@@ -155,7 +155,7 @@
   
   /* Table View */
   .leaves-table-container {
-    overflow-x: auto;
+    /* overflow-x: auto; */
     margin-top: 20px;
     border-radius: 10px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
@@ -297,7 +297,7 @@
   .leaves-student-card {
     background: white;
     border-radius: 10px;
-    overflow: hidden;
+    /* overflow: hidden; */
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
     transition: transform 0.2s, box-shadow 0.2s;
   }
@@ -457,6 +457,87 @@
     color: #95a5a6;
     margin-bottom: 20px;
   }
+
+
+  /* Status Dropdown Styles */
+.status-dropdown-container {
+  position: relative;
+  display: inline-block;
+}
+
+.status-dropdown-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  border-radius: 4px;
+  border: 1px solid #e0e0e0;
+  background: white;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s;
+}
+
+.status-dropdown-toggle:hover {
+  background: #f5f5f5;
+}
+
+.status-dropdown-arrow {
+  margin-left: 8px;
+  font-size: 12px;
+}
+
+.status-dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  z-index: 10;
+  min-width: 120px;
+}
+
+.status-dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 8px 12px;
+  background: none;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.status-dropdown-item:hover {
+  background: #f5f5f5;
+}
+
+.status-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+/* Status-specific colors */
+.status-pending {
+  background-color: #fff8e1;
+  color: #ff8f00;
+}
+
+.status-approved {
+  background-color: #e8f5e9;
+  color: #2e7d32;
+}
+
+.status-declined {
+  background-color: #ffebee;
+  color: #c62828;
+}
   
   /* Messages */
   .leaves-message {

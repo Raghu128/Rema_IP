@@ -43,10 +43,13 @@ const FacultyDashboard = () => {
 
   // Function to render the current component based on selected tab
   const renderComponent = () => {
-    if (!user?.id) return <p>Loading... Please wait.</p>;
+    if (!user?.id) return <p>Loading... Please wait.</p>;    
 
     const componentMap = {
-      Projects: <Projects id={user.id} />,
+      Projects: <Projects
+        id={user.id}
+        searchParas={searchParams.get("search")}
+      />,
       Students: <Students id={user.id} />,
       Venues: <VenueListComponent />,
       Sponsor: <DisplaySponsors />,
@@ -81,11 +84,11 @@ const FacultyDashboard = () => {
             </div>
           </div>
         </div>
-        
+
         <ul className="faculty-sidebar-list">
           {["Projects", "Students", "Sponsor", "Expenses", "Equipment", "Leaves"].map((item) => (
-            <li 
-              key={item} 
+            <li
+              key={item}
               className={currElement === item ? "active" : ""}
             >
               <Link to={`?tab=${item}`} onClick={() => handleNavigation(item)}>
@@ -95,7 +98,7 @@ const FacultyDashboard = () => {
             </li>
           ))}
         </ul>
-        
+
         <div className="sidebar-footer">
           <div className="app-version">v1.0.0</div>
         </div>
