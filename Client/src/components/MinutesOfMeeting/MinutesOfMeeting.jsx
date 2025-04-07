@@ -4,6 +4,7 @@ import axios from "axios";
 import "../../styles/MinutesOfMeeting/MinutesOfMeeting.css";
 import Loader from '../Loader';
 import { PaperPlaneRight, Clock } from 'phosphor-react';
+import io from 'socket.io-client';
 
 const MinutesOfMeeting = ({ projectId }) => {
   const { user } = useSelector((state) => state.user);
@@ -12,13 +13,30 @@ const MinutesOfMeeting = ({ projectId }) => {
   const [loading, setLoading] = useState(true);
   const [posting, setPosting] = useState(false);
   const messagesContainerRef = useRef(null);
+  const socketRef = useRef(null);
 
+  // Initialize socket connection and fetch messages
   useEffect(() => {
+    // Initialize socket connection
+    const newSocket = io(import.meta.env.VITE_BACKEND_URL, {
+      withCredentials: true,
+    });
+    socketRef.current = newSocket;
+
     const fetchMessages = async () => {
       setLoading(true);
       try {
         const response = await axios.get(`/api/v1/minutes-of-meeting/${projectId}`);
-        setMessages(response.data);
+        // Remove any potential duplicates from initial fetch
+        const uniqueMessages = response.data.reduce((acc, current) => {
+          const x = acc.find(item => item._id === current._id);
+          if (!x) {
+            return acc.concat([current]);
+          } else {
+            return acc;
+          }
+        }, []);
+        setMessages(uniqueMessages);
       } catch (error) {
         console.error("Error fetching minutes:", error);
       } finally {
@@ -27,8 +45,43 @@ const MinutesOfMeeting = ({ projectId }) => {
     };
 
     fetchMessages();
+
+    return () => {
+      if (socketRef.current) {
+        socketRef.current.disconnect();
+      }
+    };
   }, [projectId]);
 
+  // Socket.IO message handler
+  useEffect(() => {
+    if (!socketRef.current || !projectId) return;
+
+    // Join project room
+    socketRef.current.emit('join_project', projectId);
+
+    const handleNewMessage = (message) => {
+      setMessages(prev => {
+        // Check if message already exists to prevent duplicates
+        const messageExists = prev.some(m => m._id === message._id);
+        if (!messageExists) {
+          return [...prev, message];
+        }
+        return prev;
+      });
+      setTimeout(scrollToBottom, 100);
+    };
+
+    socketRef.current.on('new_message', handleNewMessage);
+
+    return () => {
+      if (socketRef.current) {
+        socketRef.current.off('new_message', handleNewMessage);
+      }
+    };
+  }, [projectId]);
+
+  // Scroll to bottom when messages change
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
@@ -56,9 +109,8 @@ const MinutesOfMeeting = ({ projectId }) => {
       if (!addedMessage.added_by || !addedMessage.added_by.name) {
         addedMessage.added_by = { _id: user.id, name: user.name };
       }
-      setMessages([...messages, addedMessage]);
+      // Don't update state here - let the socket event handle it
       setNewMessage("");
-      setTimeout(scrollToBottom, 100);
     } catch (error) {
       console.error("Error adding message:", error);
     } finally {
@@ -66,6 +118,7 @@ const MinutesOfMeeting = ({ projectId }) => {
     }
   };
 
+  
   const handleKeyDown = (e) => {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();

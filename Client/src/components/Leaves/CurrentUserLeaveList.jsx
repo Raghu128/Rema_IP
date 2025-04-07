@@ -16,7 +16,6 @@ const CurrentUserLeaveList = () => {
         setLoading(true);
         const response = await axios.get(`/api/v1/leaves/currentMonth/${user.id}`);
         setLeaves(response.data.users);
-        console.log(response.data);
         
       } catch (err) {
         setError(err.response?.data?.message || 'Failed to fetch leave data');

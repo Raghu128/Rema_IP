@@ -1,6 +1,8 @@
 import express from "express"
 import cors from "cors"
 import cookieParser from "cookie-parser"
+import { createServer } from 'http'
+import { Server } from 'socket.io'
 
 const app = express()
 
@@ -13,6 +15,32 @@ app.use(express.json({limit: "16kb"}))
 app.use(express.urlencoded({extended: true, limit: "16kb"}))
 app.use(express.static("public"))
 app.use(cookieParser())
+
+
+const httpServer = createServer(app)
+
+const io = new Server(httpServer, {
+    cors: {
+      origin: process.env.CORS_ORIGIN, // Your Vite frontend URL
+      methods: ["GET", "POST"],
+      credentials: true // This is crucial
+    }
+  });
+
+// Socket.IO connection handler
+io.on('connection', (socket) => {
+//   console.log('A user connected:', socket.id)
+  
+  // Join a room based on project ID
+  socket.on('join_project', (projectId) => {
+    socket.join(projectId)
+    // console.log(`User ${socket.id} joined project ${projectId}`)
+  })
+  
+  socket.on('disconnect', () => {
+    console.log('User disconnected:', socket.id)
+  })
+})
 
 
 // Importing Routers
@@ -37,7 +65,7 @@ app.use("/api/v1/user", userRouter);
 app.use("/api/v1/sponsor-projects", sponsorProjectRouter);
 app.use("/api/v1/supervisors", supervisorRouter);
 app.use("/api/v1/projects", projectRouter);  
-app.use("/api/v1/minutes-of-meeting", minutesOfMeetingRouter);
+app.use("/api/v1/minutes-of-meeting", minutesOfMeetingRouter(io));
 app.use("/api/v1/venues", venueListRouter);
 app.use("/api/v1/notifications", notificationRouter);
 app.use("/api/v1/equipment", equipmentRouter);
@@ -53,4 +81,4 @@ app.get("/", (req, res) => {
 
 
 
-export { app }
+export { app, httpServer, io }

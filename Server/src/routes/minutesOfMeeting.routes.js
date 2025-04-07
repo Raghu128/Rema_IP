@@ -1,13 +1,29 @@
 import express from 'express';
-import { createMinutesOfMeeting, getMinutesOfMeetings, getMinutesOfMeetingById, updateMinutesOfMeeting, deleteMinutesOfMeeting } from '../controllers/all.controller.js';
+import { 
+  createMinutesOfMeeting, 
+  getMinutesOfMeetings, 
+  getMinutesOfMeetingById, 
+  updateMinutesOfMeeting, 
+  deleteMinutesOfMeeting 
+} from '../controllers/all.controller.js';
 
-const router = express.Router();
+// Middleware to attach io instance to requests
+const attachIO = (io) => (req, res, next) => {
+  req.io = io;  
+  next();
+};
 
-// Define routes for minutes of meeting CRUD
-router.post('/', createMinutesOfMeeting);
-router.get('/', getMinutesOfMeetings);
-router.get('/:id', getMinutesOfMeetingById);
-router.put('/:id', updateMinutesOfMeeting);
-router.delete('/:id', deleteMinutesOfMeeting);
+const createMinutesRouter = (io) => {
+  const router = express.Router();
 
-export default router;
+  // Apply io middleware only to routes that need it
+  router.post('/', attachIO(io), createMinutesOfMeeting);
+  router.get('/', getMinutesOfMeetings);
+  router.get('/:id', attachIO(io), getMinutesOfMeetingById);
+  router.put('/:id', updateMinutesOfMeeting);
+  router.delete('/:id', deleteMinutesOfMeeting);
+
+  return router;
+};
+
+export default createMinutesRouter;

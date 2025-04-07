@@ -94,6 +94,7 @@
     padding: 0.6rem;
     color: #7f8c8d;
     font-size: 0.8rem;
+    border: 1px solid grey;
   }
   
   .currentUserLeave-error {

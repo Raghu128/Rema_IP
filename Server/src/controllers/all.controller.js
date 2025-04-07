@@ -1126,17 +1126,25 @@ export const deleteProject = async (req, res) => {
 };
 
 // MinutesOfMeeting functions
-
 export const createMinutesOfMeeting = async (req, res) => {
   try {
-
     const minutes = await MinutesOfMeeting.create(req.body);
-    res.status(201).json(minutes);
+    
+    const populatedMinutes = await MinutesOfMeeting.findById(minutes._id)
+      .populate('added_by', 'name');
+    
+    // Verify io exists before emitting
+    if (req.io) {
+      req.io.to(minutes.pid.toString()).emit('new_message', populatedMinutes);
+    } else {
+      console.error('Socket.IO instance not available');
+    }
+    
+    res.status(201).json(populatedMinutes);
   } catch (error) {
     handleError(res, error);
   }
 };
-
 // routes/projectRoutes.js
 export const getNewNotesCount = async (req, res) => {
   try {
@@ -1158,6 +1166,7 @@ export const getNewNotesCount = async (req, res) => {
 };
 
 export const getMinutesOfMeetingById = async (req, res) => {
+  
   const id = req.params.id;
   try {
     // Find the Minutes of Meeting documents by pid and populate the added_by field with the user's name
@@ -1168,7 +1177,9 @@ export const getMinutesOfMeetingById = async (req, res) => {
     if (!meeting ) {
       return res.status(404).json({ message: 'Minutes of Meeting not found' });
     }
-
+    if (req.method === 'POST' && req.io) {
+      req.io.to(id).emit('new_message', meeting[meeting.length - 1]);
+    }
     // Return the meeting details including the added_by name
     res.json(meeting);
   } catch (error) {
