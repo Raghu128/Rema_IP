@@ -8,6 +8,30 @@
   border: 2px solid rgba(128, 128, 128, 0.261);
 }
 
+.projects-table-notes-button {
+  /* Your existing button styles */
+  color: inherit; /* Default color */
+  transition: color 0.2s;
+}
+
+.projects-table-notes-button.unread-notes {
+  color: #ff4444; /* Red color for unread */
+  position: relative;
+}
+
+/* Optional: Add a small indicator dot */
+.projects-table-notes-button.unread-notes::after {
+  content: '';
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  width: 6px;
+  height: 6px;
+  background-color: #ff4444;
+  border-radius: 50%;
+}
+
+
 
 /* Create Project Button Styles */
 .projects-create-project-button {
@@ -722,6 +746,30 @@
   z-index: 1000;
 }
 
+.projects-card-notes-button {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.unread-notes {
+  color: #ff4444; /* Red color for unread state */
+}
+
+.unread-dot {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  width: 6px;
+  height: 6px;
+  background-color: #ff4444;
+  border-radius: 50%;
+}
+
+.notes-button-text {
+  margin-left: 4px;
+}
 
 
 .projects-notes-content {

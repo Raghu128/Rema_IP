@@ -8,7 +8,7 @@ import {
   faEnvelope, faEye, faEyeSlash 
 } from '@fortawesome/free-solid-svg-icons';
 import RemaLoader from '../components/RemaLoader';
-import '../styles/LoginPage.css';
+import '../styles/loginPage.css';
 
 function LoginPage() {
     const [email, setEmail] = useState("");

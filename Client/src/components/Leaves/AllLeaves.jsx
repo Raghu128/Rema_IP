@@ -138,45 +138,54 @@ const LeavesForFacultyPage = () => {
     const StatusDropdown = ({ currentStatus, onChange }) => {
         const [isOpen, setIsOpen] = useState(false);
         const isPending = currentStatus === 'pending';
-
+    
         const statusOptions = [
-            // { value: 'pending', label: 'Pending', color: 'orange' },
             { value: 'approved', label: 'Approved', color: 'green' },
             { value: 'declined', label: 'Declined', color: 'red' }
         ];
-
-        const currentOption = statusOptions.find(opt => opt.value === currentStatus) || statusOptions[0];
-
+    
         return (
             <div className="status-dropdown-container">
-                <button
-                    className={`status-dropdown-toggle status-${currentStatus}`}
-                    onClick={() => setIsOpen(!isOpen)}
-                    disabled={!isPending}
-                >
-                    <span className="status-dot" style={{ backgroundColor: currentOption.color }} />
-                    {currentOption.label}
-                    <FontAwesomeIcon
-                        icon={isOpen ? faChevronUp : faChevronDown}
-                        className="status-dropdown-arrow"
-                    />
-                </button>
-
-                {isOpen  && (
-                    <div className="status-dropdown-menu">
-                        {statusOptions.map(option => (
-                            <button
-                                key={option.value}
-                                className={`status-dropdown-item ${currentStatus === option.value ? 'active' : ''}`}
-                                onClick={() => {
-                                    onChange(option.value);
-                                    setIsOpen(false);
-                                }}
-                            >
-                                <span className="status-dot" style={{ backgroundColor: option.color }} />
-                                {option.label}
-                            </button>
-                        ))}
+                {isPending ? (
+                    // Editable pending state with dropdown
+                    <div className="status-dropdown-wrapper">
+                        <button
+                            className={`status-dropdown-toggle status-pending`}
+                            onClick={() => setIsOpen(!isOpen)}
+                        >
+                            <span className="status-dot" style={{ backgroundColor: 'orange' }} />
+                            Pending
+                            <FontAwesomeIcon
+                                icon={isOpen ? faChevronUp : faChevronDown}
+                                className="status-dropdown-arrow"
+                            />
+                        </button>
+    
+                        {isOpen && (
+                            <div className="status-dropdown-menu">
+                                {statusOptions.map(option => (
+                                    <button
+                                        key={option.value}
+                                        className="status-dropdown-item"
+                                        onClick={() => {
+                                            onChange(option.value);
+                                            setIsOpen(false);
+                                        }}
+                                    >
+                                        <span className="status-dot" style={{ backgroundColor: option.color }} />
+                                        {option.label}
+                                    </button>
+                                ))}
+                            </div>
+                        )}
+                    </div>
+                ) : (
+                    // Non-editable approved/declined state
+                    <div className={`status-display status-${currentStatus}`}>
+                        <span className="status-dot" style={{ 
+                            backgroundColor: currentStatus === 'approved' ? 'green' : 'red' 
+                        }} />
+                        {currentStatus === 'approved' ? 'Approved' : 'Declined'}
                     </div>
                 )}
             </div>

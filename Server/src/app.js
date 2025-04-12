@@ -29,18 +29,28 @@ const io = new Server(httpServer, {
 
 // Socket.IO connection handler
 io.on('connection', (socket) => {
-//   console.log('A user connected:', socket.id)
+  console.log('A user connected:', socket.id);
   
-  // Join a room based on project ID
+  // Join project room
   socket.on('join_project', (projectId) => {
-    socket.join(projectId)
-    // console.log(`User ${socket.id} joined project ${projectId}`)
-  })
-  
+    socket.join(projectId);
+    console.log(`User ${socket.id} joined project ${projectId}`);
+  });
+
+  // Handle minutes of meeting updates
+  socket.on('minutes_updated', (data) => {    
+    socket.to(data.projectId).emit('minutes_change', data);
+  });
+
+  // // Handle project updates
+  // socket.on('project_updated', (data) => {    
+  //   socket.to(data.projectId).emit('project_change', data);
+  // });
+
   socket.on('disconnect', () => {
-    console.log('User disconnected:', socket.id)
-  })
-})
+    console.log('User disconnected:', socket.id);
+  });
+});
 
 
 // Importing Routers
@@ -55,7 +65,7 @@ import equipmentRouter from './routes/equipment.routes.js';
 import financeBudgetRouter from './routes/financeBudget.routes.js';
 import expenseRouter from './routes/expense.routes.js';
 import leaveRoutes from "./routes/leave.routes.js";
-
+import { authenticateToken } from "./middlewares/req.js"
 import { getUsersByid, handleUserLogout } from "./controllers/all.controller.js"
 
 // Routes declaration
@@ -65,7 +75,7 @@ app.use("/api/v1/user", userRouter);
 app.use("/api/v1/sponsor-projects", sponsorProjectRouter);
 app.use("/api/v1/supervisors", supervisorRouter);
 app.use("/api/v1/projects", projectRouter);  
-app.use("/api/v1/minutes-of-meeting", minutesOfMeetingRouter(io));
+app.use("/api/v1/minutes-of-meeting",authenticateToken, minutesOfMeetingRouter(io));
 app.use("/api/v1/venues", venueListRouter);
 app.use("/api/v1/notifications", notificationRouter);
 app.use("/api/v1/equipment", equipmentRouter);

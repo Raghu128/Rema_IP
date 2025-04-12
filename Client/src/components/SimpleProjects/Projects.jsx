@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import MinutesOfMeeting from "../MinutesOfMeeting/MinutesOfMeeting";
 import "../../styles/SimpleProject/Projects.css";
 import Loader from '../Loader';
+import { useSelector } from "react-redux";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
     faEdit, faSearch, faChevronDown, faChevronUp,
@@ -30,8 +31,9 @@ const Projects = ({ id, searchParas }) => {
         completed: 0
     });
     const navigate = useNavigate();
+    const { user } = useSelector((state) => state.user);
 
-   
+
     useEffect(() => {
         const fetchProject = async () => {
             try {
@@ -55,7 +57,7 @@ const Projects = ({ id, searchParas }) => {
         };
 
         fetchProject();
-    }, [id]);
+    }, [id, showNotes]);
 
     useEffect(() => {
         if (projectData) {
@@ -266,13 +268,19 @@ const Projects = ({ id, searchParas }) => {
                                 </div>
 
                                 <footer className="projects-card-actions">
-                                    <button
-                                        className="projects-card-notes-button"
-                                        onClick={() => setShowNotes(showNotes === index ? null : index)}
-                                        aria-label="View notes"
-                                    >
-                                        <FontAwesomeIcon icon={faStickyNote} /> Minutes
-                                    </button>
+                                <button
+  className={`projects-card-notes-button ${
+    !project.lastViewedNotes?.[user.id] && 'unread-notes'
+  }`}
+  onClick={() => setShowNotes(showNotes === index ? null : index)}
+  aria-label="View notes"
+>
+  <FontAwesomeIcon icon={faStickyNote} />
+  {!project.lastViewedNotes?.[user.id] && (
+    <span className="unread-dot"></span>
+  )}
+  <span className="notes-button-text">Minutes</span>
+</button>
                                     <div className="projects-action-buttons">
                                         <button className="projects-quick-action">
                                             <FontAwesomeIcon icon={faCalendarPlus} /> Schedule
@@ -379,10 +387,14 @@ const Projects = ({ id, searchParas }) => {
                                             <td>
                                                 <div className="projects-table-actions">
                                                     <button
-                                                        className="projects-table-notes-button"
+                                                        className={`projects-table-notes-button ${!project.lastViewedNotes?.[user.id] && 'unread-notes'
+                                                            }`}
                                                         onClick={() => setShowNotes(showNotes === index ? null : index)}
                                                     >
                                                         <FontAwesomeIcon icon={faStickyNote} />
+                                                        {!project.lastViewedNotes?.[user.id] && (
+                                                            <span className="unread-dot"></span>
+                                                        )}
                                                     </button>
                                                     <button
                                                         className="projects-table-expand-button"

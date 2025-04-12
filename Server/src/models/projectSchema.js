@@ -15,9 +15,16 @@ const projectSchema = new Schema({
   next_deadline: { type: Date },
   remarks: { type: String },
   paper_url: { type: String },
-  submission_url: { type: String }
+  submission_url: { type: String },
+  // Add this new field to track when each team member last viewed notes
+  lastViewedNotes: {
+    type: Map,       // Map of user IDs to dates
+    of: Date,        // Values are dates
+    default: {}      // Default empty map
+  },
 }, { timestamps: true });
 
+projectSchema.index({ "lastViewedNotes": 1 });
 projectSchema.index({ faculty_id: 1 }); // PI's projects
 projectSchema.index({ team: 1 }); // User's project involvement
 projectSchema.index({ status: 1 }); // Project status filter

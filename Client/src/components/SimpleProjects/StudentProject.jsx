@@ -4,14 +4,15 @@ import { useNavigate } from "react-router-dom";
 import MinutesOfMeeting from "../MinutesOfMeeting/MinutesOfMeeting";
 import "../../styles/SimpleProject/Projects.css";
 import Loader from '../Loader';
+import { useSelector } from "react-redux";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { 
-  faEdit, faSearch, faChevronDown, faChevronUp, 
-  faStickyNote, faTimes, faCode, faSitemap, 
-  faUserTie, faUsers, faMapMarkerAlt, faCalendarPlus, 
-  faCalendarCheck, faCalendarDay, faCalendarAlt, 
-  faFileAlt, faLink, faFlagCheckered, faTable, faThLarge,
-  faPlus, faChartLine, faTasks
+import {
+    faEdit, faSearch, faChevronDown, faChevronUp,
+    faStickyNote, faTimes, faCode, faSitemap,
+    faUserTie, faUsers, faMapMarkerAlt, faCalendarPlus,
+    faCalendarCheck, faCalendarDay, faCalendarAlt,
+    faFileAlt, faLink, faFlagCheckered, faTable, faThLarge,
+    faPlus, faChartLine, faTasks
 } from '@fortawesome/free-solid-svg-icons';
 
 const StudentProjects = ({ id }) => {
@@ -30,6 +31,7 @@ const StudentProjects = ({ id }) => {
         completed: 0
     });
     const navigate = useNavigate();
+    const { user } = useSelector((state) => state.user);
 
     useEffect(() => {
         const fetchProject = async () => {
@@ -38,13 +40,13 @@ const StudentProjects = ({ id }) => {
                 const response = await axios.get(`/api/v1/projects/student/${id}`);
                 setProjectData(response.data);
                 setFilteredProjects(response.data);
-                
+
                 // Calculate project statistics
                 const total = response.data.length;
                 const active = response.data.filter(p => p.status === 'ongoing').length;
                 const completed = response.data.filter(p => p.status === 'completed').length;
                 setStats({ total, active, completed });
-                
+
                 setLoading(false);
             } catch (err) {
                 setError("Error fetching project data from backend");
@@ -53,12 +55,12 @@ const StudentProjects = ({ id }) => {
         };
 
         fetchProject();
-    }, [id]);
+    }, [id, showNotes]);
 
     useEffect(() => {
         if (projectData) {
             let filtered = [...projectData];
-            
+
             // Apply search filter
             if (searchQuery) {
                 filtered = filtered.filter((project) =>
@@ -67,14 +69,14 @@ const StudentProjects = ({ id }) => {
                     (project.faculty_id?.name && project.faculty_id.name.toLowerCase().includes(searchQuery.toLowerCase()))
                 );
             }
-            
+
             // Apply status filter
             if (statusFilter !== "All Status") {
-                filtered = filtered.filter((project) => 
+                filtered = filtered.filter((project) =>
                     statusFilter === "Active" ? project.status === "ongoing" : project.status === "completed"
                 );
             }
-            
+
             setFilteredProjects(filtered);
         }
     }, [searchQuery, statusFilter, projectData]);
@@ -87,7 +89,7 @@ const StudentProjects = ({ id }) => {
             <header className="projects-header">
                 <div className="projects-header-left">
                     <h1 className="projects-title">
-                        <FontAwesomeIcon icon={faTasks} className="projects-title-icon" /> 
+                        <FontAwesomeIcon icon={faTasks} className="projects-title-icon" />
                         My Projects
                     </h1>
                     <div className="projects-stats">
@@ -116,13 +118,13 @@ const StudentProjects = ({ id }) => {
                 </div>
                 <div className="projects-actions">
                     <div className="projects-view-toggle-group">
-                        <button 
+                        <button
                             className={`projects-view-toggle-button ${viewMode === 'cards' ? 'projects-active' : ''}`}
                             onClick={() => setViewMode('cards')}
                         >
                             <FontAwesomeIcon icon={faThLarge} /> Cards
                         </button>
-                        <button 
+                        <button
                             className={`projects-view-toggle-button ${viewMode === 'table' ? 'projects-active' : ''}`}
                             onClick={() => setViewMode('table')}
                         >
@@ -144,7 +146,7 @@ const StudentProjects = ({ id }) => {
                     />
                 </div>
                 <div className="projects-filter">
-                    <select 
+                    <select
                         className="projects-filter-select"
                         value={statusFilter}
                         onChange={(e) => setStatusFilter(e.target.value)}
@@ -240,23 +242,28 @@ const StudentProjects = ({ id }) => {
                                 </div>
 
                                 <footer className="projects-card-actions">
-                                    <button 
-                                        className="projects-card-notes-button" 
+                                    <button
+                                        className={`projects-card-notes-button ${!project.lastViewedNotes?.[user.id] && 'unread-notes'
+                                            }`}
                                         onClick={() => setShowNotes(showNotes === index ? null : index)}
                                         aria-label="View notes"
                                     >
-                                        <FontAwesomeIcon icon={faStickyNote} /> Minutes
+                                        <FontAwesomeIcon icon={faStickyNote} />
+                                        {!project.lastViewedNotes?.[user.id] && (
+                                            <span className="unread-dot"></span>
+                                        )}
+                                        <span className="notes-button-text">Minutes</span>
                                     </button>
                                     <div className="projects-action-buttons">
-                                        <button 
-                                            className="projects-card-toggle-button" 
+                                        <button
+                                            className="projects-card-toggle-button"
                                             onClick={() => setExpandedProject(expandedProject === index ? null : index)}
                                             aria-label={expandedProject === index ? "Collapse details" : "Expand details"}
                                         >
                                             {expandedProject === index ? (
-                                                <FontAwesomeIcon icon={faChevronUp} /> 
+                                                <FontAwesomeIcon icon={faChevronUp} />
                                             ) : (
-                                                <FontAwesomeIcon icon={faChevronDown} /> 
+                                                <FontAwesomeIcon icon={faChevronDown} />
                                             )}
                                             Details
                                         </button>
@@ -343,13 +350,17 @@ const StudentProjects = ({ id }) => {
                                             </td>
                                             <td>
                                                 <div className="projects-table-actions">
-                                                    <button 
-                                                        className="projects-table-notes-button"
+                                                    <button
+                                                        className={`projects-table-notes-button ${!project.lastViewedNotes?.[user.id] && 'unread-notes'
+                                                            }`}
                                                         onClick={() => setShowNotes(showNotes === index ? null : index)}
                                                     >
                                                         <FontAwesomeIcon icon={faStickyNote} />
+                                                        {!project.lastViewedNotes?.[user.id] && (
+                                                            <span className="unread-dot"></span>
+                                                        )}
                                                     </button>
-                                                    <button 
+                                                    <button
                                                         className="projects-table-expand-button"
                                                         onClick={() => setExpandedProject(expandedProject === index ? null : index)}
                                                     >
@@ -431,8 +442,8 @@ const StudentProjects = ({ id }) => {
                 showNotes === index && (
                     <div key={project._id} className="projects-notes-overlay">
                         <div className="projects-notes-content">
-                            <button 
-                                className="projects-close-notes-button" 
+                            <button
+                                className="projects-close-notes-button"
                                 onClick={() => setShowNotes(null)}
                                 aria-label="Close notes"
                             >

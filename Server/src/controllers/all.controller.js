@@ -235,8 +235,8 @@ export const getUsersByid = async (req, res) => {
 const transporter = nodemailer.createTransport({
   service: "Gmail",
   auth: {
-    user: process.env.YOUR_EMAIL,
-    pass: process.env.YOUR_EMAIL_PASS,
+    user: `${process.env.YOUR_EMAIL}`,
+    pass: `${process.env.YOUR_EMAIL_PASS}`,
   },
   port: process.env.EMAIL_PORT,
   secure: true,
@@ -1128,14 +1128,36 @@ export const deleteProject = async (req, res) => {
 // MinutesOfMeeting functions
 export const createMinutesOfMeeting = async (req, res) => {
   try {
+    const { pid, added_by } = req.body;
+    
+    // Create the new message
     const minutes = await MinutesOfMeeting.create(req.body);
     
+    // Update the project's lastViewedNotes for the creator
+    const updatedProject = await Project.findByIdAndUpdate(
+      pid,
+      { 
+        $set: { 
+          lastViewedNotes: { 
+            [added_by]: new Date()  // Only this user will remain
+          } 
+        } 
+      },
+      { new: true }
+    );
+    
+    // Populate the added_by field
     const populatedMinutes = await MinutesOfMeeting.findById(minutes._id)
       .populate('added_by', 'name');
     
-    // Verify io exists before emitting
+    // Emit socket events if available
     if (req.io) {
-      req.io.to(minutes.pid.toString()).emit('new_message', populatedMinutes);
+      // 1. Notify about the new message
+      req.io.to(pid.toString()).emit('new_message', populatedMinutes);
+      
+      // 2. Notify about the project update (for project refresh)
+      req.io.to(pid.toString()).emit('project_updated');
+      
     } else {
       console.error('Socket.IO instance not available');
     }
@@ -1166,24 +1188,37 @@ export const getNewNotesCount = async (req, res) => {
 };
 
 export const getMinutesOfMeetingById = async (req, res) => {
-  
   const id = req.params.id;
+  const userId = req.user?.id; // Assuming user ID is available in req.user
+
   try {
-    // Find the Minutes of Meeting documents by pid and populate the added_by field with the user's name
+    // Update lastViewedNotes for this user and project
+    
+    if (userId) {
+      await Project.findByIdAndUpdate(
+        id,
+        { $set: { [`lastViewedNotes.${userId}`]: new Date() } },
+        { new: true }
+      );
+    }
+    
+
+    // Find and populate meeting notes
     const meeting = await MinutesOfMeeting.find({ pid: id })
       .populate('added_by', 'name');
 
-    // Check if any meeting exists
-    if (!meeting ) {
+    if (!meeting || meeting.length === 0) {
       return res.status(404).json({ message: 'Minutes of Meeting not found' });
     }
+
+    // Socket.IO emission for POST requests
     if (req.method === 'POST' && req.io) {
       req.io.to(id).emit('new_message', meeting[meeting.length - 1]);
     }
-    // Return the meeting details including the added_by name
+
     res.json(meeting);
   } catch (error) {
-    console.error('Error fetching Minutes of Meeting:', error);
+    console.error('Error:', error);
     res.status(500).json({ message: 'Server error' });
   }
 };
