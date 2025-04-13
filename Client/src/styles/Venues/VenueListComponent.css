@@ -56,6 +56,7 @@
 .compact-no-venues-message {
   text-align: center;
   padding: 0.5rem 0;
+  width: 6rem;
 }
 
 .compact-add-venue-btn {

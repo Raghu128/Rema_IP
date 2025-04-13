@@ -253,6 +253,9 @@
 
 /* Cards View */
 .student-cards-container {
+  height: 60vh;
+  overflow-y: scroll;
+  scrollbar-width: none;
   margin-top: 20px;
 }
 
@@ -515,11 +518,12 @@
 
 /* Table View */
 .student-table-container {
-  /* overflow-x: auto; */
+  max-height: 60vh;
   margin-top: 20px;
   border-radius: 10px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-
+  overflow-y: scroll;
+  scrollbar-width: none;
 }
 
 .student-table {

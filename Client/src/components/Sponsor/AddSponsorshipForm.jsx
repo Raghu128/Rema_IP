@@ -4,10 +4,10 @@ import { useSelector } from "react-redux";
 import "../../styles/Sponsor/AddSponsorProjectForm.css";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { 
-  faArrowLeft, faPlus, faEdit, faTrash, faSearch,
-  faBuilding, faFileAlt, faLink, faCalendarAlt,
-  faClock, faMoneyBillWave, faComment, faUserTie
+import {
+    faArrowLeft, faPlus, faEdit, faTrash, faSearch,
+    faBuilding, faFileAlt, faLink, faCalendarAlt,
+    faClock, faMoneyBillWave, faComment, faUserTie
 } from '@fortawesome/free-solid-svg-icons';
 import Loader from '../Loader';
 
@@ -22,7 +22,7 @@ const AddSponsorProjectForm = () => {
         title: "",
         cfp_url: "",
         status: "active",
-        start_date: "",
+        start_date: new Date().toISOString().split("T")[0], // Today's date in YYYY-MM-DD format
         duration: "",
         budget: "",
         remarks: "",
@@ -64,7 +64,7 @@ const AddSponsorProjectForm = () => {
             title: sponsor.title || "",
             cfp_url: sponsor.cfp_url || "",
             status: sponsor.status || "active",
-            start_date: sponsor.start_date ? new Date(sponsor.start_date).toISOString().split("T")[0] : "",
+            start_date: sponsor.start_date ? new Date(sponsor.start_date).toISOString().split("T")[0] : new Date().toISOString().split("T")[0],
             duration: sponsor.duration || "",
             budget: sponsor.budget?.$numberDecimal ? parseFloat(sponsor.budget.$numberDecimal) : "",
             remarks: sponsor.remarks || "",
@@ -137,7 +137,7 @@ const AddSponsorProjectForm = () => {
             title: "",
             cfp_url: "",
             status: "active",
-            start_date: "",
+            start_date: new Date().toISOString().split("T")[0], // Today's date
             duration: "",
             budget: "",
             remarks: "",
@@ -190,13 +190,13 @@ const AddSponsorProjectForm = () => {
                                 <FontAwesomeIcon icon={faSearch} className="projects-search-icon" />
                             </div>
                         </div>
-                        
+
                         <div className="projects-list-container">
                             {filteredSponsors.length > 0 ? (
                                 <ul className="projects-list">
                                     {filteredSponsors.map((sponsor) => (
-                                        <li 
-                                            key={sponsor._id} 
+                                        <li
+                                            key={sponsor._id}
                                             onClick={() => handleSelectSponsor(sponsor)}
                                             className={`project-item ${selectedSponsor?._id === sponsor._id ? "active" : ""}`}
                                         >
@@ -224,14 +224,14 @@ const AddSponsorProjectForm = () => {
                                     </div>
                                     <p>No projects found</p>
                                     {searchQuery && (
-                                        <button 
+                                        <button
                                             onClick={() => setSearchQuery("")}
                                             className="clear-search-btn"
                                         >
                                             Clear search
                                         </button>
                                     )}
-                                    
+
                                 </div>
                             )}
                         </div>
@@ -254,12 +254,12 @@ const AddSponsorProjectForm = () => {
                                             <FontAwesomeIcon icon={faBuilding} /> Agency Name
                                         </label>
                                         <div className="input-container">
-                                            <input 
-                                                type="text" 
-                                                name="agency" 
-                                                value={formData.agency} 
-                                                onChange={handleChange} 
-                                                required 
+                                            <input
+                                                type="text"
+                                                name="agency"
+                                                value={formData.agency}
+                                                onChange={handleChange}
+                                                required
                                                 placeholder="e.g., DST, AICTE, etc."
                                             />
                                         </div>
@@ -270,12 +270,12 @@ const AddSponsorProjectForm = () => {
                                             <FontAwesomeIcon icon={faFileAlt} /> Project Title
                                         </label>
                                         <div className="input-container">
-                                            <input 
-                                                type="text" 
-                                                name="title" 
-                                                value={formData.title} 
-                                                onChange={handleChange} 
-                                                required 
+                                            <input
+                                                type="text"
+                                                name="title"
+                                                value={formData.title}
+                                                onChange={handleChange}
+                                                required
                                                 placeholder="Project title"
                                             />
                                         </div>
@@ -286,11 +286,11 @@ const AddSponsorProjectForm = () => {
                                             <FontAwesomeIcon icon={faLink} /> CFP URL
                                         </label>
                                         <div className="input-container">
-                                            <input 
-                                                type="url" 
-                                                name="cfp_url" 
-                                                value={formData.cfp_url} 
-                                                onChange={handleChange} 
+                                            <input
+                                                type="url"
+                                                name="cfp_url"
+                                                value={formData.cfp_url}
+                                                onChange={handleChange}
                                                 placeholder="https://example.com/cfp"
                                             />
                                         </div>
@@ -324,12 +324,13 @@ const AddSponsorProjectForm = () => {
                                             <FontAwesomeIcon icon={faCalendarAlt} /> Start Date
                                         </label>
                                         <div className="input-container">
-                                            <input 
-                                                type="date" 
-                                                name="start_date" 
-                                                value={formData.start_date} 
-                                                onChange={handleChange} 
-                                                required 
+                                            <input
+                                                type="date"
+                                                name="start_date"
+                                                value={formData.start_date}
+                                                onChange={handleChange}
+                                                required
+                                                max={new Date().toISOString().split("T")[0]} // Prevent future dates
                                             />
                                         </div>
                                     </div>
@@ -339,12 +340,12 @@ const AddSponsorProjectForm = () => {
                                             <FontAwesomeIcon icon={faClock} /> Duration (months)
                                         </label>
                                         <div className="input-container">
-                                            <input 
-                                                type="number" 
-                                                name="duration" 
-                                                value={formData.duration} 
-                                                onChange={handleChange} 
-                                                required 
+                                            <input
+                                                type="number"
+                                                name="duration"
+                                                value={formData.duration}
+                                                onChange={handleChange}
+                                                required
                                                 min="1"
                                             />
                                         </div>
@@ -364,12 +365,12 @@ const AddSponsorProjectForm = () => {
                                     </label>
                                     <div className="input-container with-prefix">
                                         <span className="input-prefix">₹</span>
-                                        <input 
-                                            type="number" 
-                                            name="budget" 
-                                            value={formData.budget} 
-                                            onChange={handleChange} 
-                                            required 
+                                        <input
+                                            type="number"
+                                            name="budget"
+                                            value={formData.budget}
+                                            onChange={handleChange}
+                                            required
                                             min="0"
                                             step="0.01"
                                         />
@@ -386,10 +387,10 @@ const AddSponsorProjectForm = () => {
                                 <div className="form-group">
                                     <label>Remarks</label>
                                     <div className="input-container">
-                                        <textarea 
-                                            name="remarks" 
-                                            value={formData.remarks} 
-                                            onChange={handleChange} 
+                                        <textarea
+                                            name="remarks"
+                                            value={formData.remarks}
+                                            onChange={handleChange}
                                             rows="3"
                                             placeholder="Any additional notes about the project..."
                                         />
@@ -400,8 +401,8 @@ const AddSponsorProjectForm = () => {
                             {/* Form Actions */}
                             <div className="form-actions">
                                 {selectedSponsor && (
-                                    <button 
-                                        type="button" 
+                                    <button
+                                        type="button"
                                         className="delete-btn"
                                         onClick={handleDelete}
                                     >

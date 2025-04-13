@@ -5,7 +5,7 @@
   padding: 20px;
   max-width: 1800px;
   margin: 0 auto;
-  border: 2px solid rgba(128, 128, 128, 0.261);
+  /* border: 2px solid rgba(128, 128, 128, 0.261); */
 }
 
 .projects-table-notes-button {
@@ -475,6 +475,9 @@
   margin-top: 20px;
   border-radius: 10px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  max-height: 70vh;
+  overflow-y: scroll;
+  scrollbar-width: none;
 }
 
 .projects-table {
