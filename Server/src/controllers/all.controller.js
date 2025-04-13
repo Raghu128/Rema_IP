@@ -263,15 +263,26 @@ export const updateUser = async (req, res) => {
         to: user.email,
         subject: "Important: Your Profile Information Has Been Modified by Admin",
         html: `
-            <p>Dear <strong>${user.name}</strong>,</p>
-            <p>We are notifying you that your account details were recently modified by an administrator.</p>
-            <p>If you authorized this change, no further action is required. However, if this update seems unexpected, please secure your account by resetting your password and contacting our support team.</p>
-            
-            <br/>
-            <p>Best regards,</p>
-            <p><strong>Rema Security Team</strong></p>
+            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #e0e0e0; border-radius: 8px; background-color: #f9f9f9;">
+                <h2 style="color: #333;">Hello <span style="color: #007BFF;">${user.name}</span>,</h2>
+                
+                <p style="font-size: 16px; color: #555;">
+                    We are notifying you that your account details were recently modified by an administrator.
+                </p>
+                
+                <p style="font-size: 16px; color: #555;">
+                    If you authorized this change, no further action is required. However, if this update seems unexpected, please secure your account by 
+                    <a href="" style="color: #007BFF; text-decoration: none;">resetting your password</a> and contacting our support team.
+                </p>
+                
+                <hr style="border: none; border-top: 1px solid #ddd; margin: 30px 0;">
+                
+                <p style="font-size: 16px; color: #555;">Best regards,</p>
+                <p style="font-size: 16px; font-weight: bold; color: #333;">Rema Security Team</p>
+            </div>
         `,
     });
+    
     
     } catch (emailError) {
       console.error("Error sending email:", emailError);
@@ -372,14 +383,30 @@ export const updateUserProfile = async (req, res) => {
         to: updatedUser.email,
         subject: "Your Profile Has Been Updated",
         html: `
-          <p>Dear ${updatedUser.name},</p>
-          <p>Your profile information has been successfully updated.</p>
-          ${newPassword ? `<p><strong>Security Notice:</strong> Your password has been changed. If you didn't make this change, please contact support immediately.</p>` : ''}
-          <br/>
-          <p>Best regards,</p>
-          <p>The ${process.env.APP_NAME} Team</p>
+          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; background-color: #f9f9f9; border: 1px solid #e0e0e0; border-radius: 8px;">
+            <h2 style="color: #333;">Hello <span style="color: #007BFF;">${updatedUser.name}</span>,</h2>
+      
+            <p style="font-size: 16px; color: #555;">
+              Your profile information has been successfully updated.
+            </p>
+      
+            ${
+              newPassword
+                ? `<p style="font-size: 16px; color: #d9534f;">
+                    <strong>Security Notice:</strong> Your password has been changed. 
+                    If you didn't make this change, please contact our support team immediately.
+                  </p>`
+                : ""
+            }
+      
+            <hr style="border: none; border-top: 1px solid #ddd; margin: 30px 0;" />
+      
+            <p style="font-size: 16px; color: #555;">Best regards,</p>
+            <p style="font-size: 16px; font-weight: bold; color: #333;">Rena Security Team</p>
+          </div>
         `
       });
+      
     } catch (emailError) {
       console.error("Failed to send notification email:", emailError);
     }
@@ -414,16 +441,29 @@ export const deleteUser = async (req, res) => {
         to: user.email,
         subject: "Account Deletion Notification",
         html: `
-            <p>Dear <strong>${user.name}</strong>,</p>
-            
-            <p>We regret to inform you that your account has been deleted by an administrator.</p>
-            <p>If you believe this was a mistake or have any concerns, please contact our support team immediately.</p>
-            
-            <br/>
-            <p>Best regards,</p>
-            <p><strong>Rema Security Team</strong></p>
-        `,
+          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; background-color: #f9f9f9; border: 1px solid #e0e0e0; border-radius: 8px;">
+            <h2 style="color: #d9534f;">Account Deletion Notice</h2>
+      
+            <p style="font-size: 16px; color: #555;">
+              Dear <strong>${user.name}</strong>,
+            </p>
+      
+            <p style="font-size: 16px; color: #555;">
+              We regret to inform you that your account has been deleted by an administrator.
+            </p>
+      
+            <p style="font-size: 16px; color: #555;">
+              If you believe this was a mistake or have any concerns, please reach out to our support team immediately.
+            </p>
+      
+            <hr style="border: none; border-top: 1px solid #ddd; margin: 30px 0;" />
+      
+            <p style="font-size: 16px; color: #555;">Best regards,</p>
+            <p style="font-size: 16px; font-weight: bold; color: #333;">Rema Security Team</p>
+          </div>
+        `
       });
+      
     } catch (emailError) {
       console.error("Error sending email:", emailError);
     }
@@ -472,43 +512,40 @@ export async function handleUserSignup(req, res) {
       role,
     });
 
-    // try {
-    //   await transporter.sendMail({
-    //     from: process.env.YOUR_EMAIL,
-    //     to: user.email,
-    //     subject: "Your Account Has Been Created - Action Required",
-    //     html: `
-    //         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e0e0e0; border-radius: 8px;">
-    //         <div style="text-align: center; margin-bottom: 20px;">
-    //           <h1 style="color: #4361ee;">Welcome to Rema</h1>
-    //         </div>
+    try {
+      await transporter.sendMail({
+        from: process.env.YOUR_EMAIL,
+        to: user.email,
+        subject: "Your Account Has Been Created - Action Required",
+        html: `
+            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e0e0e0; border-radius: 8px;">
+            <div style="text-align: center; margin-bottom: 20px;">
+              <h1 style="color: #4361ee;">Welcome to Rema</h1>
+            </div>
             
-    //         <p>Dear <strong>${user.name}</strong>,</p>
+            <p>Dear <strong>${user.name}</strong>,</p>
             
-    //         <p>Your account has been successfully created with the following details:</p>
+            <p>Your account has been successfully created with the following details:</p>
             
-    //         <div style="background-color: #f8f9fa; padding: 15px; border-radius: 5px; margin: 15px 0;">
-    //           <p><strong>Email:</strong> ${user.email}</p>
-    //           <p><strong>Role:</strong> ${user.role}</p>
-    //         </div>
+            <div style="background-color: #f8f9fa; padding: 15px; border-radius: 5px; margin: 15px 0;">
+              <p><strong>Email:</strong> ${user.email}</p>
+              <p><strong>Role:</strong> ${user.role}</p>
+            </div>
             
-    //        <p>For security reasons, you need to set your own password before accessing the system. Please use the 'Forgot Password' option during login to establish your new password.</p>
+           <p>For security reasons, you need to set your own password before accessing the system. Please use the 'Forgot Password' option during login to establish your new password.</p>
             
             
-    //         <p style="color: #6c757d; font-size: 0.9em;">
-    //           <strong>Note:</strong> This link will expire in 24 hours. If you didn't request this, please ignore this email.
-    //         </p>
             
-    //         <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #e0e0e0; color: #6c757d;">
-    //           <p>Best regards,</p>
-    //           <p><strong>Rema Security Team</strong></p>
-    //         </div>
-    //       </div>
-    //     `,
-    //   });
-    // } catch (emailError) {
-    //   console.error("Error sending email:", emailError);
-    // }
+            <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #e0e0e0; color: #6c757d;">
+              <p>Best regards,</p>
+              <p><strong>Rema Security Team</strong></p>
+            </div>
+          </div>
+        `,
+      });
+    } catch (emailError) {
+      console.error("Error sending email:", emailError);
+    }
 
     return res.status(201).json({
       success: true,
@@ -554,8 +591,32 @@ export const forgotPassword = async (req, res) => {
         from: process.env.YOUR_EMAIL,
         to: user.email,
         subject: "Password Reset Request",
-        html: `<p>Click <a href="${resetLink}">here</a> to reset your password.</p>`,
+        html: `
+          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; background-color: #f9f9f9; border: 1px solid #e0e0e0; border-radius: 8px;">
+            <h2 style="color: #333;">Password Reset Request</h2>
+      
+            <p style="font-size: 16px; color: #555;">
+              We received a request to reset your password. If this was you, you can reset your password by clicking the button below:
+            </p>
+      
+            <div style="text-align: center; margin: 30px 0;">
+              <a href="${resetLink}" style="background-color: #007BFF; color: white; padding: 12px 20px; text-decoration: none; border-radius: 5px; font-size: 16px;">
+                Reset Password
+              </a>
+            </div>
+      
+            <p style="font-size: 16px; color: #555;">
+              If you didn't request this, you can safely ignore this email—no changes will be made to your account.
+            </p>
+      
+            <hr style="border: none; border-top: 1px solid #ddd; margin: 30px 0;" />
+      
+            <p style="font-size: 16px; color: #555;">Best regards,</p>
+            <p style="font-size: 16px; font-weight: bold; color: #333;">Rema Security Team</p>
+          </div>
+        `
       });
+      
 
       res.json({ message: "Password reset email sent." });
     } catch (emailError) {
