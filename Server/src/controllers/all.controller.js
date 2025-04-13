@@ -961,7 +961,7 @@ export const getSupervisorById = async (req, res) => {
       .populate("student_id", "name role email")
       .populate("committee", "name role email");
 
-    if (!supervisors || supervisors.length === 0) {
+    if (!supervisors) {
       return res.status(404).json({ message: "Supervisor not found" });
     }
 
@@ -1207,7 +1207,7 @@ export const getMinutesOfMeetingById = async (req, res) => {
     const meeting = await MinutesOfMeeting.find({ pid: id })
       .populate('added_by', 'name');
 
-    if (!meeting || meeting.length === 0) {
+    if (!meeting ) {
       return res.status(404).json({ message: 'Minutes of Meeting not found' });
     }
 

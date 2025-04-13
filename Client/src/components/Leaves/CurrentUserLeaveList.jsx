@@ -36,6 +36,7 @@ const CurrentUserLeaveList = () => {
   }
 
   if (leaves.length === 0) {
+    return <></>
     return <div className="currentUserLeave-empty">No users on leave this month</div>;
   }
 
