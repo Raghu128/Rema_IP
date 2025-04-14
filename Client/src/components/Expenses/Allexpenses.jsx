@@ -10,7 +10,7 @@ import {
   faTable, faThLarge, faChartPie, faCalendarDay,
   faTags, faInfoCircle, faPercentage
 } from '@fortawesome/free-solid-svg-icons';
-import "../../styles/Expenses/ExpensesList.css";
+import "../../styles/Expenses/ExpensesList.css"
 
 const ExpensesList = () => {
     const { user } = useSelector((state) => state.user);

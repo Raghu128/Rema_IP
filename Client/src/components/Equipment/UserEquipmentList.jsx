@@ -3,12 +3,13 @@ import { useSelector } from "react-redux";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Loader from '../Loader';
+import { 
+  Package, Wrench, MapPin, Calendar, User, 
+  Settings, Table, Grid, IndianRupee, Search, Plus 
+} from 'lucide-react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
-  faEdit, faPlus, faMapMarkerAlt,
-  faCalendarAlt, faUser, faCogs,
-  faTable, faThLarge, faRupeeSign,
-  faBoxOpen, faTools, faSearch
+  faEdit,
 } from '@fortawesome/free-solid-svg-icons';
 import '../../styles/Equipment/UserEquipmentList.css';
 
@@ -62,12 +63,14 @@ const UserEquipmentList = () => {
             <div className="equipment-header">
                 <div className="equipment-header-left">
                     <h1 className="equipment-title">
-                        <FontAwesomeIcon icon={faTools} className="equipment-title-icon" /> 
+                        <Wrench className="equipment-title-icon" size={30} /> 
                         Equipment Inventory
                     </h1>
                     <div className="equipment-stats">
                         <div className="equipment-stat-card">
-                            <FontAwesomeIcon icon={faBoxOpen} className="equipment-stat-icon" />
+                            <div className="equipment-stat-icon-wrapper">
+                                <Package className="equipment-stat-icon" size={20} />
+                            </div>
                             <div className="equipment-stat-content">
                                 <span className="equipment-stat-number">{equipment.length}</span>
                                 <span className="equipment-stat-label">Total Items</span>
@@ -80,19 +83,22 @@ const UserEquipmentList = () => {
                         <button 
                             className={`equipment-view-toggle ${viewMode === 'card' ? 'equipment-active' : ''}`}
                             onClick={() => setViewMode('card')}
+                            aria-label="Card View"
                         >
-                            <FontAwesomeIcon icon={faThLarge} /> Cards
+                            <Grid size={18} /> Cards
                         </button>
                         <button 
                             className={`equipment-view-toggle ${viewMode === 'table' ? 'equipment-active' : ''}`}
                             onClick={() => setViewMode('table')}
+                            aria-label="Table View"
                         >
-                            <FontAwesomeIcon icon={faTable} /> Table
+                            <Table size={18} /> Table
                         </button>
                     </div>
                     <button 
                         className="equipment-manage-button"
                         onClick={() => navigate("/manage-equipment")}
+                        aria-label="Manage Equipment"
                     >
                         <FontAwesomeIcon icon={faEdit} /> Manage
                     </button>
@@ -101,13 +107,14 @@ const UserEquipmentList = () => {
 
             <div className="equipment-controls">
                 <div className="equipment-search-container">
-                    <FontAwesomeIcon icon={faSearch} className="equipment-search-icon" />
+                    <Search className="equipment-search-icon" size={18} />
                     <input
                         type="text"
                         placeholder="Search equipment by name, location or user..."
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
                         className="equipment-search-input"
+                        aria-label="Search equipment"
                     />
                 </div>
             </div>
@@ -135,21 +142,29 @@ const UserEquipmentList = () => {
                                         <td className="equipment-table-name">
                                             {item.funding_by_srp_id ? item.funding_by_srp_id?.agency : "self"}
                                         </td>
-                                        <td className="equipment-table-name">
-                                            {/* <FontAwesomeIcon icon={faRupeeSign} /> */}
-                                            {formatCurrency(parseFloat(item.amount.$numberDecimal))}
+                                        <td className="equipment-table-value">
+                                            <div className="equipment-table-price">
+                                                <IndianRupee size={14} />
+                                                <span>{formatCurrency(parseFloat(item.amount.$numberDecimal))}</span>
+                                            </div>
                                         </td>
-                                        <td className="equipment-table-name">
-                                            <FontAwesomeIcon icon={faMapMarkerAlt} />
-                                            <span>{item.location}</span>
+                                        <td className="equipment-table-location">
+                                            <div className="equipment-table-icon-content">
+                                                <MapPin size={16} className="equipment-table-icon" />
+                                                <span>{item.location}</span>
+                                            </div>
                                         </td>
-                                        <td className="equipment-table-name">
-                                            <FontAwesomeIcon icon={faCalendarAlt} />
-                                            <span>{new Date(item.createdAt).toLocaleDateString()}</span>
+                                        <td className="equipment-table-date">
+                                            <div className="equipment-table-icon-content">
+                                                <Calendar size={16} className="equipment-table-icon" />
+                                                <span>{new Date(item.createdAt).toLocaleDateString()}</span>
+                                            </div>
                                         </td>
-                                        <td className="equipment-table-name">
-                                            <FontAwesomeIcon icon={faUser} />
-                                            <span>{item.usingUser._id === user?.id ? "You" : item.usingUser.name}</span>
+                                        <td className="equipment-table-user">
+                                            <div className="equipment-table-icon-content">
+                                                <User size={16} className="equipment-table-icon" />
+                                                <span>{item.usingUser._id === user?.id ? "You" : item.usingUser.name}</span>
+                                            </div>
                                         </td>
                                     </tr>
                                 ))}
@@ -163,36 +178,47 @@ const UserEquipmentList = () => {
                                 <div className="equipment-card-header">
                                     <h3 className="equipment-card-title">{item.name}</h3>
                                     <div className="equipment-card-price">
-                                        <FontAwesomeIcon icon={faRupeeSign} />
+                                        <IndianRupee size={16} className="equipment-price-icon" />
                                         {formatCurrency(parseFloat(item.amount.$numberDecimal))}
                                     </div>
                                 </div>
                                 <div className="equipment-card-body">
                                     <div className="equipment-card-detail">
-                                        <FontAwesomeIcon icon={faMapMarkerAlt} className="equipment-card-icon" />
+                                        <MapPin size={18} className="equipment-card-icon" />
                                         <div className="equipment-card-detail-content">
                                             <span className="equipment-card-label">Location</span>
-                                            <span className="equipment-card-location">{item.location}</span>
+                                            <span className="equipment-card-value equipment-card-location">{item.location}</span>
                                         </div>
                                     </div>
                                     <div className="equipment-card-detail">
-                                        <FontAwesomeIcon icon={faCalendarAlt} className="equipment-card-icon" />
+                                        <Calendar size={18} className="equipment-card-icon" />
                                         <div className="equipment-card-detail-content">
                                             <span className="equipment-card-label">Added On</span>
-                                            <span className="equipment-card-date">
+                                            <span className="equipment-card-value equipment-card-date">
                                                 {new Date(item.createdAt).toLocaleDateString()}
                                             </span>
                                         </div>
                                     </div>
                                     <div className="equipment-card-detail">
-                                        <FontAwesomeIcon icon={faUser} className="equipment-card-icon" />
+                                        <User size={18} className="equipment-card-icon" />
                                         <div className="equipment-card-detail-content">
                                             <span className="equipment-card-label">Assigned To</span>
-                                            <span className="equipment-card-user">
+                                            <span className="equipment-card-value equipment-card-user">
                                                 {item.usingUser._id === user?.id ? "You" : item.usingUser.name}
                                             </span>
                                         </div>
                                     </div>
+                                    {item.funding_by_srp_id && (
+                                        <div className="equipment-card-detail">
+                                            <Settings size={18} className="equipment-card-icon" />
+                                            <div className="equipment-card-detail-content">
+                                                <span className="equipment-card-label">Funded By</span>
+                                                <span className="equipment-card-value equipment-card-funding">
+                                                    {item.funding_by_srp_id.agency}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    )}
                                 </div>
                             </div>
                         ))}
@@ -201,14 +227,14 @@ const UserEquipmentList = () => {
             ) : (
                 <div className="equipment-empty-state">
                     <div className="equipment-empty-content">
-                        <FontAwesomeIcon icon={faBoxOpen} className="equipment-empty-icon" />
+                        <Package className="equipment-empty-icon" size={50} />
                         <h3>No Equipment Found</h3>
                         <p>Try adjusting your search or add new equipment</p>
                         <button
                             className="equipment-add-button"
                             onClick={() => navigate("/manage-equipment")}
                         >
-                            <FontAwesomeIcon icon={faPlus} /> Add Equipment
+                            <Plus size={18} /> Add Equipment
                         </button>
                     </div>
                 </div>

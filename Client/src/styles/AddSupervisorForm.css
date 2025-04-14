@@ -1,9 +1,13 @@
+
 /* Main Container */
 .supervisor-container {
   max-width: 1200px;
   margin: 0 auto;
   padding: 2rem;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #2c3e50;
+  background-color: #f8fafc;
+  min-height: 100vh;
 }
 
 /* Back Button */
@@ -17,97 +21,144 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  transition: color 0.2s;
+  transition: all 0.3s ease;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
 }
 
 .supervisor-back-button:hover {
   color: #2980b9;
+  background-color: rgba(52, 152, 219, 0.1);
+  transform: translateX(-3px);
 }
 
 /* Form Card */
 .supervisor-form-card {
   background: white;
-  border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
   padding: 2.5rem;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.supervisor-form-card:hover {
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
 }
 
 /* Form Title */
 .supervisor-form-title {
   color: #2c3e50;
-  margin-bottom: 1.5rem;
-  font-size: 1.8rem;
-  font-weight: 600;
+  margin-bottom: 1.8rem;
+  font-size: 1.9rem;
+  font-weight: 700;
   border-bottom: 2px solid #f1f2f6;
   padding-bottom: 1rem;
+  position: relative;
+}
+
+.supervisor-form-title::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 80px;
+  height: 2px;
+  background-color: #3498db;
 }
 
 /* Loading Indicator */
 .supervisor-loading {
-  padding: 1rem;
+  padding: 1.2rem;
   background: #f8f9fa;
-  border-radius: 8px;
+  border-radius: 12px;
   margin-bottom: 1.5rem;
   text-align: center;
   color: #7f8c8d;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  animation: pulse 1.5s infinite ease-in-out;
+}
+
+@keyframes pulse {
+  0% { opacity: 0.7; }
+  50% { opacity: 1; }
+  100% { opacity: 0.7; }
 }
 
 /* Messages */
 .supervisor-message {
-  padding: 1rem;
-  border-radius: 8px;
-  margin-bottom: 1.5rem;
+  padding: 1.2rem;
+  border-radius: 12px;
+  margin-bottom: 1.8rem;
   font-weight: 500;
+  display: flex;
+  align-items: center;
+  position: relative;
+  transition: all 0.3s ease;
 }
 
 .supervisor-message-success {
-  background-color: #d4edda;
+  background-color: rgba(212, 237, 218, 0.5);
   color: #155724;
-  border: 1px solid #c3e6cb;
+  border-left: 4px solid #28a745;
 }
 
 .supervisor-message-error {
-  background-color: #f8d7da;
+  background-color: rgba(248, 215, 218, 0.5);
   color: #721c24;
-  border: 1px solid #f5c6cb;
+  border-left: 4px solid #dc3545;
 }
 
 /* Form Grid */
 .supervisor-form-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 1.5rem;
+  gap: 1.8rem;
   margin-bottom: 2rem;
 }
 
 /* Form Groups */
 .supervisor-form-group {
-  margin-bottom: 1.2rem;
+  margin-bottom: 1.5rem;
+  transition: all 0.2s ease;
+}
+
+.supervisor-form-group:hover {
+  transform: translateY(-2px);
 }
 
 .supervisor-label {
   display: block;
-  margin-bottom: 0.6rem;
-  font-weight: 500;
+  margin-bottom: 0.8rem;
+  font-weight: 600;
   color: #34495e;
   font-size: 0.95rem;
+  letter-spacing: 0.02em;
 }
 
 .supervisor-input,
 .supervisor-select {
   width: 100%;
-  padding: 0.8rem 1rem;
+  padding: 0.9rem 1.1rem;
   border: 1px solid #dfe6e9;
-  border-radius: 8px;
+  border-radius: 10px;
   font-size: 1rem;
-  transition: border-color 0.2s, box-shadow 0.2s;
+  transition: all 0.3s ease;
+  background-color: #f8fafc;
+  color: #2c3e50;
+}
+
+.supervisor-input:hover,
+.supervisor-select:hover {
+  border-color: #a0b0c5;
 }
 
 .supervisor-input:focus,
 .supervisor-select:focus {
   outline: none;
   border-color: #3498db;
-  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+  background-color: white;
 }
 
 /* Committee Section */
@@ -119,31 +170,31 @@
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   gap: 1rem;
-  background: #f9f9f9;
+  background: #f9fafb;
   padding: 1.5rem;
-  border-radius: 8px;
-  border: 1px solid #eee;
-  max-height: 100px; 
-  overflow: scroll;
-  scrollbar-width: none; /* For Firefox */
-  scrollbar-color: #bdc3c7 #f1f1f1; /* For Firefox */
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+  max-height: 200px;
+  overflow: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #bdc3c7 #f1f1f1;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.03);
 }
-
-
 
 /* Scrollbar styling */
 .supervisor-committee-checkboxes::-webkit-scrollbar {
-  width: 8px;
+  width: 6px;
 }
 
 .supervisor-committee-checkboxes::-webkit-scrollbar-track {
   background: #f1f1f1;
-  border-radius: 4px;
+  border-radius: 10px;
 }
 
 .supervisor-committee-checkboxes::-webkit-scrollbar-thumb {
   background: #bdc3c7;
-  border-radius: 4px;
+  border-radius: 10px;
+  transition: background 0.3s ease;
 }
 
 .supervisor-committee-checkboxes::-webkit-scrollbar-thumb:hover {
@@ -152,28 +203,90 @@
 
 /* Ensure checkbox items don't overflow */
 .supervisor-checkbox-item {
-  min-width: 0; /* Prevent grid items from overflowing */
-  overflow: hidden; /* Hide any overflow */
-  white-space: nowrap; /* Keep text on one line */
-  text-overflow: ellipsis; /* Add ellipsis if text overflows */
-}
-
-.supervisor-checkbox-item {
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
   display: flex;
   align-items: center;
   gap: 0.8rem;
+  padding: 0.5rem;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.supervisor-checkbox-item:hover {
+  background-color: rgba(52, 152, 219, 0.1);
 }
 
 .supervisor-checkbox {
   width: 1.2rem;
   height: 1.2rem;
   accent-color: #3498db;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.supervisor-checkbox:hover {
+  transform: scale(1.1);
 }
 
 .supervisor-checkbox-label {
   font-size: 0.95rem;
   color: #2d3436;
   cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.supervisor-checkbox-label:hover {
+  color: #3498db;
+}
+
+/* Faculty Search */
+.supervisor-search-container {
+  margin-bottom: 1.2rem;
+  position: relative;
+}
+
+.supervisor-search-container::before {
+  content: '🔍';
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #a0aec0;
+  font-size: 0.9rem;
+  pointer-events: none;
+}
+
+.supervisor-search-input {
+  width: 100%;
+  max-width: 400px;
+  padding: 0.9rem 1.1rem 0.9rem 2.5rem;
+  border: 1px solid #dfe6e9;
+  border-radius: 10px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  background-color: #f8fafc;
+}
+
+.supervisor-search-input:focus {
+  outline: none;
+  border-color: #3498db;
+  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+  background-color: white;
+  width: 100%;
+}
+
+/* No results message */
+.supervisor-no-results {
+  padding: 1.2rem;
+  text-align: center;
+  color: #7f8c8d;
+  font-style: italic;
+  background: #f9fafb;
+  border-radius: 10px;
+  border: 1px dashed #dfe6e9;
 }
 
 /* Submit Button */
@@ -182,66 +295,123 @@
   color: white;
   border: none;
   padding: 1rem 2rem;
-  border-radius: 8px;
+  border-radius: 10px;
   font-size: 1rem;
-  font-weight: 500;
+  font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: all 0.3s ease;
   width: 100%;
   max-width: 300px;
-  margin: 0 auto;
+  margin: 1.5rem auto 0;
   display: block;
+  box-shadow: 0 4px 6px rgba(52, 152, 219, 0.2);
+  position: relative;
+  overflow: hidden;
+}
+
+.supervisor-submit-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.2) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  transition: all 0.6s ease;
 }
 
 .supervisor-submit-button:hover {
   background-color: #2980b9;
+  transform: translateY(-3px);
+  box-shadow: 0 6px 12px rgba(52, 152, 219, 0.3);
+}
+
+.supervisor-submit-button:hover::before {
+  left: 100%;
+}
+
+.supervisor-submit-button:active {
+  transform: translateY(-1px);
+  box-shadow: 0 3px 8px rgba(52, 152, 219, 0.2);
 }
 
 .supervisor-submit-button:disabled {
   background-color: #bdc3c7;
   cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
+}
+
+.supervisor-submit-button:disabled::before {
+  display: none;
 }
 
 /* Responsive Adjustments */
-@media (max-width: 768px) {
-  .supervisor-form-grid {
-      grid-template-columns: 1fr;
-  }
-  
-  .supervisor-committee-group {
-      grid-column: span 1;
+@media (max-width: 992px) {
+  .supervisor-container {
+    padding: 1.5rem;
   }
   
   .supervisor-form-card {
-      padding: 1.5rem;
+    padding: 2rem;
   }
 }
-/* Faculty Search */
-.supervisor-search-container {
-  margin-bottom: 1rem;
+
+@media (max-width: 768px) {
+  .supervisor-form-grid {
+    grid-template-columns: 1fr;
+    gap: 1.2rem;
+  }
+  
+  .supervisor-committee-group {
+    grid-column: span 1;
+  }
+  
+  .supervisor-form-card {
+    padding: 1.5rem;
+    border-radius: 12px;
+  }
+  
+  .supervisor-form-title {
+    font-size: 1.6rem;
+  }
+  
+  .supervisor-search-input {
+    width: 100%;
+  }
 }
 
-.supervisor-search-input {
-  width: 40%;
-  padding: 0.8rem 1rem;
-  border: 1px solid #dfe6e9;
-  border-radius: 8px;
-  font-size: 1rem;
-  transition: border-color 0.2s, box-shadow 0.2s;
-}
-
-.supervisor-search-input:focus {
-  outline: none;
-  border-color: #3498db;
-  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
-}
-
-/* No results message */
-.supervisor-no-results {
-  padding: 1rem;
-  text-align: center;
-  color: #7f8c8d;
-  font-style: italic;
-  background: #f9f9f9;
-  border-radius: 8px;
+@media (max-width: 480px) {
+  .supervisor-container {
+    padding: 1rem;
+  }
+  
+  .supervisor-form-card {
+    padding: 1.2rem;
+    border-radius: 10px;
+  }
+  
+  .supervisor-committee-checkboxes {
+    grid-template-columns: 1fr;
+  }
+  
+  .supervisor-label {
+    font-size: 0.9rem;
+  }
+  
+  .supervisor-input,
+  .supervisor-select,
+  .supervisor-search-input {
+    padding: 0.8rem 1rem;
+    font-size: 0.95rem;
+  }
+  
+  .supervisor-submit-button {
+    padding: 0.9rem 1.5rem;
+  }
 }

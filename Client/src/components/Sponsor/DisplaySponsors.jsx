@@ -11,7 +11,7 @@ import {
   faCheckCircle, faCalendarAlt, faClock, 
   faDollarSign, faComments, faTimes, 
   faSearch, faTable, faThLarge, faFileContract,
-  faChartLine, faUserTie, faHandshake,faRupeeSign
+  faChartLine, faUserTie, faHandshake, faRupeeSign
 } from '@fortawesome/free-solid-svg-icons';
 import "../../styles/Sponsor/DisplaySponsors.css";
 
@@ -107,235 +107,237 @@ const DisplaySponsors = () => {
 
     return (
         <div className="sponsor-container">
-            <div className="sponsor-header">
-                <div className="sponsor-header-left">
-                    <h1 className="sponsor-title">
-                        <FontAwesomeIcon icon={faHandshake} className="sponsor-title-icon" />
-                        Sponsored Research Projects
-                    </h1>
-                    <div className="sponsor-stats-container">
-                        <div className="sponsor-stat-card sponsor-total">
-                            <FontAwesomeIcon icon={faFileContract} className="sponsor-stat-icon" />
-                            <div className="sponsor-stat-content">
-                                <span className="sponsor-stat-number">{stats.total}</span>
-                                <span className="sponsor-stat-label">Total Projects</span>
+            <div className="sponsor-wrapper">
+                <div className="sponsor-header">
+                    <div className="sponsor-header-left">
+                        <h1 className="sponsor-title">
+                            <div className="sponsor-title-icon-wrapper">
+                                <FontAwesomeIcon icon={faHandshake} className="sponsor-title-icon" />
                             </div>
-                        </div>
-                        <div className="sponsor-stat-card sponsor-active">
-                            <FontAwesomeIcon icon={faChartLine} className="sponsor-stat-icon" />
-                            <div className="sponsor-stat-content">
-                                <span className="sponsor-stat-number">{stats.active}</span>
-                                <span className="sponsor-stat-label">Active</span>
+                            Sponsored Research Projects
+                        </h1>
+                        <div className="sponsor-stats-container">
+                            <div className="sponsor-stat-card sponsor-total">
+                                <div className="sponsor-stat-icon-wrapper">
+                                    <FontAwesomeIcon icon={faFileContract} className="sponsor-stat-icon" />
+                                </div>
+                                <div className="sponsor-stat-content">
+                                    <span className="sponsor-stat-number">{stats.total}</span>
+                                    <span className="sponsor-stat-label">Total Projects</span>
+                                </div>
                             </div>
-                        </div>
-                        <div className="sponsor-stat-card sponsor-completed">
-                            <FontAwesomeIcon icon={faCheckCircle} className="sponsor-stat-icon" />
-                            <div className="sponsor-stat-content">
-                                <span className="sponsor-stat-number">{stats.completed}</span>
-                                <span className="sponsor-stat-label">Completed</span>
+                            <div className="sponsor-stat-card sponsor-active">
+                                <div className="sponsor-stat-icon-wrapper">
+                                    <FontAwesomeIcon icon={faChartLine} className="sponsor-stat-icon" />
+                                </div>
+                                <div className="sponsor-stat-content">
+                                    <span className="sponsor-stat-number">{stats.active}</span>
+                                    <span className="sponsor-stat-label">Active</span>
+                                </div>
                             </div>
-                        </div>
-                        <div className="sponsor-stat-card sponsor-proposed">
-                            <FontAwesomeIcon icon={faUserTie} className="sponsor-stat-icon" />
-                            <div className="sponsor-stat-content">
-                                <span className="sponsor-stat-number">{stats.proposed}</span>
-                                <span className="sponsor-stat-label">Proposed</span>
+                            <div className="sponsor-stat-card sponsor-completed">
+                                <div className="sponsor-stat-icon-wrapper">
+                                    <FontAwesomeIcon icon={faCheckCircle} className="sponsor-stat-icon" />
+                                </div>
+                                <div className="sponsor-stat-content">
+                                    <span className="sponsor-stat-number">{stats.completed}</span>
+                                    <span className="sponsor-stat-label">Completed</span>
+                                </div>
+                            </div>
+                            <div className="sponsor-stat-card sponsor-proposed">
+                                <div className="sponsor-stat-icon-wrapper">
+                                    <FontAwesomeIcon icon={faUserTie} className="sponsor-stat-icon" />
+                                </div>
+                                <div className="sponsor-stat-content">
+                                    <span className="sponsor-stat-number">{stats.proposed}</span>
+                                    <span className="sponsor-stat-label">Proposed</span>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div className="sponsor-actions">
-                    <div className="sponsor-view-toggle-group">
+                    <div className="sponsor-actions">
+                        <div className="sponsor-view-toggle-group">
+                            <button 
+                                className={`sponsor-view-toggle ${viewMode === 'cards' ? 'sponsor-active' : ''}`}
+                                onClick={() => setViewMode('cards')}
+                            >
+                                <FontAwesomeIcon icon={faThLarge} /> Cards
+                            </button>
+                            <button 
+                                className={`sponsor-view-toggle ${viewMode === 'table' ? 'sponsor-active' : ''}`}
+                                onClick={() => setViewMode('table')}
+                            >
+                                <FontAwesomeIcon icon={faTable} /> Table
+                            </button>
+                        </div>
                         <button 
-                            className={`sponsor-view-toggle ${viewMode === 'cards' ? 'sponsor-active' : ''}`}
-                            onClick={() => setViewMode('cards')}
+                            onClick={() => navigate("/manage-sponsor")} 
+                            className="sponsor-add-button"
                         >
-                            <FontAwesomeIcon icon={faThLarge} /> Cards
-                        </button>
-                        <button 
-                            className={`sponsor-view-toggle ${viewMode === 'table' ? 'sponsor-active' : ''}`}
-                            onClick={() => setViewMode('table')}
-                        >
-                            <FontAwesomeIcon icon={faTable} /> Table
+                            <FontAwesomeIcon icon={faEdit} /> Manage
                         </button>
                     </div>
-                    <button 
-                        onClick={() => navigate("/manage-sponsor")} 
-                        className="sponsor-add-button"
-                    >
-                        <FontAwesomeIcon icon={faEdit} /> Manage
-                    </button>
                 </div>
-            </div>
 
-            <div className="sponsor-controls">
-                <div className="sponsor-search-container">
-                    <FontAwesomeIcon icon={faSearch} className="sponsor-search-icon" />
-                    <input
-                        type="text"
-                        placeholder="Search projects by title, agency or contact..."
-                        value={searchQuery}
-                        onChange={handleSearchChange}
-                        className="sponsor-search-input"
-                    />
+                <div className="sponsor-controls">
+                    <div className="sponsor-search-container">
+                        <FontAwesomeIcon icon={faSearch} className="sponsor-search-icon" />
+                        <input
+                            type="text"
+                            placeholder="Search projects by title, agency or contact..."
+                            value={searchQuery}
+                            onChange={handleSearchChange}
+                            className="sponsor-search-input"
+                        />
+                    </div>
                 </div>
-            </div>
 
-            {selectedSponsor ? (
-                <div className="sponsor-budget-container">
-                    <button
-                        className="sponsor-close-budget"
-                        onClick={() => setSelectedSponsor(null)}
-                    >
-                        <FontAwesomeIcon icon={faTimes} /> Back to Projects
-                    </button>
-                    <FinanceBudgetList srp_id={selectedSponsor} />
-                </div>
-            ) : (
-                <>
-                    {filteredSponsors.length > 0 ? (
-                        viewMode === 'cards' ? (
-                            <div className="sponsor-cards-grid">
-                                {filteredSponsors.map((sponsor) => (
-                                    <div key={sponsor._id} className="sponsor-card">
-                                        <div className="sponsor-card-header">
-                                            <h3 className="sponsor-card-title">{sponsor.title}</h3>
-                                            <span className={`sponsor-status ${sponsor.status.toLowerCase()}`}>
-                                                {sponsor.status}
-                                            </span>
-                                        </div>
-                                        <div className="sponsor-card-body">
-                                            <div className="sponsor-detail-row">
-                                                <FontAwesomeIcon icon={faBuilding} className="sponsor-detail-icon" />
-                                                <div className="sponsor-detail-content">
-                                                    <span className="sponsor-detail-label">Funding Agency</span>
-                                                    <span className="sponsor-detail-value">{sponsor.agency}</span>
-                                                </div>
+                {selectedSponsor ? (
+                    <div className="sponsor-budget-container">
+                        <button
+                            className="sponsor-close-budget"
+                            onClick={() => setSelectedSponsor(null)}
+                        >
+                            <FontAwesomeIcon icon={faTimes} />
+                        </button>
+                        <FinanceBudgetList srp_id={selectedSponsor} />
+                    </div>
+                ) : (
+                    <>
+                        {filteredSponsors.length > 0 ? (
+                            viewMode === 'cards' ? (
+                                <div className="sponsor-cards-grid">
+                                    {filteredSponsors.map((sponsor) => (
+                                        <div key={sponsor._id} className="sponsor-card">
+                                            <div className="sponsor-card-header">
+                                                <h3 className="sponsor-card-title">{sponsor.title}</h3>
+                                                <span className={`sponsor-status ${sponsor.status.toLowerCase()}`}>
+                                                    {sponsor.status}
+                                                </span>
                                             </div>
-                                            {sponsor.contact_person && (
+                                            <div className="sponsor-card-body">
                                                 <div className="sponsor-detail-row">
-                                                    <FontAwesomeIcon icon={faUserTie} className="sponsor-detail-icon" />
+                                                    <div className="sponsor-detail-icon-wrapper">
+                                                        <FontAwesomeIcon icon={faBuilding} className="sponsor-detail-icon" />
+                                                    </div>
                                                     <div className="sponsor-detail-content">
-                                                        <span className="sponsor-detail-label">Contact Person</span>
-                                                        <span className="sponsor-detail-value">{sponsor.contact_person}</span>
+                                                        <span className="sponsor-detail-label">Funding Agency</span>
+                                                        <span className="sponsor-detail-value">{sponsor.agency}</span>
                                                     </div>
                                                 </div>
-                                            )}
-                                            <div className="sponsor-detail-row">
-                                                <FontAwesomeIcon icon={faCalendarAlt} className="sponsor-detail-icon" />
-                                                <div className="sponsor-detail-content">
-                                                    <span className="sponsor-detail-label">Project Duration</span>
-                                                    <span className="sponsor-detail-value">
-                                                        {formatDate(sponsor.start_date)} - {sponsor.duration}
-                                                    </span>
+                                                {sponsor.contact_person && (
+                                                    <div className="sponsor-detail-row">
+                                                        <div className="sponsor-detail-icon-wrapper">
+                                                            <FontAwesomeIcon icon={faUserTie} className="sponsor-detail-icon" />
+                                                        </div>
+                                                        <div className="sponsor-detail-content">
+                                                            <span className="sponsor-detail-label">Contact Person</span>
+                                                            <span className="sponsor-detail-value">{sponsor.contact_person}</span>
+                                                        </div>
+                                                    </div>
+                                                )}
+                                                <div className="sponsor-detail-row">
+                                                    <div className="sponsor-detail-icon-wrapper">
+                                                        <FontAwesomeIcon icon={faCalendarAlt} className="sponsor-detail-icon" />
+                                                    </div>
+                                                    <div className="sponsor-detail-content">
+                                                        <span className="sponsor-detail-label">Project Duration</span>
+                                                        <span className="sponsor-detail-value">
+                                                            {formatDate(sponsor.start_date)} - {sponsor.duration}
+                                                        </span>
+                                                    </div>
                                                 </div>
+                                                <div className="sponsor-detail-row">
+                                                    <div className="sponsor-detail-icon-wrapper">
+                                                        <FontAwesomeIcon icon={faDollarSign} className="sponsor-detail-icon" />
+                                                    </div>
+                                                    <div className="sponsor-detail-content">
+                                                        <span className="sponsor-detail-label">Total Budget</span>
+                                                        <span 
+                                                            className="sponsor-detail-value sponsor-clickable"
+                                                            onClick={() => setSelectedSponsor(sponsor._id)}
+                                                        >
+                                                            {formatCurrency(parseFloat(sponsor.budget.$numberDecimal))}
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                {sponsor.cfp_url && (
+                                                    <div className="sponsor-detail-row">
+                                                        <div className="sponsor-detail-icon-wrapper">
+                                                            <FontAwesomeIcon icon={faLink} className="sponsor-detail-icon" />
+                                                        </div>
+                                                        <div className="sponsor-detail-content">
+                                                            <span className="sponsor-detail-label">CFP Document</span>
+                                                            <a 
+                                                                href={sponsor.cfp_url} 
+                                                                target="_blank" 
+                                                                rel="noopener noreferrer" 
+                                                                className="sponsor-detail-value sponsor-link"
+                                                            >
+                                                                View CFP
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                )}
                                             </div>
-                                            <div className="sponsor-detail-row">
-                                                <FontAwesomeIcon icon={faDollarSign} className="sponsor-detail-icon" />
-                                                <div className="sponsor-detail-content">
-                                                    
-                                                    <span className="sponsor-detail-label">Total Budget</span>
-                                                    <span 
-                                                        className="sponsor-detail-value sponsor-clickable"
+                                        </div>
+                                    ))}
+                                </div>
+                            ) : (
+                                <div className="sponsor-table-container">
+                                    <table className="sponsor-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Project Title</th>
+                                                <th>Agency</th>
+                                                <th>Status</th>
+                                                <th>Start Date</th>
+                                                <th>Duration</th>
+                                                <th>Budget</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {filteredSponsors.map((sponsor) => (
+                                                <tr key={sponsor._id} className="sponsor-table-row">
+                                                    <td className="sponsor-table-title">{sponsor.title}</td>
+                                                    <td>{sponsor.agency}</td>
+                                                    <td>
+                                                        <span className={`sponsor-status-badge ${sponsor.status.toLowerCase()}`}>
+                                                            {sponsor.status}
+                                                        </span>
+                                                    </td>
+                                                    <td>{formatDate(sponsor.start_date)}</td>
+                                                    <td>{sponsor.duration}</td>
+                                                    <td 
+                                                        className="sponsor-clickable"
                                                         onClick={() => setSelectedSponsor(sponsor._id)}
                                                     >
                                                         {formatCurrency(parseFloat(sponsor.budget.$numberDecimal))}
-                                                    </span>
-                                                </div>
-                                            </div>
-                                            {sponsor.cfp_url && (
-                                                <div className="sponsor-detail-row">
-                                                    <FontAwesomeIcon icon={faLink} className="sponsor-detail-icon" />
-                                                    <div className="sponsor-detail-content">
-                                                        <span className="sponsor-detail-label">CFP Document</span>
-                                                        <a 
-                                                            href={sponsor.cfp_url} 
-                                                            target="_blank" 
-                                                            rel="noopener noreferrer" 
-                                                            className="sponsor-detail-value sponsor-link"
-                                                        >
-                                                            View CFP
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                            )}
-                                        </div>
-                                        {/* <div className="sponsor-card-footer">
-                                            <button
-                                                className={`sponsor-notes-btn ${showNotes === sponsor._id ? 'sponsor-active' : ''}`}
-                                                onClick={() => setShowNotes(showNotes === sponsor._id ? null : sponsor._id)}
-                                                title="View meeting minutes"
-                                            >
-                                                <FontAwesomeIcon icon={faComments} /> Minutes
-                                            </button>
-                                        </div> */}
-                                    </div>
-                                ))}
-                            </div>
+                                                    </td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            )
                         ) : (
-                            <div className="sponsor-table-container">
-                                <table className="sponsor-table">
-                                    <thead>
-                                        <tr>
-                                            <th>Project Title</th>
-                                            <th>Agency</th>
-                                            <th>Status</th>
-                                            <th>Start Date</th>
-                                            <th>Duration</th>
-                                            <th>Budget</th>
-                                            {/* <th>Actions</th> */}
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {filteredSponsors.map((sponsor) => (
-                                            <tr key={sponsor._id} className="sponsor-table-row">
-                                                <td className="sponsor-table-title">{sponsor.title}</td>
-                                                <td>{sponsor.agency}</td>
-                                                <td>
-                                                    <span className={`sponsor-status-badge ${sponsor.status.toLowerCase()}`}>
-                                                        {sponsor.status}
-                                                    </span>
-                                                </td>
-                                                <td>{formatDate(sponsor.start_date)}</td>
-                                                <td>{sponsor.duration}</td>
-                                                <td 
-                                                    className="sponsor-clickable"
-                                                    onClick={() => setSelectedSponsor(sponsor._id)}
-                                                >
-                                                    {formatCurrency(parseFloat(sponsor.budget.$numberDecimal))}
-                                                </td>
-                                                {/* <td className="sponsor-actions-cell">
-                                                    <button
-                                                        className={`sponsor-table-notes-btn ${showNotes === sponsor._id ? 'sponsor-active' : ''}`}
-                                                        onClick={() => setShowNotes(showNotes === sponsor._id ? null : sponsor._id)}
-                                                        title="Meeting minutes"
-                                                    >
-                                                        <FontAwesomeIcon icon={faComments} />
-                                                    </button>
-                                                </td> */}
-                                            </tr>
-                                        ))}
-                                    </tbody>
-                                </table>
+                            <div className="sponsor-no-results">
+                                <div className="sponsor-no-results-content">
+                                    <FontAwesomeIcon icon={faHandshake} className="sponsor-no-results-icon" />
+                                    <h3>No sponsored projects found</h3>
+                                    <p>Try adjusting your search or add a new project</p>
+                                    <button 
+                                        className="sponsor-add-project-btn"
+                                        onClick={() => navigate("/manage-sponsor")}
+                                    >
+                                        <FontAwesomeIcon icon={faPlus} /> Add Project
+                                    </button>
+                                </div>
                             </div>
-                        )
-                    ) : (
-                        <div className="sponsor-no-results">
-                            <div className="sponsor-no-results-content">
-                                <FontAwesomeIcon icon={faHandshake} className="sponsor-no-results-icon" />
-                                <h3>No sponsored projects found</h3>
-                                <p>Try adjusting your search or add a new project</p>
-                                <button 
-                                    className="sponsor-add-project-btn"
-                                    onClick={() => navigate("/manage-sponsor")}
-                                >
-                                    <FontAwesomeIcon icon={faPlus} /> Add Project
-                                </button>
-                            </div>
-                        </div>
-                    )}
-                </>
-            )}
+                        )}
+                    </>
+                )}
+            </div>
         </div>
     );
 };

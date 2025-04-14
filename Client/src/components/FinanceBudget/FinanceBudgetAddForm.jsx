@@ -23,7 +23,7 @@ const FinanceBudgetAddForm = () => {
         others: 0,
         overhead: 0,
         gst: 0,
-        status: "pending",
+        status: "approved",
     });
 
     const { user } = useSelector((state) => state.user);
@@ -64,7 +64,7 @@ const FinanceBudgetAddForm = () => {
                 others: 0,
                 overhead: 0,
                 gst: 0,
-                status: "pending",
+                status: "approved",
             });
         } catch (error) {
             console.error("Error adding finance budget:", error);
@@ -289,7 +289,7 @@ const FinanceBudgetAddForm = () => {
                                 value={formData.status} 
                                 onChange={handleChange}
                             >
-                                <option value="pending">Pending</option>
+                                {/* <option value="pending">Pending</option> */}
                                 <option value="approved">Approved</option>
                                 <option value="rejected">Rejected</option>
                             </select>

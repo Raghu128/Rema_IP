@@ -144,6 +144,7 @@ const AddUserForm = () => {
             });
         } finally {
             setLoading(false);
+            navigate('/update-project')
         }
     };
 

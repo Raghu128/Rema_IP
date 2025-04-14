@@ -1,12 +1,15 @@
+
 /* Main Container */
 .projectAddForm-container {
   max-width: 1400px;
   margin: 0 auto;
   padding: 20px;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   max-height: 99vh;
-  overflow: scroll;
-  scrollbar-width: none;
+  overflow-y: auto;
+  background-color: #f9fafb;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
 }
 
 /* Header */
@@ -14,28 +17,35 @@
   display: flex;
   align-items: center;
   gap: 20px;
-  margin-bottom: 20px;
+  margin-bottom: 25px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #e5e7eb;
 }
 
 .projectAddForm-back-button {
-  background: #f0f2f5;
-  border: none;
-  padding: 8px 15px;
-  border-radius: 6px;
+  background: #f3f4f6;
+  border: 1px solid #e5e7eb;
+  padding: 10px 15px;
+  border-radius: 8px;
   cursor: pointer;
   display: flex;
   align-items: center;
   gap: 8px;
-  transition: all 0.2s;
+  transition: all 0.3s ease;
+  color: #374151;
 }
 
 .projectAddForm-back-button:hover {
-  background: #e4e6eb;
+  background: #e5e7eb;
+  transform: translateY(-2px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .projectAddForm-title {
   margin: 0;
   font-size: 1.8rem;
+  color: #1f2937;
+  font-weight: 600;
   display: flex;
   align-items: center;
   gap: 10px;
@@ -43,24 +53,25 @@
 
 /* Message */
 .projectAddForm-message {
-  padding: 12px 15px;
-  border-radius: 6px;
+  padding: 15px;
+  border-radius: 8px;
   margin-bottom: 20px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  transition: all 0.3s ease;
 }
 
 .projectAddForm-message.success {
-  background: #e6ffed;
-  color: #1a7f37;
-  border-left: 4px solid #2ea043;
+  background: #ecfdf5;
+  color: #065f46;
+  border-left: 5px solid #10b981;
 }
 
 .projectAddForm-message.error {
-  background: #ffebe9;
-  color: #cf222e;
-  border-left: 4px solid #cf222e;
+  background: #fef2f2;
+  color: #991b1b;
+  border-left: 5px solid #ef4444;
 }
 
 .projectAddForm-message-close {
@@ -69,6 +80,11 @@
   font-size: 1.2rem;
   cursor: pointer;
   color: inherit;
+  transition: transform 0.2s ease;
+}
+
+.projectAddForm-message-close:hover {
+  transform: scale(1.2);
 }
 
 /* Layout */
@@ -81,8 +97,12 @@
   flex: 1;
   min-width: 350px;
   max-height: 99vh;
-  overflow-y: scroll;
-  scrollbar-width: none;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  background-color: white;
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
 .projectAddForm-form-panel {
@@ -91,7 +111,6 @@
 
 /* Projects Panel */
 .projectAddForm-panel-header {
-  
   margin-bottom: 20px;
 }
 
@@ -101,6 +120,8 @@
   display: flex;
   align-items: center;
   gap: 10px;
+  color: #1f2937;
+  font-weight: 600;
 }
 
 .projectAddForm-search-container {
@@ -111,9 +132,18 @@
 .projectAddForm-search-container input {
   width: 100%;
   padding: 10px 15px 10px 35px;
-  border: 1px solid #d0d7de;
-  border-radius: 6px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
   font-size: 0.95rem;
+  transition: all 0.3s ease;
+  background-color: #f9fafb;
+}
+
+.projectAddForm-search-container input:focus {
+  border-color: #0969da;
+  box-shadow: 0 0 0 3px rgba(9, 105, 218, 0.15);
+  outline: none;
+  background-color: white;
 }
 
 .projectAddForm-search-icon {
@@ -121,7 +151,7 @@
   left: 10px;
   top: 50%;
   transform: translateY(-50%);
-  color: #57606a;
+  color: #6b7280;
 }
 
 .projectAddForm-projects-list {
@@ -129,6 +159,7 @@
   background-color: white;
   overflow-y: auto;
   padding-right: 5px;
+  border-radius: 8px;
 }
 
 .projectAddForm-project-item {
@@ -136,23 +167,26 @@
   border-radius: 8px;
   margin-bottom: 10px;
   cursor: pointer;
-  border: 1px solid #d0d7de;
-  transition: all 0.2s;
+  border: 1px solid #e5e7eb;
+  transition: all 0.3s ease;
+  background-color: white;
 }
 
 .projectAddForm-project-item:hover {
-  background: #f6f8fa;
-  border-color: #afb8c1;
+  transform: translateY(-3px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-color: #4b5563;
 }
 
 .projectAddForm-project-item.active {
-  background: #eaeef2;
-  border-left: 4px solid #0969da;
+  border-left: 5px solid #0969da;
+  background-color: #f3f4f6;
 }
 
 .projectAddForm-project-name {
   font-weight: 600;
-  margin-bottom: 5px;
+  margin-bottom: 8px;
+  color: #1f2937;
 }
 
 .projectAddForm-project-meta {
@@ -160,7 +194,7 @@
   flex-wrap: wrap;
   gap: 10px;
   font-size: 0.85rem;
-  color: #57606a;
+  color: #6b7280;
 }
 
 .projectAddForm-project-meta span {
@@ -170,7 +204,7 @@
 }
 
 .projectAddForm-status-badge {
-  padding: 3px 8px;
+  padding: 4px 8px;
   border-radius: 12px;
   font-size: 0.75rem;
   font-weight: 500;
@@ -192,15 +226,23 @@
   color: #cf222e;
 }
 
+.projectAddForm-status-badge.under-review {
+  background: #fff8c5;
+  color: #9a6700;
+}
+
 .projectAddForm-empty-state {
   text-align: center;
   padding: 30px;
-  color: #57606a;
+  color: #6b7280;
+  background-color: #f9fafb;
+  border-radius: 8px;
+  border: 1px dashed #d1d5db;
 }
 
 .projectAddForm-empty-icon {
   margin-bottom: 10px;
-  color: #afb8c1;
+  color: #9ca3af;
 }
 
 .projectAddForm-clear-search-button {
@@ -208,31 +250,54 @@
   border: none;
   color: #0969da;
   cursor: pointer;
-  padding: 5px 10px;
-  border-radius: 4px;
+  padding: 6px 12px;
+  border-radius: 6px;
   margin-top: 10px;
+  transition: all 0.3s ease;
 }
 
 .projectAddForm-clear-search-button:hover {
   background: #f0f6ff;
+  text-decoration: underline;
 }
 
-.projectAddForm-add-new-user{
-  width: 5rem;
-  height: 2rem;
-  background-color: #18c194;
+.projectAddForm-add-new-user {
+  width: auto;
+  min-width: 5rem;
+  height: 2.25rem;
+  background-color: #10b981;
   color: white;
-  border-radius: 3px !important;
+  border-radius: 6px !important;
   border: none;
+  padding: 0 12px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.projectAddForm-add-new-user:hover {
+  background-color: #059669;
+  transform: translateY(-2px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 /* Form Panel */
 .projectAddForm-form-section {
   margin-bottom: 25px;
   background: #fff;
-  border-radius: 8px;
+  border-radius: 12px;
   padding: 20px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e5e7eb;
+  transition: all 0.3s ease;
+}
+
+.projectAddForm-form-section:hover {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
 }
 
 .projectAddForm-section-header {
@@ -241,28 +306,35 @@
   gap: 10px;
   margin-bottom: 20px;
   padding-bottom: 10px;
-  border-bottom: 1px solid #d0d7de;
+  border-bottom: 1px solid #e5e7eb;
 }
 
 .projectAddForm-section-title {
   margin: 0;
   font-size: 1.1rem;
+  color: #1f2937;
+  font-weight: 600;
+}
+
+.projectAddForm-section-icon {
+  color: #0969da;
 }
 
 .projectAddForm-form-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 15px;
+  gap: 16px;
 }
 
 .projectAddForm-form-group {
-  margin-bottom: 15px;
+  margin-bottom: 16px;
 }
 
 .projectAddForm-label {
   display: block;
   margin-bottom: 8px;
   font-weight: 500;
+  color: #374151;
 }
 
 .projectAddForm-full-width {
@@ -274,10 +346,11 @@
 .projectAddForm-textarea {
   width: 100%;
   padding: 10px 12px;
-  border: 1px solid #d0d7de;
-  border-radius: 6px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
   font-size: 0.95rem;
-  transition: border-color 0.2s;
+  transition: all 0.3s ease;
+  background-color: #f9fafb;
 }
 
 .projectAddForm-input:focus, 
@@ -285,7 +358,8 @@
 .projectAddForm-textarea:focus {
   outline: none;
   border-color: #0969da;
-  box-shadow: 0 0 0 3px rgba(9, 105, 218, 0.1);
+  box-shadow: 0 0 0 3px rgba(9, 105, 218, 0.15);
+  background-color: white;
 }
 
 .projectAddForm-textarea {
@@ -297,10 +371,11 @@
 .projectAddForm-team-members-list {
   max-height: 200px;
   overflow-y: auto;
-  border: 1px solid #d0d7de;
-  border-radius: 6px;
-  padding: 10px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  padding: 12px;
   margin-top: 10px;
+  background-color: white;
 }
 
 .projectAddForm-team-member-checkbox {
@@ -309,12 +384,13 @@
   padding: 8px 10px;
   border-radius: 6px;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: background 0.3s ease;
   position: relative;
+  margin-bottom: 4px;
 }
 
 .projectAddForm-team-member-checkbox:hover {
-  background: #f6f8fa;
+  background: #f3f4f6;
 }
 
 .projectAddForm-checkbox-input {
@@ -327,11 +403,12 @@
   height: 18px;
   width: 18px;
   background: #fff;
-  border: 1px solid #d0d7de;
+  border: 1px solid #d1d5db;
   border-radius: 4px;
   margin-right: 10px;
   display: inline-block;
   position: relative;
+  transition: all 0.2s ease;
 }
 
 .projectAddForm-team-member-checkbox input:checked ~ .projectAddForm-checkmark {
@@ -362,32 +439,40 @@
 .projectAddForm-member-name {
   font-weight: 500;
   margin-right: 8px;
+  color: #1f2937;
 }
 
 .projectAddForm-member-role {
   font-size: 0.85rem;
-  color: #57606a;
+  color: #6b7280;
+  background-color: #f3f4f6;
+  padding: 2px 6px;
+  border-radius: 4px;
 }
 
 /* Form Actions */
 .projectAddForm-form-actions {
   display: flex;
   justify-content: flex-end;
-  gap: 10px;
+  gap: 12px;
   margin-top: 20px;
+  background-color: #f9fafb;
+  padding: 16px;
+  border-radius: 0 0 8px 8px;
+  border-top: 1px solid #e5e7eb;
 }
 
 .projectAddForm-submit-button, 
 .projectAddForm-delete-button, 
 .projectAddForm-cancel-button {
   padding: 10px 20px;
-  border-radius: 6px;
+  border-radius: 8px;
   font-weight: 500;
   cursor: pointer;
   display: flex;
   align-items: center;
   gap: 8px;
-  transition: all 0.2s;
+  transition: all 0.3s ease;
 }
 
 .projectAddForm-submit-button {
@@ -398,26 +483,29 @@
 
 .projectAddForm-submit-button:hover {
   background: #0550ae;
+  transform: translateY(-2px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .projectAddForm-delete-button {
-  background: #ffebe9;
-  color: #cf222e;
-  border: 1px solid #ffebe9;
+  background: #fee2e2;
+  color: #b91c1c;
+  border: 1px solid #fecaca;
 }
 
 .projectAddForm-delete-button:hover {
-  background: #ffcecb;
+  background: #fecaca;
+  border-color: #ef4444;
 }
 
 .projectAddForm-cancel-button {
-  background: #f6f8fa;
-  color: #24292f;
-  border: 1px solid #d0d7de;
+  background: #f3f4f6;
+  color: #1f2937;
+  border: 1px solid #e5e7eb;
 }
 
 .projectAddForm-cancel-button:hover {
-  background: #eaeef2;
+  background: #e5e7eb;
 }
 
 /* Responsive */
@@ -428,10 +516,26 @@
   
   .projectAddForm-projects-panel {
     min-width: 100%;
+    max-height: 400px;
+    margin-bottom: 20px;
+  }
+  
+  .projectAddForm-projects-list {
+    max-height: 300px;
   }
 }
 
 @media (max-width: 768px) {
+  .projectAddForm-container {
+    padding: 15px;
+  }
+  
+  .projectAddForm-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  
   .projectAddForm-form-grid {
     grid-template-columns: 1fr;
   }
@@ -446,4 +550,47 @@
     width: 100%;
     justify-content: center;
   }
+  
+  .projectAddForm-form-section {
+    padding: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .projectAddForm-container {
+    padding: 10px;
+  }
+  
+  .projectAddForm-project-meta {
+    flex-direction: column;
+    gap: 5px;
+    align-items: flex-start;
+  }
+}
+
+/* Custom Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 10px;
+  transition: background 0.3s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #a1a1a1;
+}
+
+/* Firefox scrollbar */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #c1c1c1 #f1f1f1;
 }
