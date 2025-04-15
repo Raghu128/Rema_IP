@@ -76,10 +76,7 @@ const CurrentUserLeaveList = () => {
   return (
     <div className="currentUserLeave-container currentUserLeave-fadeIn">
       <div className="currentUserLeave-header">
-        <h3 className="currentUserLeave-title">
-          <span className="currentUserLeave-icon">📅</span>
-          Users on Leave This Month
-        </h3>
+        
         
         <div className="currentUserLeave-summary">
           <span>Current Month Leave Summary</span>

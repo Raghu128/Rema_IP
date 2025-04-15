@@ -1,3 +1,21 @@
+[data-theme="dark"] .financebudgetlist-container{
+  background-color: black;
+}
+[data-theme="dark"] .financebudgetlist-title{
+  color: white;
+}
+[data-theme="dark"] .financebudgetlist-table {
+  background-color: black;
+  color: white;
+}
+[data-theme="dark"] .financebudgetlist-table tbody tr td{
+  background-color: black;
+  color: white;
+}
+[data-theme="dark"] .financebudgetlist-table thead tr th{
+  color: white;
+  background-color: black;
+}
 /* Main Container */
 .financebudgetlist-container {
   background-color: #ffffff;
@@ -196,9 +214,6 @@
   transition: background-color 0.2s ease;
 }
 
-.financebudgetlist-table tbody tr:hover {
-  background-color: #f1f6fa;
-}
 
 /* Status Badges */
 .status-badge {

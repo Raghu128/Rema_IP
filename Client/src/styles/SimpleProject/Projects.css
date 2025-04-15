@@ -1,4 +1,311 @@
 
+/* Dark theme overrides */
+[data-theme="dark"] .projects-container {
+  background-color: #1a1f2c;
+  color: #e2e8f0;
+}
+
+[data-theme="dark"] .projects-title {
+  color: #f1f5f9;
+}
+
+[data-theme="dark"] .projects-title-icon {
+  color: #818cf8;
+}
+
+[data-theme="dark"] .projects-stat-card {
+  background: #222836;
+  border-color: #2d3748;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="dark"] .projects-stat-label {
+  color: #94a3b8;
+}
+
+[data-theme="dark"] .projects-view-toggle-group {
+  background: #222836;
+  border-color: #2d3748;
+}
+
+[data-theme="dark"] .projects-view-toggle-button {
+  color: #94a3b8;
+}
+
+[data-theme="dark"] .projects-view-toggle-button:hover {
+  color: #f1f5f9;
+  background: #2d3748;
+}
+
+[data-theme="dark"] .projects-view-toggle-button.projects-active {
+  background: #3b82f6;
+  color: #ffffff;
+}
+
+[data-theme="dark"] .projects-lead-cell {
+  color: white;
+}
+[data-theme="dark"] .projects-team-cell {
+  color: white;
+}
+[data-theme="dark"] .projects-timeline-cell {
+  color: white;
+}
+[data-theme="dark"] .projects-search-input,
+[data-theme="dark"] .projects-filter-select {
+  background: #222836;
+  border-color: #2d3748;
+  color: #f1f5f9;
+}
+
+[data-theme="dark"] .projects-search-input:focus,
+[data-theme="dark"] .projects-filter-select:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+}
+
+[data-theme="dark"] .projects-search-icon {
+  color: #64748b;
+}
+
+[data-theme="dark"] .projects-card {
+  background: #222836;
+  border-color: #2d3748;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="dark"] .projects-card:hover {
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+  border-color: #3b82f6;
+}
+
+[data-theme="dark"] .projects-card-header {
+  background: linear-gradient(to right, #1a1f2c, #222836);
+  border-bottom-color: #2d3748;
+}
+
+[data-theme="dark"] .projects-card-title {
+  color: #f1f5f9;
+}
+
+[data-theme="dark"] .projects-card-subtitle,
+[data-theme="dark"] .projects-meta-item {
+  color: #94a3b8;
+}
+
+[data-theme="dark"] .projects-status.ongoing {
+  background: #064e3b;
+  color: #a7f3d0;
+  border-color: #065f46;
+}
+
+[data-theme="dark"] .projects-status.completed {
+  background: #7f1d1d;
+  color: #fecaca;
+  border-color: #991b1b;
+}
+
+[data-theme="dark"] .projects-status.under_review,
+[data-theme="dark"] .projects-status.under-review {
+  background: #1e3a8a;
+  color: #bfdbfe;
+  border-color: #1e40af;
+}
+
+[data-theme="dark"] .projects-priority {
+  background: #2d3748;
+  color: #94a3b8;
+  border-color: #374151;
+}
+
+[data-theme="dark"] .projects-card-details {
+  border-top-color: #2d3748;
+}
+
+[data-theme="dark"] .projects-details-section h4 {
+  color: #e2e8f0;
+}
+
+[data-theme="dark"] .projects-timeline-item {
+  border-bottom-color: #2d3748;
+  color: #94a3b8;
+}
+
+[data-theme="dark"] .projects-link {
+  background: #2d3748;
+  color: #818cf8;
+}
+
+[data-theme="dark"] .projects-link:hover {
+  background: #374151;
+  color: #93c5fd;
+}
+
+[data-theme="dark"] .projects-remarks {
+  background: #2d3748;
+  color: #94a3b8;
+  border-left-color: #3b82f6;
+}
+
+[data-theme="dark"] .projects-card-actions {
+  background: #1a1f2c;
+  border-top-color: #2d3748;
+}
+
+[data-theme="dark"] .projects-card-notes-button {
+  background: #2d3748;
+  border-color: #374151;
+  color: #94a3b8;
+}
+
+[data-theme="dark"] .projects-card-notes-button:hover {
+  background: #374151;
+  color: #e2e8f0;
+  border-color: #4b5563;
+}
+
+[data-theme="dark"] .projects-quick-action {
+  background: #2d3748;
+  border-color: #374151;
+  color: #94a3b8;
+}
+
+[data-theme="dark"] .projects-quick-action:hover {
+  background: #374151;
+  color: #e2e8f0;
+  border-color: #4b5563;
+}
+
+[data-theme="dark"] .projects-card-toggle-button {
+  background: #3b82f6;
+  color: white;
+}
+
+[data-theme="dark"] .projects-card-toggle-button:hover {
+  background: #2563eb;
+}
+
+[data-theme="dark"] .projects-table-container {
+  background: #222836;
+  border-color: #2d3748;
+}
+
+[data-theme="dark"] .projects-table-container::-webkit-scrollbar-track {
+  background: #1a1f2c;
+}
+
+[data-theme="dark"] .projects-table-container::-webkit-scrollbar-thumb {
+  background-color: #4b5563;
+}
+
+[data-theme="dark"] .projects-table th {
+  background: #1a1f2c;
+  color: #94a3b8;
+  border-bottom-color: #2d3748;
+}
+
+[data-theme="dark"] .projects-table td {
+  border-bottom-color: #2d3748;
+}
+
+[data-theme="dark"] .projects-table-row:hover {
+  background: #2d3748;
+}
+
+[data-theme="dark"] .projects-name {
+  color: #f1f5f9;
+}
+
+[data-theme="dark"] .projects-domain {
+  color: #e2e8f0;
+}
+
+[data-theme="dark"] .projects-sub-domain {
+  color: #94a3b8;
+}
+
+[data-theme="dark"] .projects-priority-badge {
+  background: #2d3748;
+  border-color: #374151;
+  color: #94a3b8;
+}
+
+[data-theme="dark"] .projects-table-details {
+  background: #1a1f2c;
+}
+
+[data-theme="dark"] .projects-team-member {
+  background: #2d3748;
+  color: #94a3b8;
+  border-color: #374151;
+}
+
+[data-theme="dark"] .projects-details-grid p {
+  color: #94a3b8;
+}
+
+[data-theme="dark"] .projects-details-grid p strong {
+  color: #e2e8f0;
+}
+
+[data-theme="dark"] .projects-notes-overlay {
+  background: rgba(15, 23, 42, 0.9);
+}
+
+[data-theme="dark"] .projects-notes-content {
+  background: #222836;
+  color: #f1f5f9;
+  box-shadow: -5px 0 15px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .projects-close-notes-button {
+  background: #2d3748;
+  color: #94a3b8;
+}
+
+[data-theme="dark"] .projects-close-notes-button:hover {
+  background: #374151;
+  color: #ef4444;
+}
+
+[data-theme="dark"] .projects-notes-content h3 {
+  color: #f1f5f9;
+  border-bottom-color: #2d3748;
+}
+
+[data-theme="dark"] .projects-error-message {
+  background: #7f1d1d;
+  color: #fecaca;
+  border-color: #b91c1c;
+}
+
+[data-theme="dark"] .projects-skeleton {
+  background: #2d3748;
+}
+
+[data-theme="dark"] .projects-no-projects {
+  background: #222836;
+  border-color: #2d3748;
+}
+
+[data-theme="dark"] .projects-no-projects h3 {
+  color: #e2e8f0;
+}
+
+[data-theme="dark"] .projects-no-projects p {
+  color: #94a3b8;
+}
+
+[data-theme="dark"] .projects-create-project-button {
+  background: #3b82f6;
+}
+
+[data-theme="dark"] .projects-create-project-button:hover {
+  background: #2563eb;
+  box-shadow: 0 4px 6px rgba(59, 130, 246, 0.25);
+}
+
+
 /* Projects Container */
 .projects-container {
   font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;

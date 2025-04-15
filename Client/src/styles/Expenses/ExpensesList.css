@@ -1,3 +1,319 @@
+/* Dark Theme Styles */
+[data-theme="dark"] .expenses-project-container {
+  background-color: #1a1f2c;
+  color: #e0e0e0;
+}
+
+[data-theme="dark"] .expenses-project-header {
+  border-bottom-color: #2e2e2e;
+}
+
+[data-theme="dark"] .expenses-project-title {
+  color: #ffffff;
+}
+
+[data-theme="dark"] .expenses-project-title::before {
+  background-color: #1e88e5;
+}
+
+[data-theme="dark"] .expenses-project-title-icon {
+  color: #1e88e5;
+}
+
+[data-theme="dark"] .expenses-project-stat-card {
+  background: #1e1e1e;
+  border-left-color: #1e88e5;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .expenses-project-stat-card:hover {
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+}
+
+[data-theme="dark"] .expenses-project-stat-card:nth-child(2) {
+  border-left-color: #43a047;
+}
+
+[data-theme="dark"] .expenses-project-stat-card:nth-child(3) {
+  border-left-color: #fbc02d;
+}
+
+[data-theme="dark"] .expenses-project-stat-icon {
+  background: #1e88e5;
+  box-shadow: 0 4px 6px rgba(30, 136, 229, 0.3);
+}
+
+[data-theme="dark"] .expenses-project-stat-card:nth-child(2) .expenses-project-stat-icon {
+  background: #43a047;
+  box-shadow: 0 4px 6px rgba(67, 160, 71, 0.3);
+}
+
+[data-theme="dark"] .expenses-project-stat-card:nth-child(3) .expenses-project-stat-icon {
+  background: #fbc02d;
+  box-shadow: 0 4px 6px rgba(251, 192, 45, 0.3);
+}
+
+[data-theme="dark"] .expenses-project-stat-label {
+  color: #9e9e9e;
+}
+
+[data-theme="dark"] .expenses-project-view-toggle-group {
+  background: #1e1e1e;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .expenses-project-view-toggle {
+  color: #9e9e9e;
+}
+
+[data-theme="dark"] .expenses-project-view-toggle:hover {
+  color: #1e88e5;
+  background-color: rgba(30, 136, 229, 0.1);
+}
+
+[data-theme="dark"] .expenses-project-view-toggle.expenses-project-active {
+  background: #1e88e5;
+  color: white;
+}
+
+[data-theme="dark"] .expenses-project-manage-button {
+  background: #43a047;
+  box-shadow: 0 2px 5px rgba(67, 160, 71, 0.3);
+}
+
+[data-theme="dark"] .expenses-project-manage-button:hover {
+  background: #388e3c;
+}
+
+[data-theme="dark"] .expenses-project-search-input {
+  background-color: #1e1e1e;
+  border-color: #2e2e2e;
+  color: #e0e0e0;
+}
+
+[data-theme="dark"] .expenses-project-search-input:focus {
+  border-color: #1e88e5;
+  box-shadow: 0 0 0 3px rgba(30, 136, 229, 0.3);
+}
+
+[data-theme="dark"] .expenses-project-search-icon {
+  color: #757575;
+}
+
+[data-theme="dark"] .expenses-project-search-input:focus + .expenses-project-search-icon {
+  color: #1e88e5;
+}
+
+[data-theme="dark"] .expenses-project-empty-state {
+  background: #1e1e1e;
+  border-color: #2e2e2e;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .expenses-project-empty-state h3 {
+  color: #ffffff;
+}
+
+[data-theme="dark"] .expenses-project-empty-state p {
+  color: #9e9e9e;
+}
+
+[data-theme="dark"] .expenses-project-empty-icon {
+  color: #3e3e3e;
+}
+
+[data-theme="dark"] .expenses-project-add-button {
+  background: #1e88e5;
+  box-shadow: 0 2px 5px rgba(30, 136, 229, 0.3);
+}
+
+[data-theme="dark"] .expenses-project-add-button:hover {
+  background: #1565c0;
+}
+
+[data-theme="dark"] .expenses-project-content {
+  background-color: rgba(255, 255, 255, 0.02);
+}
+
+[data-theme="dark"] .expenses-project-content::-webkit-scrollbar-track {
+  background: #1e1e1e;
+}
+
+[data-theme="dark"] .expenses-project-content::-webkit-scrollbar-thumb {
+  background-color: #3e3e3e;
+}
+
+[data-theme="dark"] .expenses-project-card {
+  background: #1e1e1e;
+  border-color: #2e2e2e;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .expenses-project-card:hover {
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.4);
+}
+
+[data-theme="dark"] .expenses-project-card-header {
+  background: linear-gradient(135deg, #1e1e1e 0%, #2e2e2e 100%);
+  border-bottom-color: #3e3e3e;
+}
+
+[data-theme="dark"] .expenses-project-card-title h3 {
+  color: #ffffff;
+}
+
+[data-theme="dark"] .expenses-project-agency {
+  color: #b0b0b0;
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+[data-theme="dark"] .expenses-project-budget-amount {
+  color: #b0b0b0;
+}
+
+[data-theme="dark"] .expenses-project-progress-container {
+  background: #2e2e2e;
+}
+
+[data-theme="dark"] .expenses-project-progress-bar {
+  background: linear-gradient(90deg, #1e88e5 0%, #1565c0 100%);
+}
+
+[data-theme="dark"] .expenses-project-progress-bar.expenses-project-over-budget {
+  background: linear-gradient(90deg, #e53935 0%, #c62828 100%);
+}
+
+[data-theme="dark"] .expenses-project-no-expenses {
+  background-color: rgba(255, 255, 255, 0.02);
+  color: #9e9e9e;
+}
+
+[data-theme="dark"] .expenses-project-add-expense-button {
+  background: #1e88e5;
+  box-shadow: 0 2px 4px rgba(30, 136, 229, 0.3);
+}
+
+[data-theme="dark"] .expenses-project-add-expense-button:hover {
+  background: #1565c0;
+}
+
+[data-theme="dark"] .expenses-project-table-container {
+  background-color: #1e1e1e;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .expenses-project-table th {
+  background: #121212;
+  color: #9e9e9e;
+  border-bottom-color: #2e2e2e;
+}
+
+[data-theme="dark"] .expenses-project-table td {
+  border-bottom-color: #2e2e2e;
+  color: #e0e0e0;
+}
+
+[data-theme="dark"] .expenses-project-table-row:hover {
+  background: #2e2e2e;
+}
+
+[data-theme="dark"] .expense-date-icon {
+  color: #1e88e5;
+}
+
+[data-theme="dark"] .expenses-project-amount {
+  color: #ffffff;
+}
+
+[data-theme="dark"] .expenses-project-category {
+  background: #2e2e2e;
+  color: #e0e0e0;
+}
+
+[data-theme="dark"] .expenses-project-category:hover {
+  background: #3e3e3e;
+}
+
+[data-theme="dark"] .expenses-project-total-row {
+  background: #121212;
+}
+
+[data-theme="dark"] .expenses-project-total-row td {
+  border-top-color: #2e2e2e;
+}
+
+[data-theme="dark"] .expenses-project-total-amount {
+  color: #ffffff;
+}
+
+[data-theme="dark"] .expenses-project-expense-card {
+  background: #1e1e1e;
+  border-color: #2e2e2e;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .expenses-project-expense-card:hover {
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+  border-color: #3e3e3e;
+}
+
+[data-theme="dark"] .expenses-project-expense-header h4 {
+  color: #ffffff;
+}
+
+[data-theme="dark"] .expenses-project-expense-amount {
+  color: #ffffff;
+  background: rgba(30, 136, 229, 0.2);
+}
+
+[data-theme="dark"] .expenses-project-expense-detail {
+  color: #b0b0b0;
+}
+
+[data-theme="dark"] .expenses-project-expense-detail svg {
+  color: #1e88e5;
+}
+
+[data-theme="dark"] .expenses-project-expense-notes {
+  border-top-color: #3e3e3e;
+  color: #9e9e9e;
+}
+
+[data-theme="dark"] .expenses-project-summary {
+  background: #121212;
+  border-top-color: #2e2e2e;
+}
+
+[data-theme="dark"] .expenses-project-summary-item {
+  background: #1e1e1e;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .expenses-project-summary-value {
+  color: #ffffff;
+}
+
+[data-theme="dark"] .expenses-project-summary-value.expenses-project-over-budget {
+  color: #ff5252;
+  background: rgba(239, 83, 80, 0.1);
+}
+
+[data-theme="dark"] .expenses-project-warning-icon {
+  color: #ff5252;
+}
+
+[data-theme="dark"] .expenses-project-message {
+  background: #1e1e1e;
+  color: #b0b0b0;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .expenses-project-error {
+  color: #ff5252;
+  background: rgba(239, 83, 80, 0.1);
+  border-left-color: #ff5252;
+}
+
 /* Expenses Project Container */
 .expenses-project-container {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;

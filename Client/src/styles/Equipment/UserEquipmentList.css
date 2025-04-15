@@ -1,4 +1,219 @@
+/* Dark Theme Styles */
+[data-theme="dark"] .equipment-container {
+  background-color: #1a1f2c;
+  color: #e0e0e0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
 
+[data-theme="dark"] .equipment-header {
+  border-bottom-color: #2e2e2e;
+}
+
+[data-theme="dark"] .equipment-title {
+  color: #ffffff;
+}
+
+[data-theme="dark"] .equipment-title-icon {
+  color: #1e88e5;
+}
+
+[data-theme="dark"] .equipment-stat-card {
+  background: #1e1e1e;
+  border-color: #2e2e2e;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .equipment-stat-card:hover {
+  border-color: rgba(30, 136, 229, 0.3);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+}
+
+[data-theme="dark"] .equipment-stat-icon-wrapper {
+  background: #1e88e5;
+}
+
+[data-theme="dark"] .equipment-stat-number {
+  color: #ffffff;
+}
+
+[data-theme="dark"] .equipment-stat-label {
+  color: #9e9e9e;
+}
+
+[data-theme="dark"] .equipment-view-toggle-group {
+  background: #1e1e1e;
+  border-color: #2e2e2e;
+}
+
+[data-theme="dark"] .equipment-view-toggle {
+  color: #9e9e9e;
+}
+
+[data-theme="dark"] .equipment-view-toggle:hover:not(.equipment-active) {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+[data-theme="dark"] .equipment-view-toggle.equipment-active {
+  background: #1e88e5;
+  color: white;
+}
+
+[data-theme="dark"] .equipment-manage-button {
+  background: #43a047;
+  box-shadow: 0 2px 4px rgba(67, 160, 71, 0.3);
+}
+
+[data-theme="dark"] .equipment-manage-button:hover {
+  background: #388e3c;
+}
+
+[data-theme="dark"] .equipment-search-input {
+  background: #1e1e1e;
+  border-color: #2e2e2e;
+  color: #e0e0e0;
+}
+
+[data-theme="dark"] .equipment-search-input:focus {
+  border-color: #1e88e5;
+  box-shadow: 0 0 0 3px rgba(30, 136, 229, 0.3);
+}
+
+[data-theme="dark"] .equipment-search-input::placeholder {
+  color: #757575;
+}
+
+[data-theme="dark"] .equipment-search-icon {
+  color: #757575;
+}
+
+[data-theme="dark"] .equipment-table-container {
+  background: #1e1e1e;
+  border-color: #2e2e2e;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .equipment-table {
+  background: #1e1e1e;
+}
+
+[data-theme="dark"] .equipment-table th {
+  background: #121212;
+  color: #9e9e9e;
+  border-bottom-color: #2e2e2e;
+}
+
+[data-theme="dark"] .equipment-table td {
+  border-bottom-color: #2e2e2e;
+  color: #e0e0e0;
+}
+
+[data-theme="dark"] .equipment-table-row:hover {
+  background: #2e2e2e;
+}
+
+[data-theme="dark"] .equipment-table-name {
+  color: #ffffff;
+}
+
+[data-theme="dark"] .equipment-table-icon {
+  color: #1e88e5;
+}
+
+[data-theme="dark"] .equipment-table-price {
+  color: #ffffff;
+}
+
+[data-theme="dark"] .equipment-cards-grid {
+  background-color: transparent;
+}
+
+[data-theme="dark"] .equipment-card {
+  background: #1e1e1e;
+  border-color: #2e2e2e;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .equipment-card:hover {
+  border-color: rgba(30, 136, 229, 0.3);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+}
+
+[data-theme="dark"] .equipment-card-header {
+  background: linear-gradient(135deg, #1e1e1e 0%, #2e2e2e 100%);
+  border-bottom-color: #3e3e3e;
+}
+
+[data-theme="dark"] .equipment-card-title {
+  color: #ffffff;
+}
+
+[data-theme="dark"] .equipment-card-price {
+  color: #ffffff;
+}
+
+[data-theme="dark"] .equipment-price-icon {
+  color: #1e88e5;
+}
+
+[data-theme="dark"] .equipment-card-icon {
+  color: #1e88e5;
+}
+
+[data-theme="dark"] .equipment-card-label {
+  color: #9e9e9e;
+}
+
+[data-theme="dark"] .equipment-card-value {
+  color: #e0e0e0;
+}
+
+[data-theme="dark"] .equipment-empty-state {
+  background: #1e1e1e;
+  border-color: #2e2e2e;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .equipment-empty-state h3 {
+  color: #ffffff;
+}
+
+[data-theme="dark"] .equipment-empty-state p {
+  color: #9e9e9e;
+}
+
+[data-theme="dark"] .equipment-empty-icon {
+  color: #3e3e3e;
+}
+
+[data-theme="dark"] .equipment-add-button {
+  background: #1e88e5;
+  box-shadow: 0 2px 4px rgba(30, 136, 229, 0.3);
+}
+
+[data-theme="dark"] .equipment-add-button:hover {
+  background: #1565c0;
+}
+
+[data-theme="dark"] .equipment-message {
+  background: #1e1e1e;
+  color: #b0b0b0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .equipment-error {
+  color: #ff5252;
+  background: rgba(239, 83, 80, 0.1);
+  border-color: rgba(239, 83, 80, 0.2);
+}
+
+/* Scrollbar styling for dark theme */
+[data-theme="dark"] .equipment-table-container::-webkit-scrollbar-track {
+  background: #1e1e1e;
+}
+
+[data-theme="dark"] .equipment-table-container::-webkit-scrollbar-thumb {
+  background: #3e3e3e;
+}
 /* Equipment Container */
 .equipment-container {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;

@@ -1,3 +1,130 @@
+/* Dark Theme Styles */
+[data-theme="dark"] .faculty-dashboard-container {
+  background: #121212;
+}
+
+[data-theme="dark"] .faculty-main-content {
+  background-color: #1e1e1e;
+  color: #e0e0e0;
+}
+
+[data-theme="dark"] .faculty-sidebar {
+  background: linear-gradient(135deg, #0a0e3a 0%, #1a1c4d 100%);
+  box-shadow: 4px 0 10px rgba(0, 0, 0, 0.5);
+}
+
+[data-theme="dark"] .sidebar-header h3 {
+  color: #ffffff;
+}
+
+[data-theme="dark"] .faculty-user-profile {
+  color: #e0e0e0;
+}
+
+[data-theme="dark"] .user-avatar {
+  background-color: #64b5f6;
+  color: #121212;
+}
+
+[data-theme="dark"] .user-name {
+  color: #ffffff;
+}
+
+[data-theme="dark"] .user-role {
+  color: #b0b0b0;
+}
+
+[data-theme="dark"] .faculty-sidebar-list li a {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+[data-theme="dark"] .faculty-sidebar-list li a:hover {
+  background: rgba(100, 181, 246, 0.15);
+  color: #ffffff;
+}
+
+[data-theme="dark"] .faculty-sidebar-list li.active a {
+  background: rgba(100, 181, 246, 0.3);
+  border-left-color: #64b5f6;
+}
+
+[data-theme="dark"] .sidebar-footer {
+  color: rgba(255, 255, 255, 0.6);
+  border-top-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Responsive adjustments for dark theme */
+@media (max-width: 768px) {
+  [data-theme="dark"] .faculty-sidebar-list li.active a {
+    border-bottom-color: #64b5f6;
+  }
+}
+
+/* Icon colors in dark theme */
+[data-theme="dark"] .nav-icon {
+  color: #b0b0b0;
+}
+
+[data-theme="dark"] .faculty-sidebar-list li.active .nav-icon,
+[data-theme="dark"] .faculty-sidebar-list li a:hover .nav-icon {
+  color: #ffffff;
+}
+
+/* Animation adjustments for dark theme */
+@keyframes slideInDark {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+    background-color: rgba(30, 30, 30, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+    background-color: #1e1e1e;
+  }
+}
+
+[data-theme="dark"] .faculty-main-content {
+  animation-name: slideInDark;
+}
+
+/* Ripple effect adjustment for dark theme */
+[data-theme="dark"] .faculty-sidebar-list a:active::after {
+  background: rgba(100, 181, 246, 0.3);
+}
+
+/* Active indicator glow for dark theme */
+[data-theme="dark"] .faculty-sidebar-list li.active::before {
+  background: #ffc107;
+  animation-name: glowDark;
+}
+
+@keyframes glowDark {
+  from {
+    box-shadow: 0px 0px 8px rgba(255, 193, 7, 0.5);
+  }
+  to {
+    box-shadow: 0px 0px 16px rgba(255, 193, 7, 0.9);
+  }
+}
+
+/* Mobile view adjustments */
+@media (min-width: 0px) and (max-width: 992px) {
+  [data-theme="dark"] .faculty-sidebar {
+    background: #1a1c4d;
+  }
+  
+  [data-theme="dark"] .user-avatar {
+    background-color: #64b5f6;
+  }
+}
+[data-theme="dark"] .faculty-main-content {
+  background: #1a1f2c;
+}
+[data-theme="dark"] .faculty-dashboard-container {
+  background: #1a1f2c;
+}
+
 /* Faculty Dashboard Layout */
 .faculty-dashboard-container {
   display: flex;
@@ -6,6 +133,7 @@
   overflow: hidden;
   transition: all 0.4s ease-in-out;
 }
+
 
 /* Sidebar Styling */
 .faculty-sidebar {
