@@ -79,13 +79,13 @@
 }
 
 [data-theme="dark"] .student-card {
-  background: #1e1e1e;
+  background: #25304b;
   border-color: #2e2e2e;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 }
 
 [data-theme="dark"] .student-card:hover {
-  border-color: #3e3e3e;
+  border-color: #25304b;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
 }
 
@@ -163,7 +163,7 @@
 }
 
 [data-theme="dark"] .student-table th {
-  background: #121212;
+  background: #182138;
   color: #9e9e9e;
   border-color: #2e2e2e;
 }
@@ -175,7 +175,7 @@
   background: #222836;
 }
 [data-theme="dark"] .student-row:hover {
-  background: #2e2e2e;
+  background: #25304b;
 }
 
 [data-theme="dark"] .role-badge {
@@ -1025,12 +1025,12 @@
 
 /* Table View */
 .student-table-container {
-  overflow-x: auto;
+  /* overflow-x: auto; */
   margin-top: 1.5rem;
   border-radius: 1rem;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.1);
   max-height: 70vh;
-  overflow-y: auto;
+  /* overflow-y: auto; */
   scrollbar-width: thin;
   scrollbar-color: #CBD5E1 #F1F5F9;
   border: 1px solid rgba(229, 231, 235, 0.5);

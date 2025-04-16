@@ -1,3 +1,203 @@
+/* Dark Mode Styles */
+[data-theme="dark"] .sponsor-form-container {
+  background-color: #1a1f2c;
+  color: #e0e3e9;
+}
+
+[data-theme="dark"] .sponsor-form-back-btn {
+  background-color: #2d3441;
+  color: #4d7cff;
+}
+
+[data-theme="dark"] .sponsor-form-back-btn:hover {
+  background-color: #3a4252;
+  color: #3a6bd9;
+}
+
+[data-theme="dark"] .sponsor-form-title {
+  color: #f5f7fa;
+}
+
+[data-theme="dark"] .title-icon {
+  color: #4d7cff;
+}
+
+[data-theme="dark"] .sponsor-form-message.success {
+  background-color: #1f3a1f;
+  color: #81c784;
+  border-left-color: #66bb6a;
+}
+
+[data-theme="dark"] .sponsor-form-message.error {
+  background-color: #3a1f1f;
+  color: #ff7d7d;
+  border-left-color: #ff5252;
+}
+
+[data-theme="dark"] .panel-card,
+[data-theme="dark"] .form-card {
+  background-color: #232a38;
+  border-color: #2d3441;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .panel-title,
+[data-theme="dark"] .section-title {
+  color: #f5f7fa;
+}
+
+[data-theme="dark"] .section-icon {
+  color: #4d7cff;
+}
+
+[data-theme="dark"] .projects-search-container input {
+  background-color: #2d3441;
+  border-color: #3a4252;
+  color: #e0e3e9;
+}
+
+[data-theme="dark"] .projects-search-container input:focus {
+  border-color: #4d7cff;
+  box-shadow: 0 0 0 2px rgba(77, 124, 255, 0.3);
+}
+
+[data-theme="dark"] .projects-search-icon {
+  color: #6b7280;
+}
+
+[data-theme="dark"] .project-item {
+  background-color: #2d3441;
+  border-color: #3a4252;
+}
+
+[data-theme="dark"] .project-item:hover {
+  background-color: #3a4252;
+  border-color: #4b5563;
+}
+
+[data-theme="dark"] .project-item.active {
+  background-color: #3a4252;
+  border-left-color: #4d7cff;
+}
+
+[data-theme="dark"] .project-title {
+  color: #f5f7fa;
+}
+
+[data-theme="dark"] .project-agency,
+[data-theme="dark"] .project-date {
+  color: #a0a4ab;
+}
+
+[data-theme="dark"] .status-badge.active {
+  background-color: #1e3a1e;
+  color: #a5d6a7;
+}
+
+[data-theme="dark"] .status-badge.inactive {
+  background-color: #3a1f1f;
+  color: #ff8a80;
+}
+
+[data-theme="dark"] .status-badge.completed {
+  background-color: #1e3a8a;
+  color: #a5d6ff;
+}
+
+[data-theme="dark"] .status-badge.proposed {
+  background-color: #3a3a1e;
+  color: #ffecb3;
+}
+
+[data-theme="dark"] .projects-empty-state {
+  color: #a0a4ab;
+}
+
+[data-theme="dark"] .empty-icon {
+  color: #6b7280;
+}
+
+[data-theme="dark"] .clear-search-btn,
+[data-theme="dark"] .new-project-btn {
+  color: #4d7cff;
+}
+
+[data-theme="dark"] .clear-search-btn:hover {
+  background-color: #3a4252;
+}
+
+[data-theme="dark"] .new-project-btn {
+  background-color: #2e7d32;
+  color: white;
+}
+
+[data-theme="dark"] .new-project-btn:hover {
+  background-color: #3a8a40;
+}
+
+[data-theme="dark"] .section-header {
+  border-bottom-color: #3a4252;
+}
+
+[data-theme="dark"] .form-group label {
+  color: #d0d4dc;
+}
+
+[data-theme="dark"] .input-container input,
+[data-theme="dark"] .input-container select,
+[data-theme="dark"] .input-container textarea {
+  background-color: #2d3441;
+  border-color: #3a4252;
+  color: #e0e3e9;
+}
+
+[data-theme="dark"] .input-container input:focus,
+[data-theme="dark"] .input-container select:focus,
+[data-theme="dark"] .input-container textarea:focus {
+  border-color: #4d7cff;
+  box-shadow: 0 0 0 2px rgba(77, 124, 255, 0.3);
+}
+
+[data-theme="dark"] .input-prefix {
+  color: #a0a4ab;
+}
+
+[data-theme="dark"] .form-actions {
+  border-top-color: #3a4252;
+}
+
+[data-theme="dark"] .submit-btn {
+  background-color: #2e7d32;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .submit-btn:hover {
+  background-color: #3a8a40;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+}
+
+[data-theme="dark"] .delete-btn {
+  background-color: #3a1f1f;
+  color: #ff7d7d;
+  border-color: #4a2f2f;
+}
+
+[data-theme="dark"] .delete-btn:hover {
+  background-color: #4a2f2f;
+}
+
+/* Scrollbar styling for dark mode */
+[data-theme="dark"] .projects-list-container::-webkit-scrollbar-track {
+  background: #2d3441;
+}
+
+[data-theme="dark"] .projects-list-container::-webkit-scrollbar-thumb {
+  background: #4b5563;
+}
+
+[data-theme="dark"] .projects-list-container::-webkit-scrollbar-thumb:hover {
+  background: #6b7280;
+}
 /* Main Container */
 .sponsor-form-container {
   max-width: 1400px;

@@ -1,3 +1,113 @@
+/* Dark Theme Styles */
+[data-theme="dark"] .loginPage-container {
+  background: linear-gradient(135deg, #1a1f2c 0%, #0d111a 100%);
+}
+
+[data-theme="dark"] .loginPage-card {
+  background-color: #2a3142;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .loginPage-logo {
+  background-color: rgba(77, 159, 236, 0.1);
+}
+
+[data-theme="dark"] .loginPage-logo-icon {
+  color: #4d9fec;
+}
+
+[data-theme="dark"] .loginPage-title {
+  color: #e0e3e7;
+}
+
+[data-theme="dark"] .loginPage-subtitle {
+  color: #a1a8b5;
+}
+
+[data-theme="dark"] .loginPage-error {
+  background-color: rgba(255, 107, 107, 0.1);
+  color: #ff6b6b;
+  border-color: rgba(255, 107, 107, 0.3);
+}
+
+[data-theme="dark"] .loginPage-input-label {
+  color: #e0e3e7;
+}
+
+[data-theme="dark"] .loginPage-input {
+  background-color: #1a1f2c;
+  border-color: #3a4255;
+  color: #e0e3e7;
+}
+
+[data-theme="dark"] .loginPage-input:focus {
+  border-color: #4d9fec;
+  box-shadow: 0 0 0 3px rgba(77, 159, 236, 0.3);
+}
+
+[data-theme="dark"] .loginPage-input-icon,
+[data-theme="dark"] .loginPage-password-toggle {
+  color: #7f8c8d;
+}
+
+[data-theme="dark"] .loginPage-password-toggle:hover {
+  color: #4d9fec;
+}
+
+[data-theme="dark"] .loginPage-remember {
+  color: #e0e3e7;
+}
+
+[data-theme="dark"] .loginPage-checkbox {
+  accent-color: #4d9fec;
+}
+
+[data-theme="dark"] .loginPage-forgot-password {
+  color: #4d9fec;
+}
+
+[data-theme="dark"] .loginPage-button {
+  background-color: #4d9fec;
+  color: #1a1f2c;
+}
+
+[data-theme="dark"] .loginPage-button:disabled {
+  background-color: #7f8c8d;
+  color: #2a3142;
+}
+
+[data-theme="dark"] .loginPage-button:not(:disabled):hover {
+  background-color: #3a8fd9;
+}
+
+/* Placeholder text color */
+[data-theme="dark"] .loginPage-input::placeholder {
+  color: #7f8c8d;
+}
+
+/* Animation for dark theme */
+@keyframes loginFadeInDark {
+  from {
+    opacity: 0;
+    background-color: transparent;
+  }
+  to {
+    opacity: 1;
+    background-color: #2a3142;
+  }
+}
+
+[data-theme="dark"] .loginPage-card {
+  animation: loginFadeInDark 0.3s ease-out forwards;
+}
+
+/* Responsive adjustments for dark theme */
+@media (max-width: 576px) {
+  [data-theme="dark"] .loginPage-card {
+    background-color: #2a3142;
+  }
+}
+
 .loginPage-container {
   display: flex;
   justify-content: center;

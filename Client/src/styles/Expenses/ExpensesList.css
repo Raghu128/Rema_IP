@@ -21,7 +21,7 @@
 }
 
 [data-theme="dark"] .expenses-project-stat-card {
-  background: #1e1e1e;
+  background: #222836;
   border-left-color: #1e88e5;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
 }
@@ -58,7 +58,7 @@
 }
 
 [data-theme="dark"] .expenses-project-view-toggle-group {
-  background: #1e1e1e;
+  background: #222836;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
@@ -86,7 +86,7 @@
 }
 
 [data-theme="dark"] .expenses-project-search-input {
-  background-color: #1e1e1e;
+  background-color: #222836;
   border-color: #2e2e2e;
   color: #e0e0e0;
 }
@@ -144,7 +144,7 @@
 }
 
 [data-theme="dark"] .expenses-project-card {
-  background: #1e1e1e;
+  background: #222836;
   border-color: #2e2e2e;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
 }
@@ -154,7 +154,7 @@
 }
 
 [data-theme="dark"] .expenses-project-card-header {
-  background: linear-gradient(135deg, #1e1e1e 0%, #2e2e2e 100%);
+  background: #222836;
   border-bottom-color: #3e3e3e;
 }
 
@@ -198,12 +198,12 @@
 }
 
 [data-theme="dark"] .expenses-project-table-container {
-  background-color: #1e1e1e;
+  background-color: #222836;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 }
 
 [data-theme="dark"] .expenses-project-table th {
-  background: #121212;
+  background: #25304b;
   color: #9e9e9e;
   border-bottom-color: #2e2e2e;
 }
@@ -214,7 +214,7 @@
 }
 
 [data-theme="dark"] .expenses-project-table-row:hover {
-  background: #2e2e2e;
+  background: rgb(31, 34, 53);
 }
 
 [data-theme="dark"] .expense-date-icon {
@@ -235,7 +235,7 @@
 }
 
 [data-theme="dark"] .expenses-project-total-row {
-  background: #121212;
+  background: #25304b;
 }
 
 [data-theme="dark"] .expenses-project-total-row td {
@@ -247,7 +247,7 @@
 }
 
 [data-theme="dark"] .expenses-project-expense-card {
-  background: #1e1e1e;
+  background: #222836;
   border-color: #2e2e2e;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
@@ -280,12 +280,12 @@
 }
 
 [data-theme="dark"] .expenses-project-summary {
-  background: #121212;
+  background: #25304b;
   border-top-color: #2e2e2e;
 }
 
 [data-theme="dark"] .expenses-project-summary-item {
-  background: #1e1e1e;
+  background: rgb(37, 43, 66);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 }
 

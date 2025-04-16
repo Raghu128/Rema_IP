@@ -1,3 +1,118 @@
+/* Dark Theme Styles */
+[data-theme="dark"] .meeting-notes-container {
+  background-color: #1a1f2c;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .meeting-notes-header {
+  background-color: #18223c;
+  border-bottom-color: #444;
+}
+
+[data-theme="dark"] .meeting-notes-header h2 {
+  color: #ffffff;
+}
+
+[data-theme="dark"] .meeting-notes-subtitle {
+  color: #9e9e9e;
+}
+
+[data-theme="dark"] .meeting-notes-list {
+  background-color: #1a1f2c;
+}
+
+[data-theme="dark"] .meeting-notes-loading,
+[data-theme="dark"] .meeting-notes-empty {
+  color: #9e9e9e;
+}
+
+[data-theme="dark"] .meeting-notes-empty img {
+  opacity: 0.4;
+}
+
+[data-theme="dark"] .meeting-notes-date {
+  color: #9e9e9e;
+}
+
+[data-theme="dark"] .meeting-notes-date::before,
+[data-theme="dark"] .meeting-notes-date::after {
+  background-color: #444;
+}
+
+[data-theme="dark"] .meeting-notes-avatar {
+  background-color: #64b5f6;
+  color: #121212;
+}
+
+[data-theme="dark"] .meeting-notes-sender {
+  color: #ffffff;
+}
+
+[data-theme="dark"] .meeting-notes-received .meeting-notes-content {
+  background-color: #2d2d2d;
+  color: #e0e0e0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .meeting-notes-sent .meeting-notes-content {
+  background-color: #64b5f6;
+  color: #ffffff;
+}
+
+[data-theme="dark"] .meeting-notes-received .meeting-notes-time {
+  color: #9e9e9e;
+}
+
+[data-theme="dark"] .meeting-notes-input-container {
+  background-color: #1a1f2c;
+  border-top-color: #444;
+}
+
+[data-theme="dark"] .meeting-notes-input {
+  background-color: #202c49;
+}
+
+[data-theme="dark"] .meeting-notes-textarea {
+  background-color: transparent;
+  color: #e0e0e0;
+}
+
+[data-theme="dark"] .meeting-notes-textarea::placeholder {
+  color: #757575;
+}
+
+[data-theme="dark"] .meeting-notes-send-button {
+  background-color: #64b5f6;
+}
+
+[data-theme="dark"] .meeting-notes-send-button:disabled {
+  background-color: #555;
+}
+
+[data-theme="dark"] .meeting-notes-send-button:not(:disabled):hover {
+  background-color: #42a5f5;
+}
+
+[data-theme="dark"] .meeting-notes-hint {
+  color: #757575;
+}
+
+/* Scrollbar for dark theme */
+[data-theme="dark"] .meeting-notes-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+[data-theme="dark"] .meeting-notes-list::-webkit-scrollbar-track {
+  background: #2d2d2d;
+}
+
+[data-theme="dark"] .meeting-notes-list::-webkit-scrollbar-thumb {
+  background: #555;
+}
+
+[data-theme="dark"] .meeting-notes-list::-webkit-scrollbar-thumb:hover {
+  background: #666;
+}
 /* Main Container */
 .meeting-notes-container {
   display: flex;

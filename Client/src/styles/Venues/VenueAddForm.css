@@ -1,3 +1,137 @@
+/* Dark Mode Styles */
+[data-theme="dark"] .venue-form-container {
+  background-color: #1a1f2c;
+  color: #e0e3e9;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .venue-form-header {
+  border-bottom-color: #2d3441;
+}
+
+[data-theme="dark"] .back-button {
+  background-color: #2d3441;
+  color: #4d7cff;
+}
+
+[data-theme="dark"] .back-button:hover {
+  background-color: #3a4252;
+}
+
+[data-theme="dark"] .form-title {
+  color: #f5f7fa;
+}
+
+[data-theme="dark"] .alert-message.success {
+  background-color: #1f3a1f;
+  color: #81c784;
+  border-left-color: #66bb6a;
+}
+
+[data-theme="dark"] .alert-message.error {
+  background-color: #3a1f1f;
+  color: #ff7d7d;
+  border-left-color: #ff5252;
+}
+
+[data-theme="dark"] .section-title {
+  color: #f5f7fa;
+}
+
+[data-theme="dark"] .section-title svg {
+  color: #a0a4ab;
+}
+
+[data-theme="dark"] .form-group label {
+  color: #d0d4dc;
+}
+
+[data-theme="dark"] .form-group label svg {
+  color: #6b7280;
+}
+
+[data-theme="dark"] .form-group input,
+[data-theme="dark"] .date-group input,
+[data-theme="dark"] .search-container input,
+[data-theme="dark"] .checkbox-container {
+  background-color: #2d3441;
+  border-color: #3a4252;
+  color: #e0e3e9;
+}
+[data-theme="dark"] .date-group label{
+  color: white;
+}
+
+[data-theme="dark"] .form-group input:focus,
+[data-theme="dark"] .date-group input:focus,
+[data-theme="dark"] .search-container input:focus {
+  border-color: #4d7cff;
+  box-shadow: 0 0 0 3px rgba(77, 124, 255, 0.3);
+  background-color: #232a38;
+}
+
+[data-theme="dark"] .form-group input::placeholder {
+  color: #6b7280;
+}
+
+[data-theme="dark"] .search-container svg {
+  color: #6b7280;
+}
+
+[data-theme="dark"] .checkbox-container {
+  border-color: #3a4252;
+  background-color: #232a38;
+}
+
+[data-theme="dark"] .checkbox-label:hover {
+  background-color: #3a4252;
+}
+
+[data-theme="dark"] .checkmark {
+  background-color: #2d3441;
+  border-color: #4b5563;
+}
+
+[data-theme="dark"] .checkbox-label input:checked ~ .checkmark {
+  background-color: #4d7cff;
+  border-color: #4d7cff;
+}
+
+[data-theme="dark"] .user-name {
+  color: #f5f7fa;
+}
+
+[data-theme="dark"] .user-email {
+  color: #a0a4ab;
+}
+
+[data-theme="dark"] .form-actions {
+  border-top-color: #2d3441;
+}
+
+[data-theme="dark"] .submit-button {
+  background-color: #2e7d32;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .submit-button:hover {
+  background-color: #3a8a40;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+}
+
+/* Dark mode scrollbar */
+[data-theme="dark"] .checkbox-container::-webkit-scrollbar-track {
+  background: #2d3441;
+}
+
+[data-theme="dark"] .checkbox-container::-webkit-scrollbar-thumb {
+  background: #4b5563;
+}
+
+[data-theme="dark"] .checkbox-container::-webkit-scrollbar-thumb:hover {
+  background: #6b7280;
+}
+
 /* Base Styles */
 .venue-form-container {
   max-width: 1100px;

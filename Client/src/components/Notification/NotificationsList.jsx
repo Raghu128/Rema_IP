@@ -23,6 +23,8 @@ const NotificationsList = () => {
   const [error, setError] = useState(null);
   const [viewMode, setViewMode] = useState('table'); // 'table' or 'card'
   const navigate = useNavigate();
+  const { currentTheme } = useSelector((state) => state.theme);
+  
 
   useEffect(() => {
     if (!user || !user.id) return;
@@ -129,16 +131,18 @@ const NotificationsList = () => {
     }
   };
 
-  const getPriorityColor = (priority) => {
-    switch ((priority || "").toLowerCase()) {
-      case "high":
-        return "#ffebee";
-      case "medium":
-        return "#fff8e1";
-      case "low":
-        return "#e8f5e9";
+  const getPriorityColor = (priority, currentTheme) => {
+    const isDark = currentTheme === 'dark';
+    
+    switch (priority.toLowerCase()) {
+      case 'high':
+        return isDark ? '#d32f2f' : '#ffebee';
+      case 'medium':
+        return isDark ? '#ffa000' : '#fff3e0';
+      case 'low':
+        return isDark ? '#388e3c' : '#e8f5e9';
       default:
-        return "#ffffff";
+        return isDark ? '#424242' : '#f5f5f5';
     }
   };
 
@@ -220,12 +224,17 @@ const NotificationsList = () => {
                       key={notif._id} 
                       className={`notifications-row ${expired ? 'notifications-expired' : ''}`}
                       style={{ 
-                        backgroundColor: expired ? '#fafafa' : getPriorityColor(priority),
+                        backgroundColor: expired 
+                          ? currentTheme === 'dark' ? '#121212' : '#fafafa' 
+                          : getPriorityColor(priority, currentTheme),
                         borderLeft: `4px solid ${
-                          expired ? '#e0e0e0' : 
-                          priority.toLowerCase() === 'high' ? '#ef233c' :
-                          priority.toLowerCase() === 'medium' ? '#ff9800' :
-                          '#4caf50'
+                          expired 
+                            ? currentTheme === 'dark' ? '#424242' : '#e0e0e0'
+                            : priority.toLowerCase() === 'high' 
+                              ? currentTheme === 'dark' ? '#ff5252' : '#ef233c'
+                              : priority.toLowerCase() === 'medium' 
+                                ? currentTheme === 'dark' ? '#ffb74d' : '#ff9800'
+                                : currentTheme === 'dark' ? '#81c784' : '#4caf50'
                         }`
                       }}
                     >
@@ -292,14 +301,19 @@ const NotificationsList = () => {
                   key={notif._id} 
                   className={`notifications-card ${expired ? 'notifications-expired' : ''}`}
                   style={{ 
-                    backgroundColor: expired ? '#fafafa' : getPriorityColor(priority),
-                    borderLeft: `4px solid ${
-                      expired ? '#e0e0e0' : 
-                      priority.toLowerCase() === 'high' ? '#ef233c' :
-                      priority.toLowerCase() === 'medium' ? '#ff9800' :
-                      '#4caf50'
-                    }`
-                  }}
+  backgroundColor: expired 
+    ? currentTheme === 'dark' ? '#f5f5f5' : '#ffffff'  
+    : getPriorityColor(priority, currentTheme),
+  borderLeft: `4px solid ${
+    expired 
+      ? currentTheme === 'dark' ? '#e0e0e0' : '#e0e0e0'  // Consistent light gray border
+      : priority.toLowerCase() === 'high' 
+        ? currentTheme === 'dark' ? '#ff8a80' : '#ff5252'  // Softer red
+        : priority.toLowerCase() === 'medium' 
+          ? currentTheme === 'dark' ? '#ffd180' : '#ffab40'  // Softer orange
+          : currentTheme === 'dark' ? '#a5d6a7' : '#66bb6a'  // Softer green
+  }`
+}}
                 >
                   <div className="notifications-card-header">
                     <div className="notifications-card-type">

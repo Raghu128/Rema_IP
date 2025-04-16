@@ -1,7 +1,96 @@
+/* Dark Theme Styles */
+[data-theme="dark"] .leaves-container {
+  background-color: #1a1f2c;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .leaves-title {
+  color: #e0e3e7;
+}
+
+[data-theme="dark"] .st-leaves-header {
+  border-bottom-color: #3a4255;
+}
+
+[data-theme="dark"] .manage-leave-btn {
+  background-color: #27ae60;
+  color: #e0e3e7;
+}
+
+[data-theme="dark"] .manage-leave-btn:hover {
+  background-color: #2ecc71;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .leaves-table {
+  color: #e0e3e7;
+}
+
+[data-theme="dark"] .leaves-table th {
+  background-color: #4d9fec;
+  color: #1a1f2c;
+  border-color: #3a4255;
+}
+
+[data-theme="dark"] .leaves-table td {
+  border-color: #3a4255;
+  color: #e0e3e7;
+}
+
+[data-theme="dark"] .leaves-table tbody tr:nth-child(even) {
+  background-color: #2a3142;
+}
+
+[data-theme="dark"] .leaves-table tbody tr:hover {
+  background-color: #3a4255;
+}
+
+[data-theme="dark"] .loading-message,
+[data-theme="dark"] .leaves-message {
+  color: #a1a8b5;
+}
+
+/* Dark theme icons */
+[data-theme="dark"] .faChalkboardTeacher {
+  color: #4d9fec;
+}
+
+/* Animation for dark theme */
+@keyframes leavesFadeInDark {
+  from {
+    opacity: 0;
+    background-color: transparent;
+  }
+  to {
+    opacity: 1;
+    background-color: #1a1f2c;
+  }
+}
+
+[data-theme="dark"] .leaves-container {
+  animation: leavesFadeInDark 0.3s ease-out forwards;
+}
+
+/* Status specific colors in dark theme */
+[data-theme="dark"] .student-leave {
+  font-weight: 500;
+}
+
+[data-theme="dark"] .student-leave[data-status="approved"] {
+  color: #2ecc71;
+}
+
+[data-theme="dark"] .student-leave[data-status="pending"] {
+  color: #f39c12;
+}
+
+[data-theme="dark"] .student-leave[data-status="rejected"] {
+  color: #e74c3c;
+}
 /* Container */
 .leaves-container {
   width: 100%;
-  max-width: 800px;
+  max-width: 1200px;
   margin: 30px auto;
   padding: 20px;
   background: #ffffff;
@@ -11,11 +100,11 @@
 }
 
 /* Title */
-/* .leaves-title {
+.leaves-title {
   font-size: 25px;
   color: #333;
   font-weight: bold;
-} */
+}
 
 /* Table Styling */
 .leaves-table {

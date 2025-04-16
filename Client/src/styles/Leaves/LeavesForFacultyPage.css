@@ -15,7 +15,7 @@
 }
 
 [data-theme="dark"] .leaves-stat-card {
-  background: #1e1e1e;
+  background: #222836;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
 }
 
@@ -25,7 +25,11 @@
 }
 
 [data-theme="dark"] .leaves-view-toggle-group {
-  background: #2d2d2d;
+  background: #222836;
+}
+
+[data-theme="dark"] .leaves-view-toggle:hover {
+  background: #2f374c;
 }
 
 [data-theme="dark"] .leaves-view-toggle {
@@ -38,7 +42,7 @@
 }
 
 [data-theme="dark"] .leaves-search-input {
-  background: #2d2d2d;
+  background: #222836;
   border-color: #444;
   color: #e0e0e0;
 }
@@ -49,11 +53,11 @@
 }
 
 [data-theme="dark"] .leaves-table {
-  background: #1e1e1e;
+  background: #222836;
 }
 
 [data-theme="dark"] .leaves-table th {
-  background: #252525;
+  background: #25304b;
   color: #b0b0b0;
   border-bottom-color: #444;
   border: none;
@@ -65,7 +69,7 @@
 }
 
 [data-theme="dark"] .leaves-table-row:hover {
-  background: #252525;
+  background: #333a4d;
 }
 
 [data-theme="dark"] .leaves-student-avatar {
@@ -90,17 +94,17 @@
 }
 
 [data-theme="dark"] .leaves-student-card {
-  background: #1e1e1e;
+  background: #222836;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
 }
 
 [data-theme="dark"] .leaves-student-header {
-  background: linear-gradient(135deg, #252525 0%, #2d2d2d 100%);
+  background: #293246;
   border-bottom-color: #444;
 }
 
 [data-theme="dark"] .leaves-student-header:hover {
-  background: linear-gradient(135deg, #2d2d2d 0%, #353535 100%);
+  background: #222836;
 }
 
 [data-theme="dark"] .leaves-count-badge {

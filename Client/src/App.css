@@ -18,3 +18,7 @@ body {
   padding: 0;
   overflow: hidden;
 }
+
+[data-theme="dark"] body {
+  background: #1a1f2c;
+}

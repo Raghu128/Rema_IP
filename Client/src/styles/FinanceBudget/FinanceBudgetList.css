@@ -1,5 +1,5 @@
 [data-theme="dark"] .financebudgetlist-container{
-  background-color: black;
+  background-color: #25304b;
 }
 [data-theme="dark"] .financebudgetlist-title{
   color: white;
@@ -14,7 +14,7 @@
 }
 [data-theme="dark"] .financebudgetlist-table thead tr th{
   color: white;
-  background-color: black;
+  background-color: #171d2a;
 }
 /* Main Container */
 .financebudgetlist-container {

@@ -1,43 +1,34 @@
 /* Dark Theme Styles */
 [data-theme="dark"] .compact-venue-list-container {
-  background-color: #1e1e1e;
-  color: #e0e0e0;
+  background-color: #1a1f2c;
+  color: #e0e3e7;
   box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
 }
 
 [data-theme="dark"] .compact-venue-list-header {
-  background-color: #1e1e1e;
-  border-bottom-color: #444;
+  border-bottom-color: #2a3142;
+  background-color: #1a1f2c;
 }
 
 [data-theme="dark"] .compact-venue-list-title {
-  color: #ffffff;
+  color: #e0e3e7;
 }
 
 [data-theme="dark"] .compact-manage-venue-btn {
-  background: #252525;
-  border-color: #444;
-  color: #64b5f6;
+  background: #2a3142;
+  border-color: #3a4255;
+  color: #4d9fec;
 }
 
 [data-theme="dark"] .compact-manage-venue-btn:hover {
-  background-color: #2d2d2d;
-  color: #42a5f5;
-}
-
-[data-theme="dark"] .compact-add-venue-btn {
-  background-color: #2e7d32;
-  color: white;
-}
-
-[data-theme="dark"] .compact-add-venue-btn:hover {
-  background-color: #1b5e20;
+  background-color: #3a4255;
+  color: #6bb1f0;
 }
 
 [data-theme="dark"] .compact-venue-card {
-  background-color: #252525;
+  background-color: #2a3142;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
-  border-left-color: #64b5f6;
+  border-left-color: #4d9fec;
 }
 
 [data-theme="dark"] .compact-venue-card:hover {
@@ -45,110 +36,119 @@
 }
 
 [data-theme="dark"] .compact-venue-name {
-  color: #ffffff;
+  color: #e0e3e7;
 }
 
 [data-theme="dark"] .compact-venue-icon,
 [data-theme="dark"] .compact-location-icon,
 [data-theme="dark"] .compact-user-icon {
-  color: #64b5f6;
+  color: #4d9fec;
 }
 
 [data-theme="dark"] .compact-expand-collapse-btn {
-  background: #252525;
-  border-color: #444;
-  color: #64b5f6;
+  background: #2a3142;
+  border-color: #3a4255;
+  color: #4d9fec;
 }
 
 [data-theme="dark"] .compact-expand-collapse-btn:hover {
-  background-color: #2d2d2d;
-  color: #42a5f5;
+  background-color: #3a4255;
+  color: #6bb1f0;
 }
 
 [data-theme="dark"] .compact-venue-meta {
-  border-top-color: #444;
+  border-top-color: #3a4255;
 }
 
 [data-theme="dark"] .compact-deadline {
-  background-color: #2d2d2d;
+  background-color: #1a1f2c;
 }
 
 [data-theme="dark"] .compact-deadline.urgent {
-  color: #ef5350;
-  background-color: rgba(239, 83, 80, 0.1);
+  color: #ff6b6b;
+  background-color: rgba(255, 107, 107, 0.1);
 }
 
 [data-theme="dark"] .compact-deadline.warning {
-  color: #ffa726;
-  background-color: rgba(255, 167, 38, 0.1);
+  color: #feca57;
+  background-color: rgba(254, 202, 87, 0.1);
 }
 
 [data-theme="dark"] .compact-deadline.normal {
-  color: #66bb6a;
-  background-color: rgba(102, 187, 106, 0.1);
+  color: #1dd1a1;
+  background-color: rgba(29, 209, 161, 0.1);
 }
 
 [data-theme="dark"] .compact-added-by {
-  color: #9e9e9e;
+  color: #a1a8b5;
 }
 
 [data-theme="dark"] .compact-venue-details {
-  background-color: #2d2d2d;
-  border-top-color: #444;
+  background-color: #2a3142;
+  border-top-color: #3a4255;
+  animation-name: compactFadeInDark;
 }
 
-[data-theme="dark"] .compact-detail-item {
-  background-color: #252525;
-  border-left-color: #64b5f6;
-}
-
-[data-theme="dark"] .compact-detail-label {
-  color: #9e9e9e;
-}
-
-[data-theme="dark"] .compact-detail-value {
-  color: #e0e0e0;
-}
-
-[data-theme="dark"] .compact-url-link {
-  color: #64b5f6;
-  background-color: rgba(100, 181, 246, 0.1);
-}
-
-[data-theme="dark"] .compact-url-link:hover {
-  background-color: rgba(100, 181, 246, 0.2);
-}
-
-/* Scrollbar Styles for Dark Theme */
-[data-theme="dark"] .compact-venue-list-container::-webkit-scrollbar-track {
-  background: #2d2d2d;
-}
-
-[data-theme="dark"] .compact-venue-list-container::-webkit-scrollbar-thumb {
-  background: #555;
-}
-
-[data-theme="dark"] .compact-venue-list-container::-webkit-scrollbar-thumb:hover {
-  background: #666;
-}
-
-/* Animation for Dark Theme */
 @keyframes compactFadeInDark {
   from {
     opacity: 0;
     transform: translateY(-10px);
-    background-color: rgba(30, 30, 30, 0);
+    background-color: transparent;
   }
   to {
     opacity: 1;
     transform: translateY(0);
-    background-color: #2d2d2d;
+    background-color: #2a3142;
   }
 }
 
-[data-theme="dark"] .compact-venue-details {
-  animation-name: compactFadeInDark;
+[data-theme="dark"] .compact-detail-item {
+  background-color: #1a1f2c;
+  border-left-color: #4d9fec;
 }
+
+[data-theme="dark"] .compact-detail-label {
+  color: #a1a8b5;
+}
+
+[data-theme="dark"] .compact-detail-value {
+  color: #e0e3e7;
+}
+
+[data-theme="dark"] .compact-venue-list-container::-webkit-scrollbar-track {
+  background: #2a3142;
+}
+
+[data-theme="dark"] .compact-venue-list-container::-webkit-scrollbar-thumb {
+  background: #3a4255;
+}
+
+[data-theme="dark"] .compact-venue-list-container::-webkit-scrollbar-thumb:hover {
+  background: #4a546a;
+}
+
+[data-theme="dark"] .compact-url-link {
+  color: #4d9fec;
+  background-color: #2a3142;
+}
+
+[data-theme="dark"] .compact-url-link:hover {
+  background-color: #3a4255;
+}
+
+[data-theme="dark"] .compact-add-venue-btn {
+  background-color: #4d9fec;
+  color: #1a1f2c;
+}
+
+[data-theme="dark"] .compact-add-venue-btn:hover {
+  background-color: #6bb1f0;
+}
+
+[data-theme="dark"] .compact-no-venues-message {
+  color: #a1a8b5;
+}
+
 /* Compact Venue List Styles */
 .compact-venue-list-container {
   width: 100%;

@@ -1,3 +1,131 @@
+/* Dark Theme Styles */
+[data-theme="dark"] .leaves-form-container {
+  background-color: #1a1f2c;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .leaves-title,
+[data-theme="dark"] .leaves-subtitle {
+  color: #e0e3e7;
+}
+
+[data-theme="dark"] .leaves-back-btn {
+  color: #4d9fec;
+}
+
+[data-theme="dark"] .leaves-back-btn:hover {
+  background-color: #2a3142;
+}
+
+[data-theme="dark"] .leaves-search-icon {
+  color: #a1a8b5;
+}
+
+[data-theme="dark"] .leaves-search-input {
+  background-color: #2a3142;
+  border-color: #3a4255;
+  color: #e0e3e7;
+}
+
+[data-theme="dark"] .leaves-search-input:focus {
+  border-color: #4d9fec;
+  box-shadow: 0 0 0 2px rgba(77, 159, 236, 0.3);
+}
+
+[data-theme="dark"] .leaves-label {
+  color: #e0e3e7;
+}
+
+[data-theme="dark"] .leaves-select {
+  background-color: #2a3142;
+  border-color: #3a4255;
+  color: #e0e3e7;
+}
+
+[data-theme="dark"] .leaves-select:focus {
+  border-color: #4d9fec;
+  box-shadow: 0 0 0 2px rgba(77, 159, 236, 0.3);
+}
+
+[data-theme="dark"] .leaves-form-group input[type="date"],
+[data-theme="dark"] .leaves-form-group textarea {
+  background-color: #2a3142;
+  border-color: #3a4255;
+  color: #e0e3e7;
+}
+[data-theme="dark"] .leaves-form-group label {
+  color: white;
+}
+
+[data-theme="dark"] .leaves-form-group input[type="date"]:focus,
+[data-theme="dark"] .leaves-form-group textarea:focus {
+  border-color: #4d9fec;
+  box-shadow: 0 0 0 2px rgba(77, 159, 236, 0.3);
+}
+
+[data-theme="dark"] .leaves-submit-btn {
+  background-color: #27ae60;
+  color: #e0e3e7;
+}
+
+[data-theme="dark"] .leaves-submit-btn:hover {
+  background-color: #2ecc71;
+}
+
+[data-theme="dark"] .leaves-cancel-btn {
+  background-color: #2a3142;
+  color: #e0e3e7;
+  border-color: #3a4255;
+}
+
+[data-theme="dark"] .leaves-cancel-btn:hover {
+  background-color: #3a4255;
+}
+
+[data-theme="dark"] .leaves-message:not(.error) {
+  background-color: rgba(39, 174, 96, 0.1);
+  color: #2ecc71;
+}
+
+[data-theme="dark"] .leaves-message.error {
+  background-color: rgba(255, 107, 107, 0.1);
+  color: #ff6b6b;
+}
+
+/* Dark theme animations */
+@keyframes leavesFormFadeInDark {
+  from {
+    opacity: 0;
+    background-color: transparent;
+  }
+  to {
+    opacity: 1;
+    background-color: #1a1f2c;
+  }
+}
+
+[data-theme="dark"] .leaves-form-container {
+  animation: leavesFormFadeInDark 0.3s ease-out forwards;
+}
+
+/* Option styling for select dropdown */
+[data-theme="dark"] .leaves-select option {
+  background-color: #1a1f2c;
+  color: #e0e3e7;
+}
+
+/* Placeholder text color */
+[data-theme="dark"] .leaves-search-input::placeholder {
+  color: #7f8c8d;
+}
+
+/* Responsive adjustments for dark theme */
+@media (max-width: 768px) {
+  [data-theme="dark"] .leaves-form-container {
+    background-color: #1a1f2c;
+  }
+}
+
 /* AddLeaveForm.css */
 
 .leaves-form-container {

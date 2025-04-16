@@ -1,3 +1,86 @@
+/* Dark Mode Styles */
+[data-theme="dark"] .expenses-add-container {
+    background-color: #1a1f2c;
+    color: #e0e3e9;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+  }
+  
+  [data-theme="dark"] .expenses-add-header {
+    border-bottom-color: #2d3441;
+  }
+  
+  [data-theme="dark"] .expenses-add-title {
+    color: #f5f7fa;
+  }
+  
+  [data-theme="dark"] .expenses-back-btn {
+    background-color: #2d3441;
+    border-color: #3a4252;
+    color: #e0e3e9;
+  }
+  
+  [data-theme="dark"] .expenses-back-btn:hover {
+    background-color: #3a4252;
+  }
+  
+  [data-theme="dark"] .expenses-message.success {
+    background-color: #1f3a1f;
+    color: #81c784;
+    border-color: #66bb6a;
+  }
+  
+  [data-theme="dark"] .expenses-message.error {
+    background-color: #3a1f1f;
+    color: #ff7d7d;
+    border-color: #ff5252;
+  }
+  
+  [data-theme="dark"] .expenses-form-section {
+    background-color: #232a38;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  }
+  
+  [data-theme="dark"] .expenses-section-title {
+    color: #d0d4dc;
+    border-bottom-color: #3a4252;
+  }
+  
+  [data-theme="dark"] .expenses-form-label {
+    color: #d0d4dc;
+  }
+  
+  [data-theme="dark"] .expenses-form-input,
+  [data-theme="dark"] .expenses-form-select {
+    background-color: #2d3441;
+    border-color: #3a4252;
+    color: #e0e3e9;
+  }
+  
+  [data-theme="dark"] .expenses-form-input:focus,
+  [data-theme="dark"] .expenses-form-select:focus {
+    border-color: #4d7cff;
+    box-shadow: 0 0 0 0.2rem rgba(77, 124, 255, 0.3);
+  }
+  
+  [data-theme="dark"] .expenses-form-select {
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23a0a4ab' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  }
+  
+  [data-theme="dark"] .expenses-input-icon {
+    color: #a0a4ab;
+  }
+  
+  [data-theme="dark"] .expenses-submit-btn {
+    background-color: #2e7d32;
+  }
+  
+  [data-theme="dark"] .expenses-submit-btn:hover {
+    background-color: #3a8a40;
+  }
+  
+  [data-theme="dark"] .expenses-submit-btn:disabled {
+    background-color: #4b5563;
+  }
 /* Base Styles */
 .expenses-add-container {
     max-width: 800px;

@@ -1,3 +1,163 @@
+/* Dark Mode Styles */
+[data-theme="dark"] .notification-add-form {
+    background-color: #1a1f2c;
+    color: #e0e3e9;
+  }
+  
+  [data-theme="dark"] .notification-add-form-header-content h1 {
+    color: #f5f7fa;
+  }
+  
+  [data-theme="dark"] .notification-add-form-header-content p {
+    color: #a0a4ab;
+  }
+  
+  [data-theme="dark"] .notification-add-form-back-btn {
+    background-color: #2d3441;
+    color: #e0e3e9;
+  }
+  
+  [data-theme="dark"] .notification-add-form-back-btn:hover {
+    background-color: #3a4252;
+  }
+  
+  [data-theme="dark"] .notification-add-form-card {
+    background-color: #232a38;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+    border: 1px solid #2d3441;
+  }
+  
+  [data-theme="dark"] .notification-add-form-card-title {
+    color: #f5f7fa;
+  }
+  
+  [data-theme="dark"] .notification-add-form-accent-bar {
+    background-color: #4d7cff;
+  }
+  
+  [data-theme="dark"] .notification-add-form-group label {
+    color: #d0d4dc;
+  }
+  
+  [data-theme="dark"] .notification-add-form-type-option {
+    background-color: #2d3441;
+    border-color: #3a4252;
+    color: #e0e3e9;
+  }
+  
+  [data-theme="dark"] .notification-add-form-type-option:hover {
+    background-color: #3a4252;
+  }
+  
+  [data-theme="dark"] .notification-add-form-type-option.active {
+    background-color: #1e3a8a;
+    border-color: #1e40af;
+    color: #ffffff;
+  }
+  
+  [data-theme="dark"] .notification-add-form-type-option svg {
+    color: #a0a4ab;
+  }
+  
+  [data-theme="dark"] .notification-add-form-type-option.active svg {
+    color: #ffffff;
+  }
+  
+  [data-theme="dark"] .notification-add-form-priority-option {
+    background-color: #2d3441;
+    color: #e0e3e9;
+  }
+  
+  [data-theme="dark"] .notification-add-form-priority-option:hover {
+    background-color: #3a4252;
+  }
+  
+  [data-theme="dark"] .notification-add-form-priority-option.active {
+    background-color: #1e3a8a;
+    color: #ffffff;
+  }
+  
+  [data-theme="dark"] .notification-add-form-textarea,
+  [data-theme="dark"] .notification-add-form-date-input,
+  [data-theme="dark"] .notification-add-form-search-container input {
+    background-color: #2d3441;
+    border-color: #3a4252;
+    color: #e0e3e9;
+  }
+  
+  [data-theme="dark"] .notification-add-form-textarea:focus,
+  [data-theme="dark"] .notification-add-form-date-input:focus,
+  [data-theme="dark"] .notification-add-form-search-container input:focus {
+    border-color: #4d7cff;
+    box-shadow: 0 0 0 2px rgba(77, 124, 255, 0.3);
+  }
+  
+  [data-theme="dark"] .notification-add-form-recipients-list {
+    background-color: #2d3441;
+    border-color: #3a4252;
+  }
+  
+  [data-theme="dark"] .notification-add-form-recipient-item {
+    background-color: #2d3441;
+    color: #e0e3e9;
+  }
+  
+  [data-theme="dark"] .notification-add-form-recipient-item:hover {
+    background-color: #3a4252;
+  }
+  
+  [data-theme="dark"] .notification-add-form-checkmark {
+    background-color: #2d3441;
+    border-color: #4b5563;
+  }
+  
+  [data-theme="dark"] .notification-add-form-recipient-item input:checked ~ .notification-add-form-checkmark {
+    background-color: #4d7cff;
+    border-color: #4d7cff;
+  }
+  
+  [data-theme="dark"] .notification-add-form-user-email {
+    color: #a0a4ab;
+  }
+  
+  [data-theme="dark"] .notification-add-form-alert-error {
+    background-color: #3a1f1f;
+    color: #ff7d7d;
+    border-left-color: #ff5252;
+  }
+  
+  [data-theme="dark"] .notification-add-form-alert-success {
+    background-color: #1f3a1f;
+    color: #81c784;
+    border-left-color: #66bb6a;
+  }
+  
+  [data-theme="dark"] .notification-add-form-submit-btn {
+    background-color: #2e7d32;
+  }
+  
+  [data-theme="dark"] .notification-add-form-submit-btn:hover {
+    background-color: #3a8a40;
+  }
+  
+  [data-theme="dark"] .notification-add-form-submit-btn:disabled {
+    background-color: #2d3441;
+    color: #6b7280;
+  }
+  
+  [data-theme="dark"] .notification-add-form-error-message {
+    color: #ff5252;
+  }
+  
+  [data-theme="dark"] .notification-add-form-no-results {
+    color: #6b7280;
+  }
+  
+  [data-theme="dark"] .notification-add-form-date-input-container svg,
+  [data-theme="dark"] .notification-add-form-search-container svg {
+    color: #6b7280;
+  }
+
 /* Base Styles */
 .notification-add-form {
     max-width: 1500px;

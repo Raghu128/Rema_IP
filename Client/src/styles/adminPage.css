@@ -1,3 +1,311 @@
+[data-theme="dark"] {
+  /* Dark theme color palette */
+  --admin-page-primary-color: #5e72e4;
+  --admin-page-primary-light: #1a1f2c;
+  --admin-page-secondary-color: #4a56b7;
+  --admin-page-success-color: #2dce89;
+  --admin-page-danger-color: #f5365c;
+  --admin-page-warning-color: #fb6340;
+  --admin-page-info-color: #11cdef;
+  --admin-page-light-color: #1a1f2c;
+  --admin-page-dark-color: #f8f9fa;
+  --admin-page-gray-color: #6c757d;
+  --admin-page-gray-light: #2d3748;
+  --admin-page-border-radius: 8px;
+  --admin-page-box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* Dark theme base styles */
+[data-theme="dark"] .admin-page-dashboard,
+[data-theme="dark"] .admin-page-schema-header {
+  background-color: #121620;
+  color: #e2e8f0;
+}
+
+/* Dark theme navigation */
+[data-theme="dark"] .admin-page-nav {
+  background: linear-gradient(135deg, #0f1320 0%, #1a1f2c 100%);
+  border-right: 1px solid #252b3a;
+}
+
+[data-theme="dark"] .admin-page-nav-header {
+  border-bottom: 1px solid #252b3a;
+}
+
+[data-theme="dark"] .admin-page-nav-item {
+  color: #a0aec0;
+}
+
+[data-theme="dark"] .admin-page-nav-item:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+  color: #e2e8f0;
+}
+
+[data-theme="dark"] .admin-page-nav-item.admin-page-active {
+  background-color: rgba(94, 114, 228, 0.15);
+  color: #e2e8f0;
+}
+[data-theme="dark"] .admin-page-enum-values{
+  color: black;
+  font-weight: bold;
+}
+/* Dark theme content area */
+[data-theme="dark"] .admin-page-content-header {
+  background-color: #1a1f2c;
+  border-bottom: 1px solid #252b3a;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .admin-page-header-title h1 {
+  color: #f8f9fa;
+}
+
+[data-theme="dark"] .admin-page-header-subtitle {
+  color: #a0aec0;
+}
+[data-theme="dark"] .admin-page-btn-generate,
+[data-theme="dark"] .admin-page-btn-secondary {
+  background: none;
+}
+
+[data-theme="dark"] .admin-page-user-name,
+[data-theme="dark"] .admin-page-schema-title-text,
+[data-theme="dark"] .admin-page-schema-name {
+  color: white;
+}
+/* Dark theme cards */
+[data-theme="dark"] .admin-page-card,
+[data-theme="dark"] .admin-page-stat-card,
+[data-theme="dark"] .admin-page-schema-card,
+[data-theme="dark"] .admin-page-schema-card-view {
+  background-color: #1a1f2c;
+  border: 1px solid #252b3a;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .admin-page-card-header,
+[data-theme="dark"] .admin-page-schema-card-header,
+[data-theme="dark"] .admin-page-table-header {
+  border-bottom: 1px solid #252b3a;
+  background-color: #1a1f2c;
+}
+
+[data-theme="dark"] .admin-page-card-header h2,
+[data-theme="dark"] .admin-page-table-title {
+  color: #f8f9fa;
+}
+
+/* Dark theme tables */
+[data-theme="dark"] .admin-page-responsive-table th {
+  background-color: #1a1f2c;
+  color: #a0aec0;
+}
+
+[data-theme="dark"] .admin-page-responsive-table td {
+  background-color: #1a1f2c;
+  border-bottom: 1px solid #252b3a;
+  color: #e2e8f0;
+}
+
+[data-theme="dark"] .admin-page-responsive-table tr:hover td {
+  background-color: #252b3a;
+}
+
+/* Dark theme form elements */
+[data-theme="dark"] .admin-page-input,
+[data-theme="dark"] .admin-page-select,
+[data-theme="dark"] .admin-page-search-input {
+  background-color: #252b3a;
+  border-color: #2d3748;
+  color: #e2e8f0;
+}
+
+[data-theme="dark"] .admin-page-input:focus,
+[data-theme="dark"] .admin-page-select:focus,
+[data-theme="dark"] .admin-page-search-input:focus {
+  border-color: var(--admin-page-primary-color);
+  box-shadow: 0 0 0 3px rgba(94, 114, 228, 0.2);
+  background-color: #252b3a;
+}
+
+[data-theme="dark"] .admin-page-input-group label {
+  color: #a0aec0;
+}
+
+/* Dark theme buttons */
+[data-theme="dark"] .admin-page-btn-secondary {
+  background-color: #252b3a;
+  color: #e2e8f0;
+  border: 1px solid #2d3748;
+}
+
+[data-theme="dark"] .admin-page-btn-secondary:hover {
+  background-color: #2d3748;
+}
+
+/* Dark theme alerts */
+[data-theme="dark"] .admin-page-alert.admin-page-success {
+  background-color: rgba(45, 206, 137, 0.1);
+  border-left-color: var(--admin-page-success-color);
+  color: #e2e8f0;
+}
+
+[data-theme="dark"] .admin-page-alert.admin-page-error {
+  background-color: rgba(245, 54, 92, 0.1);
+  border-left-color: var(--admin-page-danger-color);
+  color: #e2e8f0;
+}
+
+[data-theme="dark"] .admin-page-alert.admin-page-info {
+  background-color: rgba(17, 205, 239, 0.1);
+  border-left-color: var(--admin-page-info-color);
+  color: #e2e8f0;
+}
+
+/* Dark theme schema explorer */
+[data-theme="dark"] .admin-page-schema-details,
+[data-theme="dark"] .admin-page-schema-card-expanded {
+  background-color: #252b3a;
+  border-top: 1px solid #2d3748;
+}
+
+[data-theme="dark"] .admin-page-schema-attribute {
+  border-bottom: 1px solid #2d3748;
+}
+
+[data-theme="dark"] .admin-page-schema-attributes-header {
+  border-bottom: 1px solid #2d3748;
+  color: #a0aec0;
+}
+
+[data-theme="dark"] .admin-page-attribute-field {
+  color: #e2e8f0;
+}
+
+[data-theme="dark"] .admin-page-attribute-description {
+  color: #a0aec0;
+}
+
+/* Dark theme modal */
+[data-theme="dark"] .admin-page-modal {
+  background-color: #1a1f2c;
+  border: 1px solid #252b3a;
+}
+
+[data-theme="dark"] .admin-page-modal-header {
+  border-bottom: 1px solid #252b3a;
+}
+
+[data-theme="dark"] .admin-page-modal-footer {
+  border-top: 1px solid #252b3a;
+}
+
+[data-theme="dark"] .admin-page-modal-info p {
+  color: #a0aec0;
+}
+
+/* Dark theme scrollbar */
+[data-theme="dark"] ::-webkit-scrollbar {
+  width: 8px;
+}
+
+[data-theme="dark"] ::-webkit-scrollbar-track {
+  background: #1a1f2c;
+}
+
+[data-theme="dark"] ::-webkit-scrollbar-thumb {
+  background: #2d3748;
+  border-radius: 4px;
+}
+
+[data-theme="dark"] ::-webkit-scrollbar-thumb:hover {
+  background: #4a5568;
+}
+
+/* Dark theme status badges */
+[data-theme="dark"] .admin-page-status-badge.admin-page-active {
+  background-color: rgba(45, 206, 137, 0.2);
+  color: #2dce89;
+}
+
+[data-theme="dark"] .admin-page-status-badge.admin-page-inactive {
+  background-color: rgba(245, 54, 92, 0.2);
+  color: #f5365c;
+}
+
+/* Dark theme role badges */
+[data-theme="dark"] .admin-page-role-badge {
+  background-color: #252b3a;
+  color: #e2e8f0;
+}
+
+/* Dark theme view toggle */
+[data-theme="dark"] .admin-page-view-toggle {
+  background-color: #252b3a;
+}
+
+[data-theme="dark"] .admin-page-view-toggle-btn {
+  color: #a0aec0;
+}
+
+[data-theme="dark"] .admin-page-view-toggle-btn.admin-page-active {
+  background-color: #2d3748;
+  color: var(--admin-page-primary-color);
+}
+
+/* Dark theme filter tabs */
+[data-theme="dark"] .admin-page-filter-tabs {
+  background-color: #252b3a;
+}
+
+[data-theme="dark"] .admin-page-filter-tab {
+  color: #a0aec0;
+}
+
+[data-theme="dark"] .admin-page-filter-tab.admin-page-active {
+  background-color: #2d3748;
+  color: var(--admin-page-primary-color);
+}
+
+/* Dark theme table footer */
+[data-theme="dark"] .admin-page-table-footer {
+  background-color: #1a1f2c;
+  border-top: 1px solid #252b3a;
+}
+
+[data-theme="dark"] .admin-page-table-summary {
+  color: #a0aec0;
+}
+
+/* Dark theme no results */
+[data-theme="dark"] .admin-page-no-results-content {
+  background-color: #1a1f2c;
+  color: #a0aec0;
+}
+
+/* Dark theme password strength */
+[data-theme="dark"] .admin-page-strength-indicator {
+  background-color: #2d3748;
+}
+
+/* Dark theme required/optional badges */
+[data-theme="dark"] .admin-page-required-badge {
+  background-color: rgba(45, 206, 137, 0.2);
+  color: #2dce89;
+}
+
+[data-theme="dark"] .admin-page-optional-badge {
+  background-color: #2d3748;
+  color: #a0aec0;
+}
+
+/* Dark theme modal title */
+[data-theme="dark"] .admin-page-modal-title-text {
+  color: #e2e8f0;
+}
+
+
+
 
 
 /* Admin Dashboard Enhanced Styles */
@@ -1490,9 +1798,7 @@
   background-color: white;
 }
 
-.admin-page-schema-header:hover {
-  background-color: #f8f9fa;
-}
+
 
 .admin-page-schema-title {
   display: flex;
@@ -1704,10 +2010,6 @@
   color: var(--admin-page-primary-color);
 }
 
-.admin-page-schema-card-footer:hover {
-  background-color: #f1f5f9;
-  color: var(--secondary-color);
-}
 
 .admin-page-schema-card-expanded {
   padding: 1.25rem 1.5rem;

@@ -14,7 +14,7 @@
 }
 
 [data-theme="dark"] .sponsor-stat-card {
-  background: #1e1e1e;
+  background: #222836;
   border-color: #2e2e2e;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
@@ -29,7 +29,7 @@
 }
 
 [data-theme="dark"] .sponsor-view-toggle-group {
-  background: #1e1e1e;
+  background: #222836;
   border-color: #2e2e2e;
 }
 
@@ -58,7 +58,7 @@
 
 [data-theme="dark"] .sponsor-search-input,
 [data-theme="dark"] .sponsor-search-input::placeholder {
-  background-color: #1e1e1e;
+  background-color: #222836;
   border-color: #2e2e2e;
   color: #e0e0e0;
 }
@@ -86,7 +86,7 @@
 }
 
 [data-theme="dark"] .sponsor-card {
-  background: #1e1e1e;
+  background: #222836;
   border-color: #2e2e2e;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
@@ -97,7 +97,7 @@
 }
 
 [data-theme="dark"] .sponsor-card-header {
-  background: linear-gradient(135deg, #1e1e1e 0%, #2e2e2e 100%);
+  background: #1c212f;
   border-bottom-color: #3e3e3e;
 }
 
@@ -137,7 +137,7 @@
 }
 
 [data-theme="dark"] .sponsor-table th {
-  background: #121212;
+  background: rgb(23, 24, 46);
   color: #9e9e9e;
   border-bottom-color: #2e2e2e;
 }
@@ -148,10 +148,10 @@
 }
 
 [data-theme="dark"] .sponsor-table-row {
-  background: #2e2e2e;
+  background: #222836;
 }
 [data-theme="dark"] .sponsor-table-row:hover {
-  background: #434141;
+  background: #222836;
 }
 
 [data-theme="dark"] .sponsor-table-title {
