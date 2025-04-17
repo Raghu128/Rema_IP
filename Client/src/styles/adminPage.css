@@ -83,6 +83,10 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
+[data-theme="dark"] .admin-page-stat-value{
+  color: white;
+}
+
 [data-theme="dark"] .admin-page-card-header,
 [data-theme="dark"] .admin-page-schema-card-header,
 [data-theme="dark"] .admin-page-table-header {

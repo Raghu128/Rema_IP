@@ -203,7 +203,7 @@ const CurrentSubmissions = () => {
 
       {filteredSubmissions.length === 0 ? (
         <div className="no-submissions">
-          No submissions found matching your criteria
+          No submissions found 
         </div>
       ) : (
         <div className="submissions-table-container">
@@ -225,7 +225,6 @@ const CurrentSubmissions = () => {
                 <th onClick={() => handleSort('next_deadline')}>
                   Next Deadline <FaSort className="sort-icon" />
                 </th>
-                <th>Remarks</th>
                 <th>Paper URL</th>
                 <th>Submission URL</th>
               </tr>

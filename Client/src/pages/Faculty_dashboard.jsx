@@ -23,6 +23,7 @@ import DisplaySponsors from "../components/Sponsor/DisplaySponsors";
 import ExpensesList from "../components/Expenses/Allexpenses";
 import LandingPage from "../components/LandingPage";
 import LeavesForFacultyPage from "../components/Leaves/AllLeaves";
+import CurrentSubmissions from "../components/SimpleProjects/CurrentSubmissions.jsx"
 
 const FacultyDashboard = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -33,6 +34,7 @@ const FacultyDashboard = () => {
   const currElement = searchParams.get("tab");
   const iconMap = {
     Projects: faProjectDiagram,
+    Submission: faProjectDiagram,
     Students: faUserGraduate,
     Sponsor: faHandshake,
     Expenses: faMoneyBillWave,
@@ -51,6 +53,7 @@ const FacultyDashboard = () => {
         searchParas={searchParams.get("search")}
       />,
       Students: <Students id={user.id} />,
+      Submission: <CurrentSubmissions/>,
       Venues: <VenueListComponent />,
       Sponsor: <DisplaySponsors />,
       Notifications: <NotificationsList />,
@@ -86,7 +89,7 @@ const FacultyDashboard = () => {
         </div>
 
         <ul className="faculty-sidebar-list">
-          {["Projects", "Students", "Sponsor", "Expenses", "Equipment", "Leaves"].map((item) => (
+          {["Projects", "Submission", "Students", "Sponsor", "Expenses", "Equipment", "Leaves"].map((item) => (
             <li
               key={item}
               className={currElement === item ? "active" : ""}

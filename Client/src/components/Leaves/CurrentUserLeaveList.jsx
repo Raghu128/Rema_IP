@@ -66,6 +66,7 @@ const CurrentUserLeaveList = () => {
   }
 
   if (!leaves || leaves.length === 0) {
+    return<></>;
     return (
       <div className="currentUserLeave-empty currentUserLeave-fadeIn">
         No users on leave this month

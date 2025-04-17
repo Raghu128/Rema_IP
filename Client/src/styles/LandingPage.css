@@ -24,8 +24,15 @@
 .dashboard-section-right {
   display: flex;
   flex-direction: column;
-  height: 80vh;
-  justify-content: space-between;
+  height: 85vh;
+  gap: 5rem;
+}
+
+.landingpage-section-content{
+  max-height: 60%;
+}
+.currentMonthLeave{
+  max-height: 40%;
 }
 
 @media (max-width: 1400px) {

@@ -10,6 +10,7 @@ import LandingPage from "../components/LandingPage";
 import StudentLeaves from "../components/Leaves/StudentLeaves";
 import { Link, useSearchParams } from "react-router-dom";
 import "../styles/FacultyDashboard.css";
+import CurrentSubmissions from "../components/SimpleProjects/CurrentSubmissions";
 
 // Icons
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -31,6 +32,7 @@ const StudentDashboard = () => {
   // Icon mapping for each tab
   const iconMap = {
     Projects: faProjectDiagram,
+    Submission: faProjectDiagram,
     Equipment: faLaptop,
     Leaves: faCalendarAlt,
     Home: faHome
@@ -41,6 +43,7 @@ const StudentDashboard = () => {
 
     const componentMap = {
       Projects: <StudentProjects id={user.id} />,
+      Submission: <CurrentSubmissions/>,
       Venues: <VenueListComponent />,
       Notifications: <NotificationsList />,
       Equipment: <StudentEquipmentList />,
@@ -72,7 +75,7 @@ const StudentDashboard = () => {
         </div>
         
         <ul className="faculty-sidebar-list">
-          {["Projects", "Equipment", "Leaves"].map((item) => (
+          {["Projects", "Submission", "Equipment", "Leaves"].map((item) => (
             <li 
               key={item} 
               className={currElement === item ? "active" : ""}

@@ -3,7 +3,6 @@ import { useSelector } from "react-redux";
 import NotificationsList from "./Notification/NotificationsList";
 import VenueListComponent from "./Venues/VenueListComponent";
 import CurrentUserLeaveList from "./Leaves/CurrentUserLeaveList";
-import CurrentSubmissions from "./SimpleProjects/CurrentSubmissions";
 import "../styles/LandingPage.css";
 
 const LandingPage = () => {
@@ -25,13 +24,10 @@ const LandingPage = () => {
         </section>
 
         <section className="dashboard-section-right venues-compact">
-          <div className="section-content">
+          <div className="landingpage-section-content">
             <VenueListComponent compact={true} />
 
           </div>
-            <div className="currentMonthLeave">
-             <CurrentSubmissions />
-            </div>
             <div className="currentMonthLeave">
             {user?.role === "faculty" && <CurrentUserLeaveList />}
             </div>
