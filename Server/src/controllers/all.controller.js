@@ -583,7 +583,7 @@ export const forgotPassword = async (req, res) => {
     await user.save();
 
     // Frontend reset link
-    const resetLink = `${process.env.CORS_ORIGIN}/reset-password?token=${resetToken}`;
+    const resetLink = `${process.env.EMAIL_URL}/reset-password?token=${resetToken}`;
 
     // Attempt to send email
     try {
