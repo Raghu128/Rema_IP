@@ -65,16 +65,11 @@ export async function handleUserLogin(req, res) {
     if (!user) {
       return res.status(401).json({ error: "Invalid Username or Password" });
     }
+    if(user.status === false) return res.status(401).json({ error: "Your account is not Acitve" });
+    let isPasswordValid = await bcrypt.compare(password, user.password);
 
-    let isPasswordValid;
-    // if (user.role === "admin") {
-    //   isPasswordValid = password === process.env.ADMIN_PASSWORD;
-    // } else {
-      // }
-        isPasswordValid = await bcrypt.compare(password, user.password);
-
-    if (!isPasswordValid) {
-      return res.status(401).json({ error: "Invalid Username or Password" });
+    if (!isPasswordValid) {      
+      return res.status(401).json({ error: "Invalid Password" });
     }
 
     user.lastLogin = new Date();

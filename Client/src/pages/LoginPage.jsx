@@ -27,8 +27,9 @@ function LoginPage() {
             const user = await loginUser({ email, password });
             dispatch(setUser(user));
             window.location.href = "/";
-        } catch (err) {
-            setError(err.response?.data?.message || "Invalid credentials. Please try again.");
+        } catch (err) {``            
+            
+            setError(err.message || "Invalid credentials. Please try again.");
         } finally {
             setLoading(false);
         }

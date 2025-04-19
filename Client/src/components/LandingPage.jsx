@@ -11,8 +11,6 @@ const LandingPage = () => {
   return (
     <div className="landingpage-dashboard">
       <div className="landingpage-header">
-        <h1>Notifications Dashboard{user?.name ? ` for ${user.name}` : ''}</h1>
-        <p className="subtitle">Stay updated with your important alerts and venues</p>
       </div>
 
       <div className="landingpage-content">

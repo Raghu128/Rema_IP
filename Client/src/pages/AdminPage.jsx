@@ -169,7 +169,9 @@ function AdminPage() {
   };
 
   const handleDeleteUser = async (id, name) => {
-    if (!window.confirm(`Are you sure you want to delete ${name}? This action cannot be undone.`)) return;
+    if (!window.confirm(`Are you sure you want to delete ${name}? This action cannot be undone.\n\n` +
+      `Suggestion: Instead of deleting, you can set the user as inactive. ` +
+      `Inactive users cannot log in but their data will be preserved.`)) return;
 
     try {
       setIsLoading(true);

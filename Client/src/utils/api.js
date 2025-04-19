@@ -39,8 +39,9 @@ export const loginUser = async ({ email, password }) => {
   });
 
   if (!response.ok) {
-    const errorData = await response.json(); // Get error details if available
-    throw new Error(errorData.message || "Invalid credentials");
+    const errorData = await response.json(); // Get error details if available        
+    
+    throw new Error(errorData.error || "Invalid credentials");
   }
 
   const data = await response.json(); // Response should include token and user info
